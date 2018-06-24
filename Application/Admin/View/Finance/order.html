@@ -1,0 +1,113 @@
+<!doctype html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>{$title}</title>
+    <include file="Public/scripts" />
+
+    <include file="Public/date" />
+</head>
+<body>
+<div class="row">
+    <div class="col-md-12">
+        <div class="col-md-12 custom-tool" >
+            <h2>{$title}</h2>
+
+        </div>
+        <form action="" method="get" class="ajaxformx_" name="form1" id="form1">
+            <input type="hidden" name="p" id="p" value="1" />
+            <input type="hidden" name="status" id="status" value="{$status}" />
+            <table class="table vm">
+                <thead>
+                <th colspan="2">筛选</th>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="text-right" width="140">
+                        日期：
+                    </td>
+                    <td>
+                        <div class="col-md-7">
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                <input class="form-control datepicker" size="16" type="text" value="{$timefrom}" id="timefrom" name="timefrom"  placeholder="开始日期" >
+                                <span class="input-group-addon">-</span>
+                                <input class="form-control datepicker" size="16" type="text" value="{$timeto}"  id="timeto" name="timeto"  placeholder="结束日期" >
+                                <span class="input-group-btn w150">
+                                    <select class="form-control" name="status" id="sstatus">
+                                    <option value="" <if condition="isN($status)"> selected</if> >全部</option>
+                                    <volist name="statuslist" id="vo">
+                                        <option value="{$key}" <if condition="!isN($status) && ($status eq $key)">selected</if> >{$vo}</option>
+                                    </volist>
+                                </select>
+                                </span>
+                                <span class="input-group-btn">
+                                  <button type="submit" class="btn fl"><i class="fa fa-search"></i> 查询</button>
+                                </span>
+                                <span class="input-group-btn">
+                                  <button type="button" onclick="exportxls()" class="btn fl">导出</button>
+                                </span>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+
+                </tbody>
+            </table>
+        </form>
+        <table class="table  table-first-column-number display full table-striped custom-table vm">
+            <thead>
+            <tr>
+                <th></th>
+                <th width="80">#</th>
+                <th>订单编号</th>
+                <th>订单名称</th>
+                <th>订单实际金额</th>
+                <th width="80">状态</th>
+            </tr>
+            </thead>
+            <tbody>
+            <volist name="contentlist" id="vo">
+                <tr>
+                    <td></td>
+                    <td>{$vo.id}</td>
+                    <td>{$vo.orderno}{$vo['original']?'【初始货款订单】':''}</td>
+                    <td>{$vo.name}</td>
+                    <td>{$vo.amount|to_price}</td>
+                    <td>
+                        {$statuslist[$vo['status']]}
+                    </td>
+                </tr>
+            </volist>
+            <tr>
+                <td></td>
+                <td>合计</td>
+                <td colspan="2"></td>
+                <td>{$total}</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td colspan="6"><notempty name="page">
+                    <div class="pull-left custom-footer">
+                        <ul class="pagination" style="margin: 0px;">
+                            {$page}
+                        </ul>
+                    </div>
+                </notempty>
+                    </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<script type="text/javascript">
+    function exportxls(){
+        var timefrom=$("#timefrom").val();
+        var timeto=$("#timeto").val();
+        var status=$("#sstatus").val();
+        var act='order';
+        window.location.href=ADMIN_PATH+"/Rbac/exportxls.html?timefrom="+timefrom+"&timeto="+timeto+"&act="+act+"&status="+status;
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,64 @@
+<!doctype html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>{$title}</title>
+    <include file="Public/scripts" />
+</head>
+<body>
+<div class="row">
+    <div class="col-md-12">
+        <div class="col-md-12 custom-tool" >
+            <h2>{$title}&nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:exportsignuprecord('{$id}')" class="btn btn-success" title="导出">导出</a></h2>
+            <!--<div class="pull-right"> <a href="{:U($control.'/add'.$action)}" class="btn btn-success" title="添加"><i class="fa fa-plus"></i> 添加</a> </div>-->
+        </div>
+
+        <table class="table  table-first-column-number display full table-striped custom-table vm">
+            <thead>
+            <th width="80">#</th>
+            <th>课程名称</th>
+            <th>签到地点</th>
+            <th width="180">姓名</th>
+            <th width="180">签到时间</th>
+
+            </thead>
+            <tbody>
+            <volist name="contentlist" id="vo">
+                <tr>
+                    <td>{$vo.id}</td>
+                    <td>{$vo.title}</td>
+                    <td>{$vo.signaddress}</td>
+                    <td>
+                       {$vo.nickname}
+                    </td>
+                    <td>
+                        {$vo.addtime}
+                    </td>
+
+
+                </tr>
+            </volist>
+            <tr>
+                <td colspan="9">
+                    <notempty name="page">
+                    <div class="pull-left custom-footer">
+                        <ul class="pagination" style="margin: 0px;">
+                            {$page}
+                        </ul>
+                    </div>
+                </notempty>
+                    </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script type="text/javascript">
+    function exportsignuprecord(id){
+        window.location.href=ADMIN_PATH+"/Content/expsignuprecord.html?id="+id;
+    }
+</script>
+
+</body>
+</html>

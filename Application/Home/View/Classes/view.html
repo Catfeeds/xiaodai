@@ -1,0 +1,196 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>{$title}</title>
+    <include file="Public:scripts" />
+  
+	
+	
+	  <script type="text/javascript" src="__PUBLIC__/Home/ckplayer/ckplayer.js" charset="utf-8"></script>
+</head>
+
+<body>
+<if condition="$ispay">
+    <else/>
+    <a href="javascript:payclass('{$find.id}')"><div class="kcdetail_push">立即支付</div></a>
+</if>
+
+<div class="mui-content">
+    <div class="kcdetail">
+        <div class="topcon">
+            <if condition="$ispay">
+                <if condition="$find['type'] eq 2">
+                    <div class="img">
+                    <div style="width: 100%;height: 280px;" id="ckplayer"></div>
+
+                        
+
+                    </div>
+                    <else/>
+                    <switch name="find['isdownload']">
+                        <case value="1">
+                            <div style="padding: 20px 10px 0px 20px;" class="img">
+                                <a style="color:red;" href="{$find.attachment}">
+                                    点击下载：{$find.title}
+                                </a>
+                            </div>
+                        </case>
+                        <case value="0">
+                            <div style="padding: 20px 10px 0px 20px;" class="img">
+                                <a style="color:red;" href="javascript:void(0);">
+                                    该资料不支持下载，请查看资料内容。
+                                </a>
+                            </div>
+                        </case>
+                    </switch>
+                </if>
+
+                <else/>
+                <div class="img"><img src="{$find.indexpic}"><div id="play" class="play"></div></div>
+            </if>
+
+            <div class="name">{$find['title']}</div>
+            <div class="cont">
+                <ul class="clearListStyle mui-clearfix">
+                    <li>
+                        <if condition="$find['type'] eq 2">播放<else/>下载</if>次数：{$find['sold']}</li>
+                    <li>价格：<span class="red">￥{$find.price}</span></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="intro">
+            <div class="name">资料内容</div>
+            <div class="con">
+                <if condition="$ispay">
+                    <if condition="$find['type'] eq 1">
+                        {$find.attachdetail}
+                        <else/>
+                        该课程为视频资料，请观看视频
+                    </if>
+                    <else/>
+                    请购买该课程后查看
+                </if>
+
+            </div>
+        </div>
+
+        <div class="intro">
+            <div class="name">详细介绍</div>
+            <div class="con">
+                {$find.content}
+            </div>
+        </div>
+    </div>
+
+</div>
+<script src="__PUBLIC__/Home/js/mui.min.js"></script>
+<script src="__PUBLIC__/Home/js/jquery-2.2.3.min.js"></script>
+<script src="__PUBLIC__/Home/js/script.js"></script>
+<script type="text/javascript">
+    $("#play").click(function(){
+        mui.toast("请先购买该课程");
+    });
+
+    function payclass(id){
+        $.ajax({
+            url:"/Classes/pay.html",
+            data:{id:id},
+            type:"POST",
+            success:function(data){
+                if(data.status==1){
+                    window.location.href="/Pay/classorder/orderno/"+data.info;
+                }else{
+                    mui.toast(data.info);
+                }
+            }
+        });
+    }
+</script>
+<script type="text/javascript">
+    function loadedHandler(){
+        if(CKobject.getObjectById('ckplayer_a1').getType()){
+           //CKobject.getObjectById('ckplayer_a1').addListener('time',timeHandler);
+           //CKobject.getObjectById('ckplayer_a1').addListener('play', playHandler);
+        }
+        else{
+            //CKobject.getObjectById('ckplayer_a1').addListener('time','timeHandler');
+            //CKobject.getObjectById('ckplayer_a1').addListener('play', 'playHandler');
+        }
+
+
+
+
+    }
+
+
+    function playHandler(){
+	
+        if(parseFloat(getCookie("Time{$find.id}"))>0){
+            tip=1;
+			
+            CKobject.getObjectById('ckplayer_a1').videoSeek(parseInt(getCookie("Time{$find.id}"))+1);
+			setCookie("Time{$find.id}", "", -1);    
+			CKobject.getObjectById('ckplayer_a1').videoPlay();
+        }
+    }
+
+    var tip=0;
+    function timeHandler(t){
+        if(t>-1){
+            var questime='{$find.questime}';
+            if(parseInt(t)==parseInt(questime)){
+                if(tip==0){
+                    SetCookie("Time{$find.id}", t);
+                    CKobject.getObjectById('ckplayer_a1').videoPause();
+                    window.location.href="/Classes/question.html?fromurl="+'{$fromurl}';
+                    tip++;
+                }
+            }
+        }
+    }
+
+
+    //写cookies函数
+    function SetCookie(name, value)//两个参数，一个是cookie的名子，一个是值
+    {
+        var Days = 30; //此 cookie 将被保存 30 天
+        var exp = new Date(); //new Date("December 31, 9998");
+        exp.setTime(exp.getTime() + Days * 24 * 60 * 60 * 1000);
+        document.cookie = name + "=" + escape(value) + ";expires=" + exp.toGMTString();
+    }
+    function getCookie(name)//取cookies函数
+    {
+        var arr = document.cookie.match(new RegExp("(^| )" + name + "=([^;]*)(;|$)"));
+        if (arr != null) return unescape(arr[2]); return null;
+    }
+
+
+    var flashvars={
+        p:0,
+        e:1,
+        i:'{$find.indexpic}'
+    };
+    var video=['{$find.attachment}->video/mp4'];
+    var support=['all'];
+    var height=$("#ckplayer").height();
+    var width=$("#ckplayer").width();
+    CKobject.embedHTML5('ckplayer','ckplayer_a1',width,height,video,flashvars,support);
+	
+	
+	 $("#ckplayer_a1").attr('webkit-playsinline','true');
+    $("#ckplayer_a1").attr('playsinline','true');
+
+    $("#ckplayer_a1").attr('x5-video-player-type','h5');
+    $("#ckplayer_a1").attr('x5-video-player-fallscreen','true');
+
+	
+	
+	
+</script>
+
+
+
+</body>
+</html>

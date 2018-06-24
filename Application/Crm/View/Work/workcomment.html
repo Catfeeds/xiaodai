@@ -1,0 +1,225 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>{$title}</title>
+    <include file="Public:scripts" />
+    <style>
+        .mui-table-view:after{background-color: transparent;}
+        .mui-table-view:before{background-color: transparent;}
+        .mui-table-view-cell:after{background-color: transparent;}
+    </style>
+</head>
+<body>
+
+<footer class="mui-bar mui-bar-footer nav-bottom2">
+    <textarea id="comment" style="height: 100%;width: 80%;float: left;" type="text" placeholder="评论一下吧！"></textarea>
+    <button onclick="comment()" style="width: 20%;height: 100%; color:white;background-color: deepskyblue;">评论</button>
+</footer>
+<div class="mui-content hz_info">
+    <div class="mui-table-view" style="margin: 0px;background-color: transparent;">
+
+        <div class="mui-table-view-cell" style=" background-color: white;  border-bottom: 1px solid #c1b3b3;">
+
+            <div class="jilu">
+                <div style="width: 40px;
+                            height: 40px;
+                            font-size: 20px;
+                            line-height: 40px;
+
+                            text-align: center;
+                            border-radius: 50%;
+                            color:white;
+                            margin-right: 10px;float:left;">
+
+                    <?php
+                            $headimgurl=M('staff')->where(array('id'=>$db['staffid']))->getField('headimgurl');
+                    ?>
+                    <img src="{$headimgurl|default='/Public/Crm/images/nouser.png'}" alt="">
+
+                </div>
+                <style>
+                    .color1{background-color: #00B83F;}
+                    .color2{background-color: #aa7700;}
+                    .color3{background-color: #699a33;}
+                </style>
+                <div style="line-height: 20px;" class="cont">
+
+                    {:get_cache_value('staff',$db['staffid'],'name')}&nbsp;&nbsp;<span class="color{$db['type']}" style="font-size: 12px;color: white;padding:3px;border-radius: 3px;">{:getworktype($db['type'])}</span>
+                        <span style="font-size:12px;float:right;">
+                               {$db.addtime}&nbsp;&nbsp;
+                            <span class="text-red">
+                              <switch name="db['status']">
+                                  <case value="0">执行中</case>
+                                  <case value="1">已完成</case>
+                                  <case value="2">未完成</case>
+                                  <case value="3">不能完成</case>
+                              </switch>
+                            </span>
+                        </span>
+                    <div class="time" style="text-overflow:ellipsis;height: 20px;">{$db.address}</div>
+                </div>
+            </div>
+            <div class="con" style="padding-bottom: 5px;">
+                {$db.content}
+            </div>
+            <if condition="$db['remark']">
+                <div class="con" style="padding-bottom: 5px;color: gray;">
+                    备注：{$db.remark}
+                </div>
+            </if>
+
+            <div style="width: 100%;padding: 5px 15px; border-top: 1px solid #c1b3b3;background-color: white;">
+                <div style="width: 50%;text-align: center;float: left;border-right: 1px solid #c1b3b3;">
+                    <a><img style="width: 20px;" src="__PUBLIC__/Crm/images/msg.png"/><span id="commentnum" style="padding-left:10px;">{$db.commentnum}</span></a>
+                </div>
+                <div style="width: 50%;text-align: center;float: right;">
+                    <span onclick="praise('{$db.id}','{$db.praise}')">
+                        <if condition="$db['praise'] eq 1">
+                            <img id="zanimg{$db.id}" style="width: 20px;" src="__PUBLIC__/Crm/images/zan1.png"/>
+                            <else/>
+                            <img  id="zanimg{$db.id}" style="width: 20px;" src="__PUBLIC__/Crm/images/zan.png"/>
+                        </if>
+                        <span id="zannum{$db.id}" style="padding-left:10px;">{$db.praisenum}</span>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div style="width: 100%;margin-top: 5px;background-color: white;padding: 5px;">最新评论</div>
+        <div id="commentlist" style="padding: 15px;background-color: white;">
+
+            <empty name="list">
+                <div style="font-size: 20px;height: 100px;  position: relative; padding: 100px 50px;margin: 0 auto;">
+                    暂时没有评论，快去评论吧！
+                </div>
+                <else/>
+                <volist name="list" id="vo">
+                <div id="comment{$vo.id}" class="jilu" style="    margin-bottom: 20px; border-bottom: 1px solid #c1b3b3;">
+                    <div style="width: 40px;
+                            height: 40px;
+                            font-size: 20px;
+                            line-height: 40px;
+                            background-color: #b7b9c5;
+                            text-align: center;
+                            border-radius: 50%;
+                            color:white;
+                            margin-right: 10px;float:left;">
+
+                        <?php
+                            $headimgurl=M('staff')->where(array('id'=>$vo['staffid']))->getField('headimgurl');
+                        ?>
+                        <img src="{$headimgurl|default='/Public/Crm/images/nouser.png'}" alt="">
+
+                    </div>
+                    <div style="line-height: 20px;" class="cont">
+
+                        {:get_cache_value('staff',$vo['staffid'],'name')}
+                        <span style="font-size:12px;float:right;">
+                               {$vo.addtime}
+                            <if condition="$vo['dele'] eq 1">
+                                <span style="float: right;" onclick="deletecomment('{$vo.id}')">
+                                    <img style="width: 20px; height: 20px;" src="__PUBLIC__/Crm/images/delete.png"/>
+                                </span>
+                            </if>
+                        </span>
+
+
+                    </div>
+                    <div class="con" style="padding-bottom: 5px;">
+                        {$vo.content}
+                    </div>
+                </div>
+                </volist>
+            </empty>
+
+        </div>
+    </div>
+<include file="Public:daohang" />
+</div>
+<script src="__PUBLIC__/Crm/js/mui.min.js"></script>
+<script src="__PUBLIC__/Crm/js/jquery-2.2.3.min.js"></script>
+<script src="__PUBLIC__/Crm/js/script.js"></script>
+<script type="text/javascript">
+    function deletecomment(id){
+        var commentnum=parseInt($("#commentnum").html());
+        var btnArray = ['否', '是'];
+        mui.confirm('确认删除评论吗？', '删除', btnArray, function(e) {
+            if (e.index == 1) {
+                $.ajax({
+                    url:"/Crm/Work/deletecomment.html",
+                    data:{id:id},
+                    type:"POST",
+                    success: function (data) {
+                        mui.toast(data.info);
+                        if(data.status==1){
+                            $("#comment"+id).remove();
+                            $("#commentnum").html(commentnum-1);
+                        }
+                    }
+
+                });
+            }
+        });
+    }
+
+    function comment(){
+        var content=$("#comment").val();
+        var id='{$db.id}';
+        var commentnum=parseInt($("#commentnum").html());
+
+        var btnArray = ['否', '是'];
+        mui.confirm('确认评论吗？', '确认', btnArray, function(e) {
+            if (e.index == 1) {
+                $.ajax({
+                    url:"/Crm/Work/comment.html",
+                    data:{id:id,content:content},
+                    type:"POST",
+                    success: function (data) {
+                        mui.toast(data.info);
+                        var html="";
+                        if(data.status==1){
+                            html+="<div id='comment"+data.id+"' class='jilu' style='    margin-bottom: 20px; border-bottom: 1px solid #c1b3b3;'> " +
+                            "<div style='width: 40px;height: 40px;font-size: 20px;  line-height: 40px;text-align: center;" +
+                                    "border-radius: 50%;color:white;margin-right: 10px;float:left;'>  <img src='"+data.onename+"' alt=''></div>" +
+                                    "<div style='line-height: 20px;' class='cont'>"+data.name+
+                                    "<span style='font-size:12px;float:right;'>"+data.addtime+"  <span style='float: right;' onclick='deletecomment("+data.id+")'>" +
+                                    "<img style='width: 20px; height: 20px;' src='__PUBLIC__/Crm/images/delete.png'/> </span> </span></div>" +
+                                    "<div class='con' style='padding-bottom: 5px;'>"+content+"</div></div>";
+                            $("#commentlist").prepend(html);
+                            $("#comment").val("");
+                            $("#commentnum").html(commentnum+1);
+
+                        }
+                    }
+
+                });
+            }
+        });
+
+
+
+    }
+
+    function praise(id,praise){
+        var zannum=parseInt($("#zannum"+id).html());
+        $.ajax({
+            url:"/Crm/Work/setpraise.html",
+            data:{id:id},
+            type:"POST",
+            success: function (data) {
+                mui.toast(data.info);
+                if(data.status==1){
+                    if(parseInt(parseInt(data.praise))==0){
+                        $("#zannum"+id).html(zannum-1);
+                        $("#zanimg"+id).attr('src','/Public/Crm/images/zan.png');
+                    }else{
+                        $("#zannum"+id).html(zannum+1);
+                        $("#zanimg"+id).attr('src','/Public/Crm/images/zan1.png');
+                    }
+                }
+            }
+        })
+    }
+</script>
+</body>
+</html>

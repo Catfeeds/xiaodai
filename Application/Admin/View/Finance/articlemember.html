@@ -1,0 +1,153 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="content-Type" content="text/html; charset=utf-8" />
+    <title>{$title}</title>
+    <include file="Public/scripts" />
+</head>
+<body>
+<form action="" method="get" class="ajaxformx_" name="form1" id="form1">
+    <input type="hidden" name="p" id="p" value="1" />
+    <input type="hidden" name="id" id="id" value="{$id}" />
+    <div class="row">
+        <div class="col-md-12">
+            <div class="input-group">
+                <span>文章标题： {$db.title}</span>
+                <!--<span class="input-group-btn">-->
+              <!--<button type="submit" class="btn fl"><i class="fa fa-search"></i> 查询</button>-->
+              <!--</span> -->
+            </div>
+        </div>
+    </div>
+    <br />
+</form>
+<table class="table  table-first-column-number display full table-striped custom-table vm">
+    <thead>
+ <th style="width: 50px;" >选择</th>
+    <th style="width: 200px;" >用户名</th>
+    <th style="width: 100px;">传播数</th>
+    <th style="width: 100px;">阅读数</th>
+    <th style="width: 100px;">分享数</th>
+    <th style="width: 100px;">操作</th>
+    </thead>
+    <tbody>
+    <volist id="vo" name="members">
+
+        <tr class="row{$i % 2+1}" >
+		 <td {$css}><input type="checkbox" name="selectids" value="{$vo.frommemberid}"></td>
+            <td {$css}>{$vo.nickname} &nbsp;{$vo['telephone']?$vo['telephone']:''}  </td>
+            <td {$css}>{$vo.sprednum} </td>
+            <td {$css}>{$vo.readsnum} </td>
+            <td {$css}>{$vo.sharenum} </td>
+            <td {$css}>
+                <a data-toggle="modal" data-target="#myModal" onclick="showmodal('{$vo.frommemberid}')"
+                   href="javascript:void(0);" class="btn btn-primary  btn-sm" rel="tooltip" data-original-title="发送消息">
+                    <i class="fa fa-reorder"></i>
+                </a>
+
+            </td>
+        </tr>
+    </volist>
+    
+        <tr>
+            <td colspan="5"><div class="pull-left custom-footer">
+                <ul class="pagination" style="margin: 0px;">
+                    {$page}
+                </ul>
+            </div></td>
+			 <td >
+
+                 <a data-toggle="modal" data-target="#myModal" onclick="sendmuiltmsg()"
+                    href="javascript:void(0);" class="btn btn-primary  btn-sm" rel="tooltip" data-original-title="批量发送消息">
+                     <i class="fa fa-reorder"></i>
+                 </a>
+
+            </td>
+        </tr>
+		
+    </tbody>
+</table>
+
+<div id="myModal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">关闭</span></button>
+                <h4 class="modal-title">发送消息</h4>
+            </div>
+            <div class="modal-body">
+                <input id="memberid" type="hidden" value=""/>
+                <input placeholder="url链接：模板消息的URL链接，跳转的页面" id="url" class="form-control" type="text" value=""/>
+                <br/>
+                <textarea rows="5" placeholder="模板消息：需要发送给用户的文字信息" id="msg" class="form-control"></textarea>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary" onclick="confirmsend()">发送</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script language="javascript" type="text/javascript">
+
+    function sendmuiltmsg(){
+        var selectids="";
+        $("input:checked[name='selectids']").each(function() {
+            selectids += $(this).val() + ",";
+        });
+        showmodal(selectids);
+    }
+
+    function showmodal(id){
+        $("#memberid").val(id);
+    }
+
+    function confirmsend(){
+        var id=$("#memberid").val();
+        var url=$("#url").val();
+        var msg=$("#msg").val();
+        if($.trim(id)==""){
+            alert("获取发送目标失败");return;
+        }
+        if($.trim(msg)==""){
+            alert("消息内容不能为空");return;
+        }
+
+        $.ajax({
+            url:ADMIN_PATH+"/Api/sendtempmsg.html",
+            data:{id:id,url:url,msg:msg},
+            type:"POST",
+            success: function (data) {
+                if(data.status==1){
+                    alertok(data.info);
+					 parent.bootbox.hideAll();
+                    //setTimeout(function () {
+                    //    parent.bootbox.hideAll();
+                    //},500);
+                }else{
+                    alerterr(data.info);
+                }
+
+            }
+        })
+
+    }
+
+    $(function(){
+        $(".btnChoose").click(function(){
+            var $obj=$(this).parent().parent().find("td");
+            var btn=parent.$("#{$id}");
+            var $pid=btn.attr("data-id");
+            var $parentname=btn.attr("data-name");
+            parent.$("#"+$pid).val($.trim($obj.eq(0).text()));
+            parent.$("#"+$parentname).val($.trim($obj.eq(1).text()));
+            parent.bootbox.hideAll();
+        });
+    });
+
+</script>
+</body>
+</html>

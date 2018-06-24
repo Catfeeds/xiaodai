@@ -1,0 +1,145 @@
+<!doctype html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>{$title}</title>
+<include file="Public/scripts" />
+<style type="text/css">
+.list {margin: 0px;padding: 0px;}
+.list li {list-style-image: none;list-style-type: none;float: left;text-align: center;padding: 15px 10px 10px 0px;}
+.img {border: 1px solid #ccc;padding: 20px;}
+a:hover .img{ border:1px #666 solid;}
+.img img {border: 0px;height: 60px;width: 60px;}
+.txt {width: 100px;white-space: nowrap;text-overflow: ellipsis;overflow: hidden;padding-top: 5px;}
+</style>
+</head>
+<body>
+<div class="row">
+  <div class="col-md-12 " >
+    <h2>{$title}</h2>
+  </div>
+  <div class="col-md-12 " >
+    <div class="col-md-12 custom-form">
+      <div class="form-group">
+        <div class="controls pull-left"> <a  href="{:U('System/filemgr')}" >根目录</a>：
+          <notempty name='Think.get.file'>{$file}
+            <else/>
+            <notempty name='Think.get.dir'>{$nowdir}
+              <else/>
+              /</notempty>
+          </notempty>
+          <notempty name='Think.get.dir'><a class="" href="{:U('System/filemgr',array('dir'=>$lastdir))}" title="返回上级目录">&crarr;</a></notempty>
+        </div>
+        <div class="controls pull-right" style="width:300px;">
+          <form id="form2" name="form2" method="post" action="{:U('filemgr')}" enctype="multipart/form-data">
+            <input type="hidden" name="filedir" id="filedir" value="{$nowdir}" />
+            <div class="input-group">
+              <input type="file" class="form-control" name="fileupload" id="fileupload" />
+              <span class="input-group-addon">
+              <button type="submit" id="btnUpload" class="custom-upload" onclick="return ($('#fileupload').val()!='');"><i class="fa fa-upload"></i></button>
+              </span> </div>
+          </form>
+        </div>
+      </div>
+      <div class="clearfix"></div>
+      <notempty name="file">
+        <form id="form1" name="form1" method="post" action="{:U('filemgr')}">
+          <input type="hidden" name="file" id="file" value="{$file}" />
+          <div class="form-group">
+            <label class="control-label" >文件名：</label>
+            <div class="controls">
+              <input type="text" class="form-control" name="newname" id="newname"  value="{$oldname}" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label" >文件内容：</label>
+            <div class="controls">
+              <textarea class="form-control" rows="10"  name="content" id="content">{$content}</textarea>
+            </div>
+          </div>
+          <div class="form-group" >
+            <div class="controls">
+              <hr />
+              <button type="submit" class="btn btn-success" id="btnSubmit"  onclick="return ($('#newname').val()!='');" ><i class="fa fa-save"></i> 提交</button>
+              <button type="button" class="btn btn-default" onClick="history.back();"><i class="fa fa-undo"></i> 返回</button>
+            </div>
+          </div>
+        </form>
+      </notempty>
+      <div class="form-group">
+        <div class="controls">
+          <ul class='list'>
+            <?php
+        //需要外链的文件类型
+      $extslink = "/png/gif/jpeg/jpg/bmp/swf/pdf/xls/doc/mp3/rar/zip/exe/";
+      $arrlink=str2arr($extslink,"/");
+      
+      //允许编辑的文件类型
+      $extsallow = "/jsp/aspx/php/asp/htm/html/txt/js/css/tpl/sql/htaccess/";
+      $arrallow=str2arr($extsallow,"/");
+      
+      //有图标的文件类型
+      $exts="/jsp/asa/bat/rm/mp3/pdf/wma/rmvb/asp/html/htm/shtm/shtml/php/css/js/txt/png/gif/jpeg/jpg/bmp/swf/mdb/doc/xls/rar/zip/exe/xml/xsl/vbs/tpl/";
+      $arrext=str2arr($exts,"/");
+      
+      ?>
+            <volist name="list" id="vo">
+              <li>
+                <eq name="vo.type" value="folder">
+                <a href="{:U('System/filemgr?dir='.$vo['nowdir'])}" title="文件名称: {$vo.filename}&#10;文件类型: {$vo.type}&#10;文件权限: <eq name="vo.is_readable" value="true">可读
+                <else/>
+                不可读
+                </eq>
+                <eq name="vo.is_writeable" value="true">可写
+                  <else/>
+                  不可写</eq>
+                &#10;文件大小: {$vo.filesize}&#10;修改时间: {$vo.mtime|date='Y-m-d H:i:s',###}">
+                <div class='img'><img src="__PUBLIC__/Admin/assets/ico/folder.gif" /></div>
+                <div class='txt'>{$vo.filename}</div>
+                </a>
+                <else/>
+                <?php
+            $ext = end(explode('.', $vo['filename']));
+            $nowdir=str_replace('/',$spliter, $nowdir);
+            $href = "javascript:void(0);";
+            if (in_array($ext,$arrallow)){
+            	$href = U('System/filemgr',array("dir"=>$nowdir,"file"=>$vo['nowdir'])); 
+            }
+            if (in_array($ext,$arrlink)){
+            	$href = $nowdir.'/'.$vo['filename']; 
+           	 	$href=str_replace($spliter,'/', $href);
+                $href .= "\" target=\"_blank";
+            }
+            ?>
+                <a href="{$href}"  title="文件名称: {$vo.filename}&#10;文件类型: {$vo.type}&#10;文件权限: <eq name="vo.is_readable" value="true">可读
+                <else/>
+                不可读
+                </eq>
+                <eq name="vo.is_writeable" value="true">可写
+                  <else/>
+                  不可写</eq>
+                &#10;文件大小: {$vo.filesize}&#10;修改时间: {$vo.mtime|date='Y-m-d H:i:s',###}" >
+                <?php
+            
+            if (!in_array($ext,$arrext)){
+            	$ext = "file"; 
+            }
+            ?>
+                <div class='img'><img src="__PUBLIC__/Admin/assets/ico/{$ext}.gif" /></div>
+                <div class='txt'>{$vo.filename}</div>
+                </a>
+                </eq>
+              </li>
+            </volist>
+          </ul>
+        </div>
+      </div>
+      <div class="clearfix"></div>
+      <div class="form-group">
+        <div class="controls text-right"> 文件夹：{$num[0]}，文件：{$num[1]} </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

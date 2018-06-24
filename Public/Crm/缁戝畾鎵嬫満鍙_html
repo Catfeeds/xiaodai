@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+		<meta name="format-detection" content="telephone=no">
+		<title>绑定手机号</title>
+		<link rel="stylesheet" href="css/loading.css" />
+		<script src="js/loading.js"></script>		
+		<link rel="stylesheet" href="css/mui.css" />
+		<link rel="stylesheet" href="css/fonts.css" />
+		<link rel="stylesheet" href="css/style.css" />
+	</head>
+	<body>
+		<footer class="mui-bar mui-bar-footer nav-bottom">
+			<ul class="clearListStyle mui-clearfix">
+				<li><a href="index.html"><span class="iconfont icon-home"></span>首页</a></li>
+				<li><a href="cpfl.html"><span class="iconfont icon-fenlei"></span>产品</a></li>
+				<li><a href="cart.html"><span class="mui-badge mui-badge-danger">1</span><span class="iconfont icon-cart"></span>购物车</a></li>
+				<li class="active"><a href="usercenter.html"><span class="iconfont icon-user"></span>会员</a></li>
+			</ul>
+		</footer>
+		<div class="mui-content">
+			<form action="#">
+				<div class="mui-input-group mt10">
+					<div class="mui-input-row">
+						<label>手机号</label>
+						<input type="tel" class="mui-input-clear fz14"  placeholder="手机号" />
+					</div>
+					<div class="mui-input-row dxyzm">
+						<label>验证码</label>
+						<div class="box-flex-1" style="position: relative;"><input type="text" class="mui-input-clear"  placeholder="短信验证码" /></div>
+						<div class="dxyzmbox"><button type="button" class="mui-btn">获取验证码</button></div>
+					</div>
+				</div>
+				<div class="mui-content-padded">
+					<p><button type="submit" class="mui-btn mui-btn-primary mui-btn-block mui-btn-sm">立即绑定</button></p>			
+				</div>
+			</form>
+		</div>
+		<script src="js/mui.min.js"></script>
+		<script src="js/jquery-2.2.3.min.js"></script>
+		<script src="js/Validform_v5.3.2_min.js"></script>
+		<script src="js/script.js"></script>
+		<script>			
+			var form=$("#form").Validform({
+				tiptype:function(msg){
+					if(msg.length>1){
+						mui.toast(msg);
+						//mui.alert(msg, '提示');
+					}
+				},
+				showAllError:false,//逐条验证			
+				postonce:true,
+			});
+				form.addRule([
+				{
+			        ele:"#idnumber",
+			        datatype:"*",        
+			        nullmsg:"输入支付宝帐号",
+			        sucmsg:" ",
+			        errormsg:"输入支付宝帐号"
+			    },
+			    
+			   
+			]);
+		</script>
+	</body>
+</html>

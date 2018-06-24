@@ -1,0 +1,119 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>{$title}</title>
+<include file="Public/scripts" /> 
+
+</head>
+
+<body>
+<header class="mui-bar mui-bar-nav sort-product">
+	<ul class="clearListStyle mui-clearfix">
+		<li class="mui-col-xs-4 mui-pull-left">
+			<a href="javascript:srot('sort');" id="sort" data-field="sort">综合<span class="arr"></span></a>
+		</li>
+		<li class="mui-col-xs-4 mui-pull-left">
+			<a href="javascript:srot('price');" id="price" data-field="price" class="active up">价格<span class="arr"></span></a>
+		</li>
+		<li class="mui-col-xs-4 mui-pull-left">
+			<a href="javascript:srot('sold');" id="sold" data-field="sold">销量<span class="arr"></span></a>
+		</li>
+	</ul>
+</header>
+
+<div class="mui-content" style="padding-bottom: 30px;">
+	<div class="product-list">
+		<ul class="clearListStyle mui-clearfix" id="upload">
+		</ul>
+	</div>
+	<div style="text-align: center;" id="loadmore">
+		载入更多
+	</div>
+</div>
+
+
+ 
+<include file="Public/footer" />
+<script language="javascript">
+	var p=1;
+	var $field='';
+	var $sort='';
+	var type={$type?$type:1};
+	var keyword="{$keyword?$keyword:''}";
+	(function(){
+		//设置提示信息
+		$.setTip=function($str){
+			$("#loadmore").html($str).show();
+		};
+
+		//获取列表
+		$.getLists=function(){
+			var url="{:U('Item/getLists','id='.$id)}";
+			if(p!=0){
+				if(p!=1){
+					$.setTip("载入中...");
+				}
+				$.ajax({url:url,type:'GET',data:"field="+$field+"&sort="+$sort+"&p="+p+"&type="+type+"&keyword="+keyword,success: function(msg){
+					if(msg!=""){
+						//$("#upload").append(msg);
+						$("#upload").html($("#upload").html() + msg);
+						p+=1;
+						if(msg.indexOf("没有记录")==-1){
+							$.setTip("载入更多");
+						}else{
+							$("#loadmore").hide();
+						}
+					}else{
+						p=0;
+						$.setTip("没有了");
+						setTimeout(function(){
+							$("#loadmore").hide();
+						},2000);
+					}
+				}});
+			}
+		};
+	})(jQuery);
+
+	$(function(){
+		$.getLists();
+		$(window).scroll(function() {
+			var height_bottom = 0; // 距离底边多少像素开始加载
+			if ($(document).scrollTop() + height_bottom >= $(document).height() - $(window).height()) {
+				$.getLists();
+			}
+		});
+
+		$("#loadmore").click(function(){
+			$.getLists();
+		});
+
+	});
+
+	function srot(field){
+
+		$("#"+field).parents().siblings().find("a").removeClass("down").removeClass("up");
+		$("#"+field).parents().siblings().find("a").removeClass("active");
+
+		var $a=$("#"+field);
+		if($a.hasClass("up")){
+			$a.removeClass("up");
+			$a.addClass("down");
+			$sort="desc";
+		}else{
+			$a.removeClass("down");
+			$a.addClass("up");
+			$sort="asc";
+		}
+
+		$("#"+field).addClass("active");
+		$field=field;
+		p=1;
+		$("#upload").html("");
+		$.getLists();
+	}
+
+</script>
+</body>
+</html>

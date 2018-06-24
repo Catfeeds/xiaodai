@@ -1,0 +1,71 @@
+<empty name="list">
+  <eq name="p" value="1">
+    <div class="mui-table-view cartitem">
+      <div class="mui-table-view-cell"> 暂无记录 </div>
+    </div>
+  </eq>
+</empty>
+<volist name="list" id="vo">
+
+  <div class="mui-table-view cartitem">
+    <div class="mui-table-view-cell">
+      <eq name="vo.paystatus" value="1"><span class="">已支付</span><else/><span class="org">未支付</span></eq>
+    </div>
+    <div class="mui-table-view-cell">
+      <a href="{:U('Member/orderView','orderno='.$vo['orderno'])}" class="ordercp">
+        <volist name="vo.details" id="vo1">
+          <div class="display-box item">
+            <div class="img1-1"><img src="{$vo1.indexpic|default=C('DEFAULT_NOPIC')}"></div>
+            <div class="box-flex-1">
+              <div class="mui-ellipsis-2 cpname">{$vo1.title}</div>
+              <p><volist name="vo1['attrs']" id="voatt">{$voatt}&nbsp;</volist></p>
+              <div class="pricenumber mui-clearfix">
+                <span class="price mui-pull-left">
+                   <if condition="$vo['type'] eq 1">
+                    &yen;
+                   </if>
+                    {$vo1.price}
+                  <if condition="$vo['type'] eq 2">
+                    积分
+                  </if>
+                </span>
+                <span class="mui-pull-right">x{$vo1.num}</span>
+              </div>
+            </div>
+          </div>
+        </volist>
+      </a>
+    </div>
+    <div class="mui-table-view-cell mui-text-right fz12">
+      共{$vo.num}件商品
+      合计：
+      <if condition="$vo['type'] eq 1">
+      &yen;
+      </if>
+      <span class="fz16">{$vo.amount}</span>
+      <if condition="$vo['type'] eq 2">
+        积分
+      </if>
+    </div>
+    <div class="mui-table-view-cell">
+      <div class="mui-pull-right">
+        <eq name="vo.paystatus" value="1">
+          <eq name="vo.status" value="2">
+            <a href="javascript:$.confirmOrder('{$vo.orderno}');" class="mui-btn  mui-btn-danger mui-btn-sm" >确认收货</a>
+          </eq>
+          <a href="{:U('Member/orderView','orderno='.$vo['orderno'])}" class="mui-btn  mui-btn-primary mui-btn-sm" >查看订单</a>
+          <else/>
+          <a href="javascript:$.cancelOrder('{$vo.orderno}');" class="mui-btn  mui-btn-danger mui-btn-sm" >取消订单</a>
+          <if condition="$vo['paymethod'] eq 1">
+            <a href="{:U('Settle/order','orderno='.$vo['orderno'])}" class="mui-btn  mui-btn-primary mui-btn-sm">立即支付</a>
+          </if>
+          <if condition="$vo['paymethod'] eq 4">
+            <!--<a href="{:U('Pay/order','orderno='.$vo['orderno'])}" class="mui-btn  mui-btn-primary mui-btn-sm">立即支付</a>-->
+			<a href="{:U('Uchangpay/order','orderno='.$vo['orderno'])}" class="mui-btn  mui-btn-primary mui-btn-sm">立即支付</a>
+          </if>
+        </eq>
+      </div>
+    </div>
+  </div>
+
+</volist>

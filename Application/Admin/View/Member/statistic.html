@@ -1,0 +1,156 @@
+<!doctype html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>{$title}</title>
+<include file="Public/scripts" /> 
+<include file="Public/date" />
+<js href="__PUBLIC__/Admin/lib/flot/jquery.flot.js" />
+<js href="__PUBLIC__/Admin/lib/template3.js" />
+<script language="javascript">
+$(function(){
+	$.getChartData=function(){
+		var $timefrom=$("#timefrom").val();
+			$timefrom=($timefrom==undefined?'':$timefrom);
+		var $timeto=$("#timeto").val();
+			$timeto=($timeto==undefined?'':$timeto);
+		var $status=getSelectIDs();//name="selectids" 
+		
+		var url="{:U('Member/statistic')}?timefrom="+$timefrom+"&timeto="+$timeto+"&status="+$status;
+		$.ajax({url:url,type:"POST",success: function(data){
+			if(data.status=="1"){
+				$.rendChart(data.info.weights,data.info.months);
+				
+				var data = { 
+					list:data.info
+				};
+				if(data.list!=null){
+					template.helper('parseInt', parseInt);
+					var html = template('tpldata', data); 
+				 	$("#statistic_data").html(html);
+				} else{
+					$("#statistic_data").html("");
+				}
+				
+			}else{
+				alerterr(data.info);
+			}
+		}
+		});
+		
+	};
+    
+	
+	$.rendChart=function(data1,data2){
+		var data_weights=[{data: data1, color: '#84bbf9'}];
+		var data_months={
+			grid: {
+				borderWidth: 0
+			},
+		   xaxis: {
+			 ticks: data2
+		   },   
+			series: {
+				lines: { 
+					show: true,
+					fill: true,
+					fillColor: 'rgba(132,187,249, .3)'
+				},
+				points: { show: true }
+			},
+		};	
+   		$.plot($("#visits-chart"), data_weights, data_months);
+	}
+
+	$.getChartData();
+});
+</script>
+</head>
+<body>
+<div class="row">
+  <div class="col-md-12">
+    <div class="col-md-12 custom-tool" >
+      <h2>{$title}</h2>
+      <div class="pull-right"> <a href="{:U($control.'/'.strtolower($action))}" class="btn btn-success" title="订单统计"><i class="fa fa-shopping-cart"></i> 订单列表</a> </div>
+    </div>
+    <form action="" method="get" class="ajaxformx_ custom-table" name="form1" id="form1"> 
+      <table class="table vm">
+        <thead>
+        <th colspan="2">筛选</th>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="text-right" width="140">
+             日期：
+            </td>
+            <td>
+            <div class="col-md-5"> 
+                <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                <input class="form-control datepicker" size="16" type="text" value="{$timefrom}" id="timefrom" name="timefrom"  placeholder="开始日期" > 
+                <span class="input-group-addon">-</span>
+                <input class="form-control datepicker" size="16" type="text" value="{$timeto}"  id="timeto" name="timeto"  placeholder="结束日期" >
+                <span class="input-group-btn">
+                  <button type="button" class="btn fl" onClick="$.getChartData();"><i class="fa fa-search"></i> 查询</button>
+                  </span> 
+              </div> 
+            </div>
+            </td>
+            </tr>
+          <tr>
+            <td class="text-right">
+             状态：
+            </td>
+            <td>
+           <div class="col-md-12"> 
+            <volist name="statuslist" id="vo">
+            <label class="checkbox-inline" for="status_{$key}"><input type="checkbox"  name="selectids" id="status_{$key}" value="{$key}" <in name="key" value="1,2,3">checked="checked"</in> />{$vo}</label>
+            </volist>
+            </div>
+            </td>
+            </tr>
+          <tr>
+            <td colspan="2">
+             <div id="visits-chart" class="chart" style="width: 90%; min-width:600px;height:300px;margin:1em auto;">
+            </td>
+          </tr>
+           
+        </tbody>
+      </table>
+    </form>
+     <table class="table  table-first-column-number display full table-striped custom-table vm">
+      <thead> 
+        <th >#</th>
+        <th>月份</th>
+        <th>销量</th>
+        <th>销售额</th>
+      </thead>
+      <tbody id="statistic_data">
+         
+      </tbody> 
+    </table>
+  </div>
+</div>
+
+<script id="tpldata" type="text/html">  
+<% 
+var total=0;
+for (var i = 0; i < list['months'].length; i ++) { 
+%> 
+<tr> 
+	<td><%=(i+1)%></td>
+	<td><%= list['months'][i][1] %></td>
+	<td><%= list['weights'][i][1] %></td>
+    <td><%= list['amount'][i][1] %></td>
+</tr>
+<% 
+    total+=parseInt(list['weights'][i][1]);
+} %> 
+ <tr> 
+	<td colspan="2"><div class="pull-right">合计：</div></td>
+	<td><%=total%></td>
+    <td><%=list['allmount']/100%></td>
+ </tr>
+</script> 
+</body>
+</html>

@@ -1,0 +1,98 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>{$title}</title>
+    <include file="Public:scripts" />
+</head>
+<body>
+
+<include file="Public:footer" />
+<header style="height:auto;" class="mui-bar mui-bar-nav kehu_head">
+    <div class="kehu_search">
+        <form action="" method="post">
+            <input class="input1" type="text" name="keyword" id="keyword" value="{$keyword}" placeholder="搜索客户姓名或员工姓名">
+            <input type="submit" class="course_sub  commonfont" value="" style="background-color: #f0eff4; border: none;">
+        </form>
+    </div>
+</header>
+
+<div class="mui-content hz_info" style="padding-top: 10px;">
+
+
+    <div style="margin-top: 54px;width: 100%;background-color: white;display: none;" >
+       <ul style="padding:0px;list-style: none;text-align: center;">
+           <li style="float: left;width: 50%;padding: 5px;">
+               <img style="width: 30px;" src="__PUBLIC__/Crm/images/gengjin1.png" alt="">
+               &nbsp;&nbsp;跟进({$genjin})</li>
+           <li style="width: 50%;float: right;padding: 5px;">
+               <img style="width: 30px;" src="__PUBLIC__/Crm/images/daikan1.png" alt="">
+               &nbsp;&nbsp;带看({$daikan})</li>
+       </ul>
+    </div>
+
+    <style>
+        .color1{background-color: #00B83F;}
+        .color2{background-color: #aa7700;}
+        .color3{background-color: #699a33;}
+    </style>
+    <div class="mui-table-view" style="margin-top: 54px;">
+        <div class="biaoti">跟进记录({:count($record)})</div>
+        <empty name="record">
+            <div class="mui-table-view-cell">
+                <div class="con">
+                    没有跟进记录
+                </div>
+            </div>
+            <else/>
+            <volist name="record" id="vo">
+                <div class="mui-table-view-cell">
+                    <div class="jilu">
+                        <div style="width: 40px;
+								height: 40px;
+								font-size: 20px;
+								line-height: 40px;
+
+								text-align: center;
+								border-radius: 50%;
+								color:white;
+								margin-right: 10px;float:left;">
+                            <?php
+                            $headimgurl=M('staff')->where(array('id'=>$vo['staffid']))->getField('headimgurl');
+                            ?>
+                            <img src="{$headimgurl|default='/Public/Crm/images/nouser.png'}" alt="">
+							
+                        </div>
+                        <div style="line-height: 20px;" class="cont">
+                            {:get_cache_value('staff',$vo['staffid'],'name')}<span class="color{$vo['type']}" style="font-size: 12px;color: white;padding:3px;border-radius: 3px;">{:getfollowtype($vo['type'])}</span>
+							<span style="font-size: 12px; float: right;"> {:get_cache_value('member',$vo['memberid'],'company')}</span>
+							
+                            <div class="time" style="text-overflow:ellipsis;height: 20px;">{$vo.addtime}&nbsp;&nbsp;{$vo.address}</div>
+                        </div>
+                    </div>
+                    <div class="con">
+                        {$vo.remark}<br/>
+                        <?php
+                        $images=explode(',',$vo['images']);
+                        $images=array_filter($images);
+                        ?>
+                         <volist name="images" id="vom" key="k">
+                            <img style="width:33%;height:100px;padding-right:5%;padding-bottom:10px;"  data-preview-src="" data-preview-group="{$vo.id}{$k}" src="{$vom}"/>
+                        </volist>
+                    </div>
+                </div>
+            </volist>
+        </empty>
+    </div>
+</div>
+<script src="__PUBLIC__/Crm/js/mui.min.js"></script>
+<script src="__PUBLIC__/Crm/js/jquery-2.2.3.min.js"></script>
+<script src="__PUBLIC__/Crm/js/script.js"></script>
+<script src="__PUBLIC__/Crm/js/mui.previewimage.js"></script>
+<script src="__PUBLIC__/Crm/js/mui.zoom.js"></script>
+<link rel="stylesheet" href="__PUBLIC__/Crm/css/priview.css" />
+<script type="text/javascript">
+mui.previewImage()
+</script>
+</body>
+</html>

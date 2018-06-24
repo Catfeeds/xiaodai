@@ -1,0 +1,331 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>{$title}</title>
+    <include file="Public/scripts" />
+    <style>
+
+        .mui-views,
+        .mui-view,
+        .mui-pages,
+        .mui-page,
+        .mui-page-content{
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #efeff4;
+        }
+
+        .mui-navbar {
+            position: fixed;
+            right: 0;
+            left: 0;
+            z-index: 10;
+            height: 44px;
+            -webkit-box-shadow: 0 0 1px rgba(0,0,0,.4) !important;
+
+        }
+        .mui-bar-nav { -webkit-box-shadow:none !important;}
+        .mui-page.mui-transitioning {
+            -webkit-transition: -webkit-transform 300ms ease;
+            transition: transform 300ms ease;
+        }
+        .mui-page-left {
+            -webkit-transform: translate3d(0, 0, 0);
+            transform: translate3d(0, 0, 0);
+        }
+        .mui-ios .mui-page-left {
+            -webkit-transform: translate3d(-20%, 0, 0);
+            transform: translate3d(-20%, 0, 0);
+        }
+        .mui-navbar .mui-btn-nav {
+            -webkit-transition: none;
+            transition: none;
+            -webkit-transition-duration: .0s;
+            transition-duration: .0s;
+        }
+
+        .mui-page-shadow {
+            position: absolute;
+            right: 100%;
+            top: 0;
+            width: 16px;
+            height: 100%;
+            z-index: -1;
+            content: '';
+        }
+        .mui-page-shadow {
+            background: -webkit-linear-gradient(left, rgba(0, 0, 0, 0) 0, rgba(0, 0, 0, 0) 10%, rgba(0, 0, 0, .01) 50%, rgba(0, 0, 0, .2) 100%);
+            background: linear-gradient(to right, rgba(0, 0, 0, 0) 0, rgba(0, 0, 0, 0) 10%, rgba(0, 0, 0, .01) 50%, rgba(0, 0, 0, .2) 100%);
+        }
+        .mui-navbar-inner.mui-transitioning,
+        .mui-navbar-inner .mui-transitioning {
+            -webkit-transition: opacity 300ms ease, -webkit-transform 300ms ease;
+            transition: opacity 300ms ease, transform 300ms ease;
+        }
+        .mui-page {
+            display: none;
+        }
+        .mui-pages .mui-page {
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+<div id="app" class="mui-views">
+    <div class="mui-view">
+
+        <div class="mui-pages">
+        </div>
+    </div>
+</div>
+<div id="jiesuan" class="mui-page" >
+    <input type="hidden" value="{$ids}" id="ids"/>
+    <footer class="mui-bar mui-bar-footer display-box footerbar-cp">
+        <div class="mui-ellipsis box-flex-1 heji">合计: <span class="price">&yen;{$allprice}</span></div>
+        <button onclick="commitorder()"  class="mui-btn mui-btn-primary" id="jiesuanbtn">提交订单</button>
+    </footer>
+    <div class="mui-page-content">
+        <div class="mui-scroll-wrapper">
+            <div class="mui-scroll">
+                <div class="mui-input-group xzadr mt10">
+                    <div class="mui-table-view-cell">
+                        选择收货地址
+                    </div>
+                    <volist name="addresslist" id="vo" key="k">
+                        <div class="mui-input-row mui-radio">
+                            <label>
+                                {$vo.username}
+                                {$vo.telephone}
+                                {:get_area_name($vo['provinceid'])}
+                                {:get_area_name($vo['cityid'])}
+                                {:get_area_name($vo['districtid'])}
+                                {$vo.address}
+                            </label>
+                            <input name="addressid" value="{$vo.id}" type="radio" <if condition="$k eq 1"> checked</if>>
+                        </div>
+                    </volist>
+                    <div class="mui-table-view-cell mui-text-center">
+                        <a href="#newaddress">+ 使用新地址</a>
+                    </div>
+                </div>
+                <div class="mui-table-view cartitem">
+                    <div class="mui-table-view-cell">
+                        商品清单
+                    </div>
+                    <volist name="items" id="vo">
+
+                        <div class="mui-table-view-cell display-box">
+                            <div class="img1-1"><img src="{$vo.indexpic}"></div>
+                            <div class="box-flex-1">
+                                <div class="mui-ellipsis-2 cpname">{$vo.name}</div>
+                                <p><volist name="vo['attrs']" id="voatt">{$voatt}&nbsp;</volist></p>
+                                <div class="pricenumber mui-clearfix">
+                                    <span class="price mui-pull-left">&yen;{$vo['prod_info']['price']*$vo['num']}</span>
+                                    <span class="mui-pull-right">x{$vo.num}</span>
+                                </div>
+
+                            </div>
+                        </div>
+                    </volist>
+                </div>
+                <div class="mui-table-view mt10">
+                    <div class="mui-table-view-cell">
+                        商品金额<span class="mui-pull-right">&yen;{$allprice}</span>
+                    </div>
+                    <div class="mui-table-view-cell" style="display: none;">
+                        运费<span class="mui-pull-right">&yen;10</span>
+                    </div>
+                    <div class="mui-table-view-cell">
+                        合计<span class="mui-pull-right mui-badge-danger mui-badge-inverted">&yen;{$allprice}</span>
+                    </div>
+                </div>
+                <div class="mui-input-group mt10" style="margin-bottom: 54px;">
+                    <div class="mui-table-view-cell">
+                        支付方式
+                    </div>
+
+                    <div class="mui-input-row mui-radio">
+                        <label>微信支付 </label>
+                        <input type="radio" name="paymethod" value="4" checked >
+                    </div>
+                    <div style="display: none;" class="mui-input-row mui-radio">
+                        <label>余额支付 <if condition="$credit lt $allprice">( 可使用余额不足)<else/>（{$credit}）</if></label>
+                        <input <if condition="$credit lt $allprice"> disabled</if> type="radio" name="paymethod" value="2">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="newaddress" class="mui-page">
+    <div class="mui-page-content">
+        <div class="mui-scroll-wrapper">
+            <div class="mui-scroll">
+                <div class="mui-input-group mt10">
+                    <div class="mui-input-row">
+                        <label>收货人：</label>
+                        <input type="text" class="mui-input-clear" placeholder="收货人姓名" name="username" id="username" maxlength="10" value="{$db.username}">
+                    </div>
+                    <div class="mui-input-row">
+                        <label>手机号码：</label>
+                        <input type="tel" class="mui-input-clear" placeholder="收货人手机电话"  name="telephone" id="telephone" maxlength="11" value="{$db.telephone}">
+                    </div>
+                    <div class="mui-input-row">
+                        <label>所在地区：</label>
+                        <select id="China_Province" style="width:20%;float: left;"  name="China_Province">
+                            {:get_area('china_province',0,$db['provinceid'])}
+                        </select>
+                        <select id="China_City"  style="width:20%;float: left; display: none;" name="China_City"  >
+                            {:get_area('china_city',$db['provinceid'],$db['cityid'])}
+                        </select>
+                        <select id="China_District" style="width:20%;float: left; display: none;"  name="China_District"  >
+                            {:get_area('china_district',$db['cityid'],$db['districtid'])}
+                        </select>
+                    </div>
+                    <div class="mui-input-row autoh">
+                        <textarea rows="3" placeholder="详细地址" name="address" id="address" >{$db.address}</textarea>
+                    </div>
+                </div>
+                <div class="mui-content-padded">
+                    <p><button onclick="saveaddress()" type="submit" class="mui-btn mui-btn-primary mui-btn-block mui-btn-sm">保存</button></p>
+                    <p><button type="button" class="mui-btn mui-btn-block mui-btn-sm mui-action-back">取消</button></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="__PUBLIC__/Home/js/mui.min.js"></script>
+<script src="__PUBLIC__/Home/js/jquery-2.2.3.min.js"></script>
+<script src="__PUBLIC__/Home/js/jquery.func.js"></script>
+<script src="__PUBLIC__/Home/js/mui.view.js "></script>
+<link rel="stylesheet" href="__PUBLIC__/Home/css/mui.picker.all.css" />
+<script src="__PUBLIC__/Home/js/mui.picker.all.js"></script>
+<script src="__PUBLIC__/Home/js/city.data-3.js" ></script>
+<script src="__PUBLIC__/Home/js/Validform_v5.3.2_min.js"></script>
+<script src="__PUBLIC__/Home/js/script.js"></script>
+<script>
+    InitArea();
+    mui.init();
+    //初始化单页view
+    var viewApi = mui('#app').view({
+        defaultPage: '#jiesuan'
+    });
+    //初始化单页的区域滚动
+    mui('.mui-scroll-wrapper').scroll();
+    var view = viewApi.view;
+    (function($) {
+        //处理view的后退与webview后退
+        var oldBack = $.back;
+        $.back = function() {
+            if (viewApi.canBack()) { //如果view可以后退，则执行view的后退
+                viewApi.back();
+            } else { //执行webview后退
+                oldBack();
+            }
+        };
+        //监听页面切换事件方案1,通过view元素监听所有页面切换事件，目前提供pageBeforeShow|pageShow|pageBeforeBack|pageBack四种事件(before事件为动画开始前触发)
+        //第一个参数为事件名称，第二个参数为事件回调，其中e.detail.page为当前页面的html对象
+        view.addEventListener('pageBeforeShow', function(e) {
+            //				console.log(e.detail.page.id + ' beforeShow');
+        });
+        view.addEventListener('pageShow', function(e) {
+            //				console.log(e.detail.page.id + ' show');
+        });
+        view.addEventListener('pageBeforeBack', function(e) {
+            //				console.log(e.detail.page.id + ' beforeBack');
+        });
+        view.addEventListener('pageBack', function(e) {
+            //				console.log(e.detail.page.id + ' back');
+        });
+    })(mui);
+
+    function trim(str){ //删除左右两端的空格
+        return str.replace(/(^s*)|(s*$)/g, "");
+    }
+    function saveaddress(){
+        var username=$("#username").val();
+        var telephone=$("#telephone").val();
+        var China_Province=$("#China_Province").val();
+        var China_City=$("#China_City").val();
+        var China_District=$("#China_District").val();
+        var address=$("#address").val();
+        if(trim(username)==''||trim(username)==null){
+            mui.toast('请填写收货人姓名');return;
+        }
+        if(trim(telephone)==''||trim(telephone)==null){
+            mui.toast('请填写电话号码');return;
+        }
+        if(!is_mobile(telephone)){
+            mui.toast('请填写正确的手机号码');return;
+        }
+        if(trim(China_Province)==''||trim(China_Province)==null){
+            mui.toast('请选择省');return;
+        }
+        if(trim(China_City)==''||trim(China_City)==null){
+            mui.toast('请选择市');return;
+        }
+        if(trim(China_District)==''||trim(China_District)==null){
+            mui.toast('请选择区');return;
+        }
+        if(trim(address)==''||trim(address)==null){
+            mui.toast('请填写详细地址');return;
+        }
+
+        $.ajax({
+            url:"/Member/editAddress.html",
+            data:{username:username,telephone:telephone,China_Province:China_Province,China_City:China_City,China_District:China_District,address:address},
+            type:'POST',
+            success: function (data) {
+                mui.toast(data.info);
+                window.location.reload();
+            }
+        })
+    }
+
+    function commitorder(){
+        var ids=$("#ids").val();
+        var addressid=$('input[name="addressid"]:checked ').val();
+        var paymethod=$('input[name="paymethod"]:checked ').val();
+        if(addressid=='' || addressid==null){
+            mui.toast('请选择配送地址');
+            return;
+        }
+
+        $.ajax({
+            url:"/Settle/confirm.html",
+            data:{ids:ids,addressid:addressid,paymethod:paymethod},
+            method:'POST',
+            success: function (data) {
+                console.log(data.info);
+                if(parseInt(paymethod)==2)
+                    window.location.href="/Member/orderView.html?orderno="+data.info;
+                if(parseInt(paymethod)==1)
+                    window.location.href="/Settle/order.html?orderno="+data.info;
+                if(parseInt(paymethod)==4){
+                    window.location.href="/Uchangpay/order/orderno/"+data.info+".html";
+					//window.location.href="/Pay/order/orderno/"+data.info+".html";
+					//
+				}
+                    
+
+            }
+        })
+    }
+</script>
+
+
+
+
+</body>
+</html>

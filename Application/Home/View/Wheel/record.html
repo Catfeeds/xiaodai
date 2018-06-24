@@ -1,0 +1,166 @@
+<!doctype html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>{$title}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"/>
+    <include file="Public/scripts" />
+    <js href="__PUBLIC__/Home/js/jquery.form.js" />
+    <style>
+
+        .propbox { width: 100%; height: 100%; position: fixed; left: 0; top: 0; z-index: 99; display:none; }
+        .propbox .bg { width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.8); }
+        .propbox .cont { width: 85%; max-width: 400px; height:220px; padding: 20px; box-sizing: border-box; text-align: center; background-color: #FFF; border-radius: 6px; position: absolute; left: 0; top: 0; right: 0; bottom: 0; margin: auto; }
+        .propbox .cont .tit { margin-top: 15px; color: #F00; font-size: 16px; font-weight: bold; }
+        .propbox .cont .txt { font-size: 12px; color: #666; }
+        .propbox .cont .icon-01 { height: 90px; background: url(__PUBLIC__/Home/wheel/images/smile.png) no-repeat center; background-size: contain; }
+        .propbox .cont .icon-02 { height: 90px; background: url(__PUBLIC__/Home/wheel/images/sad.png) no-repeat center; background-size: contain; }
+
+        .btn-share{ width:100%; position: relative;display: inline-block;padding: 6px 12px;margin-bottom: 0;font-size: 14px;font-weight: 400;line-height: 1.42;color: #333;text-align: center;color: #fff;background-color: #FA0;border: 1px solid #FA0;    border-radius: 3px; text-decoration:none; }
+    </style>
+</head>
+<body>
+<header class="mui-bar mui-bar-nav"> <a href="javascript:void(0);" class="mui-icon mui-icon-arrowleft mui-pull-left mui-action-back"></a>
+    <h1 class="mui-title">{$title}</h1>
+</header>
+<div id="offCanvasContentScroll" class="mui-content mui-scroll-wrapper">
+    <div class="mui-scroll">
+        <div class="mui-table-view mt10">
+            <empty name="list">
+                <div class="noresult">查无记录</div>
+            </empty>
+            <volist name="list" id="vo">
+                <?php
+    $prize=json_decode($vo['prize'],true);
+    ?>
+                <div class="mui-table-view-cell mui-media"> <img data-original="{$vo.headimgurl|default=C('DEFAULT_AVATAR')}" class="lazy mui-media-object mui-pull-left">
+                    <div class="mui-media-body display-box">
+                        <div class="box-flex-1"> {$vo.nickname}
+                            <eq name="vo.memberid" value="$memberid">
+                                <p>
+                                    <eq name="vo.status" value="1">
+                                        已兑奖：{$vo.sn}
+                                        <else/>
+                                        兑奖码：<a href="javascript:void(0);" >{$vo.sn}</a>
+                                    </eq>
+                                </p>
+                            </eq>
+                            <p>{$vo.addtime}</p>
+                        </div>
+                        <div style="text-align:center;">{$prize.prize}<br>
+                            <switch name="vo.status">
+                                <case value="1">
+                                    <a href="javascript:void(0);" onclick="alertok('{$prize.title}【{:$prizetypelist[$vo['type']]} {$prize.amount}】');">已领取</a>
+                                </case>
+                                <case value="2">
+                                    <a href="javascript:void(0);" onclick="alertok('{$prize.title}【{:$prizetypelist[$vo['type']]} {$prize.amount}】');">已放弃</a>
+
+                                </case>
+                                <default/>
+                                <eq name="vo.type" value="4">
+                                    <a href="javascript:void(0);" onclick="$.getPrize('{$vo.sn}');" style="color:#467DFF">立即领取</a>
+                                    <else/>
+                                    <empty name="vo.info">
+
+                                        <a href="javascript:void(0);" onclick="$.showInfo('{$vo.sn}','');" style="color:#467DFF">完善资料</a>
+                                        <else/>
+                                        <a href="javascript:void(0);" onclick='$.showInfo("{$vo.sn}",{$vo.info});'>已填资料</a>
+                                    </empty>
+                                </eq>
+
+                            </switch>
+                        </div>
+                    </div>
+                </div>
+                </li>
+            </volist>
+            </ul>
+            <div class="mui-content-padded">
+                <ul class="mui-pager">
+                    {$page}
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!--
+    <div class="propbox"><div class="bg"></div><div class="cont">
+    <p style="text-align:left;">请输入商家密码：</p>
+    <form class="ajaxformx" method="post">
+    <input type="hidden" name="actid" id="actid" value="{$actid}" />
+    <input type="hidden" name="act" id="act" value="sn" />
+    <input type="hidden" name="sn" id="sn" value="" />
+    <div >
+    <input type="password" name="pwd" id="pwd" placeholder="商家兑奖密码" />
+    </div>
+        <div  style="margin-top: 10px;"><button type="submit" class="btn-share" id="btn-prop">确定</button></div>
+    </form>
+        </div></div>-->
+
+    <div class="propbox"><div class="bg"></div><div class="cont">
+        <p style="text-align:left;">联系方式：</p>
+        <form class="ajaxformx" method="post">
+            <input type="hidden" name="actid" id="actid" value="{$actid}" />
+            <input type="hidden" name="act" id="act" value="info" />
+            <input type="hidden" name="sn" id="sn" value="" />
+            <div >
+                <input type="text" maxlength="11" name="telephone" id="telephone" placeholder="您的手机号" />
+                <input type="text" maxlength="100" name="address" id="address" placeholder="您的联系地址" />
+            </div>
+            <div  style="margin-top: 10px;"><button type="submit" class="btn-share" id="btn-prop">确定</button></div>
+        </form>
+    </div></div>
+
+    <script src="__PUBLIC__/Home/js/mui.min.js"></script>
+    <script src="__PUBLIC__/Home/js/jquery-2.2.3.min.js"></script>
+    <js href="__PUBLIC__/Home/js/jquery.form.js" />
+    <js href="__PUBLIC__/Home/js/jquery.func.js" />
+    <script >
+        function showSn($sn,$status){
+            if($status==0){
+                $("#sn").val($sn);
+                $(".propbox").show();
+            }
+        }
+        (function(){
+            //资料信息
+            $.showInfo=function($sn,$info){
+                $("#sn").val($sn);
+                if($info!=""){
+                    $("#telephone").val($info.telephone);
+                    $("#address").val($info.address);
+                    $("#btn-prop").text("禁止修改").attr("disabled",true);
+                }else{
+                    $("#telephone").val("");
+                    $("#address").val("");
+                    $("#btn-prop").text("确定").attr("disabled",false);
+                }
+                $(".propbox").show();
+            }
+            //立即领奖
+            $.getPrize=function($sn){
+                var $url="{:U('Wheel/record')}?act=prize&actid={$actid}&sn="+$sn;
+                $.ajax({
+                    url:$url,
+                    type:"POST",
+                    success: function(data){
+                        if(data.status=="1"){
+                            alertok(data.info);
+                            reloadwin();
+                        }else{
+                            alerterr(data.info);
+                        }
+                    }
+                });
+            }
+        })(jQuery);
+        $(function(){
+            mui('#offCanvasContentScroll').scroll();
+
+
+            $("body").on("click",".bg",function(){
+                $(".propbox").toggle();
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,184 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>{$title}</title>
+    <include file="Public:newscripts" />
+    <style type="text/css">
+        .news-textbox>div {
+            width: 90%;
+            padding: 0.1rem 0;
+            margin: 0 auto;
+            box-sizing: border-box;
+            position: relative;
+            overflow: hidden;
+            line-height: 1;
+            font-size: 0.14rem;
+        }
+
+        .news-textbox>div .title {
+            font-size: 0.16rem;
+            font-weight: bold;
+            line-height: 1.5;
+            margin-bottom: 0.12rem;
+        }
+
+        .day {
+            color: #999;
+            font-size: 0.1rem;
+            margin-bottom: 0.12rem;
+        }
+
+        .text {
+            font-size: 0.14rem;
+            color: #666;
+            line-height: 1.5;
+        }
+
+        .text img {
+            max-width: 100%;
+            padding: 0.12rem;
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+<body style="background: #f5f5f5;" onunload="unOnlineTime()">
+
+<section class="news-textbox" style="margin: 0.12rem;background: #fff;border-radius:0.2rem ;font-size: 0.14rem;">
+    <div class="">
+        <p class="title">{$db.title}</p>
+        <p class="day">{$db.addtime|date2format}</p>
+        <div class="text">
+            {$db.content}
+        </div>
+    </div>
+
+</section>
+<div onclick="setpraise()" style="    position: fixed;
+                bottom: 60px;
+                right: 10px;  color: red;  font-size: 14px;
+                line-height: 30px;width: 60px; height: 20px;float: right;margin: 10px;">
+    <img id="zanimg" width="50%" src="__PUBLIC__/Home/images/zan{$ispraise}.png"/>点赞
+</div>
+
+<script src="/Public/newcss/js/myfunc-1.0.0.js"></script>
+
+<script language="javascript">
+    function unOnlineTime()
+    {
+        clearInterval(interval);
+    }
+
+    var interval = setInterval(function(){
+        $.ajax({
+            url:"/News/unloadpage.html",
+            data:{readid:'{$readid}',nowtime:'{$nowtime}'},
+            type:"POST",
+            success:function(data){
+
+            }
+        })
+    }, 1000*59);
+
+
+    var swiper = new Swiper('.screen-order .swiper-container',{
+        slidesPerView:3.5,
+        //spaceBetween : 8,
+        autoHeight: false,
+    });
+
+    function setpraise(){
+        $.ajax({
+            url:"/News/setpraise.html",
+            data:{articleid:'{$db.id}'},
+            type:"POST",
+            success:function(data){
+                yjfunc.mytoast(data.info);
+                if(data.status==1){
+                    $("#zanimg").attr('src',"__PUBLIC__/Home/images/zan1.png");
+                }
+
+            }
+        })
+    }
+//
+//    $(window).unload(function(){
+//        $.ajax({
+//            url:"/News/unloadpage.html",
+//            data:{readid:'{$readid}',nowtime:'{$nowtime}'},
+//            type:"POST",
+//            success:function(data){
+//
+//            }
+//        })
+//    });
+//
+//    setInterval(function () {
+//        $.ajax({
+//            url:"/News/unloadpage.html",
+//            data:{readid:'{$readid}',nowtime:'{$nowtime}'},
+//            type:"POST",
+//            success:function(data){
+//
+//            }
+//        })
+//    },1000*50);
+
+</script>
+
+
+
+
+<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<script type="text/javascript">
+    wx.config({
+                debug: false,
+                appId: '{$signPackage.appId}',
+                timestamp: {$signPackage.timestamp|0},
+            nonceStr: '{$signPackage.nonceStr}',
+            signature: '{$signPackage.signature}',
+            jsApiList: [
+            "checkJsApi",
+        'onMenuShareTimeline',
+        'onMenuShareAppMessage',
+        'onMenuShareQQ',
+        'onMenuShareWeibo',
+        'previewImage'
+    ]
+    });
+    var $share={
+        title: "{$db.title}",
+        desc: "{$db.description}",
+        link: "{$shareurl}",
+        imgUrl: "{$shareimg}",
+        trigger: function (res) {
+            //alert('用户点击发送给朋友');
+        },
+        success: function (res) {
+            $.ajax({
+                url:"/News/setshare.html",
+                data:{articleid:'{$id}'},
+                type:"POST",
+                success:function(data){
+                    yjfunc.mytoast(data.info);
+                }
+            });
+
+        },
+        cancel: function (res) {
+            //alert('已取消');
+        },
+        fail: function (res) {
+            alert(JSON.stringify(res));
+        }
+    };
+
+    wx.ready(function () {
+        wx.onMenuShareAppMessage($share);
+        wx.onMenuShareTimeline($share);
+    });
+
+</script>
+
+</body>
+</html>

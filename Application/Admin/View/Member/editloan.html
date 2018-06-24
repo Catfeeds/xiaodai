@@ -1,0 +1,317 @@
+<!doctype html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>{$title}</title>
+    <include file="Public/scripts" />
+    <style>
+        .order-item{width:50px; margin:0px; float:left;}
+    </style>
+    <script language="javascript">
+        $(function(){
+            InitArea();
+
+            $("#paystatus").change(function(){
+                var v=$(this).val();
+                if(v==1){
+                    $("#paybox").show();
+                }else{
+                    $("#paybox").hide();
+                }
+            }).change();
+
+            //减数量
+            $(".btn-deduct").click(function(){
+                var $input=$(this).next("input");
+                var v=$input.val();
+                if(isNaN(v)){
+                    v=1;
+                }
+                v--;
+                if(v<1){
+                    var $obj=$(this);
+                    bootbox.confirm("您确定要删除该商品吗?", function(result) {
+                        if (result) {
+                            $obj.parent().parent().parent().remove();
+                            $.caculateTotal();
+                        }else{
+                            $input.val(v+1);
+                        }
+                    });
+                }else{
+                    $input.val(v);
+                    $input.change();
+                }
+            });
+
+            //加数量
+            $(".btn-plus").click(function(){
+                var $input=$(this).prev("input");
+                var v=$input.val();
+                if(isNaN(v)){
+                    v=1;
+                }
+                v++;
+                $input.val(v);
+                $input.change();
+            });
+
+            $(".order-item").change(function(){
+                var id=$(this).attr("data-id");
+                var price=$(this).attr("data-price");
+                var num=$(this).val();
+                $("#sum_"+id).text((price*num).toFixed(2));
+                $.caculateTotal();
+            });
+
+            $.caculateTotal=function(){
+                var $total=0;
+                var $num=0;
+                $(".order-item").each(function(index, element) {
+                    var num=$(this).val();
+                    var price=$(this).attr("data-price");
+                    if(isNaN(num)){num=1;}else{
+                        num=parseInt(num);
+                    }
+                    price=parseFloat(price);
+
+                    $num+=num;
+                    $total+=parseFloat(num*price);
+                });
+
+                $total=$total.toFixed(2);
+                $("#label_total").text($total);
+                $("#label_num").text($num);
+                //其它框
+                var $discount=$("#discount").val();
+                if(isNaN($discount)){
+                    $discount=0;
+                    $("#discount").val($discount);
+                }
+                var $shipfee=$("#shipfee").val();
+                if(isNaN($shipfee)){
+                    $shipfee=0;
+                    $("#shipfee").val($shipfee);
+                }
+                var $amount=($total-parseFloat($discount)+parseFloat($shipfee)).toFixed(2);
+                if($amount<0){
+                    alerterr("对不起，应收金额不能小于0！");
+                    $("#btnSubmit").attr("disabled",true);
+                    return false;
+                }else{
+                    $("#btnSubmit").attr("disabled",false);
+                }
+                $("#total").val($total);
+                $("#amount").val($amount);
+            }
+
+            $("#discount").change(function(){
+                $.caculateTotal();
+            });
+            $("#shipfee").change(function(){
+                $.caculateTotal();
+            });
+
+        });
+    </script>
+</head>
+<body>
+<div class="row">
+    <div class="col-md-12 " >
+        <h2>{$title}</h2>
+    </div>
+    <div class="col-md-12 " >
+        <form action="" method="post" name="form1" id="form1" class="ajaxformx">
+            <input type="hidden" id="id" name="id" value="{$db.id}" />
+            <div class="fancy-tab-container">
+                <ul class="nav nav-tabs fancy">
+                    <li class="active"><a href="#autotab_1" data-toggle="tab">基本信息</a></li>
+                    <li><a href="#autotab_2" data-toggle="tab">贷款过程</a></li>
+                    <li><a href="#autotab_4" data-toggle="tab">小计</a></li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane active" id="autotab_1">
+                        <div class="col-md-12 custom-form">
+                            <div class="form-group col-md-4">
+                                <label class="control-label">订单编号：</label>
+                                <div class="controls">
+                                    <input type="text" class="form-control" name="orderno" id="orderno"  value="{$db.orderno}" readonly  />
+                                </div>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label class="control-label">贷款用户：</label>
+                                <div class="controls">
+
+                                    <input type="hidden" name="memberid" id="memberid" value="{$db.memberid}" />
+                                    <input type="text" class="form-control" name="membername" id="membername" value="{:get_cache_value('member',$db['memberid'],'username')}" readonly />
+
+                                </div>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label class="control-label">联系电话：</label>
+                                <div class="controls">
+                                    <input type="text" class="form-control" name="telephone" id="telephone"  value="{$db.telephone}"  readonly/>
+                                </div>
+                            </div>
+
+                            <div class="form-group col-md-4">
+                                <label class="control-label">身份证号：</label>
+                                <div class="controls">
+                                    <input type="text" class="form-control" name="idcard" id="idcard"  value="{$db.idcard}" readonly />
+                                </div>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label class="control-label">贷款金额：</label>
+                                <div class="controls">
+                                    <input type="text" class="form-control" name="damount" id="damount"  value="{$db.damount}" readonly />
+                                </div>
+                            </div>
+
+                            <div class="form-group col-md-4">
+                                <label class="control-label">利息：</label>
+                                <div class="controls">
+                                    <input type="text" class="form-control" name="interest" id="interest"  value="{$db.interest}" readonly />
+                                </div>
+                            </div>
+
+                            <div class="form-group col-md-4">
+                                <label class="control-label">利率：</label>
+                                <div class="controls">
+                                    <input type="text" class="form-control w150 fl" name="interestrate" id="interestrate"  value="{$db.interestrate}" readonly />
+                                   <span style="line-height: 34px;">&nbsp; %</span>
+                                </div>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label class="control-label">期限：</label>
+                                <div class="controls">
+                                    <input type="text" class="form-control" name="days" id="days"  value="{$db.days}" readonly />
+                                </div>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label class="control-label">申请时间：</label>
+                                <div class="controls">
+                                    <input type="text" class="form-control" name="addtime" id="addtime"  value="{$db.addtime}" readonly />
+                                </div>
+                            </div>
+
+                            <if condition="$db['status'] eq 1">
+                                <div class="form-group col-md-4">
+                                    <label class="control-label">审核结果：</label>
+                                    <div class="controls">
+                                        {$db['shenhestatus']?'已通过':'<span style="color: red;">被拒绝</span>'}
+                                    </div>
+                                </div>
+                                <if condition="$db['shenhestatus'] eq 0">
+                                    <div class="form-group col-md-4">
+                                        <label class="control-label">拒绝原因：</label>
+                                        <div class="controls">
+                                            {$db.refusereason}
+                                        </div>
+                                    </div>
+                                </if>
+                            </if>
+
+
+
+                            <if condition="$db['status'] egt 2">
+                                <div class="form-group col-md-4">
+                                    <label class="control-label">最晚还款日期：</label>
+                                    <div class="controls">
+                                        <input type="text" class="form-control" name="deadline" id="deadline"  value="{$db.deadline}" readonly />
+                                    </div>
+                                </div>
+                            </if>
+
+                            <if condition="($db['deadline'] lt date('Y-m-d H:i:s')) and ($db['status'] egt 2)  and ($db['status'] lt 4)">
+                                <div class="form-group col-md-4">
+                                    <label class="control-label">是否逾期：</label>
+                                    <div class="controls">
+                                       已逾期<?php
+                                            $overdue=intval(diffBetweenTwoDays(date('Y-m-d H:i:s'),$db['deadline']));
+                                            $overduefee=$overdue*$db['damount']*$db['overduefee']/100;
+                                         ?>{$overdue}天
+                                        ，逾期费：&yen;{$overduefee}
+                                    </div>
+                                </div>
+                            </if>
+
+                            <div class="form-group">
+                                <label class="control-label">订单状态：</label>
+                                <div class="controls">
+                                    <select class="form-control w80 " name="status" id="status" readonly>
+                                        <volist name="statuslist" id="vo">
+                                            <notempty name="db.id">
+                                                <eq name="db.status" value="$key">
+                                                    <option value="{$key}" selected="selected">{$vo}</option>
+                                                    <else/>
+                                                    <option value="{$key}" >{$vo}</option>
+                                                </eq>
+                                                <else/>
+                                                <eq name="key" value="1">
+                                                    <option value="{$key}" selected="selected">{$vo}</option>
+                                                    <else/>
+                                                    <option value="{$key}" >{$vo}</option>
+                                                </eq>
+                                            </notempty>
+                                        </volist>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="tab-pane" id="autotab_2">
+                        <div class="col-md-6 custom-form">
+                            <?php
+                            $step=json_decode($db['step'],true);
+                            ?>
+
+                            <div class="form-group">
+                                <foreach name="step" item="vo">
+                                    {$key+1}、时间：{$vo.addtime}，事件：{$vo.act}<br/>
+                                </foreach>
+                            </div>
+
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+
+                    <div class="tab-pane" id="autotab_4">
+                        <div class="col-md-6 custom-form">
+                            <?php
+                            $xiaoji=M('loan_notice')->where(array('orderno'=>$db['orderno']))->order('addtime desc')->select()
+                            ?>
+
+                            <div class="form-group">
+                                <foreach name="xiaoji" item="vo">
+                                    {$key+1}、时间：{$vo.addtime}，事件：{$vo.act}<br/>
+                                </foreach>
+                            </div>
+
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group" style="padding:20px 0px;">
+                        <div class="controls">
+                            <hr />
+                            <in name="db.status" value="3,4,5">
+                                <button type="button" disabled class="btn btn-success" id="btnSubmit"><i class="fa fa-save"></i> 提交</button>
+                                <else/>
+                                <button type="submit" class="btn btn-success" id="btnSubmit"><i class="fa fa-save"></i> 提交</button>
+                            </in>
+                            <button type="button" class="btn btn-default" onClick="history.back();"><i class="fa fa-undo"></i> 返回</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<include file="Public/form" />
+</body>
+</html>

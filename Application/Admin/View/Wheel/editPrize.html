@@ -1,0 +1,153 @@
+<!doctype html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>{$title}</title>
+<include file="Public/scripts" />
+<include file="Public/upload" />
+</head>
+<body>
+<div class="row">
+  <div class="col-md-12 " >
+    <h2>{$title}</h2>
+  </div>
+  <div class="col-md-12 " >
+    <form action="" method="post" name="form1" id="form1" class="ajaxformx">
+    
+      <input type="hidden" id="gourl" name="gourl" value="{:U($control.'/'.strtolower($action))}" /> 
+      <input type="hidden" id="id" name="id" value="{$db.id}" />
+      <input type="hidden" id="actid" name="actid" value="{$actid}" />
+      <input type="hidden" id="getnum" name="getnum" value="{$db.getnum}" />
+      <div class="col-md-6 custom-form">
+        <div class="form-group">
+          <label class="control-label">奖项名称：</label>
+          <div class="controls">
+            <input type="text" class="form-control" name="prize" id="prize" placeholder="输入奖项名" value="{$db.prize}" />
+          </div>
+          <div class="help-block">如：一等奖</div>
+        </div> 
+        <div class="form-group">
+          <label class="control-label">中奖概率（%）：</label>
+          <div class="controls">
+            <input type="text" class="form-control" name="probability" id="probability" placeholder="输入中奖概率" value="{$db.probability}" />
+          </div>
+          <div class="help-block">范围为【0-100】，所有奖项概率相加不超过100</div>
+        </div> 
+        <div class="form-group">
+          <label class="control-label">奖品类型：</label>
+          <div class="controls">
+          	  <select class="form-control " name="type" id="type">
+              <volist name="prizetypelist" id="vo"> 
+                  <eq name="db.type" value="$key">
+                    <option value="{$key}" selected="selected">{$vo}</option>
+                    <else/>
+                    <option value="{$key}" >{$vo}</option>
+                  </eq>
+                  
+              </volist>
+            </select>
+          </div> 
+        </div> 
+        <div class="form-group">
+          <label class="control-label">奖品名称：</label>
+          <div class="controls">
+            <input type="text" class="form-control" name="title" id="title" placeholder="输入奖品名称" value="{$db.title}" />
+          </div>
+          <div class="help-block">如：全新iPhone7一部（不超过10个字符）</div>
+        </div> 
+        <div class="form-group">
+          <label class="control-label">形象图：</label>
+          <div class="controls">
+            <div class="input-group">
+              <input type="text" class="form-control" name="indexpic" id="indexpic" value="{$db.indexpic}" readonly />
+              <span class="input-group-addon">
+              <button type="button" id="btnUpload" class="custom-upload"><i class="fa fa-upload"></i></button>
+              </span> </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="control-label">奖品金额：</label>
+          <div class="controls">
+            <input type="text" class="form-control" name="amount" id="amount" placeholder="输入奖品金额" value="{$db.amount}" />
+          </div>
+          <div class="help-block">如奖品类型为现金红包，即中奖后用户可获得的现金红包</div>
+        </div> 
+        <div class="form-group">
+          <label class="control-label">奖品数量：</label>
+          <div class="controls">
+            <input type="text" class="form-control w80" name="num" id="num" data-num="{$db.getnum}" value="{$db.num}" placeholder="填写数字"  /> 
+          </div>
+          <div class="help-block">活动奖品总数</div>
+        </div>
+         
+        <div class="form-group">
+          <label class="control-label">排序：</label>
+          <div class="controls">
+            <input type="text" class="form-control w80" name="sort" id="sort" value="{$db.sort}" placeholder="排序"  /> 
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="control-label">状态：</label>
+          <div class="controls">
+            <select class="form-control w80 " name="status" id="status">
+              <volist name="statuslist" id="vo">
+                <notempty name="db.id">
+                  <eq name="db.status" value="$key">
+                    <option value="{$key}" selected="selected">{$vo}</option>
+                    <else/>
+                    <option value="{$key}" >{$vo}</option>
+                  </eq>
+                  <else/>
+                  <eq name="key" value="1">
+                    <option value="{$key}" selected="selected">{$vo}</option>
+                    <else/>
+                    <option value="{$key}" >{$vo}</option>
+                  </eq>
+                </notempty>
+              </volist>
+            </select>
+          </div>
+        </div>
+        <div class="form-group" >
+          <div class="controls">
+            <hr />
+            <button type="submit" class="btn btn-success" id="btnSubmit"><i class="fa fa-save"></i> 提交</button>
+            <button type="button" class="btn btn-default" onClick="history.back();"><i class="fa fa-undo"></i> 返回</button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+<script language="javascript">
+var $fields={
+	"username": {
+		validators: {
+			notEmpty: {
+				message: '{$name}名不能为空'
+			} 
+		}
+	} ,
+	<gt name="db.id" value="0">
+	<else/>
+	"userpwd": {
+		validators: {
+			notEmpty: {
+				message: '{$name}密码不能为空'
+			} 
+		}
+	} ,
+	</gt>
+	"sort": {
+		validators: {
+			regexp: {
+				regexp: /^[0-9\.]+$/,
+				message: '必须是数字'
+			}
+		}
+	} 
+	};
+</script>
+<include file="Public/form" /> 
+</body>
+</html>

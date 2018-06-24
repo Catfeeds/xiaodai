@@ -1,0 +1,49 @@
+<!doctype html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>{$title}</title> 
+<include file="Public/scripts" />
+</head>
+<body>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="col-md-12 custom-tool" >
+        <h2>{$title}</h2>
+        <div class="pull-right"> <a href="{:U($control.'/add'.$action)}" class="btn btn-success" title="添加"><i class="fa fa-plus"></i> 添加</a> </div>
+      </div>
+      <table class="table  table-first-column-number display full table-striped custom-table vm">
+        <thead> 
+            <th width="50">#</th>
+            <th>角色名称</th>
+            <th>角色描述</th>
+            <th width="80">排序</th>
+            <th width="80">状态</th>
+            <th width="140">操作</th>
+        </thead>
+        <tbody>
+          <volist id="vo" name="list">
+            <tr class="row{$i % 2+1}">
+              <td>{$vo.id}</td>
+              <td>{$vo.name}</td>
+              <td>{$vo.remark}&nbsp;</td>
+              <td><input class="form-control" onchange="setVal('{$tblname}','sort',{$vo.id},$(this).val())"  value="{$vo.sort}" /></td>
+              <td>
+              <eq name="vo.status" value="1">
+              <a href="javascript:void(0);" onclick="setVal('{$tblname}','status',{$vo.id},0,this,'禁用')" class="btn btn-link"  rel="tooltip" data-original-title="点击禁用"><i class="fa fa-check-circle"></i> 启用</a>
+                  <else />
+                  <a href="javascript:void(0);" onclick="setVal('{$tblname}','status',{$vo.id},1,this,'启用')" class="btn btn-link fc_red"  rel="tooltip" data-original-title="点击启用"><i class="fa fa-times-circle"></i> 禁用</a> 
+                  </eq>
+              </td>
+              <td>
+            
+              <a href="{:U($control.'/edit'.$action,'id='.$vo['id'])}" class="btn" rel="tooltip" data-original-title="修改"><i class="fa fa-edit"></i></a> 
+              <a href="javascript:void(0);" onclick="setDelete('{:U($control.'/delete'.$action,"id=".$vo['id'])}')" class="btn" rel="tooltip" data-original-title="删除"><i class="fa fa-trash"></i></a></td>
+            </tr>
+          </volist> 
+          </tbody>
+      </table>
+    </div>
+  </div> 
+</body>
+</html>

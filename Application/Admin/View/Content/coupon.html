@@ -1,0 +1,130 @@
+<!doctype html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>{$title}</title>
+<include file="Public/scripts" />
+<include file="Public/date" />
+</head>
+<body>
+<div class="row">
+  <div class="col-md-12">
+    <div class="col-md-12 custom-tool" >
+      <h2>{$title}</h2>
+      <div class="pull-right"> <a href="{:U($control.'/add'.$action)}" class="btn btn-success" title="添加"><i class="fa fa-plus"></i> 添加</a> </div>
+    </div>
+    <form action="" method="get" class="ajaxformx_" name="form1" id="form1">
+      <input type="hidden" name="p" id="p" value="1" />
+      <input type="hidden" name="status" id="status" value="{$status}" />
+      <table class="table vm">
+        <thead>
+        <th colspan="2">筛选</th>
+            </thead>
+        <tbody>
+        <tr>
+            <td width="140" class="text-right">生成日期：</td>
+            <td>
+              <div class="col-md-4"> 
+                <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                <input class="form-control datepicker" size="16" type="text" value="{$timefrom}" id="timefrom" name="timefrom"  placeholder="开始日期" > 
+                <span class="input-group-addon">-</span>
+                <input class="form-control datepicker" size="16" type="text" value="{$timeto}"  id="timeto" name="timeto"  placeholder="结束日期" >
+              </div> 
+            </div></td>
+          </tr>
+
+          <tr>
+            <td  class="text-right" width="140">状态：</td>
+            <td><div class="col-md-12">
+            <a href="{:set_url('status','')}" ><span class="label label-default">全部</span></a>
+        <volist name="statuslist" id="vo">
+          <eq name="status" value="$key">
+            <if condition="isN($status) eq true"> <a href="{:set_url('status',$key)}"><span class="label label-default">{$statuslist.$key}</span></a>
+              <else/>
+              <a href="{:set_url('status',$key)}" ><span class="label label-info">{$statuslist.$key}</span></a> </if>
+            <else/>
+            <a href="{:set_url('status',$key)}"  ><span class="label label-default">{$statuslist.$key}</span></a> </eq>
+      </volist>
+      
+       </div></td>
+          </tr>
+          <tr>
+            <td  class="text-right">关键词：</td>
+            <td><div class="col-md-6">
+                <div class="input-group">
+                  <input type="text" class="form-control" placeholder="输入关键词" name="keyword" id="keyword" value="{$keyword}">
+                  <span class="input-group-btn">
+                  <select class="btn" name="searchtype" id="searchtype">
+                    <option value="0">券号</option>
+                    <eq name="searchtype" value="1">
+                      <option value="1" selected="selected">会员ID</option>
+                      <else/>
+                      <option value="1">会员ID</option>
+                    </eq>
+                    
+                  </select>
+                    <select class="btn" name="pid" id="pid">
+                    <option value="">--选择分类--</option>
+                    
+                   {:R('Setting/treeselect', array($list))} 
+                
+                  </select>
+                  </span> <span class="input-group-btn">
+                  <button type="submit" class="btn fl"><i class="fa fa-search"></i> 查询</button>
+                  </span> </div>
+              </div></td>
+          </tr>
+        </tbody>
+      </table>
+    </form>
+    <table class="table  table-first-column-number display full table-striped custom-table vm">
+      <thead>
+      <tr> 
+        <th >#</th>
+        <th>券号</th>
+        <th>名称</th>
+        <th>券额</th>
+        <th>分类</th>
+        <th width="80">消费状态</th>
+        <th width="80">会员ID</th>
+        <th width="180">消费时间</th>
+        <th>备注</th>
+        <th width="80">操作</th>
+          </thead>
+      <tbody>
+        <volist name="contentlist" id="vo">
+          <tr> 
+            <td>{$vo.id}</td>
+            <td>{$vo.no}</td>
+            <td>{$vo.title}</td> 
+            <td>{$vo.cost|to_price}/{$vo.amount|to_price}</td>
+            <td>{:get_cache_value('category_coupon',$vo['pid'],'name')}</td>
+            <td>{:$statuslist[$vo['status']]}</td>
+            <td>{$vo.memberid}</td> 
+             <td>{$vo.usetime|default='-'}</td>
+            <td>{$vo.remark}</td>
+             <td>
+             <eq name="vo.status"  value="0">
+              <a href="javascript:void(0);" onclick="setDelete('{:U($control.'/delete'.$action,"id=".$vo['id'])}')" class="btn" rel="tooltip" data-original-title="删除"><i class="fa fa-trash"></i></a>
+             </eq>
+             </td>
+                
+          </tr>
+        </volist>
+        <tr>
+          <td colspan="10"><notempty name="page">
+              <div class="pull-left custom-footer">
+                <ul class="pagination" style="margin: 0px;">
+                  {$page}
+                </ul>
+              </div>
+            </notempty> 
+             </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+</body>
+</html>

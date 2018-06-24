@@ -1,0 +1,178 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>{$title}</title>
+<include file="Public:scripts" />
+<js href="__PUBLIC__/Home/js/jquery.form.js" />
+<script language="javascript">
+$(function(){
+		$(".ajaxformx1").ajaxForm(
+		{
+			beforeSubmit:function(d,f,o){ 
+				var btnSubmit=f.find("input[type='submit']");
+				btnSubmit.val("提交中...").attr("disabled",true);
+				var IsSubmit = true; 
+				f.find("span.fc_red").each(function(){ 
+					var obj=$(this).parent().next("p").find("input");
+					var label=$(this).parent().text();
+					if(obj.val()==""){
+						var txt=$.trim(label.replace("*",""));
+						alerterr("对不起，"+txt+"不能为空！");
+						obj.focus();
+						IsSubmit = false;
+						btnSubmit.val("提交").attr("disabled",false);
+						return false;
+					}
+				});
+				return IsSubmit;
+		
+			},success:
+			function(data){			
+				if(data.status==1){
+					alertok(data.info);
+				  location="{:U('Login/bind')}";
+					 
+				}else{
+					alerterr(data.info);
+				}
+				$("input[type='submit']").val("提交").attr("disabled",false);
+			}
+		});
+		
+		$("#departmentid").change(function(){
+			var url="{:U('Login/getGroups')}";
+			var pid=$(this).find("option:selected").val();
+			var data="departmentid="+pid;
+			var html='<option value="">所属工作室</option>';
+			$.ajax({url:url,data:data,success: function(msg){
+				if(msg!=""){
+					html=msg;	
+				}
+				$("#groupid").html(html);
+			}
+			});
+		}).change();
+});
+</script>
+</head>
+
+<body>
+<header>
+  <div class="c">
+    <h1>{$title}</h1>
+  </div>
+</header>
+<?php
+if($db&&$db['status']==0){
+?>
+<div class="header-margin footer-margin body">
+  <div class="bindinfo">
+    <div class="icon"><span class="icon-gou"></span></div>
+    <div class="bdtit">尚未绑定</div>
+    <div class="color-grey">您的信息正在审核中...</div>
+  </div>
+  <div class="submitdiv"> 
+  </div>
+</div>
+<?php
+}else{
+?>
+<div class="header-margin footer-margin body">
+  <form action="" id="bindform" class="ajaxformx1" method="post">
+    <div class="box">
+      <div class="display-box col">
+        <div>工号</div>
+        <div class="box-flex-1">
+          <input type="text" id="workno" name="workno" class="inp inp-block noborder text-right" maxlength="20" placeholder="请填写您的工号" />
+        </div>
+      </div>
+      <div class="display-box col">
+        <div>姓名</div>
+        <div class="box-flex-1">
+          <input type="text" id="userreal" name="userreal" class="inp inp-block noborder text-right" maxlength="20" placeholder="真实姓名" />
+        </div>
+      </div>
+      <div class="display-box col">
+        <div>手机</div>
+        <div class="box-flex-1">
+          <input type="tel" id="mobile" name="mobile" class="inp inp-block noborder text-right" maxlength="11" placeholder="手机号码" />
+        </div>
+      </div>
+      <div class="display-box col">
+        <div>部门</div>
+        <div class="box-flex-1 text-right">
+          <select id="departmentid" name="departmentid" class=" noborder">
+          <volist name="list" id="vo">
+            <option value="{$vo.id}">{$vo.name}</option>
+          </volist>
+          </select>
+        </div>
+        <div class="color-grey fz14rem"><span class="icon-next"></span></div>
+      </div>
+      <div class="display-box col">
+        <div>工作室</div>
+        <div class="box-flex-1 text-right">
+          <select id="groupid" name="groupid" class=" noborder">
+          </select>
+        </div>
+        <div class="color-grey fz14rem"><span class="icon-next"></span></div>
+      </div>
+    </div>
+    <div class="box mt1rem">
+      <div class="display-box col">
+        <div>邀请码</div>
+        <div class="box-flex-1">
+          <input type="text" id="code" name="code" class="inp inp-block noborder text-right" maxlength="20" placeholder="请填写部门邀请码" />
+        </div>
+      </div>
+    </div>
+    <div class="submitdiv">
+      <input type="submit" class="btn btn-block btn-primary" value="立即绑定" />
+    </div>
+  </form>
+</div>
+<js href="__PUBLIC__/Home/js/Validform_v5.3.2_min.js" />
+<script>
+	var bind_form=$("#bindform").Validform({
+		tiptype:function(msg){
+			Alert(msg);
+		},
+		showAllError:false,//逐条验证	
+		
+	});
+	bind_form.addRule([
+		{
+			ele:"#workno",
+			datatype:"*",        
+			nullmsg:"填写工号",
+			errormsg:"工号不能为空"
+	   },
+	   {
+			ele:"#userreal",
+			datatype:"*",        
+			nullmsg:"填写真实姓名",
+			errormsg:"姓名不能为空"
+	   },
+	   {
+			ele:"#mobile",
+			datatype:"m",        
+			nullmsg:"填写手机号",
+			errormsg:"手机号格式错误"
+	   },
+	   {
+			ele:"#code",
+			datatype:"*",        
+			nullmsg:"填写邀请码",
+			errormsg:"邀请码不能为空"
+	   },
+	]);
+	
+	
+</script>
+<?php 
+}
+?>
+<include file="Public:footer" />
+</body>
+</html>

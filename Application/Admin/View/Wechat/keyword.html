@@ -1,0 +1,86 @@
+<!doctype html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>{$title}</title>
+<include file="Public/scripts" />
+<script> 
+(function(){
+	$.deleteKeyword=function(id){
+		var url='{:U("Wechat/keyword")}';
+		
+		bootbox.confirm("您确定删除该记录吗?", function(result) {
+			if (result) { 
+			$.ajax({url:url,data:'id='+id,type:'POST',success:function(msg){
+				if(msg.status==1){
+					location.reload();	
+				}else{
+					alerterr(msg.info);	
+				}
+			}
+			});
+		}else{
+			return false;	
+		}
+	});
+	}
+})(jQuery);
+</script>
+</head>
+<body>
+<div class="row">
+  <div class="col-md-12">
+    <div class="col-md-12 custom-tool" >
+      <h2>{$title}</h2>
+      <div class="pull-right"> <a href="{:U($control.'/add'.$action)}" class="btn btn-success" title="添加"><i class="fa fa-plus"></i> 添加</a> </div>
+    </div>
+    <table class="table  table-first-column-number display full table-striped custom-table vm">
+      <thead>
+      <th width="50">#</th>
+        <th>规则名</th>
+        <th>关键词</th>
+        <th>回复</th>
+        <th width="140">操作</th>
+          </thead>
+      <tbody>
+        <volist name="list" id="vo">
+          <tr >
+            <td>{$vo.id}</td>
+            <td>{$vo.name}</td>
+            <td>{$vo.keywords}</td>
+            <td><?php $arr=unserialize($vo['num']); ?>
+              {:(int)array_sum($arr)}条（{:(int)$arr[0]}条文字， {:(int)$arr[1]}条图片， {:(int)$arr[2]}条图文）</td>
+            <td><a href="{:U($control.'/edit'.$action,'id='.$vo['id'])}" class="btn" rel="tooltip" data-original-title="修改"><i class="fa fa-edit"></i></a> <a href="javascript:void(0);" onclick="setDelete('{:U($control.'/delete'.$action,"id=".$vo['id'])}')" class="btn" rel="tooltip" data-original-title="删除"><i class="fa fa-trash"></i></a></td>
+          </tr>
+        </volist>
+        <tr>
+          <td colspan="5"><notempty name="page">
+              <div class="pull-left custom-footer">
+                <ul class="pagination" style="margin: 0px;">
+                  {$page}
+                </ul>
+              </div>
+            </notempty>
+            <notempty name="list">
+              <div class="pull-right">
+                <div class="btn-group dropup">
+                  <input type="hidden" value="{$tblname}" id="ConstTbl" name="ConstTbl" />
+                  <button id="AllCheck"  class="btn" title="全选"><i class="fa fa-check-square"></i></button>
+                  <button id="ReverseCheck"  class="btn" title="反选"><i class="fa fa-check-square-o"></i></button>
+                  <button class="btn dropdown-toggle" data-toggle="dropdown" aria-expanded="false" title="操作"><i class="fa fa-wrench"></i> <span class="caret"></span></button>
+                  <ul class="dropdown-menu dropdown-menu-right">
+                    <li><a class="AllStatus" data-status="0" href="javascript:void(0);"><i class="fa fa-lock"></i> {$statuslist[0]}</a></li>
+                    <li><a class="AllStatus" data-status="1" href="javascript:void(0);"><i class="fa fa-unlock-alt"></i> {$statuslist[1]}</a></li>
+                    <li class="divider"></li>
+                    <li><a id="AllDel" href="javascript:void(0);"><i class="fa fa-trash"></i> 删除</a></li>
+                  </ul>
+                </div>
+              </div>
+            </notempty></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+</body>
+</html>

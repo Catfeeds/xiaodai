@@ -1,0 +1,34 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>{$title}</title>
+    <include file="Public:scripts" />
+</head>
+
+<body>
+<script src="__PUBLIC__/Home/js/mui.min.js"></script>
+<script src="__PUBLIC__/Home/js/jquery-2.2.3.min.js"></script>
+<script src="__PUBLIC__/Home/js/script.js"></script>
+
+
+<script type="text/javascript">
+
+
+    function loadques(){
+        var btnArray = ['是', '否'];
+
+        mui.confirm('{$ques}', '请选择', btnArray, function(e) {
+            window.location.href="{$fromurl}";
+            //CKobject.getObjectById('ckplayer_a1').videoPlay();
+        });
+    }
+    loadques();
+</script>
+
+
+
+
+
+</body>
+</html>

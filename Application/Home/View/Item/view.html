@@ -1,0 +1,259 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>{$title}</title>
+	<include file="Public/scripts" />
+	<script type="text/javascript" src="__PUBLIC__/Home/ckplayer/ckplayer.js" charset="utf-8"></script>
+</head>
+<body>
+<div class="mui-content">
+	<div class="mui-slider banner" >
+		<div class="mui-slider-group">
+			<foreach name="imglist" item="vo">
+				<if condition="strpos($vo,'.mp4')">
+					<div class="mui-slider-item">
+						<div style="width: 100%;height: 250px;" id="ckplayer">
+							<img src="{$db.indexpic}" style="width: 100%;" data-preview-src="" data-preview-group="1">
+						</div>
+						<div id="play" style="width: 100%; position: absolute;top: 80px; text-align: center;"><img src="/Public/Home/images/play.png"/></div>
+					</div>
+					<?php  $video=$vo; ?>
+					<else/>
+				</if>
+			</foreach>
+			<foreach name="imglist" item="vo">
+				<if condition="strpos($vo,'.mp4')">
+					<else/>
+					<div class="mui-slider-item"><img src="{$vo}" data-preview-src="" data-preview-group="1"></div>
+				</if>
+
+			</foreach>
+		</div>
+		<div class="mui-slider-indicator">
+			<foreach name="imglist" item="vo">
+				<eq name="key" vlaue="1">
+					<div class="mui-indicator mui-active"></div>
+					<else/>
+					<div class="mui-indicator"></div>
+				</eq>
+			</foreach>
+		</div>
+	</div>
+	<div class="mui-table-view product-info">
+		<div class="mui-table-view-cell">
+			<div class="fz16">{$db.title}</div>
+			<if condition="$db['type'] eq 1">
+				<div class="mt10">价格：
+					<span class="text-red fz18">&yen;{$db.price}</span>&nbsp;&nbsp;
+					<del class="mui-badge mui-badge-inverted">&yen;{$db.price1}</del>
+				</div>
+				<else/>
+				<div class="mt10">积分：
+					<span class="text-red fz18">{$db.point}</span>&nbsp;&nbsp;
+				</div>
+			</if>
+		</div>
+		<div class="mui-table-view-cell">
+			<ul class="clearListStyle priduct-canshu">
+				<li><span class="name">类别</span>{:get_cache_value("category_product",$db['pid'],'name')}</li>
+				<li><span class="name">编号</span>{$db.code}</li>
+				<li style="display: none;"><span class="name">运费</span><if condition="$db['is_shipfee']">包邮<else/>不包邮</if></li>
+			</ul>
+		</div>
+	</div>
+	<div id="at" class="mui-table-view mt10 product-sx">
+		<if condition="$db['type'] eq 1">
+			<?php
+		  foreach($attrs as $keys=>$val){
+			?>
+			<div class="item">
+				<div class="name attrs">{$keys}</div>
+				<ul class="clearListStyle box-flex-1 mui-clearfix">
+					<volist name="val" id="vo" key="k">
+						<li><input type="radio" name="{$keys}" <if condition="$k eq 1">checked</if> value="{$vo}"><label>{$vo}</label></li>
+					</volist>
+				</ul>
+			</div>
+			<?php }?>
+			<else/>
+			<div class="item">
+				<div class="name attrs">颜色</div>
+				<ul class="clearListStyle box-flex-1 mui-clearfix">
+					<li><input type="radio" value="1" checked><label>随机发货</label></li>
+				</ul>
+			</div>
+		</if>
+		<div class="item">
+			<div class="name">数量</div>
+			<div class="box-flex-1">
+				<div class="mui-numbox" data-numbox-step='1' data-numbox-min='0' data-numbox-max='100'>
+
+					<if condition="$db['type'] eq 1">
+						<button class="mui-btn mui-btn-numbox-minus" type="button">-</button>
+						<input class="mui-input-numbox" value="1" onchange="setnum($(this).val(),'{$db.price}')" type="number" id="product_num">
+						<button class="mui-btn mui-btn-numbox-plus" type="button">+</button>
+						<else/>
+						<button class="mui-btn mui-btn-numbox-minus" type="button">-</button>
+						<input id="product_num" class="mui-input-numbox" onchange="setnum($(this).val(),'{$db.point}')"  type="number" value="1">
+						<button class="mui-btn mui-btn-numbox-plus" type="button">+</button>
+					</if>
+
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="mui-table-view mt10 product-profile">
+		<div class="tit"><h2>商品详情</h2></div>
+		<div class="product-body" style="padding-bottom: 30px;">
+			{$db.content}
+		</div>
+	</div>
+
+</div>
+<footer class="mui-bar mui-bar-footer display-box footerbar-cp">
+	<!--<a href="http://wpa.qq.com/msgrd?v=3&uin=2230426424&site=qq&menu=yes" class="display-box-v kefu"><span class="iconfont icon-kefu"></span>客服</a>-->
+	<div class="mui-ellipsis box-flex-1 yixuan">
+		<span class="mui-badge mui-badge-inverted">已选</span>
+		<br>
+
+		<if condition="$db['type'] eq 1">
+			<span id="prod_num">0</span>份
+			&yen;<span id="price">0</span>
+			<else/>
+			<span id="prod_num">0</span>份
+			<span id="price">0</span>积分
+		</if>
+	</div>
+
+	<if condition="$db['type'] eq 1">
+		<button type="button"  class="mui-btn mui-btn-warning buy buyCart" data-id="{$db.id}">立即购买</button>
+		<button type="button" class="mui-btn mui-btn-primary tocart addCart" data-id="{$db.id}">加入购物车</button>
+		<else/>
+		<button type="button" onclick="submitpoint('{$db.id}')" class="mui-btn mui-btn-warning buy">立即购买</button>
+	</if>
+</footer>
+
+
+<script src="__PUBLIC__/Home/js/mui.min.js"></script>
+<script src="__PUBLIC__/Home/js/jquery-2.2.3.min.js"></script>
+<script src="__PUBLIC__/Home/js/jquery.func.js"></script>
+<script src="__PUBLIC__/Home/js/mui.previewimage.js"></script>
+<script src="__PUBLIC__/Home/js/mui.zoom.js"></script>
+<link rel="stylesheet" href="__PUBLIC__/Home/css/priview.css" />
+<script src="__PUBLIC__/Home/js/script.js"></script>
+
+
+
+<script type="text/javascript">
+	//    当前团倒计时
+	var nowgroup=parseInt('{$db.lefttime}');
+	var acs=parseInt("{$db['acs']?$db['acs']:0}");
+	var nowprop="nowgroup";
+	<if condition="$db['isgroup'] eq 1">
+		var InterValObj = setInterval(function () {
+			SetRemainTime();
+		}, 1000); //间隔函数，1秒执行
+	</if>
+	//将时间减去1秒，计算天、时、分、秒
+	function SetRemainTime() {
+		if ( nowgroup > 0) {
+			nowgroup =  nowgroup - 1;
+			var second = Math.floor( nowgroup % 60);             // 计算秒
+			var minite = Math.floor(( nowgroup / 60) % 60);      //计算分
+			var hour = Math.floor(( nowgroup / 3600) % 24);      //计算小时
+			var day = Math.floor(( nowgroup / 3600) / 24);        //计算天
+			$('.'+nowprop).prev("span").html(day + "天" + hour + "小时" + minite + "分" + second + "秒");
+		} else {
+			clearInterval(InterValObj);
+			if(acs==1){
+				$(".buyCart").removeAttr('disabled');
+				$(".buyCart").html('立即参团');
+				nowgroup=parseInt('{$db.alltime}');
+				var InterValObj = setInterval(function () {
+					SetRemainTime();
+				}, 1000); //间隔函数，1秒执行
+			}else{
+				$(".buyCart").attr('disabled','disabled');
+			}
+
+		}
+	};
+</script>
+
+
+<script>
+	mui.previewImage();
+
+	function submitpoint(id){
+		var num=$("#product_num").val();
+		window.location.href="{:U('Settle/pointconfirm')}?ids="+id+"&num="+num;
+	}
+
+
+	function setnum(num,price){
+		$("#prod_num").html(num);
+		var pri=0;
+		pri=parseInt(num)*parseFloat(price);
+		$("#price").html(pri);
+	}
+
+	<if condition="$db['type'] eq 2">
+			setnum(1, '{$db.point}');
+	<else/>
+	setnum(1, '{$db.price}');
+	</if>
+
+
+	function showkeys(){
+		var str='';
+		var attrs=[];
+	<?php
+		foreach($attrs as $keys=>$val){
+			?>
+			attrs['{$keys}']=$('.item input[name="{$keys}"]:checked').val();
+			if(attrs['{$keys}']==''||attrs['{$keys}']==null){
+				mui.toast('请选择{$keys}');
+				toat();
+				return false;
+			}
+			str+='"{$keys}":'+'"'+attrs['{$keys}']+'",';
+		<?php }?>
+		str=str.substr(0,str.length-1);
+		str+='}';
+		str='{'+str;
+		return str;
+	}
+
+
+	function toat(){
+		var t = $("#at").offset().top;
+		$(window).scrollTop(t);
+	}
+
+
+
+
+</script>
+
+<script>
+
+	$("#play").click(function () {
+		var flashvars={
+			p:0,
+			e:1,
+			i:'{$find.indexpic}'
+		};
+		var video=['{$video}->video/mp4'];
+		var support=['all'];
+		var height=$("#ckplayer").height();
+		var width=$("#ckplayer").width();
+		CKobject.embedHTML5('ckplayer','ckplayer_a1',width,height,video,flashvars,support);
+		CKobject.getObjectById('ckplayer_a1').videoPlay();
+		$("#play").css('display','none');
+	});
+
+</script>
+
+</body>
+</html>

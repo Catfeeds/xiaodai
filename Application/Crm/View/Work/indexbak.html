@@ -1,0 +1,136 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>{$title}</title>
+    <include file="Public:scripts" />
+</head>
+<body>
+
+<footer class="gjpush">
+    <a href="{:U('Work/addwork')}">添加工作计划+</a>
+</footer>
+
+<div class="mui-content hz_info">
+
+    <div class="mui-table-view" style="margin: 0px;background-color: transparent;">
+        <div class="biaoti" style="background-color: white;">工作记录({:count($list)})</div>
+        <empty name="list">
+            <div class="mui-table-view-cell">
+                <div class="con">
+                    没有工作记录，去添加吧
+                </div>
+            </div>
+            <else/>
+            <volist name="list" id="vo">
+                <div>
+                    <div class="mui-table-view-cell dele{$vo.id}" style=" padding: 15px 15px 5px 15px;margin: 5px 1px; border-radius: 5px;  background-color: white;  border-bottom: 1px solid #c1b3b3;">
+                        <div class="jilu">
+                            <if condition="$vo['left'] eq 0">
+                                <div style="position: absolute;right: 0px;top: 40px;"><img style="width: 50px;height: 50px;" src="__PUBLIC__/Crm/images/expsoon.png"/></div>
+                            </if>
+                            <div style="width: 40px;
+                                        height: 40px;
+                                        font-size: 20px;
+                                        line-height: 40px;
+                                        background-color: #b7b9c5;
+                                        text-align: center;
+                                        border-radius: 50%;
+                                        color:white;
+                                        margin-right: 10px;float:left;">
+                                <a href="{:U('Work/workcomment','id='.$vo['id'])}">
+                                    <?php
+                                    $name=get_cache_value('staff',$vo['staffid'],'name');
+                                    ?>
+                                    {$name|cut_str=###,0,1,''}
+                                </a>
+                            </div>
+                            <div style="line-height: 20px;" class="cont">
+                                <a href="{:U('Work/workcomment','id='.$vo['id'])}">
+                                    {:get_cache_value('staff',$vo['staffid'],'name')}
+                                    <span style="font-size:12px;float:right;">
+                                        {$vo['start']}至{$vo['end']}&nbsp;&nbsp;
+                                        <span class="text-red">
+                                                <switch name="vo['status']">
+                                                    <case value="0">
+                                                        执行中
+                                                        <if condition="$vo['guoqi'] eq 1">
+                                                            <div style="position: absolute;right: 0px;top: 40px;"><img style="width: 50px;height: 50px;" src="__PUBLIC__/Crm/images/guoqi.png"/></div>
+                                                        </if>
+
+                                                    </case>
+                                                    <case value="1">
+                                                        已完成
+                                                        <if condition="$vo['guoqi'] eq 1">
+                                                            <div style="position: absolute;right: 0px;top: 40px;"><img style="width: 50px;height: 50px;" src="__PUBLIC__/Crm/images/ok.png"/></div>
+                                                        </if>
+                                                    </case>
+                                                    <case value="2">
+                                                        未完成
+                                                        <if condition="$vo['guoqi'] eq 1">
+                                                            <div style="position: absolute;right: 0px;top: 40px;"><img style="width: 50px;height: 50px;" src="__PUBLIC__/Crm/images/guoqi.png"/></div>
+                                                        </if>
+                                                    </case>
+                                                    <case value="3">
+                                                        不能完成
+                                                        <if condition="$vo['guoqi'] eq 1">
+                                                            <div style="position: absolute;right: 0px;top: 40px;"><img style="width: 50px;height: 50px;" src="__PUBLIC__/Crm/images/guoqi.png"/></div>
+                                                        </if>
+                                                    </case>
+                                                </switch>
+
+
+                                        </span>
+                                    </span>
+                                    <div class="time" style="text-overflow:ellipsis;height: 20px;">{$vo.address}</div>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="con" style="padding-bottom: 5px;">
+                            <a href="{:U('Work/workcomment','id='.$vo['id'])}">
+                                {$vo.content}
+                            </a>
+                        </div>
+                        <div style="width: 100%;padding: 5px 15px; border-top: 1px solid #c1b3b3;background-color: white;">
+                            <div style="width: 50%;text-align: center;float: left;border-right: 1px solid #c1b3b3;">
+                                <a href="{:U('Work/addwork','id='.$vo['id'])}">
+                                    <img style="width: 20px;" src="__PUBLIC__/Crm/images/msg.png"/><span style="padding-left:10px;">编辑</span>
+                                </a>
+                            </div>
+                            <div style="width: 50%;text-align: center;float: right;">
+                                <span onclick="deletework('{$vo.id}')"><img style="width: 20px;" src="__PUBLIC__/Crm/images/delete.png"/><span style="padding-left:10px;">删除</span></span>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </volist>
+        </empty>
+    </div>
+</div>
+<script src="__PUBLIC__/Crm/js/mui.min.js"></script>
+<script src="__PUBLIC__/Crm/js/jquery-2.2.3.min.js"></script>
+<script src="__PUBLIC__/Crm/js/script.js"></script>
+<script type="text/javascript">
+    function deletework(id){
+        var btnArray = ['否', '是'];
+        mui.confirm('确认删除该工作计划？', '删除', btnArray, function(e) {
+            if (e.index == 1) {
+                $.ajax({
+                    url:"/Crm/Work/deletework.html",
+                    data:{id:id},
+                    type:"POST",
+                    success: function (data) {
+                        mui.toast(data.info);
+                        if(data.status==1){
+                            $(".dele"+id).remove();
+                        }
+                    }
+                })
+            }
+        });
+    }
+</script>
+</body>
+</html>

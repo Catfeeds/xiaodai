@@ -1,0 +1,172 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>{$title}</title>
+    <include file="Public:scripts" />
+
+</head>
+<body>
+<div class="mui-content hz_gjjl">
+    <canvas id="myCanvas" style="display: none;"></canvas>
+    <div id="form">
+        <div class="add">{:date("Y-m-d H:i:s")}<br/>
+            <?php
+                $alteraddress=C('config.ALTER_ADDRESS');
+            ?>
+            <input  <if condition="$alteraddress neq 1">readonly</if> style="font-size: 12px;
+    color: gray;
+    background: #efeff4;
+    border: none;
+    padding: 0px;
+    margin: 0px;    width: 80%;
+    height: 20px;" type="text" id="geoaddress" value="地址获取中......" />
+           <if condition="$alteraddress eq 1">
+                <img onclick="$('#geoaddress').val('');$('#geoaddress').focus();$('#geoaddress').css('border-bottom','1px solid gray');" style="width: 20px;" src="/Public/Crm/images/edit.png"/>
+           </if>
+        </div>
+        <div class="mui-input-group">
+
+            <if condition="$type eq 1">
+                <div class="mui-input-row">
+                    <label>跟进方式</label>
+                    <select style="font-size: 14px;" onchange="checkmethod($(this).val())" name="method" id="method">
+                        <option>选择跟进方式</option>
+                        <option value="1">电话</option>
+                        <option value="2">微信</option>
+                        <option value="3">短信</option>
+						<option value="4">上门拜访</option>
+                        <option value="5">外访约见</option>
+                        <option value="6">其他</option>
+                    </select>
+                    <span class="iconfont icon-jiantou">
+                    </span>
+                </div>
+            </if>
+            <div class="mui-input-row wechat" style="display: none;">
+                <label>微信号</label>
+                <input type="text" name="wechat" id="wechat" class="mui-input-clear fz14" value="" placeholder="请填写微信号" />
+            </div>
+            <div class="mui-input-row autoh">
+                <input type="hidden" value="{$type}" id="type"/>
+                <textarea rows="5" placeholder="输入{$act}详细" id="remark" class="fz16"></textarea>
+                <ul class="clearListStyle mui-clearfix photolist imagesload">
+                    <volist name="contractimages" id="vo">
+                        <li class="mui-pull-left mui-col-xs-4 mui-col-sm-3">
+                            <div class="cont">
+                                <img src="{$vo}" data-preview-src="" data-preview-group="imagesadd">
+                                <input name="images[]" class="photos" value="{$vo}" type="hidden"/>
+                                <div onclick="closeli($(this))" class="close"><span class="mui-icon mui-icon-closeempty"></span></div>
+                            </div>
+                        </li>
+                    </volist>
+                </ul>
+            </div>
+        </div>
+        <div class="mui-content-padded">
+            <button type="button" onclick="subrecord()" class="mui-btn mui-btn-primary mui-btn-block mui-btn-sm">完成</button>
+        </div>
+    </div>
+
+<include file="Public:daohang" />
+
+</div>
+<div id="container" style="display:none;width: 100%; height: 500px;">
+</div>
+<script src="__PUBLIC__/Crm/js/mui.min.js"></script>
+<script src="__PUBLIC__/Crm/js/jquery-2.2.3.min.js"></script>
+<script src="__PUBLIC__/Crm/js/script.js"></script>
+
+<include file="Public:js" />
+<script>
+
+
+
+    madepicupload('imagesload','imagesadd','images[]',10,'');//最后一个参数为cam,则是使用摄像头照相上传
+</script>
+
+<script type="text/javascript">
+    function checkmethod(val){
+        switch(parseInt(val)){
+            case 1:
+                $(".wechat").hide();
+                break;
+            case 2:
+                    $(".wechat").show();
+                break;
+            case 3:
+                $(".wechat").hide();
+                break;
+            default:
+                $(".wechat").hide();
+                break;
+        }
+    }
+
+
+    function subrecord(){
+        var address=$("#geoaddress").val();
+        var remark=$("#remark").val();
+        var type =$("#type").val();
+        var photos='';
+        var memberid="{$memberid}";
+        var method=$("#method").val();
+        var wechat=$("#wechat").val();
+        var fromurl="{$fromurl?$fromurl:''}";
+        $(".photos").each(function() {
+            photos+=$(this).val()+",";
+        });
+        if(remark==''|| remark==null){
+            mui.toast('请输入跟进记录明细');return;
+        }
+
+        $.ajax({
+            url:"/Crm/Custom/subrecord.html",
+            data:{address:address,remark:remark,photo:photos,memberid:memberid,type:type,method:method,wechat:wechat},
+            method:'POST',
+            success:function(data){
+                mui.toast(data.info);
+                if(data.status==1){
+                    if($.trim(fromurl)=="")
+                        window.location.href="/Crm/Custom/view/id/"+memberid+".html";
+                    else
+                        window.location.href=fromurl;
+                }
+            }
+        })
+    }
+
+
+</script>
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=UfB3fUxvHlk6KhpLMd0iL3PuxnzyfuWm"></script>
+<script type="text/javascript">
+
+
+    var map = new BMap.Map("container");
+    var point = new BMap.Point(104.072329,30.66342);
+    map.centerAndZoom("成都市", 12);
+    var geolocation = new BMap.Geolocation();
+    // 开启SDK辅助定位
+    geolocation.enableSDKLocation();
+    geolocation.getCurrentPosition(function(r){
+        if(this.getStatus() == BMAP_STATUS_SUCCESS){
+            var point = new BMap.Point(r.point.lng,r.point.lat);
+            if(!point){
+                mui.toast('定位失败！');return;
+            }
+            var gc = new BMap.Geocoder();
+            gc.getLocation(point, function(rs){
+                var addComp = rs.addressComponents;
+                $("#geoaddress").val(addComp.province  + addComp.city  + addComp.district  + addComp.street  + addComp.streetNumber);
+                //alert(addComp.province + ", " + addComp.city + ", " + addComp.district + ", " + addComp.street + ", " + addComp.streetNumber);
+            });
+        }
+        else {
+            alert('failed'+this.getStatus());
+        }
+    });
+</script>
+
+
+</body>
+</html>

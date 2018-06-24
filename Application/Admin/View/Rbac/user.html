@@ -1,0 +1,98 @@
+<!doctype html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>{$title}</title> 
+<include file="Public/scripts" />
+</head>
+<body>
+<div class="row">
+    <div class="col-md-12">
+      <div class="col-md-12 custom-tool" >
+        <h2>{$title}</h2>
+        <div class="pull-right"> <a href="{:U($control.'/add'.$action)}" class="btn btn-success" title="添加"><i class="fa fa-plus"></i> 添加</a> </div>
+      </div>
+      <table class="table vm">
+        <thead>
+        <th colspan="2">筛选</th>
+         </thead>
+        <tbody> 
+          <tr>
+            <td  class="text-right" width="140">用户状态：</td>
+            <td><div class="col-md-12">
+            <a href="{:set_url('status','')}" ><span class="label label-default">全部</span></a>
+        <volist name="statuslist" id="vo">
+          <eq name="status" value="$key">
+            <if condition="isN($status) eq true"> <a href="{:set_url('status',$key)}"><span class="label label-default">{$statuslist.$key}</span></a>
+              <else/>
+              <a href="{:set_url('status',$key)}" ><span class="label label-info">{$statuslist.$key}</span></a> </if>
+            <else/>
+            <a href="{:set_url('status',$key)}"  ><span class="label label-default">{$statuslist.$key}</span></a> </eq>
+      </volist>
+      
+       </div></td>
+          </tr> 
+        </tbody>
+      </table>
+      <table class="table  table-first-column-number display full table-striped custom-table vm">
+        <thead>
+        <th> </th>
+          <th width="50">#</th>
+          <th>用户名</th>
+          <th>描述</th>
+          <th width="80">状态</th>
+          <th width="140">操作</th>
+            </thead>
+        <tbody>
+        <volist name="list" id="vo">
+          <tr>
+            <td><input type="checkbox" name="selectids" value="{$vo.id}"></td>
+            <td>{$vo.id}</td>
+            <td>{$vo.username}</td>
+            <td>{$vo.remark}</td>
+            
+            <td>
+            <eq name="vo.status" value="1">
+              <a href="javascript:void(0);" onclick="setVal('{$tblname}','status',{$vo.id},0,this,'禁用')" class="btn btn-link"  rel="tooltip" data-original-title="点击禁用"><i class="fa fa-check-circle"></i> 启用</a>
+                  <else />
+                  <a href="javascript:void(0);" onclick="setVal('{$tblname}','status',{$vo.id},1,this,'启用')" class="btn btn-link fc_red"  rel="tooltip" data-original-title="点击启用"><i class="fa fa-times-circle"></i> 禁用</a> 
+                  </eq>
+            </td>
+            <td>  
+              <a href="{:U($control.'/edit'.$action,'id='.$vo['id'])}" class="btn" rel="tooltip" data-original-title="修改"><i class="fa fa-edit"></i></a> 
+              <a href="javascript:void(0);" onclick="setDelete('{:U($control.'/delete'.$action,"id=".$vo['id'])}')" class="btn" rel="tooltip" data-original-title="删除"><i class="fa fa-trash"></i></a>
+              </td>
+          </tr>
+         </volist>
+          <tr>
+            <td colspan="6"><notempty name="page">
+                <div class="pull-left custom-footer">
+                  <ul class="pagination" style="margin: 0px;">
+                    {$page}
+                  </ul>
+                </div> 
+              </notempty>
+              <notempty name="list">
+              <div class="pull-right">
+                <div class="btn-group dropup">
+               	  <input type="hidden" value="{$tblname}" id="ConstTbl" name="ConstTbl" />
+                  <button id="AllCheck"  class="btn" title="全选"><i class="fa fa-check-square"></i></button>
+                  <button id="ReverseCheck"  class="btn" title="反选"><i class="fa fa-check-square-o"></i></button>
+                  <button class="btn dropdown-toggle" data-toggle="dropdown" aria-expanded="false" title="操作"><i class="fa fa-wrench"></i> <span class="caret"></span></button>
+                  <ul class="dropdown-menu dropdown-menu-right">
+                    <li><a class="AllStatus" data-status="0" href="javascript:void(0);"><i class="fa fa-lock"></i> {$statuslist[0]}</a></li>
+                    <li><a class="AllStatus" data-status="1" href="javascript:void(0);"><i class="fa fa-unlock-alt"></i> {$statuslist[1]}</a></li>
+                    <li class="divider"></li>
+                    <li><a id="AllDel" href="javascript:void(0);"><i class="fa fa-trash"></i> 删除</a></li>
+                  </ul>
+                </div>
+              </div>
+              </notempty>
+              </td>
+          </tr>
+          </tbody>
+      </table>
+    </div>
+  </div>
+</body>
+</html>

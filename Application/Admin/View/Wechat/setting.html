@@ -1,0 +1,177 @@
+<!doctype html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>{$title}</title>
+<include file="Public/scripts" />
+<include file="Public/upload" />
+<include file="Public/editor" />
+</head>
+<body>
+<div class="row">
+  <div class="col-md-12 " >
+    <h2>{$title}</h2>
+  </div>
+  <div class="col-md-12 " >
+    <form action="" method="post" name="form1" id="form1" class="ajaxformx">
+      <input type="hidden" id="id" name="id" value="{$db.id}" />
+      <div class="col-md-6 custom-form">
+        <div class="form-group">
+          <label class="control-label">公众号名称：</label>
+          <div class="controls">
+            <input type="text" class="form-control" name="panel_name" id="panel_name" placeholder="{$name}名称" value="{$db.panel_name}" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="control-label">登录名：</label>
+          <div class="controls">
+            <input type="text" class="form-control" name="panel_username" id="panel_username" value="{$db.panel_username}" placeholder="登录微信公众平台的账号" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="control-label">原始ID：</label>
+          <div class="controls">
+            <input type="text" class="form-control" name="panel_originid" id="panel_originid" value="{$db.panel_originid}" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="control-label">公众号类型：</label>
+          <div class="controls">
+           <eq name="db.panel_type" value="0">
+          <label>
+            <input type="radio"  id="panel_type" name="panel_type"   value="1" >
+            <span class="lbl">服务号</span> </label>
+          <label>
+            <input   type="radio"  id="panel_type" name="panel_type"  checked  value="0" >
+            <span class="lbl">订阅号</span> </label>
+          <else/>
+          <label>
+            <input   type="radio"  id="panel_type" name="panel_type"  checked value="1" >
+            <span class="lbl">服务号</span> </label>
+          <label>
+            <input  type="radio"  id="panel_type" name="panel_type"    value="0" >
+            <span class="lbl">订阅号</span> </label>
+        </eq>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="control-label">认证类型：</label>
+          <div class="controls">
+           <neq name="db.panel_cert" value="0">
+          <label>
+            <input  type="radio"  id="panel_cert" name="panel_cert" checked value="1" >
+            <span class="lbl">已认证</span> </label>
+          <label>
+            <input  type="radio"  id="panel_cert" name="panel_cert"   value="0" >
+            <span class="lbl">未认证</span> </label>
+          <else/>
+          <label>
+            <input  type="radio"  id="panel_cert" name="panel_cert"  value="1" >
+            <span class="lbl">已认证</span> </label>
+          <label>
+            <input type="radio"  id="panel_cert" name="panel_cert" checked  value="0" >
+            <span class="lbl">未认证</span> </label>
+        </neq>
+          </div>
+        </div>
+
+        <h2>开发者配置<hr /></h2>
+        <div class="form-group">
+          <label class="control-label">URL(服务器地址)：</label>
+          <div class="controls">
+            <input type="text" class="form-control" name="app_url" id="app_url" value="{$db.app_url}" placeholder="服务器URL" />
+            <div class="help-block">微信公众平台填写的地址，复制此地址到微信后台相应处</div>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label class="control-label">AppId：</label>
+          <div class="controls">
+            <input type="text" class="form-control" name="app_id" id="app_id" value="{$db.app_id}" placeholder="{$name}AppId" />
+            <div class="help-block">审核后在公众平台开启开发模式后可查看</div>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label class="control-label">AppSecret：</label>
+          <div class="controls">
+            <input type="text" class="form-control" name="app_secret" id="app_secret" value="{$db.app_secret}" placeholder="{$name}AppId" />
+            <div class="help-block">审核后在公众平台开启开发模式后可查看</div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="control-label">Token：</label>
+          <div class="controls">
+            <input type="text" class="form-control" name="app_token" id="app_token" value="{$db.app_token}" placeholder="{$name}AppId" />
+            <div class="help-block">接口token</div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="control-label">aeskey：</label>
+          <div class="controls">
+            <input type="text" class="form-control" name="app_aeskey" id="app_aeskey" value="{$db.app_aeskey}" placeholder="{$name}EncodingAESKey" />
+            <div class="help-block">消息加解密密钥</div>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label class="control-label">mchid：</label>
+          <div class="controls">
+            <input type="text" class="form-control" name="app_mchid" id="app_mchid" value="{$db.app_mchid}" placeholder="{$name}AppId" />
+            <div class="help-block">受理商ID，身份标识。微信支付审核通过后，在微信发送的邮件中查看</div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="control-label">key：</label>
+          <div class="controls">
+            <input type="text" class="form-control" name="app_key" id="app_key" value="{$db.app_key}" placeholder="{$name}AppId" />
+            <div class="help-block">商户支付密钥Key。微信支付审核通过后，在微信发送的邮件中查看</div>
+          </div>
+        </div>
+         
+        <div class="form-group" >
+          <div class="controls">
+            <hr />
+            <button type="submit" class="btn btn-success" id="btnSubmit"><i class="fa fa-save"></i> 提交</button>
+            <button type="button" class="btn btn-default" onClick="history.back();"><i class="fa fa-undo"></i> 返回</button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+<script language="javascript">
+var $fields={
+	panel_name: {
+		validators: {
+			notEmpty: {
+				message: '{$name}名称不能为空'
+			} 
+		}
+	} ,
+	panel_username: {
+		validators: {
+			notEmpty: {
+				message: '登录名不能为空'
+			} 
+		}
+	} ,
+	app_id: {
+		validators: {
+			notEmpty: {
+				message: '{$name}app_id不能为空'
+			} 
+		}
+	} ,
+	app_secret: {
+		validators: {
+			notEmpty: {
+				message: '{$name}app secret不能为空'
+			}
+		}
+	} 
+	};
+</script>
+<include file="Public/form" /> 
+</body>
+</html>

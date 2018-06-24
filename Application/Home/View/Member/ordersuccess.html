@@ -1,0 +1,67 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>{$title}</title>
+    <include file="Public:scripts" />
+</head>
+<body>
+<include file="Public:footer" />
+<div class="mui-content">
+    <div class="mui-content-padded mui-text-center jieguo">
+        <div class="jgicon">
+            <if condition="$status eq 1">
+                <span class="mui-icon mui-icon-checkmarkempty gou"></span>
+                <else/>
+                <span class="mui-icon mui-icon-closeempty cha"></span>
+            </if>
+        </div>
+        <div class="fz18">订单{$title}</div>
+        <switch name="type">
+            <case value="C">
+                <if condition="$status eq 1">
+                    <p style="line-height: 40px;">订单支付成功 ， <a href="{:U('Member/order')}">返回  </a></p>
+                    <else/>
+                    <p style="line-height: 40px;"> 订单支付失败 ，返回<a href="{:U('Member/order')}">返回  </a> </p>
+                </if>
+
+            </case>
+            <case value="A">
+                <if condition="$status eq 1">
+                    <p style="line-height: 40px;"> 视频课程订单支付成功 ，立即前往 <a href="{:U('Classes/view','id='.$order['classid'])}">观看视频  </a></p>
+                    <else/>
+                    <p style="line-height: 40px;"> 视频课程订单支付失败 ，返回<a href="{:U('Classes/view','id='.$order['classid'])}">课程详细  </a>页 </p>
+                </if>
+            </case>
+            <case value="F">
+                <if condition="$status eq 1">
+                    <p style="line-height: 40px;"> 套餐购买支付成功 ，立即前往 <a href="{:U('Search/index')}">使用  </a></p>
+                    <else/>
+                    <p style="line-height: 40px;"> 套餐购买支付失败 ，返回<a href="{:U('Index/active')}">活动首页  </a> </p>
+                </if>
+
+            </case>
+
+            <case value="D">
+                <if condition="$status eq 1">
+                    <p style="line-height: 40px;"> 贷款还款成功 ，返回 <a href="{:U('Member/index')}">我的贷款  </a></p>
+                    <else/>
+                    <p style="line-height: 40px;"> 贷款还款失败 ，返回<a href="{:U('Index/index')}">我的贷款  </a> </p>
+                </if>
+            </case>
+
+            <case value="H">
+                <if condition="$status eq 1">
+                    <p style="line-height: 40px;"> 贷款延期成功 ，返回 <a href="{:U('Member/repayment'，'orderno='.$loan['orderno']))}">我的贷款  </a></p>
+                    <else/>
+                    <p style="line-height: 40px;"> 贷款延期失败 ，返回<a href="{:U('Member/repayment'，,'orderno='.$loan['orderno']))}">我的贷款  </a> </p>
+                </if>
+            </case>
+        </switch>
+
+
+    </div>
+</div>
+
+</body>
+</html>

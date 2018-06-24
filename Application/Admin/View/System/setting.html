@@ -1,0 +1,248 @@
+<!doctype html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>{$title}</title>
+<include file="Public/scripts" />
+</head>
+<body>
+<div class="row">
+  <div class="col-md-12 " >
+    <h2>{$title}</h2>
+  </div>
+  <div class="col-md-12 " >
+    <form action="" method="post" name="form1" id="form1" class="ajaxformx">
+      <div class="fancy-tab-container">
+        <ul class="nav nav-tabs fancy">
+          <volist name="group" id="vo">
+            <eq name="key" value="1">
+              <li  class="active"><a href="#autotab_{$i}" data-toggle="tab">{$vo}配置</a></li>
+              <else/>
+              <li><a href="#autotab_{$i}" data-toggle="tab">{$vo}配置</a></li>
+            </eq>
+          </volist>
+        </ul>
+        <div class="tab-content">
+          <div class="tab-pane active" id="autotab_1">
+            <div class="col-md-6">
+              <volist name="list" id="config">
+                <if condition="(1 eq $config['group'])">
+                  <div class="form-group"> 
+                    <!-- Text input-->
+                    <label class="control-label" >{$config.title}：</label>
+                    <div class="controls">
+                      <switch name="config.type">
+                        <case value="0">
+                          <input type="text" class="form-control" name="config[{$config.name}]" value="{$config.value}" />
+                        </case>
+                        <case value="1">
+                          <input type="text" class="form-control" name="config[{$config.name}]" value="{$config.value}" />
+                        </case>
+                        <case value="2">
+                          <textarea name="config[{$config.name}]"  class="form-control" rows="5">{$config.value}</textarea>
+                        </case>
+                        <case value="3">
+                          <textarea name="config[{$config.name}]"  class="form-control" rows="5">{$config.value}</textarea>
+                        </case>
+                        <case value="4">
+                          <select name="config[{$config.name}]" class="form-control">
+                            <volist name=":parse_field_attr($config['extra'])" id="vo"> <option value="{$key}" 
+                              <eq name="config.value" value="$key">selected</eq>
+                              >{$vo}
+                              </option>
+                            </volist>
+                          </select>
+                        </case>
+                      </switch>
+                      <p class="help-block">（{$config.remark}）</p>
+                    </div>
+                  </div>
+                </if>
+              </volist>
+            </div>
+            <div class="clearfix"></div>
+          </div>
+          <div class="tab-pane " id="autotab_2">
+            <div class="col-md-6">
+              <volist name="list" id="config">
+                <if condition="(2 eq $config['group'])">
+                  <div class="form-group"> 
+                    <!-- Text input-->
+                    <label class="control-label" >{$config.title}：</label>
+                    <div class="controls">
+                      <switch name="config.type">
+                        <case value="0">
+                          <input type="text" class="form-control" name="config[{$config.name}]" value="{$config.value}" />
+                        </case>
+                        <case value="1">
+                          <input type="text" class="form-control" name="config[{$config.name}]" value="{$config.value}" />
+                        </case>
+                        <case value="2">
+                          <textarea name="config[{$config.name}]"  class="form-control" rows="5">{$config.value}</textarea>
+                        </case>
+                        <case value="3">
+                          <textarea name="config[{$config.name}]"  class="form-control" rows="5">{$config.value}</textarea>
+                        </case>
+                        <case value="4">
+                          <select name="config[{$config.name}]" class="form-control">
+                            <volist name=":parse_field_attr($config['extra'])" id="vo"> <option value="{$key}" 
+                              <eq name="config.value" value="$key">selected</eq>
+                              >{$vo}
+                              </option>
+                            </volist>
+                          </select>
+                        </case>
+                      </switch>
+                      <p class="help-block">（{$config.remark}）</p>
+                    </div>
+                  </div>
+                </if>
+              </volist>
+            </div>
+            <div class="clearfix"></div>
+          </div>
+          <div class="tab-pane " id="autotab_3">
+            <div class="col-md-6">
+              <volist name="list" id="config">
+                <if condition="(3 eq $config['group'])">
+                  <eq name="config.type" value="5">
+                    <else/>
+                    <div class="form-group"> 
+                      <!-- Text input-->
+                      <label class="control-label" >{$config.title}：</label>
+                      <div class="controls">
+                        <switch name="config.type">
+                          <case value="0">
+                            <input type="text" class="form-control" name="config[{$config.name}]" value="{$config.value}" />
+                          </case>
+                          <case value="1">
+                            <input type="text" class="form-control" name="config[{$config.name}]" value="{$config.value}" />
+                          </case>
+                          <case value="2">
+                            <textarea name="config[{$config.name}]"  class="form-control" rows="5">{$config.value}</textarea>
+                          </case>
+                          <case value="3">
+                            <textarea name="config[{$config.name}]"  class="form-control" rows="5">{$config.value}</textarea>
+                          </case>
+                          <case value="4">
+                            <select name="config[{$config.name}]" class="form-control">
+                              <volist name=":parse_field_attr($config['extra'])" id="vo"> <option value="{$key}" 
+                                <eq name="config.value" value="$key">selected</eq>
+                                >{$vo}
+                                </option>
+                              </volist>
+                            </select>
+                          </case>
+                        </switch>
+                        <p class="help-block">（{$config.remark}）</p>
+                      </div>
+                    </div>
+                  </eq>
+                </if>
+              </volist>
+            </div>
+            <div class="clearfix"></div>
+            
+            
+  <div class="hide">
+      <div class="col-md-6">
+              <volist name="list" id="config">
+                <if condition="(0 eq $config['group'])">
+                  <div class="form-group"> 
+                    <!-- Text input-->
+                    <label class="control-label" >{$config.title}：</label>
+                    <div class="controls">
+                      <switch name="config.type">
+                        <case value="0">
+                          <input type="text" class="form-control" name="config[{$config.name}]" value="{$config.value}" />
+                        </case>
+                        <case value="1">
+                          <input type="text" class="form-control" name="config[{$config.name}]" value="{$config.value}" />
+                        </case>
+                        <case value="2">
+                          <textarea name="config[{$config.name}]"  class="form-control" rows="5">{$config.value}</textarea>
+                        </case>
+                        <case value="3">
+                          <textarea name="config[{$config.name}]"  class="form-control" rows="5">{$config.value}</textarea>
+                        </case>
+                        <case value="4">
+                          <select name="config[{$config.name}]" class="form-control">
+                            <volist name=":parse_field_attr($config['extra'])" id="vo"> <option value="{$key}" 
+                              <eq name="config.value" value="$key">selected</eq>
+                              >{$vo}
+                              </option>
+                            </volist>
+                          </select>
+                        </case>
+                      </switch>
+                      <p class="help-block">（{$config.remark}）</p>
+                    </div>
+                  </div>
+                </if>
+              </volist>
+            </div>
+  </div>
+  <div class="clr"></div>
+  
+  
+          </div>
+
+          <div class="tab-pane " id="autotab_4">
+            <div class="col-md-6">
+              <volist name="list" id="config">
+                <if condition="(4 eq $config['group'])">
+                  <div class="form-group">
+                    <!-- Text input-->
+                    <label class="control-label" >{$config.title}：</label>
+                    <div class="controls">
+                      <switch name="config.type">
+                        <case value="0">
+                          <input type="text" class="form-control" name="config[{$config.name}]" value="{$config.value}" />
+                        </case>
+                        <case value="1">
+                          <input type="text" class="form-control" name="config[{$config.name}]" value="{$config.value}" />
+                        </case>
+                        <case value="2">
+                          <textarea name="config[{$config.name}]"  class="form-control" rows="5">{$config.value}</textarea>
+                        </case>
+                        <case value="3">
+                          <textarea name="config[{$config.name}]"  class="form-control" rows="5">{$config.value}</textarea>
+                        </case>
+                        <case value="4">
+                          <select name="config[{$config.name}]" class="form-control">
+                            <volist name=":parse_field_attr($config['extra'])" id="vo"> <option value="{$key}"
+                              <eq name="config.value" value="$key">selected</eq>
+                              >{$vo}
+                              </option>
+                            </volist>
+                          </select>
+                        </case>
+                      </switch>
+                      <p class="help-block">（{$config.remark}）</p>
+                    </div>
+                  </div>
+                </if>
+              </volist>
+            </div>
+            <div class="clearfix"></div>
+          </div>
+
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+        <div class="form-group" >
+          <div class="controls">
+            <hr />
+            <button type="submit" class="btn btn-success" id="btnSubmit"><i class="fa fa-save"></i> 提交</button>
+            <button type="button" class="btn btn-default" onClick="history.back();"><i class="fa fa-undo"></i> 返回</button>
+          </div>
+        </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+<include file="Public/form" />
+</body>
+</html>

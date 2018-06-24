@@ -1,0 +1,53 @@
+<empty name="list">
+    <eq name="p" value="1">
+		<input type="hidden" id="num" value="{$num}"/>
+        <div class="mui-table-view-cell" style="height: 100%; text-align: center;">
+            <img src="__PUBLIC__/Crm/images/nomore.png"/>
+			<span style="display:none;">没有记录</span>
+        </div>
+    </eq>
+	<else/>
+	<input type="hidden" id="num" value="{$num}"/>
+</empty>
+<?php
+                $complate=getcomplatestatus();
+                ?>
+<volist name="list" id="vo">
+   <div class="mui-table-view-cell">
+   <a href="{:U('Custom/view','id='.$vo['id'])}">
+        <div class="kehulist">
+            <div class="name mui-ellipsis">{$vo.company}
+
+                <if condition="$vo['memberstatus'] eq $complate">
+                    <span style="background-color: #00B83F;border-radius: 4px;color: white;padding:2px;">已成交</span>
+                </if>
+            </div>
+            <div class="num" style="color: red;">{:get_cache_value('member_level',$vo['level'],'name')}</div>
+        </div>
+		
+		 <div class="kehuadd">
+            <img style=" width: 20px; margin: 0px 4px;" src="__PUBLIC__/Crm/images/custom1.png"/>
+           {$vo['userreal']?$vo['userreal']:'暂无姓名'} &nbsp;&nbsp;,<if condition="$act eq 'my'">
+		   {$vo.telephone}<else/>
+		   {$vo.telephone|cut_str=###,0,3,''}****{$vo.telephone|cut_str=###,7,4,''}
+		   </if>
+        </div>
+        <div class="kehuadd">
+            <img style=" width: 20px; margin: 0px 4px;" src="__PUBLIC__/Crm/images/address.png"/>
+            {:get_area_name($vo['provinceid'])}{:get_area_name($vo['cityid'])}{:get_area_name($vo['districtid'])}
+            {$vo.address}
+        </div>
+       <if condition="$vo['lastfollowtime']">
+           <div class="kehuadd">
+               <?php
+                $lastfollow=M('staff_follow')->where(array('memberid'=>$vo['id']))->order('addtime desc')->limit(1)->select();
+                   $lastfollow=$lastfollow[0];
+               ?>
+               <img style=" width: 20px; margin: 0px 4px;" src="__PUBLIC__/Crm/images/gengjin.png"/>
+               最近跟进：{:get_cache_value('staff',$lastfollow['staffid'],'name')}提交了跟进记录
+           </div>
+       </if>
+    </a></div>
+
+</volist>
+

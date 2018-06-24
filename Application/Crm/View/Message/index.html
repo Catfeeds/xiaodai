@@ -1,0 +1,85 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>{$title}</title>
+    <include file="Public:scripts" />
+</head>
+<body>
+
+
+<include file="Public:footer" />
+<div class="mui-content">
+    <div class="hz-xiaoxi">
+        <div class="topimg">
+		<div class="mui-slider banner" >
+			<div class="mui-slider-group mui-slider-loop">
+				<?php
+				  $detail=unserialize(lbl('crmmsgbanner'));
+				  $daynum=count($detail);
+					?>
+				<div class="mui-slider-item mui-slider-item-duplicate"><a href="{$daynum[$k][1]}"><img src="{$detail[$daynum][0]}"></a></div>
+				<for start="0" end="$daynum" name="k" >
+					<div class="mui-slider-item"><a href="{$detail[$k][1]}"><img src="{$detail[$k][0]}"></a></div>
+				</for>
+				<div class="mui-slider-item mui-slider-item-duplicate"><a href="{$detail[0][1]}"><img src="{$detail[0][0]}"></a></div>
+			</div>
+			<div class="mui-slider-indicator">
+				<for start="0" end="$daynum" key="k">
+					<if condition="$k eq 0">
+						<div class="mui-indicator mui-active"></div>
+						<else/>
+						<div class="mui-indicator"></div>
+					</if>
+				</for>
+			</div>
+		</div>
+		</div>
+        <div class="mui-table-view xiaoxi">
+            <empty name="list">
+                <div class="mui-table-view-cell">
+                    <a href="{：U('Message/view','id='.$vo['id'])}">
+                        <div class="display-box">
+                            <div class="box-flex-1">
+                                <div class="mui-ellipsis fz16">暂无消息</div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <else/>
+                <volist name="list" id="vo">
+                    <div class="mui-table-view-cell">
+                        <a href="{:U('Message/view','id='.$vo['id'])}">
+                            <div class="display-box">
+                                <div class="img1-1">
+								  <if condition="$vo['read'] neq 1">
+                                        <span class="mui-badge mui-badge-danger">1</span>
+                                    </if>
+									<img src="{$vo.indexpic}">
+									</div>
+                                <div class="box-flex-1">
+                                    <div class="mui-ellipsis fz16">{$vo.title}</div>
+                                    <div class="mui-ellipsis desc">{$vo.description}</div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </volist>
+            </empty>
+
+
+
+        </div>
+    </div>
+
+
+</div>
+<script type="text/javascript">
+var gallery = mui('.mui-slider');
+gallery.slider({
+  interval:5000//自动轮播周期，若为0则不自动播放，默认为0；
+});
+</script>
+
+</body>
+</html>

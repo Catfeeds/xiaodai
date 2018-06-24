@@ -1,0 +1,470 @@
+<!doctype html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>{$title}</title>
+    <include file="Public/scripts" />
+    <include file="Public/upload" />
+    <include file="Public/editor" />
+    <include file="Public/date" />
+</head>
+<body>
+<div class="row">
+    <div class="col-md-12 " >
+        <h2>{$title}</h2>
+    </div>
+    <div class="col-md-12 " >
+        <form action="" method="post" name="form1" id="form1" class="ajaxformx">
+            <input type="hidden" id="id" name="id" value="{$db.id}" />
+            <div class="fancy-tab-container">
+                <ul class="nav nav-tabs fancy">
+                    <li class="active"><a href="#autotab_1" data-toggle="tab">基本信息</a></li>
+                    <li id="daohang"><a href="#autotab_4" data-toggle="tab">活动导航</a></li>
+                    <li><a href="#autotab_2" data-toggle="tab">高级属性</a></li>
+                    <li><a href="#autotab_3" data-toggle="tab">图片集</a></li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane active" id="autotab_1">
+                        <div class="col-md-6 custom-form">
+                            <div class="form-group">
+                                <label class="control-label">标题：</label>
+                                <div class="controls">
+                                    <input type="text" class="form-control" name="title" id="title" placeholder="输入{$name}标题" value="{$db.title}" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label">形象图：</label>
+                                <div class="controls">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" name="indexpic" id="indexpic" value="{$db.indexpic}" readonly />
+                                            <span class="input-group-addon">
+                                                <button type="button" id="btnUpload" class="custom-upload"><i class="fa fa-upload"></i></button>
+                                            </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-8 custom-form">
+
+                            <div class="form-group">
+                                <label class="control-label">活动类型[亲子活动不收费]：</label>
+                                <div class="controls">
+                                    <select class="form-control w150 " name="type" id="type">
+
+                                        <option value="1" <if condition="$db['type'] eq 1"> selected="selected"</if>>收费报名活动</option>
+
+                                        <option value="2" <if condition="$db['type'] eq 2"> selected="selected"</if> >亲子投票活动</option>
+
+                                        </volist>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label">时间：</label>
+                                <div class="controls">
+                                    <input class="form-control datepicker" style="width: 50%" size="16" type="text" value="{$db['start']?$db['start']:''}" id="start" name="start"  placeholder="开始日期" >
+                                    至
+                                    <input class="form-control datepicker" style="width: 50%" size="16" type="text" value="{$db['end']?$db['end']:''}" id="end" name="end"  placeholder="结束日期" >
+                                </div>
+                            </div>
+							  <div class="form-group">
+                                <label class="control-label">活动时间：</label>
+                                <div class="controls">
+                                    <input class="form-control datepicker" style="width: 50%" size="16" type="text" value="{$db['activetime']?$db['activetime']:''}" id="activetime" name="activetime"  placeholder="活动日期" >
+
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label">报名经费（元）：</label>
+                                <div class="controls">
+
+                                    <div class="input-group col-md-4">
+                                        <input type="text" class="form-control" name="price" id="price" placeholder="输入{$name}报名经费" value="{$db.price}" maxlength="11" />
+                                        <span class="input-group-addon"> <i class="fa fa-cny"></i></span> </div>
+
+                                </div>
+
+                            </div>
+							
+							 <div class="form-group">
+                                <label class="control-label">报名人数限制（0为不限制）：</label>
+                                <div class="controls">
+                                    <input type="text" class="form-control w80" name="limit" id="limit" value="{$db.limit}"  />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <table>
+                                    <tr>
+                                        <td style="width: 70px;">直推佣金：</td>
+                                        <td>
+                                            <div class="input-group col-md-10">
+                                                <input type="text" class="form-control" name="first_refee" id="first_refee" placeholder="输入{$name}第一级返现" value="{$db.first_refee}" maxlength="11" />
+                                                <span class="input-group-addon"> <i class="fa fa-cny"></i></span>
+                                            </div>
+                                        </td>
+                                        <td style="width: 70px;">间推佣金：</td>
+                                        <td>
+                                            <div class="input-group col-md-10">
+                                                <input type="text" class="form-control" name="second_refee" id="second_refee" placeholder="输入{$name}第二级返现" value="{$db.second_refee}" maxlength="11" />
+                                                <span class="input-group-addon"> <i class="fa fa-cny"></i></span> </div>
+                                        </td>
+                                        <td style="width: 90px;">上三级佣金：</td>
+                                        <td>
+                                            <div class="input-group col-md-10">
+                                                <input type="text" class="form-control" name="third_refee" id="third_refee" placeholder="输入{$name}第三级返现" value="{$db.third_refee}" maxlength="11" />
+                                                <span class="input-group-addon"> <i class="fa fa-cny"></i></span> </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+
+
+
+                        <div style="display: none;" class="col-md-8 custom-form">
+                            <div class="form-group">
+                                <label class="control-label">活动规则：</label>
+                                <div class="controls">
+                                    <textarea  id="content" name="content" class="myueditor" >{$db.content}</textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-8 custom-form">
+                            <div class="form-group">
+                                <label class="control-label">活动说明：</label>
+                                <div class="controls">
+                                    <textarea  id="explain" name="explain" class="myueditor" >{$db.explain}</textarea>
+                                </div>
+                            </div>
+
+                        </div>
+
+
+
+
+                        <div class="col-md-6 custom-form">
+                            <div class="form-group">
+                                <label class="control-label">报名数：</label>
+                                <div class="controls">
+                                    <input type="text" class="form-control w80" name="sold" id="sold" placeholder="{$name}报名数" value="{$db.sold}" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label">浏览数：</label>
+                                <div class="controls">
+                                    <input type="text" class="form-control w80" name="hits" id="hits" placeholder="{$name}点击数" value="{$db.hits}" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label">排序：</label>
+                                <div class="controls">
+                                    <input type="text" class="form-control w80" name="sort" id="sort" value="{$db.sort}"  />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label">状态：</label>
+                                <div class="controls">
+                                    <select class="form-control w80 " name="status" id="status">
+                                        <volist name="statuslist" id="vo">
+                                            <notempty name="db.id">
+                                                <eq name="db.status" value="$key">
+                                                    <option value="{$key}" selected="selected">{$vo}</option>
+                                                    <else/>
+                                                    <option value="{$key}" >{$vo}</option>
+                                                </eq>
+                                                <else/>
+                                                <eq name="key" value="1">
+                                                    <option value="{$key}" selected="selected">{$vo}</option>
+                                                    <else/>
+                                                    <option value="{$key}" >{$vo}</option>
+                                                </eq>
+                                            </notempty>
+                                        </volist>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="tab-pane" id="autotab_2">
+                        <div class="col-md-6 custom-form">
+                            <div class="form-group">
+                                <label class="control-label">关键词：</label>
+                                <div class="controls">
+                                    <textarea class="form-control" rows="5" name="keywords" id="keywords" placeholder="输入关键词" >{$db.keywords}</textarea>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label">描述：</label>
+                                <div class="controls">
+                                    <textarea class="form-control" rows="5" name="description" id="description" placeholder="输入描述" >{$db.description}</textarea>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label">外部链接：</label>
+                                <div class="controls">
+                                    <input type="text" class="form-control" name="linkurl" id="linkurl" placeholder="{$name}外部链接" value="{$db.linkurl}" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label">来源：</label>
+                                <div class="controls">
+                                    <input type="text" class="form-control" name="source" id="source" placeholder="{$name}来源" value="{$db.source}" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label">作者：</label>
+                                <div class="controls">
+                                    <input type="text" class="form-control w80" name="author" id="author" placeholder="{$name}作者" value="{$db.author}" />
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="tab-pane" id="autotab_3">
+                        <div class="form-group" >
+                            <div class="controls">
+                                <table class="col-md-6" >
+                                    <tr class="row0 template">
+                                        <td id="tempid"><?php
+      $detail=json_decode($db['images']);
+      $daynum=count($detail);
+      if($daynum==0){
+      	$daynum=1;
+      }
+      ?>
+                                            <input type="hidden" name="daynum" id="daynum" value="{$daynum}" />
+                                            <for start="0" end="$daynum" name="k" >
+                                                <script language="javascript">
+                                                    $(function(){
+                                                        $.rendUploader("#btnUpload{:$k+1}");
+                                                    });
+                                                </script>
+                                                <table class="table vm">
+                                                    <tr class="row0">
+                                                        <td width="70"  class="tc" > 第<span class="day">{:$k+1}</span>项 <br />
+                                                            <a href="javascript:void(0);" onclick="if(confirm('您确定要删除吗？')){$(this).parent().parent().parent().parent().remove();}">删除</a></td>
+                                                        <td ><div class="input-group">
+                                                            <input type="text" class="form-control" name="images[]"   value="{:$detail[$k]}"  />
+                                <span class="input-group-addon">
+                                <button type="button" id='btnUpload{$k+1}' class="custom-upload"><i class="fa fa-upload"></i></button>
+                                </span> </div></td>
+                                                    </tr>
+                                                </table>
+                                            </for></td>
+                                    </tr>
+                                    <tr class="row0">
+                                        <td colspan="3"><button class="btn" type="button" id="addDay"><i class="fa fa-plus"></i> 1项</button></td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="tab-pane" id="autotab_4">
+                        <div class="col-md-4 custom-form">
+                            <div class="form-group">
+                                <label class="control-label">地址(鼠标点击地图目标位置可拾取地址和坐标，也可通过地址搜索地图位置)：</label>
+                                <div class="controls">
+                                    <textarea class="form-control" rows="2" id="address" name="address" placeholder="请填写门店地址">{$db.address}</textarea>
+                                    <input type="button" onclick="searchByStationName()" style="padding: 4px 8px; border: 1px solid #ddd; background: #eee; font-size: 12px;
+                 margin: 15px; border-radius: 3px" class="btn-search mui-btn mui-btn-primary mui-bum-xs" value="查找地址" />
+
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label">经度：</label>
+                                <div class="controls">
+                                    <input type="text" value="{$db.longitude}" class="form-control w150" name="longitude" id="longitude" />
+                                </div>
+                                <label class="control-label">纬度：</label>
+                                <div class="controls">
+                                    <input type="text" value="{$db.latitude}" class="form-control w150" name="latitude" id="latitude" />
+                                </div>
+                            </div>
+                            <!--<div class="form-group">-->
+                                <!--<label class="control-label">地图：</label>-->
+                                <!--<div class="controls">-->
+                                    <!--<div id="container" style="width: 100%; height: 500px;">-->
+                                    <!--</div>-->
+                                <!--</div>-->
+                            <!--</div>-->
+
+                        </div>
+                        <div class="col-md-8 custom-form">
+
+                            <div class="form-group">
+                                <label class="control-label">地图：</label>
+                                <div class="controls">
+                                    <div id="container" style="width: 100%; height: 500px;">
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group" style="padding:20px 0px;">
+                        <div class="controls">
+                            <hr />
+                            <button type="submit" class="btn btn-success" id="btnSubmit"><i class="fa fa-save"></i> 提交</button>
+                            <button type="button" class="btn btn-default" onClick="history.back();"><i class="fa fa-undo"></i> 返回</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<script language="JavaScript" type="text/javascript" >
+    $(function(){
+
+        $("#addDay").click(function(){
+            var num=parseInt($("#daynum").val());
+            var html=$.addDay(num+1);
+            $("#tempid").append(html);
+            if($("#pid").val()==3){
+                $(".datatype").val(3).attr("disabled",true).change();
+            }
+            //$(".editor").xheditor(default_setting);
+            $("#daynum").val(num+1);
+            $.rendUploader("#btnUpload"+(num+1));
+        });
+
+    });
+    (function(){
+        $.addDay=function(n){
+            var html="";
+            html+=("<table class=\"table vm\">");
+            html+=("  <tr class=\"row0\">");
+            html+=("    <td width=\"70\"  class=\"tc\" >第<span class=\"day\">"+n+"</span>项 <br /><a href=\"javascript:void(0);\" onclick=\"if(confirm('您确定要删除吗？')){$(this).parent().parent().parent().parent().remove();}\">删除</a></td>");
+
+            html+=("    <td ><div class=\"input-group\"><input type=\"text\" class=\"form-control\" name=\"images[]\"   value=\"\"   /><span class=\"input-group-addon\"><button type=\"button\" id='btnUpload"+n+"' class=\"custom-upload\"><i class=\"fa fa-upload\"></i></button></span></div>  </td>");
+            html+=("  </tr>");
+            html+=("</table>");
+            return html;
+        }
+
+    })(jQuery);
+</script>
+<script language="javascript">
+    var $fields={
+        title: {
+            validators: {
+                notEmpty: {
+                    message: '{$name}标题不能为空'
+                }
+            }
+        }
+    };
+</script>
+
+
+<include file="Public/form" />
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=UfB3fUxvHlk6KhpLMd0iL3PuxnzyfuWm"></script>
+<script type="text/javascript">
+    var address=$("#address").val();
+    var map = new BMap.Map("container");
+    var point = new BMap.Point('{$db.longitude}', '{$db.latitude}');
+    if($.trim(address)!=""){
+        map.centerAndZoom(point, 15);
+    }else{
+        map.centerAndZoom("成都市", 12);
+    }
+
+    var marker = new BMap.Marker(point);
+    map.addOverlay(marker);
+
+
+    map.enableScrollWheelZoom();    //启用滚轮放大缩小，默认禁用
+    map.enableContinuousZoom();    //启用地图惯性拖拽，默认禁用
+    map.enableDoubleClickZoom();  //启用双击放大缩小
+    map.enablePinchToZoom();//启用双指操作缩放，默认启用。
+    map.addControl(new BMap.NavigationControl());  //添加默认缩放平移控件
+    map.addControl(new BMap.OverviewMapControl()); //添加默认缩略地图控件
+    map.addControl(new BMap.OverviewMapControl({ isOpen: false, anchor: BMAP_ANCHOR_BOTTOM_RIGHT }));   //右下角，打开
+
+    map.addEventListener("click", function (e) {
+        map.centerAndZoom(e.point, 18);
+        document.getElementById("longitude").value = e.point.lng;
+        document.getElementById("latitude").value =  e.point.lat;
+        var marker = new BMap.Marker(new BMap.Point(e.point.lng, e.point.lat));  // 创建标注，为要查询的地方对应的经纬度
+        map.clearOverlays();//清空原来的标注
+        map.addOverlay(marker);
+        var point = new BMap.Point(e.point.lng,e.point.lat);
+        if(!point){
+            mui.toast('未找到该地址');return;
+        }
+        var gc = new BMap.Geocoder();
+        gc.getLocation(point, function(rs){
+            var addComp = rs.addressComponents;
+            $("#address").val(addComp.province  + addComp.city  + addComp.district  + addComp.street  + addComp.streetNumber);
+            //alert(addComp.province + ", " + addComp.city + ", " + addComp.district + ", " + addComp.street + ", " + addComp.streetNumber);
+        });
+
+    });
+
+    var localSearch = new BMap.LocalSearch(map);
+    localSearch.enableAutoViewport(); //允许自动调节窗体大小
+
+    map.addEventListener("click", function (e) {
+        map.centerAndZoom(e.point, 15);
+        document.getElementById("longitude").value = e.point.lng;
+        document.getElementById("latitude").value =  e.point.lat;
+        var marker = new BMap.Marker(new BMap.Point(e.point.lng, e.point.lat));  // 创建标注，为要查询的地方对应的经纬度
+        map.clearOverlays();//清空原来的标注
+        map.addOverlay(marker);
+        var point = new BMap.Point(e.point.lng,e.point.lat);
+        if(!point){
+            mui.toast('未找到该地址');return;
+        }
+        var gc = new BMap.Geocoder();
+        gc.getLocation(point, function(rs){
+            var addComp = rs.addressComponents;
+            $("#address").val(addComp.province  + addComp.city  + addComp.district  + addComp.street  + addComp.streetNumber);
+            //alert(addComp.province + ", " + addComp.city + ", " + addComp.district + ", " + addComp.street + ", " + addComp.streetNumber);
+        });
+
+    });
+
+    function searchByStationName() {
+        var localSearch = new BMap.LocalSearch(map);
+        localSearch.enableAutoViewport(); //允许自动调节窗体大小
+//        var map = new BMap.Map("container");
+        map.clearOverlays();//清空原来的标注
+        var keyword = document.getElementById("address").value;
+        localSearch.setSearchCompleteCallback(function (searchResult) {
+            var poi = searchResult.getPoi(0);
+            if(!poi){
+                mui.toast('未找到该地址');return;
+            }
+            document.getElementById("longitude").value = poi.point.lng;
+            document.getElementById("latitude").value =  poi.point.lat;
+
+            map.centerAndZoom(poi.point, 18);
+            var marker = new BMap.Marker(new BMap.Point(poi.point.lng, poi.point.lat));  // 创建标注，为要查询的地方对应的经纬度
+            map.addOverlay(marker);
+        });
+        localSearch.search(keyword);
+    }
+
+
+    $("#daohang").click(function(){
+        if($.trim(address)!=""){
+            $(".btn-search").click();
+        }else{
+            map.centerAndZoom("成都市", 12);
+        }
+    });
+
+</script>
+
+</body>
+</html>

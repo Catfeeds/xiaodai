@@ -1,0 +1,203 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>{$title}</title>
+    <include file="Public:scripts" />
+    <script src="__PUBLIC__/Admin/lib/echarts/echarts.js"></script>
+</head>
+<body  style="overflow-x: hidden;">
+<style>
+    .tjul .active{ border-bottom: 1px solid red;}
+    .mui-table-view:before{background-color: transparent;}
+    .mui-table-view:after{background-color: transparent;}
+</style>
+<style>
+    #shaixuanbox ul li{    list-style: none;
+        float: left;
+        /*padding: 4px 8px;*/
+        /*margin: 3px;*/
+        /*background-color: #ececec;*/
+        border-radius: 5px;}
+    #shaixuanbox ul .active{box-shadow : 0 0 0 1px #f87dbf; background-color: #fde9ec;}
+    #shaixuanbox ul li input{font-size: 14px;}
+</style>
+
+<div class="mui-content hz_info">
+    <div id="shaixuanbox" style="display:none;position: absolute;
+    width: 100%;height: 100%; background-color: rgba(0,0,0,0.5);z-index: 999;">
+        <div style="position:relative;width: 80%;height: 93%;background-color: white;float: right;overflow-y: scroll;">
+            <p style="padding: 10px 0px 0px 10px;margin-bottom: 0px !important;font-size: 16px;">时间</p>
+            <ul style="margin-top: 0px;padding: 4px 4px;display: inline-block;margin-bottom: 0px;">
+
+                <li style="width: 47.5%;"><input type="date" id="starttime" value="" placeholder="选择开始时间"></li>
+                <li style="width: 5%;line-height: 45px;">至</li>
+                <li style="width: 47.5%;"><input type="date" id="endtime" value="" placeholder="选择结束时间"></li>
+            </ul>
+            <p style="padding: 10px 0px 0px 10px;margin-bottom: 0px !important;font-size: 16px;">员工姓名</p>
+            <ul style="margin-top: 0px;padding: 4px 4px;display: inline-block;margin-bottom: 0px;">
+                <li style="width: 100%;"><input type="text" id="username" value="" placeholder="输入员工姓名"></li>
+            </ul>
+
+        </div>
+        <div style="position:relative;width: 80%;height: 7%;background-color: white;float: right;border-top: 1px solid lightgrey;">
+            <div onclick="closeshaixuan()"  style="position: relative;width: 20%;height: 100%;background-color: #f8e0e4;text-align: center;padding-top: 5%;color: red;float: left;">取消</div>
+            <div onclick="resetshaixuan()" style="position: relative;width: 20%;height: 100%;background-color: pink;text-align: center;padding-top: 5%;color: red;float: left;">重置</div>
+            <div onclick="comshaixuan()" style="position: relative;width: 60%;height: 100%;background-color: red;text-align: center;padding-top: 5%;color: pink;float: left;">完成</div>
+        </div>
+    </div>
+
+    <div style="background-color: white;padding: 5px;height: 50px;margin-bottom:5px;">
+        <ul class="tjul" style="list-style: none; text-align: center;padding: 0px;">
+            <li data-id="1" class="active" style="float: left;width:50%;line-height: 30px;">我的统计</li>
+            <li data-id="2" style="float: left;width:50%;  line-height: 30px;">总统计</li>
+            <li style="display:none;border-left: 1px solid lightgray; width: 20%;" class="mui-col-xs-4 mui-pull-left">
+                <a href="javascript:showshaixuan();" id="shaixuan" >
+                    <img style="width: 20px;" src="__PUBLIC__/Crm/images/shaixuan.png"/>&nbsp;&nbsp;筛选</a>
+            </li>
+        </ul>
+    </div>
+    <div class="mui-table-view" style="position:relative;margin: 0px;background-color: transparent;margin-top: 5px;">
+        <div id="upload" style="position:relative;height:100%;background-color: white;padding-top: 20px;">
+            <div id="echartsPie" style="width: 600px;height:400px;"></div>
+        </div>
+    </div>
+    <div class="copy">{:lbl('copyright')}<br>服务热线：{:lbl('telephone')}</div>
+</div>
+
+
+
+
+<include file="Public:footer" />
+<script type="text/javascript">
+    $(".tjul li").click(function () {
+        $(this).siblings("li").removeClass("active");
+        $(this).addClass("active");
+        getstatistics();
+    })
+</script>
+
+<script type="text/javascript">
+
+    function comshaixuan(){
+        var width=$("#shaixuanbox").width();
+        $("#shaixuanbox").animate({"left":width+"px"},300);
+
+        getstatistics();
+    }
+
+//
+//    $("#shaixuanbox ul li").click(function () {
+//        var colname=$(this).attr('data-field');
+//        $(this).siblings("li").removeClass('active');
+//        $(this).addClass('active');
+//    });
+
+
+
+    function initshaixuan(){
+        var width=$("#shaixuanbox").width();
+        $("#shaixuanbox").css({"left":width+"px"});
+    }
+    initshaixuan();
+    function showshaixuan(){
+        var width=$("#shaixuanbox").width();
+        $("#shaixuanbox").show();
+        $("#shaixuanbox").animate({"left":0+"px"},300);
+        //$("#shaixuanbox").slideToggle;
+    }
+
+    function closeshaixuan(){
+        $("#shaixuanbox ul li input").val('');
+        var width=$("#shaixuanbox").width();
+        $("#shaixuanbox").animate({"left":width+"px"},300);
+
+    }
+
+    function resetshaixuan(){
+        $("#shaixuanbox ul li input").val('');
+    }
+</script>
+
+<style>
+    #echartsPie{width:100% !important;}
+    #echartsPie div:first-child{width:100% !important;}
+    #echartsPie canvas{width:100% !important;height: auto;}
+</style>
+<script type="text/javascript">
+
+    function getstatistics(){
+        var start=$("#starttime").val();
+        var end=$("#endtime").val();
+        var username=$("#username").val();
+        var act=$(".tjul .active").attr("data-id");
+
+        $.ajax({
+            url:"/Crm/Index/getstatistics.html",
+            data:{start:start,end:end,username:username,act:act},
+            type:"POST",
+            success: function (data) {
+
+                var echartsPie;
+                var option = {
+                    title : {
+                        text: '数据统计',
+                        x:'left'
+                    },
+                    tooltip : {
+                        trigger: 'item',
+						position:function(p){   //其中p为当前鼠标的位置
+								return [p[0] - 100, p[1] - 50];
+							},
+                        formatter: "{a} <br/>{b} : {c} ({d}%)"
+                    },
+                    legend: {
+                        orient: 'horizontal',
+                        left: 'right',
+						right: '7%',
+						bottom: '0%',
+                        data: data.items
+                    },
+                    series : [
+                        {
+                            name: '数据来源',
+                            type: 'funnel',//pie
+//                            radius : '55%',
+//                            center: ['50%', '60%'],
+                            data:data.data,
+                            itemStyle: {
+                                normal:{
+                                    label:{
+                                        show:false,
+                                        formatter: '{b} : {c} \n ({d}%)'
+                                    },
+                                    labelLine:{
+                                        show:false
+                                    }
+                                },
+                                emphasis: {
+                                    shadowBlur: 10,
+                                    shadowOffsetX: 0,
+                                    shadowColor: 'rgba(0, 0, 0, 0.5)'
+                                }
+                            }
+                        }
+                    ],
+                    color: ['rgb(254,67,101)','rgb(252,157,154)','rgb(249,205,173)','rgb(200,200,169)','rgb(131,175,155)','rgb(131,105,155)','rgb(131,175,105)','rgb(101,175,155)','rgb(131,5,155)']
+                };
+
+                echartsPie = echarts.init(document.getElementById('echartsPie'));
+
+                echartsPie.setOption(option);
+
+
+            }
+        })
+    }
+
+    getstatistics();
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,112 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>{$title}</title>
+<include file="Public:scripts" />
+<script src="__PUBLIC__/Home/js/mui.min.js"></script>
+<script src="__PUBLIC__/Home/js/jquery-2.2.3.min.js"></script>
+<script src="__PUBLIC__/Home/js/jquery.func.js"></script>
+</head>
+
+<body>
+<footer class="mui-bar mui-bar-footer">
+
+    <div class="mui-pull-left">
+        <a class="mui-btn mui-btn-link" href="/Member/order.html">
+            <span class="mui-icon mui-icon-back"></span>
+            订单列表
+        </a>
+    </div>
+    <div class="mui-pull-right">
+        <switch name="db.status">
+            <case value="0">
+               <a href="javascript:$.cancelOrder('{$db.orderno}');" class="mui-btn mui-btn-danger" >取消订单</a>
+            </case>
+            <case value="2">
+               <a href="javascript:$.confirmOrder('{$db.orderno}');" class="mui-btn mui-btn-primary" >确认收货</a>
+            </case>
+        </switch>
+
+        <eq name="db.paystatus" value="1">
+            <a href="javascript:void(0);" class="mui-btn mui-btn-primary" >已支付</a>
+            <else/>
+            <if condition="$db['paymethod'] eq 1">
+                <a href="{:U('Settle/order','orderno='.$db['orderno'])}" class="mui-btn  mui-btn-primary">立即支付</a>
+            </if>
+            <if condition="$db['paymethod'] eq 4">
+                <a href="{:U('Uchangpay/order','orderno='.$db['orderno'])}" class="mui-btn  mui-btn-primary">立即支付</a>
+            </if>
+        </eq>
+    </div>
+</footer>
+<div class="mui-content">
+    <div class="mui-table-view orderitem mt10">
+        <div class="mui-table-view-cell">
+            订单信息  </span>
+        </div>
+        <div class="mui-table-view-cell">
+            <p>订单编号：{$db.orderno}</p>
+            <p>下单时间：{$db.addtime}</p>
+            <if condition="$db['paytime']">
+                <p>支付时间：{$db.paytime}</p>
+            </if>
+        </div>
+    </div>
+    <div class="mui-table-view orderitem mt10">
+        <div class="mui-table-view-cell">
+            收货信息
+        </div>
+        <div class="mui-table-view-cell">
+            <div>收货人：{$db.username}  <span class="mui-pull-right">{$db.telephone}</span></div>
+            <p class="mt10">{:get_area_name($db['provinceid'])}{:get_area_name($db['cityid'])}{:get_area_name($db['districtid'])} {$db.address}
+            </p>
+        </div>
+    </div>
+    <div class="mui-table-view orderitem mt10">
+        <div class="mui-table-view-cell">
+            发货信息
+        </div>
+        <div class="mui-table-view-cell">
+            <p>物流公司：{$expressname}</p>
+            <p>运单号码：{$db.expressno}</p>
+        </div>
+        <div class="mui-table-view-cell">
+            <a href="http://m.kuaidi100.com/result.jsp?nu={$db.expressno}" class="mui-navigate-right">查看物流信息</a>
+        </div>
+    </div>
+    <div class="mui-table-view cartitem">
+        <div class="mui-table-view-cell">
+            订单产品
+        </div>
+
+        <volist name="detaillist" id="vo">
+            <div class="mui-table-view-cell">
+                <a href="{:U('Item/view','id='.$vo['productid'])}">
+                    <div class="display-box">
+                        <div class="img1-1"><img src="{$vo.indexpic|default=C('DEFAULT_NOPIC')}"></div>
+                        <div class="box-flex-1">
+                            <div class="mui-ellipsis-2 cpname">{$vo.title}</div>
+                            <p><volist name="vo['attrs']" id="voatt">{$voatt}&nbsp;</volist></p>
+                            <div class="pricenumber mui-clearfix">
+                                <span class="price mui-pull-left"><if condition="$db['type'] eq 1">&yen;</if>{$vo.price}<if condition="$db['type'] eq 2">积分</if></span>
+                                <span class="mui-pull-right">x{$vo.num}</span>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </volist>
+
+
+        <div class="mui-table-view-cell mui-text-right fz12">
+            共{$db.num}件商品 合计：
+            <if condition="$db['type'] eq 1">&yen;</if>
+            <span class="fz16">{$db.amount}</span>
+            <if condition="$db['type'] eq 2">积分</if>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

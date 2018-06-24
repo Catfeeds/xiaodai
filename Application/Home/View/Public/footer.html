@@ -1,0 +1,57 @@
+
+<?php
+$navclass=array(); 
+$ctrl=strtolower(CONTROLLER_NAME); 
+    switch($ctrl){
+    	case 'index':
+       		$navclass[0]='class="active"';
+        break;
+    	case 'item':
+       		$navclass[1]='class="active"';
+        break;
+    	case 'member':
+    	case 'login':
+       		$navclass[3]='class="active"';
+        break;
+    	case 'settle':
+       		$navclass[2]='class="active"';
+        break;
+        default:
+       		$navclass[0]='class="active"';
+    }
+
+
+    $cartnum=count(session('cart_name')['cart_items']);
+
+    $action_name=ACTION_NAME;
+    $ptype=I('type');
+    if($action_name=='lists' and $ptype==2){
+        $action_name='point';
+    }
+
+?>
+
+<footer class="mui-bar mui-bar-footer nav-bottom">
+    <ul class="clearListStyle mui-clearfix">
+        <li {$navclass[0]}><a href="{:U('Index/index')}"><span class="iconfont icon-home"></span>首页</a></li>
+        <li <if condition="($action_name eq 'category') or ($action_name eq 'lists')">{$navclass[1]}</if> ><a href="{:U('Item/lists')}"><span class="iconfont icon-fenlei"></span>产品</a></li>
+        <!--<li <if condition="$action_name eq 'point'">{$navclass[1]}</if>><a href="{:U('Item/lists','type=2')}"><span class="iconfont icon-duihuan"></span>兑换</a></li>-->
+        <li {$navclass[2]}><a href="{:U('Settle/cart')}"><span class="mui-badge mui-badge-danger">{$cartnum}</span><span class="iconfont icon-cart"></span>购物车</a></li>
+        <li {$navclass[3]}><a href="{:U('Member/index')}"><span class="iconfont icon-user"></span>会员</a></li>
+    </ul>
+</footer>
+
+<script src="__PUBLIC__/Home/js/mui.min.js"></script>
+
+<script src="__PUBLIC__/Home/js/jquery-2.2.3.min.js"></script>
+<script src="__PUBLIC__/Home/js/jquery.func.js"></script>
+<script src="__PUBLIC__/Home/js/swiper/swiper.3.1.2.jquery.min.js"></script>
+<link rel="stylesheet" href="__PUBLIC__/Home/js/swiper/swiper.3.1.2.min.css" />
+<script src="__PUBLIC__/Home/js/script.js"></script>
+<script>
+    var duihuan_swiper = new Swiper('.duihuan .swiper-container',{
+        slidesPerView:3.2,
+        spaceBetween : 8,
+        autoHeight: true,
+    });
+</script>

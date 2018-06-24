@@ -1,0 +1,38 @@
+<empty name="list">
+    <eq name="p" value="1">
+        <div class="mui-table-view-cell">
+            <a href="javascript:void(0);">没有记录</a>
+        </div>
+    </eq>
+</empty>
+<volist name="list" id="vo">
+    <div class="mui-table-view-cell">
+        <a href="{:U('Item/view','id='.$vo['id'])}">
+            <div class="kehulist">
+                <div class="name mui-ellipsis">
+                    {$vo.name}&nbsp;&nbsp;
+                    <span class="text-red">
+                        <switch name="vo['status']">
+                            <case value="0">跟进中</case>
+                            <case value="1">已签约</case>
+                            <case value="2">已放弃</case>
+                            <case value="3">服务中</case>
+                            <case value="4">服务结束</case>
+                        </switch>
+                    </span>
+                </div>
+                <div class="num">{$vo.addtime|date2format}</div>
+            </div>
+            <div class="kehuadd">
+                <i class="iconfont icon-kehu"></i>&nbsp;创建人:{$vo.mastername}&nbsp;
+                |&nbsp;<i class="iconfont icon-kehu1"></i>&nbsp;项目成员:   <?php $count=count(explode(',',$vo['member'])); echo $count-2; ?>人
+            </div>
+            <div class="kehuadd">
+                <i class="iconfont icon-tongxun"></i>&nbsp;{$vo.remark}&nbsp;
+
+            </div>
+        </a>
+    </div>
+
+</volist>
+

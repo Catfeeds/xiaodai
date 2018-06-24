@@ -1,0 +1,211 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>{$title}</title>
+    <include file="Public:scripts" />
+</head>
+<body>
+
+<footer class="gjpush"><a href="{:U('Custom/addfollowrecord','memberid='.$db['customid'])}?fromurl={:think_encrypt(get_current_url())}">添加跟进记录+</a></footer>
+
+<div class="mui-content hz_info">
+    <?php
+        if($db['masterid']==get_manageid()){
+            $url=U('Item/additem','id='.$db['id']);
+        }else{
+            $url="javascript:void(0);";
+        }
+    ?>
+
+    <a href="{$url}" class="infohead" style="background-size: 100% 100%;">
+        <div class="fz20">{$db.name}</div>
+        <div class="infoli mt10">最后跟进时间：{$record[0]['addtime']?$record[0]['addtime']:'暂无'}</div>
+        <div class="infoli">创建人：{$db.mastername}</div>
+        <div class="infoli">项目状态：
+            <switch name="db['status']">
+                <case value="0">跟进中</case>
+                <case value="1">已签约</case>
+                <case value="2">已放弃</case>
+                <case value="3">服务中</case>
+                <case value="4">服务结束</case>
+            </switch>
+        </div>
+
+        <div class="infoli">
+            客户状态：{$db.customid}
+        </div>
+
+    </a>
+    <style>
+        .itemul li{ width: 50%;  text-align: center; float: left;}
+        .itemul .active{ border-bottom: 1px solid red;}
+    </style>
+    <ul class="itemul" style="list-style: none;margin: 0px; background-color: white; height: 40px;line-height: 40px;padding: 0px;">
+        <li class="active">项目信息</li>
+        <li>跟进记录</li>
+    </ul>
+
+    <div class="mui-table-view mt10">
+        <div class="mui-table-view-cell">
+            <div class="jilu">
+                <div style="line-height: 20px;" class="cont">
+                    项目描述
+                </div>
+            </div>
+            <div class="con">
+                {$db.remark}
+            </div>
+        </div>
+        <div class="mui-table-view-cell">
+            <a href="{:U('Custom/view','id='.$db['customid'])}" class="mui-navigate-right">
+                <div class="jilu">
+                    <div style="line-height: 20px;" class="cont">
+                        关联客户
+                    </div>
+                </div>
+                <div class="con">
+
+                        {:get_cache_value('member',$db['customid'],'company')}
+
+                </div>
+            </a>
+        </div>
+        <div class="mui-table-view-cell">
+            <div class="jilu">
+                <div style="line-height: 20px;" class="cont">
+                    项目负责人
+                </div>
+            </div>
+            <div class="con">
+                {$db.mastername}
+            </div>
+        </div>
+
+        <div class="mui-table-view-cell">
+            <div class="jilu">
+                <div style="line-height: 20px;" class="cont">
+                    <?php
+                    $arr=explode(',',$db['member']);
+                    $arr=array_filter($arr);
+                    $num=count($arr);
+                ?>
+                    项目成员({$num})
+                </div>
+            </div>
+            <div class="con">
+
+                <foreach name="arr" item="vo">
+                    {:get_cache_value('staff',$vo,name)}&nbsp;&nbsp;&nbsp;&nbsp;
+                </foreach>
+            </div>
+        </div>
+    </div>
+
+    <div style="display: none;" class="mui-table-view mt10">
+        <div class="biaoti">跟进记录({:count($record)})</div>
+        <empty name="record">
+            <div class="mui-table-view-cell">
+                <div class="con">
+                    没有跟进记录
+                </div>
+            </div>
+            <else/>
+            <volist name="record" id="vo" key="k">
+                <div class="mui-table-view-cell">
+                    <div class="jilu">
+                        <div style="width: 40px;
+								height: 40px;
+								font-size: 20px;
+								line-height: 40px;
+								background-color: #b7b9c5;
+								text-align: center;
+								border-radius: 50%;
+								color:white;
+								margin-right: 10px;float:left;">
+                            <?php
+                                $name=get_cache_value('staff',$vo['staffid'],'name');
+                            ?>
+                            {$name|cut_str=###,0,1,''}
+                            <span style="font-size: 12px; float: right;"> {:get_cache_value('member',$vo['memberid'],'company')}</span>
+                        </div>
+                        <div style="line-height: 20px;" class="cont">
+                            {:get_cache_value('staff',$vo['staffid'],'name')}
+                            <div class="time" style="text-overflow:ellipsis;height: 20px;">{$vo.addtime}&nbsp;&nbsp;{$vo.address}</div>
+                        </div>
+                    </div>
+                    <div class="con">
+                        {$vo.remark}
+                        <?php
+                        $images=explode(',',$vo['images']);
+                        $images=array_filter($images);
+                        ?><br/>
+                        <volist name="images" id="vom">
+                            <img style="width:33%;height:100px;padding-right:5%;padding-bottom:10px;"  data-preview-src="" data-preview-group="{$k}" src="{$vom}"/>
+                        </volist>
+                    </div>
+                </div>
+            </volist>
+        </empty>
+    </div>
+	<include file="Public:daohang" />
+</div>
+<script src="__PUBLIC__/Crm/js/mui.min.js"></script>
+<script src="__PUBLIC__/Crm/js/jquery-2.2.3.min.js"></script>
+<script src="__PUBLIC__/Crm/js/script.js"></script>
+<script src="__PUBLIC__/Crm/js/mui.previewimage.js"></script>
+<script src="__PUBLIC__/Crm/js/mui.zoom.js"></script>
+<link rel="stylesheet" href="__PUBLIC__/Crm/css/priview.css" />
+
+<script type="text/javascript">
+
+    $(".itemul li").click(function () {
+       var index=$(this).index();
+        $(".itemul li").removeClass('active');
+        $(this).addClass('active');
+
+        $(".mui-table-view").eq(index).show();
+        $(".mui-table-view").eq(index).siblings(".mui-table-view").hide();
+
+    });
+
+
+    mui.previewImage();
+    function applymember(id){
+        $.ajax({
+            url:"/Crm/Custom/applymember.html",
+            data:{id:id},
+            type:"POST",
+            success:function(data){
+                mui.toast(data.info);
+                if(data.status==1){
+                    setTimeout(function(){
+                        window.location.href="/Crm/Custom";
+                    },1000);
+                }
+            }
+        })
+    }
+
+
+    function settopublic(id){
+        var btnArray = ['是', '否'];
+        mui.confirm('确认将该客户取消私有？', '取消私有', btnArray, function(e) {
+            if (e.index == 0) {
+                $.ajax({
+                    url:"/Crm/Custom/settopublic.html",
+                    data:{id:id},
+                    type:"POST",
+                    success:function(data){
+                        mui.toast(data.info);
+                        if(data.status==1){
+                            window.location.reload();
+                        }
+                    }
+                });
+            }
+        });
+    }
+</script>
+</body>
+</html>

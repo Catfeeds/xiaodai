@@ -1,0 +1,239 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>无标题文档</title>
+<link rel="stylesheet" type="text/css" href="lib/bootstrap3/dist/css/bootstrap.min.css">
+<link rel="stylesheet" href="lib/FontAwesome/css/font-awesome.css">
+<link rel="stylesheet" type="text/css" href="stylesheets/theme.min.css">
+<link rel="stylesheet" type="text/css" href="stylesheets/custom.css">
+<script src="lib/jquery-1.11.2.min.js" type="text/javascript"></script>
+<script src="lib/bootstrap3/dist/js/bootstrap.min.js"></script>
+<script src="lib/jquery.custom.js"></script>
+
+<link rel="stylesheet" type="text/css" href="lib/datepicker/css/datepicker.css">
+<script src="lib/datepicker/js/bootstrap-datepicker.js" type="text/javascript"></script>
+<script type="text/javascript">
+$(function(){
+  $('.datepicker').datepicker();
+
+});
+</script>
+</head>
+
+<body>
+<div class="navbar navbar-inverse navbar-fixed-top">
+  <div class="navbar-header">
+    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse"> <span class="icon-reorder"></span> </button>
+    <a class="navbar-brand" href="index.html">网站后台管理系统</a> </div>
+  <div class="hidden-xs">
+    <ul class="nav navbar-nav pull-right">
+      <li class="hidden-phone"><a href="#" role="button"><i class="icon-refresh"></i> 更新缓存</a></li>
+      <li id="fat-menu" class="dropdown"> <a href="#" role="button" class="dropdown-toggle" data-toggle="dropdown"> <i class="icon-user"></i> admin <i class="icon-caret-down"></i> </a>
+        <ul class="dropdown-menu">
+          <li><a tabindex="-1" href="#">修改密码</a></li>
+          <li class="divider"></li>
+          <li><a tabindex="-1" href="sign-in.html">退出</a></li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+  <!--/.navbar-collapse --> 
+</div>
+<div class="navbar-collapse collapse">
+  <div id="main-menu">
+    <ul class="nav nav-tabs hidden-xs">
+      <li class="active"><a href="index.html"><i class="icon-home"></i> <span>平台首页</span></a></li>
+      <li ><a href="reports.html" ><i class="icon-key"></i> <span>权限管理</span></a></li>
+      <li ><a href="components.html" ><i class="icon-cogs"></i> <span>系统设置</span></a></li>
+      <li ><a href="pricing.html"><i class="icon-folder-open"></i> <span>内容管理</span></a></li>
+      <li ><a href="pricing.html"><i class="icon-shopping-cart"></i> <span>商城管理</span></a></li>
+      <li ><a href="pricing.html"><i class="icon-bar-chart"></i> <span>报表统计</span></a></li>
+    </ul>
+  </div>
+</div>
+<div id="sidebar-nav" class="hidden-xs">
+  <ul id="dashboard-menu" class="nav nav-list">
+    <li><a href="index.html"><i class="icon-chevron-right"></i> <span class="caption">角色管理</span></a></li>
+    <li class="active"><a href="list.html"><i class="icon-chevron-right"></i> <span class="caption">用户管理</span></a></li>
+    <li class=" "><a href="form.html"><i class="icon-chevron-right"></i> <span class="caption">节点管理</span></a></li>
+  </ul>
+</div>
+<div class="content" id="maincontent">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="col-md-12 custom-tool" >
+        <h2>用户列表</h2>
+        <div class="pull-right">
+          <button class="btn btn-success" rel="tooltip" data-original-title="添加"><i class="icon-plus-sign"></i> 添加</button>
+        </div>
+      </div>
+      <table class="table vm">
+         <thead> 
+          <th colspan="2">筛选</th>
+            </thead><tbody>
+          <tr>
+            <td width="140" class="text-right">注册日期：</td>
+            <td>
+              <div class="col-md-4"> 
+                <div class="input-group">
+                <span class="input-group-addon"><i class="icon-th"></i></span>
+                <input class="form-control datepicker" size="16" type="text" value="" id="date-picker-input"  placeholder="开始日期" > 
+                <span class="input-group-addon">-</span>
+                <input class="form-control datepicker" size="16" type="text" value="" id="date-picker-input"  placeholder="结束日期" >
+              </div> 
+            </div></td>
+          </tr>
+          <tr>
+            <td  class="text-right">用户状态：</td>
+            <td>
+              <div class="col-md-12">
+                <span class="label label-info">全部</span> 
+                <span class="label label-default">分类一</span>
+                <span class="label label-default">分类二</span>
+                <span class="label label-default">分类三</span>
+                <span class="label label-default">分类四</span>
+              
+</div>     </td>
+          </tr>
+          <tr>
+            <td  class="text-right">关键词：</td>
+            <td>
+              <div class="col-md-4">
+<div class="input-group">
+                <input type="text" class="form-control" placeholder="输入关键词">
+                <span class="input-group-btn"> 
+                 <select class="btn">
+                <option value="">选择类别</option>
+              </select> </span>
+                <span class="input-group-btn"> 
+         <button type="button" class="btn fl"><i class="icon-search"></i> 查询</button>
+                </span>
+            </div>
+
+            </div>
+  
+</td>
+          </tr>
+
+        </tbody>
+      </table>
+      <table class="table  table-first-column-number display full table-striped custom-table vm">
+        <thead>
+        <th> </th>
+          <th width="50">#</th>
+          <th>First</th>
+          <th>Last</th>
+          <th>User</th>
+          <th width="140">action</th>
+            </thead>
+        <tbody>
+          <tr>
+            <td><input type="checkbox" name="selectids" value="1"></td>
+            <td>1</td>
+            <td>TONY</td>
+            <td>MEYER</td>
+            <td>teyer</td>
+            <td><button type="button" class="btn"><i class="icon-plus"></i></button>
+              <button type="button" class="btn"><i class="icon-edit"></i></button>
+              <button type="button" class="btn"><i class="icon-trash"></i></button></td>
+          </tr>
+          <tr>
+            <td><input type="checkbox" name="selectids" value="2"></td>
+            <td>2</td>
+            <td>KENDRA</td>
+            <td>MARSHALL</td>
+            <td>kmarshall</td>
+            <td><button type="button" class="btn"><i class="icon-plus"></i></button>
+              <button type="button" class="btn"><i class="icon-edit"></i></button>
+              <button type="button" class="btn"><i class="icon-trash"></i></button></td>
+          </tr>
+          <tr>
+            <td><input type="checkbox" name="selectids" value="3"></td>
+            <td>3</td>
+            <td>NICHOLE</td>
+            <td>BROOKS</td>
+            <td>nibrooks</td>
+            <td><button type="button" class="btn"><i class="icon-plus"></i></button>
+              <button type="button" class="btn"><i class="icon-edit"></i></button>
+              <button type="button" class="btn"><i class="icon-trash"></i></button></td>
+          </tr>
+          <tr>
+            <td><input type="checkbox" name="selectids" value="4"></td>
+            <td>4</td>
+            <td>CHRISTIE</td>
+            <td>GRAHAM</td>
+            <td>chgraham</td>
+            <td><button type="button" class="btn"><i class="icon-plus"></i></button>
+              <button type="button" class="btn"><i class="icon-edit"></i></button>
+              <button type="button" class="btn"><i class="icon-trash"></i></button></td>
+          </tr>
+          <tr>
+            <td><input type="checkbox" name="selectids" value="5"></td>
+            <td>5</td>
+            <td>RAY</td>
+            <td>JENKINS</td>
+            <td>rjenkins</td>
+            <td><button type="button" class="btn"><i class="icon-plus"></i></button>
+              <button type="button" class="btn"><i class="icon-edit"></i></button>
+              <button type="button" class="btn"><i class="icon-trash"></i></button></td>
+          </tr>
+          <tr>
+            <td><input type="checkbox" name="selectids" value="6"></td>
+            <td>6</td>
+            <td>KRYSTAL</td>
+            <td>MORENO</td>
+            <td>kmoreno</td>
+            <td><button type="button" class="btn"><i class="icon-plus"></i></button>
+              <button type="button" class="btn"><i class="icon-edit"></i></button>
+              <button type="button" class="btn"><i class="icon-trash"></i></button></td>
+          </tr>
+          <tr>
+            <td><input type="checkbox" name="selectids" value="7"></td>
+            <td>7</td>
+            <td>MARCUS</td>
+            <td>HERRERA</td>
+            <td>mherrera</td>
+            <td><button type="button" class="btn"><i class="icon-plus"></i></button>
+              <button type="button" class="btn"><i class="icon-edit"></i></button>
+              <button type="button" class="btn"><i class="icon-trash"></i></button></td>
+          </tr>
+          <tr>
+            <td><input type="checkbox" name="selectids" value="8"></td>
+            <td>8</td>
+            <td>DAVID</td>
+            <td>ROSE</td>
+            <td>drose</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td colspan="6"><div class="pull-left">
+                <ul class="pagination" style="margin: 0px;">
+                  <li><a href="#">«</a></li>
+                  <li class="active"><a href="#">1</a></li>
+                  <li><a href="#">2</a></li>
+                  <li><a href="#">3</a></li>
+                  <li><a href="#">4</a></li>
+                  <li><a href="#">5</a></li>
+                  <li><a href="#">»</a></li>
+                </ul>
+              </div>
+              <div class="pull-right">
+                <div class="btn-group">
+                  <button id="AllCheck"  class="btn" rel="tooltip1" title="全选"><i class="icon-check"></i></button>
+                  <button id="ReverseCheck"  class="btn"  rel="tooltip1" title="反选"><i class="icon-check-minus"></i></button>
+                  <button class="btn dropdown-toggle" data-toggle="dropdown" aria-expanded="false" rel="tooltip" data-original-title="操作"><i class="icon-wrench"></i> <span class="caret"></span></button>
+                  <ul class="dropdown-menu">
+                    <li><a id="AllDel" href="#"><i class="icon-trash"></i> 删除</a></li>
+                    <li class="divider"></li>
+                    <li><a id="AllStatus" href="#"><i class="icon-lock"></i> 启/禁用</a></li>
+                  </ul>
+                </div>
+              </div></td>
+          </tr>
+      </table>
+    </div>
+  </div>
+</div>
+</body>
+</html>

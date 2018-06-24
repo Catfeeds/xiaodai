@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+		<meta content="yes" name="apple-mobile-web-app-capable">
+		<meta content="black" name="apple-mobile-web-app-status-bar-style">
+		<meta content="telephone=no" name="format-detection">
+		<!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+		<meta http-equiv="Cache-Control" content="no-siteapp" />
+		<!--百度禁止转码 -->
+		<title>新闻列表</title>
+		<link rel="stylesheet" type="text/css" href="../css/base.css" />
+		<script src="../js/jquery-1.9.1.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/mobileRsize.js" type="text/javascript" charset="utf-8"></script>
+		<style type="text/css">
+			.listbox li:after {
+				left: 0;
+				content: "";
+				position: absolute;
+				bottom: 0;
+				border-bottom: 1px solid #CCCCCC;
+				width: 100%;
+				-webkit-transform: scaley(.3);
+				transform: scaley(.3);
+			}
+			
+			.listbox li:last-child:after {
+				border: 0;
+			}
+			
+			.listbox li {
+				width: 94%;
+				padding: 0.1rem 0;
+				margin: 0 auto;
+				box-sizing: border-box;
+				position: relative;
+				overflow: hidden;
+				line-height: 1;
+				font-size: 0.14rem;
+			}
+			/*.listbox li {
+				position: relative;
+				overflow: hidden;
+				width: 100%;
+			}*/
+			
+			.listbox .imgbox {
+				background: url(../img/p2.jpg) no-repeat center / cover;
+				height: 0.8rem;
+				width: 1.2rem;
+				float: left;
+				border-radius: 0.16rem;
+				overflow: hidden;
+			}
+			
+			.text-box {
+				margin-left: 1.3rem;
+			}
+			
+			.title {
+				overflow: hidden;
+				line-height: 1;
+				text-overflow: ellipsis;
+				white-space: nowrap;
+				font-size: 0.16rem;
+				color: #000;
+				font-weight: normal;
+				margin-top: 0.04rem;
+			}
+			
+			.times {
+				position: absolute;
+				bottom: 0.1rem;
+				right: 0;
+				color: #999999;
+				font-size: 0.12rem;
+				font-weight: normal;
+			}
+			
+			.introduction {
+				font-size: 0.12rem;
+				color: #666666;
+				font-weight: normal;
+				line-height: 1.5;
+				height: 0.36rem;
+				overflow: hidden;
+				text-overflow: ellipsis;
+				margin-top: 0.08rem;
+				display: -webkit-box;
+				-webkit-line-clamp: 2;
+				-webkit-box-orient: vertical;
+				word-break: break-all;
+			}
+		</style>
+	</head>
+
+	<body style="background: #f5f5f5;">
+		<section class="listbox" style="margin: 0.12rem;background: #fff;border-radius:0.2rem ;font-size: 0.14rem;">
+			<ul>
+				<li>
+					<div class="imgbox" style=""></div>
+					<div class="text-box" style="">
+						<h1 class="title" style="">侠客岛：一文清晰读懂党和国家机构改革方案</h1>
+						<h5 class="introduction">侠客岛：一文清晰读懂党和国家机构改革方案侠客岛：一文清晰读懂党和国家机构改革方案侠客岛：一文清晰读懂党和国家机构改革方案侠客岛：一文清晰读懂党和国家机构改革方案</h5>
+						<h5 class="times">2018-12-2</h5>
+					</div>
+				</li>
+				<li>
+					<div class="imgbox" style=""></div>
+					<div class="text-box" style="">
+						<h1 class="title" style="">侠客岛：一文清晰读懂党和国家机构改革方案</h1>
+						<h5 class="introduction">侠客岛：一文清晰读懂党和国家机构改革方案侠客岛：一文清晰读懂党和国家机构改革方案</h5>
+						<h5 class="times">2018-12-2</h5>
+					</div>
+				</li>
+			</ul>
+		</section>
+
+	</body>
+
+</html>

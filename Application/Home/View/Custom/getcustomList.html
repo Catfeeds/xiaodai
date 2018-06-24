@@ -1,0 +1,29 @@
+
+<empty name="list">
+    <eq name="p" value="1">
+        <div class="mui-table-view-cell">
+            <div class="mui-table-view-cell"> 暂无记录 </div>
+        </div>
+    </eq>
+</empty>
+<volist name="list" id="vo">
+    <div class="mui-table-view-cell">
+        <a href="{:U('Custom/view','id='.$vo['id'])}" class="listcont">
+            <div class="display-box">
+                <div style="width:60px;" class="img1-1"><img src="{$vo.headimgurl|default=C('DEFAULT_NOPIC')}"></div>
+                <div class="box-flex-1">
+                    <div class="mui-ellipsis fz16">{$vo.nickname}<notempty name="vo['company']">【{$vo.company}】</notempty></div>
+                    <if condition="$type eq 'opt'">
+                        <div class="mui-ellipsis-2 desc"><span style="color: red;">需要：</span>{$vo.need}</div>
+                    </if>
+                    <if condition="$type eq 'pro'">
+                        <div class="mui-ellipsis-2 desc"><span style="color: red;">提供：</span>{$vo.have}</div>
+                    </if>
+                    <if condition="!$type">
+                        <div class="mui-ellipsis-2 desc">{$vo.have}</div>
+                    </if>
+                </div>
+            </div>
+        </a>
+    </div>
+</volist>

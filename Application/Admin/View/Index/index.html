@@ -1,0 +1,181 @@
+<!doctype html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>{$title}</title>
+<include file="Public/scripts" />
+<style>
+body{padding:0px; overflow:hidden;}
+#sidebar-nav .nav-list i{width: 15px;}
+#sidebar-nav .nav-list li:hover{}
+#sidebar-nav .nav-list li>ul{ display:none; padding-left:2em; background: #fff;}
+#sidebar-nav .nav-list li>ul li:hover,#sidebar-nav .nav-list li>ul .current{ background: none; }
+#sidebar-nav .nav-list li>ul li:hover a,#sidebar-nav .nav-list li>ul .current a{ color: #000; }
+</style>
+</head>
+<body>
+<div class="navbar navbar-inverse navbar-fixed-top">
+  <div class="navbar-header">
+    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse"> <span class="icon-reorder"></span> </button>
+    <a class="navbar-brand" href="{:U('Index/index')}"><i class="fa fa-television"></i>小贷管理系统</a> </div>
+  <div class="hidden-xs">
+    <ul class="nav navbar-nav pull-right">
+      <!--<li><a href="{:U('Index/message')}" target="_blank" role="button"><i class="fa fa-file-o"></i> 客服系统</a></li>-->
+      <li class="hidden-phone"><a href="javascript:void(0);" id="ClrCache" role="button" rel="tooltip" data-original-title="点击清空缓存" data-placement="bottom" ><i class="fa fa-refresh"></i> 更新缓存</a></li>
+      <li><a href="{:U('/')}" target="_blank" role="button"><i class="fa fa-internet-explorer"></i> 前台</a></li>
+      <li id="fat-menu" class="dropdown"> <a href="{:U('System/pwd')}"  role="button" class="dropdown-toggle" data-toggle="dropdown"> <i class="icon-user"></i> <i class="fa fa-user"></i> {:Session('adminname')} <i class="fa fa-caret-down"></i> </a>
+        <ul class="dropdown-menu dropdown-menu-right"> 
+          <li><a tabindex="-1" href="javascript:void(0);" id="btnExit">退出</a></li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+  <!--/.navbar-collapse --> 
+</div>
+<div class="navbar-collapse collapse">
+  <div id="main-menu">
+    <ul class="nav nav-tabs hidden-xs">
+      <!--<li class="active"><a href="javascript:void(0);" class="level2" data-pid="0" id="parent_0"><i class="fa fa-home"></i> <span>平台首页</span></a></li>-->
+      <volist name="nodelist" id="vo">
+        <if condition="($supper eq true) Or ($vo.access eq 1)">
+          <eq name="vo.level" value="2">
+            <li><a href="javascript:void(0);"  target="MainFrame" class="level2" data-pid="{$vo.id}" id="parent_{$vo.id}"  ><i class="{$vo.icon}"></i> <span>{$vo.title}</span></a></li>
+          </eq>
+        </if>
+      </volist>
+    </ul>
+  </div>
+</div>
+<div id="sidebar-nav" class="hidden-xs">
+  <notempty name="nodelist1">
+    <ul id="submenu_0" class="nav nav-list">
+      <volist id="son" name="nodelist1">
+        <li ><a href="{:U($son['url'])}" target="MainFrame" class="level3" data-pid="0" id="son_{$son.id}" ><i class="{$son.icon|default='fa fa-chevron-right'}"></i> <span>{$son.title}</span></a></li>
+      </volist>
+    </ul>
+  </notempty>
+  <volist name="nodelist" id="vo">
+    <eq name="vo.level" value="2">
+      <ul id="submenu_{$vo.id}" class="nav nav-list" style="display:none;">
+        <volist id="son" name="vo.child">
+          <if condition="($supper eq true) Or ($son.access eq 1)">
+            <?php
+        $url=isN($son['url'])?U($vo['name'].'/'.$son['name']):U($son['url']); 
+        $child=$son['child'];
+        if($child){
+        	$url='javascript:void(0);';
+            $css='class="famenu"';
+        }else{
+        	$css='';
+        }
+        ?>
+            <li {$css}><a href="{$url}" target="MainFrame" class="level3" data-pid="{$vo.id}" id="son_{$son.id}" ><i class="{$son.icon|default='fa fa-chevron-right'}"></i> <span>{$son.title}</span></a>
+              <notempty name="child">
+                <ul id="submenu_{$vo.id}" class="nav nav-list" >
+                  <volist id="son1" name="son.child">
+                    <if condition="($supper eq true) Or ($son1.access eq 1)">
+                      <?php
+            $url=isN($son1['url'])?U($son['name'].'/'.$son1['name']):U($son1['url']); 
+            ?>
+                      <li><a href="{$url}" target="MainFrame" class="level4" data-pid="{$vo.id}" id="son1_{$son1.id}" ><i class="{$son1.icon|default='fa fa-chevron-right'}"></i> <span>{$son1.title}</span></a></li>
+                    </if>
+                  </volist>
+                </ul>
+              </notempty>
+            </li>
+          </if>
+        </volist>
+      </ul>
+    </eq>
+  </volist>
+</div>
+<div class="content" id="maincontent">
+  <iframe id="MainFrame" name="MainFrame" frameborder="0" width="100%" height="100%" src="{:U('Index/sysinfo')}" ></iframe>
+</div>
+<script language="javascript">
+
+function resetWin(){
+	var WH=($(window).height());
+	$("#maincontent").css("min-height",WH-135);	
+	$("#MainFrame").css("min-height",WH-131);	
+}
+$(function(){
+	resetWin();
+	$(window).resize(function(){resetWin();});
+	
+	//菜单（一级）
+	$("#main-menu .level2").click(function() {
+		var pid = $(this).attr("data-pid");
+		$("#sidebar-nav ul").hide();
+		$("#submenu_" + pid).show();
+
+		$("#main-menu ul li").removeClass("active");
+		$(this).parent().addClass("active");
+	});
+
+	$("#sidebar-nav .level3").click(function() {
+		var pid = $(this).attr("data-pid");
+
+		$("#sidebar-nav ul li").removeClass("active");
+		$(this).parent().addClass("active");
+	});
+
+	//清除缓存
+	$("#ClrCache").click(function() {
+		$(this).blur();
+		var obj = $(this).find("i");
+		obj.addClass("fa-spin fc_green");
+		$.ajax({
+			url: "{:U('Login/clrcache')}",
+			success: function(msg) {
+				msg = eval(msg);
+				if (msg.status == "1") {
+					obj.removeClass("fa-spin fc_green");
+					//setTimeout(function() {
+					//	obj.removeClass("fa-spin fc_green");
+					//}, 500);
+				} else {
+
+				}
+			}
+		})
+	});
+	
+	//退出登录
+	$("#btnExit").click(function() {
+		var url="{:U('Login/logout')}";
+		bootbox.confirm("您确定退出登录吗?", function(result) {
+				if (result) {
+					location=url;
+				};
+			});
+		
+	});
+
+   //$(".famenu a:first").click(function(){
+	// var $obj=$(this).parent();
+	// $obj.addClass("active");
+	// var $i=$obj.find("i").eq(0);
+	//	if($i.hasClass("fa-chevron-right")){
+	//		$i.toggleClass("fa-chevron-down");
+	//	};
+	// $obj.find("ul").toggle();
+   //});
+   
+    $(".famenu").click(function(){
+
+    //var $obj=$(this).parent();
+    //console.log($obj);
+    $(this).addClass("active");
+    var $i=$(this).find("i").eq(0);
+    if($i.hasClass("fa-chevron-right")){
+      $i.toggleClass("fa-chevron-down");
+    };
+    $(this).find("ul").toggle();
+  });
+
+   $("#sidebar-nav .nav-list li>ul .current").parent().parent().click();
+});
+</script>
+</body>
+</html>

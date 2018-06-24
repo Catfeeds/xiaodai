@@ -1,0 +1,59 @@
+<empty name="list">
+    <eq name="p" value="1">
+        <div class="mui-table-view-cell">
+            <a href="javascript:void(0);">没有联系人</a>
+        </div>
+    </eq>
+</empty>
+<volist name="list" id="vo">
+
+    <div class="mui-table-view-cell">
+        <a href="tel:{$vo.telephone}">
+            <div class="display-box">
+                <div style="width: 50px;
+                height: 50px;
+                font-size: 20px;
+                line-height: 50px;
+                text-align: center;
+                border-radius: 50%;
+                overflow: hidden;
+                color:white;
+                margin-right: 10px;">
+                    <?php
+                        $headimgurl=M('staff')->where(array('id'=>$vo['id']))->getField('headimgurl');
+                    ?>
+                    <if condition="$act eq 1">
+                        <img style="width: 50px;" src="{$headimgurl|default='/Public/Crm/images/nouser.png'}" alt="">
+                        <else/>
+                        <img style="width: 50px;" src="/Public/Crm/images/nouser.png" alt="">
+                    </if>
+
+                </div>
+                <div class="box-flex-1">
+                    <div class="mui-ellipsis fz16">
+                        <if condition="$act eq 1">
+                            {$vo['name']?$vo['name']:$vo['username']}
+                            <else/>
+                            {$vo['company']?$vo['company']:'暂无姓名'}
+                        </if>
+
+                        &nbsp;&nbsp;&nbsp;
+                        <span style="font-size:12px;">{$vo.telephone}
+
+                        </span>
+
+                    </div>
+                    <div class="mui-ellipsis desc">
+                        <if condition="$act eq 1">
+                            {$vo['position']?$vo['position']:'职位不详'}
+                            <else/>
+                            {$vo.address}
+                        </if>
+
+                    </div>
+                    <img style="position: absolute;top: 25px; width: 20px; right: 20px;" src="__PUBLIC__/Crm/images/tel.png"/>
+                </div>
+            </div>
+        </a>
+    </div>
+</volist>

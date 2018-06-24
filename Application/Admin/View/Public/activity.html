@@ -1,0 +1,18 @@
+<style>
+body{padding-top:50px;}
+.actbar{ position:fixed; top:0px; min-height:30px; }
+.actbar .nav > li > a{padding:0px;}
+.actbar .nav>li>a:focus, .actbar .nav>li>a:hover{ background:none;}
+</style>
+<div class="navbar navbar-inverse navbar-fixed-top actbar" >
+  <ul class="nav">
+    <li class="dropdown"> <a href="javascript:void(0);"  role="button" class="dropdown-toggle" data-toggle="dropdown"> <i class="fa fa-map-marker"></i> <font id="current-activity">{:get_activity_name($control,$actid)}</font> <i class="fa fa-caret-down"></i> </a>
+      <ul class="dropdown-menu">
+      <li class="text-center"><a href="{:set_url(array('actid'=>0,'p'=>1))}" onClick="$('#current-activity').html('选择活动');">选择活动</a></li>
+        <volist name="actlist" id="vo">
+          <li <eq name="vo.id" value="$actid"> class="active"</eq> ><a href="{:set_url(array('actid'=>$vo['id'],'p'=>1))}" onClick="$('#current-activity').html('{$vo.title}');">【{$vo.id}】{$vo.title}</a></li>
+        </volist>
+      </ul>
+    </li>
+  </ul>
+</div>

@@ -1,0 +1,102 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>{$title}</title>
+    <include file="Public:scripts" />
+
+</head>
+
+<body>
+
+<div class="mui-content">
+
+    <div class="kehu_search">
+        <div style="width: 96%;"  class="search">
+            <!--<form action="##" method="post">-->
+            <input class="input1" type="text" name="need" id="need" value="{$need}" placeholder="请输入产品名称或服务项目">
+            <input type="button" onclick="gosearch()" class="kehu_sub  commonfont" value="" style="background-color: #FFFFFF; border: none;">
+            <!--</form>-->
+        </div>
+
+    </div>
+
+    <div class="mui-scroll">
+        <div id="msg-list" class="mui-table-view kclist" >
+
+        </div>
+        <div style="text-align: center;" id="loadmore">
+            载入更多
+        </div>
+    </div>
+</div>
+
+<include file="Public:footer" />
+<js href="__PUBLIC__/Home/js/jquery.form.js" />
+<script language="javascript">
+
+
+
+
+    var p = 1;
+    var need=$("#need").val();
+    var type='opt';
+
+
+    function gosearch(){
+        need=$("#need").val();
+        p=1;
+        $.getOrderList();
+    }
+
+
+    $(function(){
+        //获取车列表
+        $.getOrderList = function() {
+            var $p = arguments[0];
+            if ($p) {
+                p = $p;
+            }
+            $(".slectitem li.active").click();
+            var url = "{:U('Custom/getcustomList')}";
+            if (p != 0) {
+                if (p == 1) {
+                    $("#msg-list").html('<div class="mui-table-view-cell display-box noresult loading"><img src="__PUBLIC__/Home/images/loading.gif" /></div>');
+                }
+                var $status=$(".sequence .current").attr("data-status");
+
+                var $data = {};
+
+                $data['p'] = p;
+                $data['need']=need;
+                $data['type']=type;
+                $.ajax({
+                    url: url,
+                    type: 'POST',
+                    data: $data,
+                    success: function(msg) {
+                        $(".loading").hide();
+                        if (msg != "") {
+                            $("#msg-list").html($("#msg-list").html() + msg);
+                            p += 1;
+                        } else {
+                            p = 0;
+                        }
+                    }
+                });
+            }
+        };
+
+        $.getOrderList();
+        $(window).scroll(function() {
+            var height_bottom = 0; // 距离底边多少像素开始加载
+            if ($(document).scrollTop() + height_bottom >= $(document).height() - $(window).height()) {
+                $.getOrderList();
+            }
+        });
+    });
+</script>
+
+
+</body>
+</html>

@@ -1,0 +1,5 @@
+.uploadify{position:relative;}
+.swfupload{left:0px;}
+.uploadify-queue{position:absolute;}
+#hoverimg{ display:none; position:absolute; border:1px #ccc solid; padding:2px; background:#fff}
+#hoverimg img{ max-width:200px; max-height:200px;}

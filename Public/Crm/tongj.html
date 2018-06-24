@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+		<meta content="yes" name="apple-mobile-web-app-capable">
+		<meta content="black" name="apple-mobile-web-app-status-bar-style">
+		<meta content="telephone=no" name="format-detection">
+		<!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+		<meta http-equiv="Cache-Control" content="no-siteapp" />
+		<!--百度禁止转码 -->
+		<meta name="keywords" content="">
+		<title>销售统计</title>
+		<link rel="stylesheet" href="../css/base.css" />
+		<link rel="stylesheet" href="../css/all.css" />
+		<script type="text/javascript" src="../js/jquery-1.9.1.js"></script>
+		<style type="text/css">
+			.shumu {
+				height: 60px;
+				background: #FFFFFF;
+				width: 100%;
+			}
+
+			.shumu li {
+				float: left;
+				width: 25%;
+				text-align: center;
+				margin: 9px 0;
+				box-sizing: border-box;
+				position: relative;
+			}
+
+			.shumu li:after {
+				position: absolute;
+				height: 100%;
+				bottom: 0;
+				right: 0;
+				content: '';
+				border-right: 1px solid #ccc;
+				-webkit-transform: scaleX(.3);
+				transform: scaleX(.3);
+			}
+			.shumu li:last-child::after {
+				border: 0;
+			}
+			.fr-name {
+				color: #999;
+				font-size: 12px;
+			}
+
+			.fr-num {
+				font-size: 16px;
+				font-weight: 500;
+			}
+			.title{
+				padding: 12px;
+				text-align: center;
+				font-size: 16px;
+				position: relative;
+				background: #f5f5f5;
+				font-weight: 600;
+			}
+			.title a{
+				font-weight: normal;
+				color: #666;
+			}
+			.title:before{
+				position: absolute;
+				width: 100%;
+				top: 0;
+				right: 0;
+				content: '';
+				border-top: 1px solid #ccc;
+				-webkit-transform: scaley(.3);
+				transform: scaley(.3);
+			}
+			.title:after{
+				position: absolute;
+				width: 100%;
+				bottom: 0;
+				right: 0;
+				content: '';
+				border-top: 1px solid #ccc;
+				-webkit-transform: scaley(.3);
+				transform: scaley(.3);
+			}
+			.list>ul{
+				margin-top: 10px;
+			}
+			.listbox li{
+				padding: 10px 12px;
+				overflow: hidden;
+				font-size: 14px;
+				position: relative;
+				background: #fff;
+			}
+			.listbox li:after{
+				position: absolute;
+				width: 100%;
+				bottom: 0;
+				right: 0;
+				content: '';
+				border-top: 1px solid #ccc;
+				-webkit-transform: scaley(.3);
+				transform: scaley(.3);
+			}
+			.listbox li:last-child::after{
+				border: 0;
+			}
+			.nam{
+				float: left;
+			}
+			.num{
+				float: right;
+				background: #cccccc;
+				border-radius: 12px;
+				color: #fff;
+				padding: 0 5px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="bg" style="background: #fafafa;">
+			<section class="shumu">
+				<ul style="overflow: hidden;">
+					<li>
+						<div class="fr-name">
+							客户总量
+						</div>
+						<div class="fr-num">
+							12
+						</div>
+					</li>
+					<li>
+						<div class="fr-name">
+							合同总量
+						</div>
+						<div class="fr-num">
+							11
+						</div>
+					</li>
+					<li>
+						<div class="fr-name">
+							项目总量
+						</div>
+						<div class="fr-num">
+							654
+						</div>
+					</li>
+					<li>
+						<div class="fr-name">
+							成交客户量
+						</div>
+						<div class="fr-num">
+							123
+						</div>
+					</li>
+				</ul>
+			</section>
+			<section class="list" style="margin-top: 10px;">
+				<ul>
+					<li>
+						<div class="title">
+							<a style="float: right;font-size: 12px;line-height: 2;">
+								查看更多
+							</a>
+							<div style="width: 50%;margin: 0 auto;">
+								拥有客户数量
+							</div>
+						</div>
+						<ul class="listbox">
+							<li>
+								<div class="nam">
+									hah
+								</div>
+								<div class="num">
+									12
+								</div>
+							</li>
+							<li>
+								<div class="nam">
+									hah
+								</div>
+								<div class="num">
+									12
+								</div>
+							</li>
+						</ul>
+					</li>
+				</ul>
+
+				<ul>
+					<li>
+						<div class="title">
+							<a style="float: right;font-size: 12px;line-height: 2;">
+								查看更多
+							</a>
+							<div style="width: 50%;margin: 0 auto;">
+								合同数排行
+							</div>
+						</div>
+						<ul class="listbox">
+							<li>
+								<div class="nam">
+									hah
+								</div>
+								<div class="num">
+									12
+								</div>
+							</li>
+							<li>
+								<div class="nam">
+									hah
+								</div>
+								<div class="num">
+									12
+								</div>
+							</li>
+						</ul>
+					</li>
+				</ul>
+				<ul>
+					<li>
+						<div class="title">
+							<a style="float: right;font-size: 12px;line-height: 2;">
+								查看更多
+							</a>
+							<div style="width: 50%;margin: 0 auto;">
+								合同金额
+							</div>
+						</div>
+						<ul class="listbox">
+							<li>
+								<div class="nam">
+									hah
+								</div>
+								<div class="num">
+									12
+								</div>
+							</li>
+							<li>
+								<div class="nam">
+									hah
+								</div>
+								<div class="num">
+									12
+								</div>
+							</li>
+						</ul>
+					</li>
+				</ul>
+				<ul>
+					<li>
+						<div class="title">
+							<a style="float: right;font-size: 12px;line-height: 2;">
+								查看更多
+							</a>
+							<div style="width: 50%;margin: 0 auto;">
+								项目排行
+							</div>
+						</div>
+						<ul class="listbox">
+							<li>
+								<div class="nam">
+									hah
+								</div>
+								<div class="num">
+									12
+								</div>
+							</li>
+							<li>
+								<div class="nam">
+									hah
+								</div>
+								<div class="num">
+									12
+								</div>
+							</li>
+						</ul>
+					</li>
+				</ul>
+				<ul>
+					<li>
+						<div class="title">
+							<a style="float: right;font-size: 12px;line-height: 2;">
+								查看更多
+							</a>
+							<div style="width: 50%;margin: 0 auto;">
+								跟进排行
+							</div>
+						</div>
+						<ul class="listbox">
+							<li>
+								<div class="nam">
+									hah
+								</div>
+								<div class="num">
+									12
+								</div>
+							</li>
+							<li>
+								<div class="nam">
+									hah
+								</div>
+								<div class="num">
+									12
+								</div>
+							</li>
+						</ul>
+					</li>
+				</ul>
+			</section>
+		</div>
+		<script type="text/javascript ">
+			$(document).ready(function() {　　
+				var h = $(window).height();
+				$(".bg").css(
+					"height", h
+				)　　
+			})
+		</script>
+	</body>
+
+</html>

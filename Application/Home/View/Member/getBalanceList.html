@@ -1,0 +1,22 @@
+<empty name="list">
+  <eq name="p" value="1">
+    <div class="mui-table-view-cell display-box"> <div class="box-flex-1">暂无记录</div> </div>
+  </eq>
+<else/>
+
+<volist name="list" id="vo">
+
+  <div class="mui-table-view-cell display-box">
+    <div class="number mui-col-xs-3">{$vo.amount}</div>
+    <div class="box-flex-1">
+      <if condition="$vo['type'] eq 1">{$vo['status']==1?'充值成功':'充值失败'}</if>
+      <if condition="$vo['type'] eq 5">已到账</if>
+      <if condition="$vo['type'] eq 6">{$vo.act}</if>
+      <if condition="$vo['type'] eq 7">{$vo.act}</if>
+      <if condition="$vo['type'] eq 2">{$vo.act}</if>
+    </div>
+    <div>{$vo.addtime}</div>
+  </div>
+</volist>
+
+</empty>

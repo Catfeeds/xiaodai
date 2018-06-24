@@ -1,0 +1,92 @@
+<!doctype html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>{$title}</title>
+    <include file="Public/scripts" />
+
+    <include file="Public/date" />
+</head>
+<body>
+<div class="row">
+    <div class="col-md-12">
+        <div class="col-md-12 custom-tool" >
+            <h2>{$title}</h2>
+
+        </div>
+        <form action="" method="get" class="ajaxformx_" name="form1" id="form1">
+            <input type="hidden" name="p" id="p" value="1" />
+            <input type="hidden" name="status" id="status" value="{$status}" />
+            <table class="table vm">
+                <thead>
+                <th colspan="2">筛选</th>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="text-right" width="140">
+                        日期：
+                    </td>
+                    <td>
+                        <div class="col-md-7">
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                <input class="form-control datepicker" size="16" type="text" value="{$timefrom}" id="timefrom" name="timefrom"  placeholder="开始日期" >
+                                <span class="input-group-addon">-</span>
+                                <input class="form-control datepicker" size="16" type="text" value="{$timeto}"  id="timeto" name="timeto"  placeholder="结束日期" >
+                                <span class="input-group-btn">
+                                  <button type="submit" class="btn fl"><i class="fa fa-search"></i> 查询</button>
+                                </span>
+                                <span class="input-group-btn">
+                                  <button type="button" onclick="exportxls()" class="btn fl">导出</button>
+                                </span>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </form>
+        <table class="table  table-first-column-number display full table-striped custom-table vm">
+            <thead>
+            <tr>
+                <th></th>
+                <th>会员名</th>
+                <th>佣金</th>
+                <!--<th>积分</th>-->
+            </tr>
+            </thead>
+            <tbody>
+            <volist name="contentlist" id="vo">
+                <tr>
+                    <td></td>
+                    <td>{$vo.username}</td>
+                    <td>{$vo.amount|to_price}</td>
+                    <!--<td>{$vo.point}</td>-->
+
+                </tr>
+            </volist>
+            <tr>
+                <td colspan="3">
+                    <notempty name="page">
+                    <div class="pull-left custom-footer">
+                        <ul class="pagination" style="margin: 0px;">
+                            {$page}
+                        </ul>
+                    </div>
+                </notempty>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<script type="text/javascript">
+    function exportxls(){
+        var timefrom=$("#timefrom").val();
+        var timeto=$("#timeto").val();
+        var act='balance';
+        window.location.href=ADMIN_PATH+"/Rbac/exportxls.html?timefrom="+timefrom+"&timeto="+timeto+"&act="+act;
+    }
+</script>
+</body>
+</html>

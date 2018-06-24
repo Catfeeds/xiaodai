@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="black" name="apple-mobile-web-app-status-bar-style">
+    <meta content="telephone=no" name="format-detection">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <!--百度禁止转码 -->
+    <meta name="keywords" content="">
+    <title>{$title}</title>
+
+    <script type="text/javascript" src="/Public/Crm/js/jquery-2.2.3.min.js"></script>
+    <style type="text/css">
+
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        li{
+            list-style: none;
+        }
+        a{
+            text-decoration: none;
+            color: #1a1a1a;
+        }
+        a img{
+            border: none;
+        }
+        html body{
+            height: 100%;
+        }
+        button{
+            outline: 0;
+            border: 0;
+        }
+        h1,h2,h3,h4,h5,h6{
+            font-weight: normal;
+        }
+        @charset "utf-8";
+        /* CSS Document */
+
+        /*! normalize.css v2.1.3 | MIT License | git.io/normalize */
+        /*Html5*/
+        article,
+        aside,
+        details,
+        figcaption,
+        figure,
+        footer,
+        header,
+        hgroup,
+        main,
+        nav,
+        section,
+        summary {
+            display: block;
+        }
+        audio,
+        canvas,
+        video {
+            display: inline-block;
+        }
+        audio:not([controls]) {
+            display: none;
+            height: 0;
+        }
+        /*Base*/
+        html{
+            background: #fff;
+        }
+        html {
+            font: 10px/1.8 "microsoft yahei","\5b8b\4f53", "宋体",Arial,sans-serif;
+            -ms-text-size-adjust: 100%;
+            -webkit-text-size-adjust: 100%; /*修正手持设备字体变化*/
+        }
+        @media only screen and (max-width: 280px){
+            html {
+                font: 8px/1.5 "microsoft yahei","\5b8b\4f53", "宋体",Arial,sans-serif;
+                -ms-text-size-adjust: 100%;
+                -webkit-text-size-adjust: 100%; /*修正手持设备字体变化*/
+            }
+        }
+        @media only screen and (max-width: 320px){
+            html {
+                font: 10px/1.5 "microsoft yahei","\5b8b\4f53", "宋体",Arial,sans-serif;
+                -ms-text-size-adjust: 100%;
+                -webkit-text-size-adjust: 100%; /*修正手持设备字体变化*/
+            }
+        }
+        @media only screen and (min-width: 320px) and (max-width: 520px) {
+            html {
+                font: 12px/1.5 "microsoft yahei","\5b8b\4f53", "宋体",Arial,sans-serif;
+                -ms-text-size-adjust: 100%;
+                -webkit-text-size-adjust: 100%; /*修正手持设备字体变化*/
+            }
+        }
+        @media only screen and (min-width: 520px) and (max-width: 620px) {
+            html {
+                font: 16px/1.5 "microsoft yahei","\5b8b\4f53", "宋体",Arial,sans-serif;
+                -ms-text-size-adjust: 100%;
+                -webkit-text-size-adjust: 100%; /*修正手持设备字体变化*/
+            }
+        }
+        @media only screen and (min-width: 620px) and (max-width: 1080px) {
+            html {
+                font: 18px/1.5 "microsoft yahei","\5b8b\4f53", "宋体",Arial,sans-serif;
+                -ms-text-size-adjust: 100%;
+                -webkit-text-size-adjust: 100%; /*修正手持设备字体变化*/
+            }
+        }
+        @media only screen and (min-width: 1080px) and (max-width: 1920px) {
+            html {
+                font: 24px/1.5 "microsoft yahei","\5b8b\4f53", "宋体",Arial,sans-serif;
+                -ms-text-size-adjust: 100%;
+                -webkit-text-size-adjust: 100%; /*修正手持设备字体变化*/
+            }
+        }
+        body{
+            font-family:"microsoft yahei";
+        }
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        a {
+            text-decoration: none;
+            background: transparent; /*修正win8系统IE连接灰色背景*/
+            outline:none;
+            blr:expression(this.onFocus=this.blur());
+            color:#333;
+        }
+        a:focus {
+            outline: 0;
+        }
+        a:active,
+        a:hover {
+            outline: 0;
+            /*color:#3366cc;*/
+            /*transition:text-shadow 500ms ease-in 0ms, color 500ms ease-in 0ms;*/
+        }
+
+        img {
+            border: 0;
+            vertical-align: middle;
+            -ms-interpolation-mode:bicubic;
+        }
+        fieldset {
+            border: 1px solid #c0c0c0;
+            margin: 0 2px;
+            padding: 0.35em 0.625em 0.75em;
+        }
+        button,
+        input,
+        select,
+        textarea {
+            font-family: inherit;
+            font-size: 100%;
+            margin: 0;
+            outline:none;
+        }
+        button,
+        input {
+            line-height: normal;
+        }
+        button,
+        select {
+            text-transform: none;
+        }
+        button,
+        html input[type="button"],
+        input[type="reset"],
+        input[type="submit"] {
+            -webkit-appearance: button;
+            cursor: pointer;
+        }
+
+        button[disabled],
+        html input[disabled] {
+            cursor: default;
+        }
+        input[type="checkbox"],
+        input[type="radio"] {
+            box-sizing: border-box;
+            padding: 0;
+        }
+        input[type="search"] {
+            -webkit-appearance: textfield;
+            -moz-box-sizing: content-box;
+            -webkit-box-sizing: content-box;
+            box-sizing: content-box;
+        }
+        input[type="search"]::-webkit-search-cancel-button,
+        input[type="search"]::-webkit-search-decoration {
+            -webkit-appearance: none;
+        }
+        button::-moz-focus-inner,
+        input::-moz-focus-inner {
+            border: 0;
+            padding: 0;
+        }
+        input.submit {
+            border: 0;
+            margin: 0;
+            cursor: pointer;
+        }
+        input.radio {
+            width: 13px;
+            height: 13px;
+            float: left;
+            display: inline;
+        }
+        textarea {
+            overflow: auto;
+            vertical-align: top;
+        }
+        table {
+            border-collapse: collapse;
+            border-spacing: 0;
+        }
+        li {
+            list-style:none;
+        }
+        /*清除浮动*/
+        .clear {
+            clear: both;
+        }
+        .fl {
+            float:left;
+            /*display: inline;*/
+        }
+        .fr {
+            float:right;
+            /*display: inline;*/
+        }
+
+
+        .listbox>ul>li {
+            box-shadow: 0 1px 2px 0px rgba(0, 0, 0, .2);
+            background: #fff;
+            margin-bottom: 3px;
+            padding: 12px 12px 0;
+            box-sizing: border-box;
+        }
+
+        .listbox .bh,.listbox .xm {
+            font-size: 14px;
+            padding-bottom: 12px;
+            line-height: 1;
+            position: relative;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .listbox .xm{
+            padding-top: 12px;
+            white-space: normal;
+            line-height: 1.2;
+            color: #666;
+        }
+        .shuju{
+            padding: 12px 0;
+            font-size: 12px;
+            color: #999;
+            overflow: hidden;
+            position: relative;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .time{
+            padding: 12px 0;
+            font-size: 12px;
+            color: #999;
+            overflow: hidden;
+            position: relative;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .shuju li{
+            width: 50%;
+            float: left;
+        }
+        .shuju li:last-child{
+            text-align: right;
+        }
+        .listbox .bh:after,.listbox .xm:after,.listbox .shuju:after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            border-bottom: 1px dashed #ccc;
+            transform: scaleY(0.3);
+        }
+        .listbox .xm:after,.listbox .shuju:after{
+            border-bottom: 1px solid #ccc;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="bg" style="background: #f5f5f5;">
+    <section class="listbox">
+        <ul>
+            <li>
+                <h2 class="bh" style="text-align: center;">
+                    <span onclick="window.history.back();" style="float: left;font-size: 12px;line-height: 1.8;">< 返回</span>
+                    <span style="line-height: 1.8;">{$title}</span></h2>
+            </li>
+        </ul>
+    </section>
+    <div class="searchbox" style="padding: 7px 12px;background: #f5f5f5;box-sizing: border-box;overflow: hidden;">
+        <input type="text" name="" placeholder="请输入关键词" style="float:left;font-size: 12px;width: 84%;height: 30px;border-radius:5px 0 0 5px;border: 0;padding: 0 12px;box-sizing: border-box;" id="keyword" value="" />
+        <button style="width: 16%;;float: left;height: 30px;border-radius:0 5px 5px 0;background: #58A7FF;color: #fff;font-size: 12px;">搜索</button>
+    </div>
+    <section class="listbox showrank">
+        <ul>
+            {$html}
+
+            <li class="noresult" style="display: none;"><h2 class="bh" style="text-align: center;"><span style="line-height: 1.8;">没有搜索到结果</span></h2></li>
+        </ul>
+    </section>
+</div>
+
+<script type="text/javascript ">
+    $(document).ready(function() {
+        var h = $(window).height();
+        $(".bg").css(
+                "height", h
+        )
+    })
+</script>
+<script type="text/javascript">
+    $("body").on('click',".showrank ul li", function () {
+        var type=$(this).attr('data-field');
+        var masterid=$(this).attr('data-id');
+        var title="";
+        switch(type){
+            case 'custom':
+                title="客户详细";
+                break;
+            case 'contract':
+                title="合同详细";
+                break;
+            case 'contractamount':
+                title="合同金额详细";
+                break;
+            case 'item':
+                title="项目详细";
+                break;
+            case 'follow':
+                title="跟进详细";
+                break;
+        }
+        var $url= "/Crm/Index/showrankdetail?type="+type+"&masterid="+masterid;
+        window.location.href=$url;
+    });
+    //    $(".list-group li").click(function () {
+    //
+    //    });
+
+    $(function(){
+
+        $('#keyword').bind('input propertychange', function() {
+            var value = $(this).val();
+            var has=0;
+            $('.showrank ul li').each(function(){
+                if($(this).html().indexOf(value) != -1){
+                    $(this).show();
+                    has++;
+                }else{
+                    $(this).hide();
+                }
+            });
+            if(has==0){
+                $('.noresult').show();
+            }else{
+                $('.noresult').hide();
+            }
+        });
+    });
+
+
+    function showrank(type){
+        switch(type){
+            case 'custom':
+                title="客户拥有数排行";
+                break;
+            case 'contract':
+                title="合同数排行";
+                break;
+            case 'contractamount':
+                title="合同金额排行";
+                break;
+            case 'item':
+                title="项目数排行";
+                break;
+            case 'follow':
+                title="跟进排行";
+                break;
+        }
+        window.location.href="/Crm/Index/getranklist.html?type="+type;
+
+    }
+
+</script>
+</body>
+
+</html>

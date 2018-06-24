@@ -1,0 +1,38 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>龙翔国际注册协议</title>
+    <include file="Public:scripts" />
+</head>
+<body>
+
+
+<footer class="mui-bar mui-bar-footer zhuce_foot">
+    <div id="agree" class="agree">同意</div>
+    <div id="disagree" class="agree disagree">不同意</div>
+</footer>
+<div class="mui-content">
+    <div class="zhuce_cont">
+        <div class="tit">龙翔国际注册协议</div>
+        <div class="cont">
+           {:lbl('zcxy')}
+        </div>
+    </div>
+</div>
+
+<script src="__PUBLIC__/Home/js/mui.min.js"></script>
+<script src="__PUBLIC__/Home/js/jquery-2.2.3.min.js"></script>
+<script src="__PUBLIC__/Home/js/script.js"></script>
+
+<script type="text/javascript">
+    $("#agree").click(function(){
+       window.location.href="/Login/register.html";
+    });
+    $("#disagree").click(function(){
+        window.history.back();
+    });
+</script>
+
+</body>
+</html>

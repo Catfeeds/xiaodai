@@ -1,0 +1,251 @@
+<!doctype html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <title>{$title}</title>
+  <include file="Public/scripts" />
+  <include file="Public/date" />
+</head>
+<body>
+<div class="row">
+  <div class="col-md-12">
+    <div class="col-md-12 custom-tool" >
+      <h2>
+        <if condition="$staffid">{:get_cache_value('staff',$staffid,'name')}的私有</if>{$title}
+
+      </h2>
+      <div class="pull-right"> <a href="{:U($control.'/add'.$action)}" class="btn btn-success" title="添加"><i class="fa fa-plus"></i> 添加</a> </div>
+    </div>
+    <form  action="" method="get" class="ajaxformx_" name="form1" id="form1">
+      <input type="hidden" name="p" id="p" value="1" />
+      <input type="hidden" name="status" id="status" value="{$status}" />
+      <table class="table vm">
+        <thead>
+        <th colspan="2">筛选</th>
+        </thead>
+        <tbody>
+        <tr>
+          <td  class="text-right" width="140">状态：</td>
+          <td><div class="col-md-12"> <a href="{:set_url('status','')}" ><span class="label label-default">全部</span></a>
+            <volist name="statuslist" id="vo">
+              <eq name="status" value="$key">
+                <if condition="isN($status) eq true"> <a href="{:set_url('status',$key)}"><span class="label label-default">{$statuslist.$key}</span></a>
+                  <else/>
+                  <a href="{:set_url('status',$key)}" ><span class="label label-info">{$statuslist.$key}</span></a> </if>
+                <else/>
+                <a href="{:set_url('status',$key)}"  ><span class="label label-default">{$statuslist.$key}</span></a> </eq>
+            </volist>
+          </div></td>
+        </tr>
+        <tr>
+          <td  class="text-right" width="140">申请状态：</td>
+          <td><div class="col-md-12"> <a href="{:set_url('applystatus','')}" ><span class="label label-default">全部</span></a>
+            <volist name="applystatuslist" id="vo">
+              <eq name="applystatus" value="$key">
+                <if condition="isN($applystatus) eq true"> <a href="{:set_url('applystatus',$key)}"><span class="label label-default">{$applystatuslist.$key}</span></a>
+                  <else/>
+                  <a href="{:set_url('applystatus',$key)}" ><span class="label label-info">{$applystatuslist.$key}</span></a> </if>
+                <else/>
+                <a href="{:set_url('applystatus',$key)}"  ><span class="label label-default">{$applystatuslist.$key}</span></a> </eq>
+            </volist>
+          </div></td>
+        </tr>
+        <tr>
+          <td  class="text-right">客户字典：</td>
+          <td><div class="col-md-8">
+            <div class="input-group">
+
+                <span class="input-group-btn">
+                  <select class="btn" name="sourceid" id="sourceid">
+                    <option value="">--选择客户来源--</option>
+                    <volist name="source" id="vo">
+                      <option <if condition="$vo['id'] eq $sourceid">selected</if> value="{$vo.id}">{$vo.name}</option>
+                    </volist>
+                  </select>
+                  <select class="btn" name="producttypeid" id="producttypeid">
+                    <option value="">--选择产品类别--</option>
+                    <volist name="producttype" id="vo">
+                      <option <if condition="$vo['id'] eq $producttypeid">selected</if> value="{$vo.id}">{$vo.name}</option>
+                    </volist>
+                  </select>
+                  <select class="btn" name="levelid" id="levelid">
+                    <option value="">--选择客户等级--</option>
+                    <volist name="level" id="vo">
+                      <option <if condition="$vo['id'] eq $levelid">selected</if> value="{$vo.id}">{$vo.name}</option>
+                    </volist>
+                  </select>
+                  <select class="btn" name="memberstatusid" id="memberstatusid">
+                    <option value="">--选择客户跟进状态--</option>
+                    <volist name="memberstatus" id="vo">
+                      <option <if condition="$vo['id'] eq $memberstatusid">selected</if> value="{$vo.id}">{$vo.name}</option>
+                    </volist>
+                  </select>
+                  </span>
+            </div>
+          </div></td>
+        </tr>
+        <tr>
+          <td  class="text-right">关键词：</td>
+          <td><div class="col-md-8">
+            <div class="input-group">
+              <input type="text" class="form-control" placeholder="电话，姓名，地址，预估金额" name="keyword" id="keyword" value="{$keyword}">
+                <span class="input-group-btn">
+                  <select class="btn" name="sex" id="sex">
+                    <option value="0">性别</option>
+                    <eq name="sex" value="1">
+                      <option value="1" selected="selected">男</option>
+                      <else/>
+                      <option value="1">男</option>
+                    </eq>
+                    <eq name="sex" value="2">
+                      <option value="2" selected="selected">女</option>
+                      <else/>
+                      <option value="2">女</option>
+                    </eq>
+                  </select>
+                  <select class="btn" name="staffid" id="staffid">
+                    <option value="">--选择员工--</option>
+                    <volist name="stafflist" id="vo">
+                      <option <if condition="$vo['id'] eq $staffid">selected</if> value="{$vo.id}">{$vo.name}</option>
+                    </volist>
+                  </select>
+                  </span> <span class="input-group-btn">
+                  <button type="submit" class="btn fl"><i class="fa fa-search"></i> 查询</button>
+                  </span>
+                  <span class="input-group-btn">
+                <button onclick="exportmember()" type="button" class="btn fl" >导出</button>
+              </span>
+            </div>
+          </div></td>
+        </tr>
+        </tbody>
+      </table>
+    </form>
+
+    <table class="table  table-first-column-number display full table-striped custom-table vm">
+      <thead>
+      <tr>
+        <th></th>
+        <th width="80">#</th>
+        <th>公司名称</th>
+        <th>产品名称</th>
+        <th>联系电话</th>
+        <th>客户经理</th>
+        <th>性别</th>
+        <th>地址</th>
+        <th>预估金额</th>
+        <th>销售阶段</th>
+        <th width="80">状态</th>
+        <th width="240">操作</th>
+      </tr>
+      </thead>
+      <tbody>
+      <volist name="contentlist" id="vo">
+        <tr>
+          <td><input type="checkbox" name="selectids" value="{$vo.id}"></td>
+          <td>{$vo.id}</td>
+          <td>
+		   <if condition="$vo['memberstatus'] eq $complate">
+              <span style="font-size:12px;background-color: #00B83F;border-radius: 4px;color: white;padding:2px;">已成交</span>
+            </if>
+		  {$vo.company}</td>
+          <td>{:get_cache_value('member_producttype',$vo['producttype'],'name')}</td>
+          <td>{$vo.telephone}</td>
+          <td>{:get_cache_value('staff',$vo['staffid'],'name')}</td>
+          <td>{$vo['sex']==1?'男':'女'}</td>
+          <td>{$vo.address}</td>
+          <td>{$vo.targetamount}</td>
+          <td>{:get_cache_value('member_status',$vo['memberstatus'],'name')}</td>
+          <td ><eq name="vo.status" value="1"> <a href="javascript:void(0);" onclick="setVal('{$tblname}','status',{$vo.id},0,this,'禁用')" class="btn btn-link"  rel="tooltip" data-original-title="点击禁用"><i class="fa fa-check-circle"></i> 启用</a>
+            <else />
+            <a href="javascript:void(0);" onclick="setVal('{$tblname}','status',{$vo.id},1,this,'启用')" class="btn btn-link fc_red"  rel="tooltip" data-original-title="点击启用"><i class="fa fa-times-circle"></i> 禁用</a> </eq></td>
+          <td>
+            <if condition="$vo['applystatus'] eq 1">
+              <a href="javascript:void(0);" class="btn member_search" data-id="{$vo.id}"><i class="fa fa-search"></i> 查看申请</a>
+            </if>
+            <a href="{:U($control.'/edit'.$action,'id='.$vo['id'])}" class="btn" rel="tooltip" data-original-title="修改"><i class="fa fa-edit"></i></a> <a href="javascript:void(0);" onclick="setDelete('{:U($control.'/delete'.$action,"id=".$vo['id'])}')" class="btn" rel="tooltip" data-original-title="删除"><i class="fa fa-trash"></i></a></td>
+        </tr>
+      </volist>
+      <tr>
+        <td colspan="12"><notempty name="page">
+          <div class="pull-left custom-footer">
+            <ul class="pagination" style="margin: 0px;">
+              {$page}
+            </ul>
+          </div>
+        </notempty>
+          <notempty name="contentlist">
+            <div class="pull-right">
+              <div class="btn-group dropup">
+                <input type="hidden" value="{$tblname}" id="ConstTbl" name="ConstTbl" />
+                <button id="AllCheck"  class="btn" title="全选"><i class="fa fa-check-square"></i></button>
+                <button id="ReverseCheck"  class="btn" title="反选"><i class="fa fa-check-square-o"></i></button>
+				
+				<button onclick="allaudit()" class="btn"><i class="fa fa-pencil"></i> 批量审核</button>
+				
+                <button class="btn dropdown-toggle" data-toggle="dropdown" aria-expanded="false" title="操作"><i class="fa fa-wrench"></i> <span class="caret"></span></button>
+                <ul class="dropdown-menu dropdown-menu-right">
+                  <li><a class="AllStatus" data-status="0" href="javascript:void(0);"><i class="fa fa-lock"></i> {$statuslist[0]}</a></li>
+                  <li><a class="AllStatus" data-status="1" href="javascript:void(0);"><i class="fa fa-unlock-alt"></i> {$statuslist[1]}</a></li>
+                
+				 <li><a href="javascript:allaudit();"><i class="fa fa-pencil"></i> 批量审核</a></li>
+				</ul>
+              </div>
+            </div>
+          </notempty></td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<script type="text/javascript">
+
+  function allaudit(){
+    var ids=getSelectIDs();
+    if (ids == "") {
+      alerterr("请您先勾选要操作条目！");
+    } else {
+      bootbox.confirm("您确定要批量审核选中条目吗?", function(result) {
+        if (result) {
+          $.ajax({
+            url: ADMIN_PATH + "/Api/allaudit?ids=" + ids,
+            success: function(msg) {
+              msg = eval(msg);
+              if (msg.status == "1") {
+                alertok(msg.succ+"  |  "+msg.did+"  |  "+msg.fal);
+                setTimeout(function () {
+                  reloadwin();
+                },500);
+
+              } else {
+
+              }
+
+            }
+          });
+        };
+      });
+    };
+  }
+
+
+
+
+  function exportmember(){
+    var type="staff_follow";
+    var status='{$status}';
+    var applystatus='{$applystatus}';
+    var sourceid=$("#sourceid").val();
+    var producttypeid=$("#producttypeid").val();
+    var levelid=$("#levelid").val();
+    var memberstatusid=$("#memberstatusid").val();
+    var keyword=$("#keyword").val();
+    var sex=$("#sex").val();
+    var staffid=$("#staffid").val();
+    var para="status="+status+"&applystatus="+applystatus+"&sourceid="+sourceid+"&producttypeid="+producttypeid+"&levelid="+levelid+"&memberstatusid="+memberstatusid+
+            "&keyword="+keyword+"&sex="+sex+"&staffid="+staffid+"&type="+type;
+    window.location.href=ADMIN_PATH+"/Api/expdata.html?"+para;
+  }
+</script>
+</body>
+</html>

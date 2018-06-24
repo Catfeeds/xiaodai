@@ -1,0 +1,54 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>{$title}</title>
+    <include file="Public:scripts" />
+</head>
+<body>
+
+<div class="mui-content">
+
+   <button type="button" onclick="seluser()"> 验证会员</button>
+
+    <button type="button" onclick="adduser()"> 添加会员</button>
+</div>
+
+
+
+
+<include file="Public:footer" />
+
+<script type="text/javascript">
+    function seluser(){
+        var u_tel='15802817545';
+        $.ajax({
+            url:"http://wx.hzwin.cn/Json/sel_user.html",
+            data:{u_tel:u_tel},
+            type:"POST",
+            success: function (data) {
+                console.log(data);
+                alert(data.errormsg);
+            }
+        });
+    }
+
+    function adduser(){
+        var u_tel='15802817546';
+        var u_name='yejun';
+        var u_source='zhibo';
+        var json_str={u_name:u_name,u_tel:u_tel,u_source:u_source};
+        $.ajax({
+            url:"http://wx.hzwin.cn/Json/add_user.html",
+            data:{u_name:u_name,u_tel:u_tel,u_source:u_source},
+            type:"POST",
+            success: function (data) {
+                alert(data.errormsg);
+            }
+        });
+    }
+
+
+</script>
+</body>
+</html>

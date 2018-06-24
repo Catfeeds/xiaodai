@@ -1,0 +1,22 @@
+
+<empty name="list">
+    <eq name="p" value="1">
+        <div class="mui-table-view-cell">
+            <div class="mui-table-view-cell"> 暂无记录 </div>
+        </div>
+    </eq>
+</empty>
+<volist name="list" id="vo">
+
+    <div class="mui-table-view-cell">
+        <a href="{:U('Custom/view','id='.$vo['id'])}" class="listcont">
+            <div class="display-box">
+                <div class="img4-3"><img src="{$vo.headimgurl|default=C('DEFAULT_NOPIC')}"></div>
+                <div class="box-flex-1">
+                    <div class="mui-ellipsis fz16">{$vo.nickname}<notempty name="vo['company']">【{$vo.company}】</notempty></div>
+                    <div class="mui-ellipsis-2 desc">{$vo.have}</div>
+                </div>
+            </div>
+        </a>
+    </div>
+</volist>

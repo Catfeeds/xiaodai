@@ -1,0 +1,69 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>{$title}</title>
+    <include file="Public:scripts" />
+</head>
+<body>
+
+<header class="mui-bar mui-bar-nav product-search">
+    <form class="display-box" action="{:U('Item/lists')}" method="post">
+        <div class="box-flex-1"><input name="keyword" type="text" placeholder="没找到您想要的，赶快搜索一下吧！"></div>
+        <div><button type="submit" class="iconfont icon-search"></button></div>
+    </form>
+</header>
+
+
+<div class="mui-content product-type">
+    <nav class="fl-01">
+        <div class="mui-scroll-wrapper" id="scroll" style="height: 100%;">
+            <ul class="clearListStyle mui-scroll">
+                <volist name="first" id="vo">
+                    <if condition="$vo['name'] neq 青莲课堂 ">
+                        <li <if condition="$pid eq $vo['id']"> class="active"</if>><a href="{:U('Item/category','id='.$vo['id'])}">{$vo.name}</a></li>
+                    </if>
+                </volist>
+            </ul>
+        </div>
+    </nav>
+    <div class="box-flex-1 fl-content">
+        <div class="mui-scroll-wrapper" id="scroll02" style="height: 100%;">
+            <div class="mui-scroll">
+                <empty name="second">
+                    <h2 class="tit">暂无商品。。。</h2>
+                    <else/>
+                    <volist name="second" id="vo">
+                        <h2 class="tit">{$vo.name}</h2>
+                        <ul class="clearListStyle mui-clearfix fl-03">
+                            <?php
+                            $th=get_cache_list('category_product',$vo['id']);
+                            ?>
+                            <empty name="th">
+                                <h2 class="tit">暂无商品。。。</h2>
+                                <else/>
+                                <volist name=":get_cache_list('category_product',$vo['id'])" id="voth">
+                                    <li class="mui-pull-left mui-col-xs-4 mui-col-sm-3">
+                                        <a href="{:U('Item/lists','id='.$voth['id'])}">
+                                    <span class="img1-1">
+                                        <img data-original="{:C('DEFAULT_NOPIC')}" src="{$voth.indexpic|default=C('DEFAULT_NOPIC')}" alt="{$voth.name}">
+                                    </span>
+                                            <span class="fz12 mui-ellipsis">{$voth.name}</span>
+                                        </a>
+                                    </li>
+                                </volist>
+                            </empty>
+                        </ul>
+                    </volist>
+                </empty>
+            </div>
+        </div>
+    </div>
+</div>
+
+<include file="Public:footer" />
+<script>
+    mui('#scroll,#scroll02').scroll();
+</script>
+</body>
+</html>

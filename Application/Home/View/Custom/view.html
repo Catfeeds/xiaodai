@@ -1,0 +1,90 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>{$title}</title>
+    <include file="Public:scripts" />
+
+</head>
+
+<body>
+
+<div class="kehu-foot">
+    <div class="push bor"><a href="tel:{$find.telephone}">联系客户</a></div>
+    <div class="push">
+
+            <a id="quxiao" <if condition="$issub eq 0">style="display:none;"</if> href="javascript:guanzhu('{$find.id}','2');">取消关注</a>
+
+            <a id="guanzhu" <if condition="$issub eq 1">style="display:none;"</if> href="javascript:guanzhu('{$find.id}','1');">关注客户</a>
+
+
+    </div>
+</div>
+
+<form class="mui-content">
+    <div class="kehu-header display-box">
+        <div class="kehu-head"><img src="{$find.headimgurl}"></div>
+        <div class="box-flex-1 cont">
+            姓名：{$find['userreal']?$find['userreal']:$find['nickname']}
+            <div class="zi">公司：{$find['company']?$find['company']:'暂无'}</div>
+            <div class="zi">所在地区：{$find.city}</div>
+        </div>
+    </div>
+    <form action="##" id="form">
+
+        <div class="mui-input-group">
+            <div class="mui-table-view-divider">我有什么</div>
+            <div class="ziliao_con">
+                <div class="title">我们公司主要经营：</div>
+                <div class="intro">{$find['have'][0]?$find['have'][0]:'暂时没有填写'}</div>
+            </div>
+            <div class="ziliao_con">
+                <div class="title">我个人有：</div>
+                <div class="intro">{$find['have'][1]?$find['have'][1]:'暂时没有填写'}</div>
+            </div>
+            <div class="mui-table-view-divider">我需什么</div>
+            <div class="ziliao_con">
+                <div class="title">我公司最近需要：</div>
+                <div class="list">1、购买<span class="intro">{$find['need'][0]?$find['need'][0]:'暂时没有填写'}</span></div>
+                <div class="list">
+                    2、需要<span class="intro">{$find['need'][1]?$find['need'][1]:'暂时没有填写'}</span>
+                </div>
+                <div class="list">
+                    3、最近需要招聘<span class="intro">{$find['need'][2]?$find['need'][2]:'暂时没有填写'}</span>
+                </div>
+            </div>
+            <div class="ziliao_con">
+                <div class="title">我个人需要：</div>
+                <div class="intro">{$find['need'][3]?$find['need'][3]:'暂时没有填写'}</div>
+            </div>
+        </div>
+
+    </form>
+
+</div>
+<script src="__PUBLIC__/Home/js/mui.min.js"></script>
+<script src="__PUBLIC__/Home/js/jquery-2.2.3.min.js"></script>
+<script src="__PUBLIC__/Home/js/script.js"></script>
+<script type="text/javascript">
+    function guanzhu(id,type){
+        $.ajax({
+            url:"/Custom/subscribe.html",
+            data:{id:id,type:type},
+            type:"POST",
+            success:function(data){
+               mui.toast(data.info);
+                if(type==1){
+                    $("#guanzhu").css("display","none");
+                    $("#quxiao").css("display","");
+                }else{
+                    $("#guanzhu").css("display","");
+                    $("#quxiao").css("display","none");
+                }
+            }
+        });
+    }
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+		<meta content="yes" name="apple-mobile-web-app-capable">
+		<meta content="black" name="apple-mobile-web-app-status-bar-style">
+		<meta content="telephone=no" name="format-detection">
+		<!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+		<meta http-equiv="Cache-Control" content="no-siteapp" />
+		<!--百度禁止转码 -->
+		<title>订单列表</title>
+		<link rel="stylesheet" type="text/css" href="../css/base.css" />
+		<script src="../js/jquery-1.9.1.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/mobileRsize.js" type="text/javascript" charset="utf-8"></script>
+		<style type="text/css">
+			.vertical-top {
+				margin: 0.12rem 0.12rem 0;
+				padding-left: 0.12rem;
+				position: relative;
+				font-weight: bold;
+				color: #999;
+				font-size: 0.14rem;
+			}
+			
+			.vertical-top:before {
+				content: "";
+				display: block;
+				background: #E6BC85;
+				width: 0.04rem;
+				position: absolute;
+				left: 0;
+				top: 0;
+				height: 100%;
+			}
+			
+			.list-box {
+				margin: 0.12rem 0.12rem 0;
+			}
+			
+			.list-box>div {
+				padding: 0.14rem 0.08rem;
+				width: 94%;
+				margin: 0 auto;
+				box-sizing: border-box;
+				position: relative;
+				overflow: hidden;
+			}
+			
+			.list-box>div:after {
+				left: 0;
+				content: "";
+				position: absolute;
+				bottom: 0;
+				border-bottom: 1px solid #CCCCCC;
+				width: 100%;
+				-webkit-transform: scaley(.3);
+				transform: scaley(.3);
+			}
+			
+			.list-box>div:last-child:after {
+				border: 0;
+			}
+			
+			.list-top,
+			.list-use {
+				position: relative;
+				overflow: hidden;
+			}
+			
+			.list-top:after,
+			.list-use:after {
+				left: 0;
+				content: "";
+				position: absolute;
+				bottom: 0;
+				border-bottom: 1px solid #CCCCCC;
+				width: 100%;
+				-webkit-transform: scaley(.3);
+				transform: scaley(.3);
+			}
+			
+			.list-top span {
+				float: right;
+				padding: 0.01rem 0.1rem;
+				border-radius: 1rem;
+			}
+			
+			.list-top span.c1 {
+				color: #ff5151;
+				background: rgba(255, 81, 81, 0.3);
+			}
+			
+			.list-top span.c2 {
+				color: #fca533;
+				background: rgba(252, 165, 51, 0.3);
+			}
+			
+			.list-top span.c3 {
+				color: #78cb5f;
+				background: rgba(120, 203, 95, 0.3);
+			}
+			
+			.list-use>div {
+				float: left;
+				width: 50%;
+			}
+			
+			.list-last>div {
+				float: left;
+				width: 33.33%;
+			}
+			
+			.list-use>div:first-child {
+				text-align: left;
+			}
+			
+			.list-use>div:last-child {
+				text-align: center;
+			}
+			
+			.list-use h1,
+			.list-last h1 {
+				font-size: 0.22rem;
+				color: #333;
+			}
+			
+			.list-use>div:first-child h1 {
+				color: #E6BC85;
+			}
+			
+			.list-use h4,
+			.list-last h4 {
+				font-weight: normal;
+				color: #999;
+			}
+		</style>
+	</head>
+
+	<body style="background: #f5f5f5;">
+		<div class="vertical-top">
+			订单列表
+		</div>
+		<section class="list-box" style="margin: 0.12rem;background: #fff;border-radius:0.2rem ;font-size: 0.12rem;">
+			<div class="list-top">
+				单号：1354674
+				<span class="c1">审核中</span>
+			</div>
+			<div class="list-use">
+				<div>
+					<h1>5000.00</h1>
+					<h4>应还金额(元)</h4>
+				</div>
+				<div>
+					<h1>222.00</h1>
+					<h4>利息</h4>
+				</div>
+			</div>
+			<div class="list-last">
+				<div>
+					<h1 style="font-size: 0.14rem;">2018-3-12</h1>
+					<h4>到期时间</h4>
+				</div>
+				<div>
+					<h1 style="font-size: 0.14rem;">5</h1>
+					<h4>剩余还款日(天)</h4>
+				</div>
+				<div>
+					<h1 style="font-size: 0.14rem;color: #FF5151;">本金的10%</h1>
+					<h4>逾期利息</h4>
+				</div>
+			</div>
+		</section>
+		<section class="list-box" style="margin: 0.12rem;background: #fff;border-radius:0.2rem ;font-size: 0.12rem;">
+			<div class="list-top">
+				单号：1354674
+				<span class="c2">已放款</span>
+			</div>
+			<div class="list-use">
+				<div>
+					<h1>5000.00</h1>
+					<h4>应还金额(元)</h4>
+				</div>
+				<div>
+					<h1>222.00</h1>
+					<h4>利息</h4>
+				</div>
+			</div>
+			<div class="list-last">
+				<div>
+					<h1 style="font-size: 0.14rem;">2018-3-12</h1>
+					<h4>到期时间</h4>
+				</div>
+				<div>
+					<h1 style="font-size: 0.14rem;">5</h1>
+					<h4>剩余还款日(天)</h4>
+				</div>
+				<div>
+					<h1 style="font-size: 0.14rem;color: #FF5151;">本金的10%</h1>
+					<h4>逾期利息</h4>
+				</div>
+			</div>
+		</section>
+		<section class="list-box" style="margin: 0.12rem;background: #fff;border-radius:0.2rem ;font-size: 0.12rem;">
+			<div class="list-top">
+				单号：1354674
+				<span class="c3">已还款</span>
+			</div>
+			<div class="list-use">
+				<div>
+					<h1>5000.00</h1>
+					<h4>应还金额(元)</h4>
+				</div>
+				<div>
+					<h1>222.00</h1>
+					<h4>利息</h4>
+				</div>
+			</div>
+			<div class="list-last">
+				<div>
+					<h1 style="font-size: 0.14rem;">2018-3-12</h1>
+					<h4>到期时间</h4>
+				</div>
+				<div>
+					<h1 style="font-size: 0.14rem;">5</h1>
+					<h4>剩余还款日(天)</h4>
+				</div>
+				<div>
+					<h1 style="font-size: 0.14rem;color: #FF5151;">本金的10%</h1>
+					<h4>逾期利息</h4>
+				</div>
+			</div>
+		</section>
+		<section class="list-box" style="margin: 0.12rem;background: #fff;border-radius:0.2rem ;font-size: 0.12rem;">
+			<div class="list-top">
+				单号：1354674
+				<span class="c1">已逾期</span>
+			</div>
+			<div class="list-use">
+				<div>
+					<h1>5000.00</h1>
+					<h4>应还金额(元)</h4>
+				</div>
+				<div>
+					<h1>222.00</h1>
+					<h4>利息</h4>
+				</div>
+			</div>
+			<div class="list-last">
+				<div>
+					<h1 style="font-size: 0.14rem;">2018-3-12</h1>
+					<h4>到期时间</h4>
+				</div>
+				<div>
+					<h1 style="font-size: 0.14rem;color: #FF5151;">5</h1>
+					<h4 style="color: #FF5151;">已逾期(天)</h4>
+				</div>
+				<div>
+					<h1 style="font-size: 0.14rem;color: #FF5151;">本金的10%</h1>
+					<h4>逾期利息</h4>
+				</div>
+			</div>
+		</section>
+		<style type="text/css">
+			.drawerfoot{
+				display: none;
+			}
+			
+			.list-line {
+				position: fixed;
+				height: 3rem;
+				background: #fff;
+				width: 100%;
+				bottom: 0;
+				left: 0;
+				padding: 0.12rem;
+				box-sizing: border-box;
+				overflow-y: scroll;
+				z-index: 99;
+			}
+			
+			.Drawer-top {
+				background: #E6BC85;
+				color: #FFFFFF;
+				padding: 0.12rem;
+				font-size: 0.14rem;
+				font-weight: bold;
+				position: fixed;
+				bottom: 3rem;
+				border-radius: 0.2rem 0.2rem 0 0;
+				box-sizing: border-box;
+				width: 100%;
+			}
+			
+			.down-line {
+				height: 100%;
+				width: 1px;
+				background: #d6cec5;
+				position: absolute;
+				left: 0;
+				top: 0;
+			}
+			
+			.list-line li {
+				position: relative;
+				padding: 0 0.12rem;
+			}
+			
+			.list-line li>div {
+				position: relative;
+				padding: 0.12rem;
+				padding-right: 0;
+				overflow: hidden;
+			}
+			
+			.list-line li:before {
+				content: "";
+				height: 10px;
+				width: 10px;
+				border-radius: 50%;
+				background: #f4c89d;
+				position: absolute;
+				left: 0.12rem;
+				margin-left: -5px;
+				z-index: 99;
+				margin-top: -5px;
+				top: 50%;
+			}
+			
+			.list-line li h1,
+			.list-line li h2 {
+				font-size: 0.12rem;
+				font-weight: normal;
+				color: #999;
+			}
+			
+			.list-line li h1 {
+				float: left;
+			}
+			
+			.list-line li h2 {
+				float: right;
+				text-align: right;
+			}
+		</style>
+		<section class="drawerfoot">
+			<div class="Drawer-top">
+				单号：416354
+				<span class="drawer-close" style="float: right;margin-right: 0.12rem;"><img style="width: 0.12rem;" src="../img/x.png"/></span>
+			</div>
+			<div class="drawerpadding" style="padding-top: 3.4rem;"></div>
+			<div class="list-line">
+				<ul>
+					<li>
+						<div>
+							<div class="down-line"></div>
+							<h1>2018-7-12</h1>
+							<h2>已还111元</h2>
+						</div>
+					</li>
+					<li>
+						<div>
+							<div class="down-line"></div>
+							<h1>2018-7-12</h1>
+							<h2>已还111元</h2>
+						</div>
+					</li>
+					<li>
+						<div>
+							<div class="down-line"></div>
+							<h1>2018-7-12</h1>
+							<h2>已还111元</h2>
+						</div>
+					</li>
+					<li>
+						<div>
+							<div class="down-line"></div>
+							<h1>2018-7-12</h1>
+							<h2>已还111元</h2>
+						</div>
+					</li>
+					<li>
+						<div>
+							<div class="down-line"></div>
+							<h1>2018-7-12</h1>
+							<h2>已还111元</h2>
+						</div>
+					</li>
+					<li>
+						<div>
+							<div class="down-line"></div>
+							<h1>2018-7-12</h1>
+							<h2>已还111元</h2>
+						</div>
+					</li>
+					<li>
+						<div>
+							<div class="down-line"></div>
+							<h1>2018-7-12</h1>
+							<h2>已还111元</h2>
+						</div>
+					</li>
+					<li>
+						<div>
+							<div class="down-line"></div>
+							<h1>2018-7-12</h1>
+							<h2>已还111元</h2>
+						</div>
+					</li>
+
+					<li>
+						<div>
+							<div class="down-line"></div>
+							<h1>2018-7-12</h1>
+							<h2>已还111元</h2>
+						</div>
+					</li>
+				</ul>
+			</div>
+		</section>
+
+	</body>
+	<script type="text/javascript">
+		$(function() {
+			$(".list-box").click(function() {
+				$(".drawerfoot").show();
+			})
+			$(".drawer-close").click(function() {
+				$(".drawerfoot").hide();
+			})　　
+		})
+	</script>
+
+</html>

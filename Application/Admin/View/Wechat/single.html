@@ -1,0 +1,139 @@
+<!doctype html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>{$title}</title>
+<include file="Public/scripts" />
+<include file="Public/upload" />
+<include file="Public/editor" />
+<include file="Public/formonly" /> 
+<script>
+$(function(){ 
+	$.rendUploaderMaterial("#btnUploadMaterial");  
+	
+	$("#title").change(function(){
+		var v=$(this).val();
+		$(".newsleft_title").text(v);	
+	});
+	$("#remark").change(function(){
+		var v=$(this).val();
+		$(".newsleft_remark").text(v);	
+	});
+	
+});
+</script>
+<style>
+.tblNews{ position:relative; }
+.tblNews .newsleft{width:300px; height:auto; border:1px #E7E7EB solid; padding:10px;}
+.newsleft .newsleft_title{ width:100%; height:auto; line-height:20px; float:left; font-size:16px;color:#666666; padding:5px 0px;}
+.newsleft .newsleft_remark{line-height:20px;  font-size:14px;color:#666666;}
+.newsleft .newsleft_cover{ width:100%; height:160px; float:left; background:#ECECEC; position:relative; overflow:hidden;}
+.newsleft .newsleft_cover .cover{ width:100px; height:30px; margin:0px auto; margin-top:65px; font-style:normal; font-size:18px; color:#C0C2CC; text-align:center}
+.newsleft .newsleft_cover img{ position:absolute; width:100%; height:100%; z-index:1; left:0px; top:0px; border:none; }
+
+
+.tblNews .newsright{width:600px; min-height:500px; min-width:600px; margin-left:10px; height:auto; border:1px #E7E7EB solid; padding:10px; background:#F4F5F9;}
+.tblNews .newsright table td{ font-size:14px;}
+.tblNews .arrow_news{ width:14px; height:24px; background:url(__PUBLIC__/Admin/assets/arrow_news.gif) no-repeat; position:absolute; top:30px; left:317px;}
+.tblNews .inputText{ width:99%; height:24px; border:1px #E7E7EB solid; padding:2px 5px;}
+.tblNews .editor1,.tblNews .editor1:hover{ width:99%;   border:1px #E7E7EB solid;}
+.grey{color:#8D8D8D;}
+</style>
+</head>
+<body>
+<div class="row">
+  <div class="col-md-12">
+    <h2>{$title}</h2>
+  </div>
+  <div class="col-md-12">
+    <form action="" method="post" name="form1" id="form1" class="ajaxformx">
+      <div class="fancy-tab-container">
+        <ul class="nav nav-tabs fancy">
+          <li class=""><a href="{:U('Wechat/material')}"  aria-expanded="true">图片素材</a></li>
+          <li class="active"><a href="{:U('Wechat/news')}" aria-expanded="false">图文素材</a></li>
+        </ul>
+        <div style="padding:10px;">
+          <table width="100%" border="0" cellpadding="0" class="tblNews">
+            <tr>
+              <td width="320" valign="top"><div class="newsleft">
+                  <div class="newsleft_title"> {$db.title|default='标题'} </div>
+                  <div class="newsleft_cover">
+                    <div class="cover">封面图片</div>
+                    <img src="{$db.indexpic}"  id="news_cover" alt="" /> </div>
+                  <div class="newsleft_remark"> {$db.remark} </div>
+                  <div class="clr"></div>
+                </div></td>
+              <td valign="top"><div class="arrow_news"></div>
+                <div class="newsright">
+                  <table width="100%" border="0" cellpadding="0">
+                    <tr>
+                      <td>标题</td>
+                    </tr>
+                    <tr>
+                      <td><input type="text" class="inputText" name="title" id="title" value="{$db.title}" /></td>
+                    </tr>
+                    <tr>
+                      <td>作者<span class="grey">（选填）</span></td>
+                    </tr>
+                    <tr>
+                      <td><input type="text" class="inputText" name="author" id="author" value="{$db.author}" /></td>
+                    </tr>
+                    <tr>
+                      <td>封面 <span class="grey">（大图片建议尺寸：900像素 * 500像素）</span></td>
+                    </tr>
+                    <tr>
+                      <td><input type="hidden" class="inputText" name="indexpic" id="indexpic" value="{$db.indexpic}" data-image="#news_cover" />
+                        <input type="button" class="btn1 btnUpload" id="btnUploadMaterial" value="上传" /></td>
+                    </tr>
+                    <tr>
+                      <td><eq name="db.isshowpic" value="1">
+                          <input type="checkbox" name="isshowpic" id="isshowpic" checked="checked" value="1" />
+                          <else/>
+                          <input type="checkbox" name="isshowpic" id="isshowpic" value="1" />
+                        </eq>
+                        <label class="grey" for="isshowpic">封面图片显示在正文中</label></td>
+                    </tr>
+                    <tr>
+                      <td>摘要<span class="grey">（选填）</span></td>
+                    </tr>
+                    <tr>
+                      <td><textarea  class="editor1" name="remark" id="remark" >{$db.remark}</textarea></td>
+                    </tr>
+                    <tr>
+                      <td>正文</td>
+                    </tr>
+                    <tr>
+                      <td><textarea  class="inputText1 myueditor" name="info" id="info" >{$db.info}</textarea></td>
+                    </tr>
+                    <tr>
+                      <td>外部链接<span class="grey">（选填，若填写则直接跳转，不显示正文内容）</span></td>
+                    </tr>
+                    <tr>
+                      <td><input type="text" class="inputText" name="url" id="url" value="{$db.url}" /></td>
+                    </tr>
+                    <tr>
+                      <td>原文链接<span class="grey">（选填）</span></td>
+                    </tr>
+                    <tr>
+                      <td><input type="text" class="inputText" name="ourl" id="ourl" value="{$db.ourl}" /></td>
+                    </tr>
+                    <tr>
+                      <td><div class="form-group" >
+                          <div class="controls">
+                            <hr />
+                            <button type="submit" class="btn btn-success" id="btnSubmit"><i class="fa fa-save"></i> 提交</button>
+                            <button type="button" class="btn btn-default" onClick="history.back();"><i class="fa fa-undo"></i> 返回</button>
+                          </div>
+                        </div></td>
+                    </tr>
+                  </table>
+                </div></td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+</body>
+</html>

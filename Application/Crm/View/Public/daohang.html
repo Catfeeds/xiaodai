@@ -1,0 +1,31 @@
+<div onclick="showdaohang()" style="width: 40px;
+    font-size: 14px;
+    height: 40px;
+    background-color: rgba(0,0,0,0.7);
+    line-height: 30px;
+    padding: 5px;
+    border-radius:50%;
+    color: white;position: fixed;right: 10px;bottom: 60px;z-index: 999;
+">导航</div>
+<div id="daohang" style="position: fixed;right: 10px;
+bottom:80px;width: 40px;height: auto;
+padding-bottom: 20px;background-color:  rgba(0,0,0,0.7);
+border-radius: 5px 5px 0 0;color:white;display: none;z-index:999;">
+    <ul style="    list-style: none;
+    padding: 0px;">
+        <!--<li style="padding:10px;border: none;"><a href="{:U('Index/newindex')}"><img style="width: 20px;" src="/Public/Crm/images/home.png"/></a></li>-->
+        <li style="padding:10px;border: none;"><a href="{:U('Index/index')}"><img style="width: 20px;" src="/Public/Crm/images/center.png"/></a></li>
+        <li style="padding:10px;border: none;"><a href="javascript:window.history.back();"><img style="width: 20px;" src="/Public/Crm/images/back.png"/></a></li>
+    </ul>
+</div>
+
+<script>
+
+    function showdaohang(){
+
+        $("#daohang").slideToggle();
+    }
+</script>
+
+
+

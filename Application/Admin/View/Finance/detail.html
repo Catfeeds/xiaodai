@@ -1,0 +1,196 @@
+<!doctype html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>{$title}</title>
+    <include file="Public/scripts" /><include file="Public/upload" /><include file="Public/editor" />
+</head>
+<body>
+<div class="row">
+    <div class="col-md-12 " >
+        <h2>{$title}</h2>
+    </div>
+    <div class="col-md-12 " >
+
+
+            <div class="fancy-tab-container">
+                <ul class="nav nav-tabs fancy">
+                    <li><a href="{:U('Finance/articleanas')}">概览</a></li>
+                    <li class="active"><a href="{:U('Finance/detail')}">文章列表</a></li>
+                    <li><a href="{:U('Finance/memberanas')}">用户分析</a></li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane active" id="autotab_1">
+                        <div id="detail" class="col-md-12" style="display: none;">
+                            <div class="panel panel-default col-md-12" style="padding: 0px;">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title fl">文章趋势图</h3>
+                                    <style>
+                                        .breadcrumb  .active{color:red;}
+                                        .breadcrumb li a{color: black;}
+                                    </style>
+                                    <ol style="margin: 0px 0px 0px 100px; padding:0px;" class="breadcrumb">
+                                        <style>
+                                            .breadcrumb .active a{color: red;}
+                                        </style>
+                                        <li class="active"><a href="javascript:void(0);">7</a>天</li>
+                                        <li><a href="javascript:void(0);">14</a>天</li>
+                                        <li><a href="javascript:void(0);">30</a>天</li>
+                                    </ol>
+                                </div>
+                                <div class="panel-body">
+                                    <div id="detailchart" style="position:relative;width: 1200px;height: 300px;"></div>
+                                </div>
+
+                            </div>
+                            <div class="panel panel-default col-md-12" style="padding: 0px;">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title fl">详细数据</h3>
+                                    <ol style="margin: 0px 0px 0px 100px; padding:0px;" class="breadcrumb">
+                                        <style>
+                                            .breadcrumb .active a{color: red;}
+                                        </style>
+                                        <li <if condition="$order eq 'hits'"> class="active"</if> ><a href="{:U('Finance/detail','order=hits')}">阅读数</a></li>
+                                        <li <if condition="$order eq 'shares'"> class="active"</if> ><a href="{:U('Finance/detail','order=shares')}">分享数</a></li>
+                                        <li <if condition="$order eq 'praises'"> class="active"</if> ><a href="{:U('Finance/detail','order=praises')}">点赞数</a></li>
+                                        <li  >
+
+                                        </li>
+                                    </ol>
+                                    <form action="" method="post">
+                                    <div class="input-group " style="width: 200px;    top: -25px;left: 300px;">
+
+                                            <input value="{$keyword}" name="keyword" class="form-control" id="keyword" />
+                                            <span class="input-group-btn">
+                                                  <button type="submit" class="btn fl"><i class="fa fa-search"></i> 查询</button>
+                                            </span>
+
+                                    </div>
+                                    </form>
+                                </div>
+                                <div style="width:100%;height: 300px;" class="panel-body">
+                                    <style>
+                                        .panel-body table{border-left: none;border-right: none;}
+                                        .panel-body table tr td{border-left: none;border-right: none; text-align: center;}
+                                    </style>
+                                    <table class="table table-hover col-md-12">
+                                        <tr id="arttemp">
+                                            <td class="col-md-6">文章标题</td>
+                                            <td class="col-md-2">阅读数</td>
+                                            <td class="col-md-2">分享数</td>
+                                            <td class="col-md-2">点赞数</td>
+                                        </tr>
+                                        <volist name="contentlist" id="vo">
+                                            <tr>
+                                                <td><a href="{:U('Finance/article','id='.$vo['id'])}">{$vo.title|cut_str=###,0,40}</a></td>
+                                                <td>{$vo.hits}</td>
+                                                <td>{$vo.shares}</td>
+                                                <td>{$vo.praises}</td>
+                                            </tr>
+                                        </volist>
+                                        <tr>
+                                            <td colspan="4">{$page}</td>
+                                        </tr>
+
+                                    </table>
+                                </div>
+
+                            </div>
+                            <!--<div id="detailchart" class="col-md-12" style="width: 500px;height: 300px;"></div>-->
+                        </div>
+
+
+                        <div class="clearfix"></div>
+                    </div>
+
+                </div>
+            </div>
+
+        <!--</form>-->
+    </div>
+</div>
+<include file="Public/form" />
+<script src="__PUBLIC__/Admin/lib/echarts/echarts.js"></script>
+<script type="text/javascript">
+    $(".breadcrumb li").click(function () {
+        $(this).siblings().removeClass('active');
+        $(this).addClass('active');
+        getanalysis('detail');
+    });
+
+    function getanalysis(type){
+        var ddays=$(".breadcrumb li.active a").html();
+
+        $.ajax({
+            url:ADMIN_PATH+"/Api/getanalysis.html",
+            data:{type:type,ddays:ddays},
+            type:"POST",
+            success: function (data) {
+                switch(type){
+                    case 'detail':
+                        var myChart = echarts.init(document.getElementById("detailchart"));
+                        var option = {
+                            title : {
+                                text: '',
+//                                subtext: '纯属虚构'文章趋势图
+                            },
+                            tooltip : {
+                                trigger: 'axis'
+                            },
+                            legend: {
+                                data:['阅读数','分享数','点赞数']
+                            },
+                            //右上角工具条
+                            toolbox: {
+                                show : true,
+                                feature : {
+                                    mark : {show: true},
+                                    dataView : {show: true, readOnly: false},
+                                    magicType : {show: true, type: ['line', 'bar']},
+                                    restore : {show: true},
+                                    saveAsImage : {show: true}
+                                }
+                            },
+                            calculable : true,
+                            xAxis : [
+                                {
+                                    type : 'category',
+                                    boundaryGap : false,
+                                    data : data.dates
+                                }
+                            ],
+                            yAxis : [
+                                {
+                                    type : 'value',
+                                    axisLabel : {
+                                        formatter: '{value}'
+                                    }
+                                }
+                            ],
+                            series : [
+                                data.reads,
+                                data.shares,
+                                data.praises
+                            ]
+                        };
+
+                        // 为echarts对象加载数据
+                        myChart.setOption(option);
+
+
+
+                        $("#all").hide();
+                        $("#detail").show();
+                    default:
+                        $("#all").hide();
+                        $("#detail").show();
+                }
+            }
+        });
+        //$("#echarts").html(type);
+    }
+    getanalysis('detail');
+
+</script>
+</body>
+</html>

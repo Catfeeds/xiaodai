@@ -1,0 +1,69 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>{$title}</title>
+<include file="Public:scripts" />
+<switch name="id">
+<case value="1">
+<style>
+.main-wrap{top:49px}
+.hot-line{padding:10px 12px}
+.about-nav{margin-top:5px}
+.mycent-list{background-color:#fff}
+.mycent-list li a{margin-left:0;display:block}
+</style>
+</case>
+</switch>
+<script language="javascript">
+var p=1;
+(function(){
+	$.getLists=function(){ 
+		var url="{:U('Content/getLists','id='.$id)}";
+		if(p!=0){
+			$.ajax({url:url,type:'GET',data:"p="+p,success: function(msg){
+				if(msg!=""){
+					//$("#msg-list").append(msg);
+                    $("#msg-list").html($("#msg-list").html() + msg);
+					p+=1;
+				}else{
+					p=0;
+				}
+			}}); 
+		}
+	};
+})(jQuery);
+
+$(function(){
+	$.getLists();
+	$(window).scroll(function() {
+         var height_bottom = 0; // 距离底边多少像素开始加载
+		 if ($(document).scrollTop() + height_bottom >= $(document).height() - $(window).height()) {
+			$.getLists();
+		}
+	});
+});
+
+</script>
+</head>
+
+<body>
+<header class="common-top special-top">
+    <hgroup class="breadcrumb">
+        <span class="-breadcrumb-icon">
+            <a  href="javascript:history.go(-1)" class="back-icon"></a>
+        </span>
+        <h2>{$title}</h2> 
+    </hgroup>
+</header> 
+<div class="main-wrap clearfix">
+     <section class="-box">
+        <div class="-box-cont">
+            <ul class="-reading-list" id="msg-list"> 
+            </ul>
+        </div>
+    </section>
+</div>
+<include file="Public:footer" />
+</body>
+</html>

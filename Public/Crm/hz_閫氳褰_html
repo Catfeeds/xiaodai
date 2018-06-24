@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+		<meta name="format-detection" content="telephone=no">
+		<title>通讯录</title>
+		<link rel="stylesheet" href="css/loading.css" />
+		<script src="js/loading.js"></script>		
+		<link rel="stylesheet" href="css/mui.css" />
+		<link rel="stylesheet" href="css/style.css" />
+		<link href="font3/iconfont.css" rel="stylesheet" type="text/css" />
+	</head>
+	<body>
+		<footer class="mui-bar mui-bar-footer nav-bottom2">
+			<ul class="clearListStyle mui-clearfix">
+				<li><a href="hz_消息.html"><span class="iconfont icon-xiaoxi1 kx"></span><span class="iconfont icon-xiaoxi2 sx"></span>消息</a></li>
+				<li class="active"><a href="hz_通讯录.html"><span class="iconfont icon-tongxun1 kx"></span><span class="iconfont icon-tongxun2 sx"></span>通讯录</a></li>
+				<li><a href="hz_客户.html"><span class="iconfont icon-kehu1 kx"></span><span class="iconfont icon-kehu2 sx"></span>客户</a></li>
+				<li><a href="hz_会员.html"><span class="iconfont icon-wode1 kx"></span><span class="iconfont icon-wode2 sx"></span>我</a></li>
+			</ul>
+		</footer>
+		<div class="mui-content hz_address">
+			<div class="add_search">
+				<form action="##" method="post">
+					<input class="input1" type="text" name="kws" id="" placeholder="搜索姓名/电话">
+					<input type="submit" class="course_sub  commonfont" value="" style="background-color: #f0eff4; border: none;">
+				</form>
+			</div>
+			<div class="add-tit">联系人(5)</div>
+			<div class="mui-table-view addcon">
+				<div class="mui-table-view-cell">
+					<a href="#">
+						<div class="display-box">
+							<div class="img1-1"><img src="images/xuanshou.jpg"></div>
+							<div class="box-flex-1">
+								<div class="mui-ellipsis fz16">覃建方</div>
+								<div class="mui-ellipsis desc">销售</div>
+							</div>
+						</div>
+					</a>
+				</div>
+				<div class="mui-table-view-cell">
+					<a href="#">
+						<div class="display-box">
+							<div class="img1-1"><img src="images/xuanshou.jpg"></div>
+							<div class="box-flex-1">
+								<div class="mui-ellipsis fz16">覃建方</div>
+								<div class="mui-ellipsis desc">销售</div>
+							</div>
+						</div>
+					</a>
+				</div>
+				<div class="mui-table-view-cell">
+					<a href="#">
+						<div class="display-box">
+							<div class="img1-1"><img src="images/xuanshou.jpg"></div>
+							<div class="box-flex-1">
+								<div class="mui-ellipsis fz16">覃建方</div>
+								<div class="mui-ellipsis desc">销售</div>
+							</div>
+						</div>
+					</a>
+				</div>
+				<div class="mui-table-view-cell">
+					<a href="#">
+						<div class="display-box">
+							<div class="img1-1"><img src="images/xuanshou.jpg"></div>
+							<div class="box-flex-1">
+								<div class="mui-ellipsis fz16">覃建方</div>
+								<div class="mui-ellipsis desc">销售</div>
+							</div>
+						</div>
+					</a>
+				</div>
+				<div class="mui-table-view-cell">
+					<a href="#">
+						<div class="display-box">
+							<div class="img1-1"><img src="images/xuanshou.jpg"></div>
+							<div class="box-flex-1">
+								<div class="mui-ellipsis fz16">覃建方</div>
+								<div class="mui-ellipsis desc">销售</div>
+							</div>
+						</div>
+					</a>
+				</div>
+				<div class="mui-table-view-cell">
+					<a href="#">
+						<div class="display-box">
+							<div class="img1-1"><img src="images/xuanshou.jpg"></div>
+							<div class="box-flex-1">
+								<div class="mui-ellipsis fz16">覃建方</div>
+								<div class="mui-ellipsis desc">销售</div>
+							</div>
+						</div>
+					</a>
+				</div>
+			</div>
+		</div>
+		<script src="js/mui.min.js"></script>
+		<script src="js/jquery-2.2.3.min.js"></script>		
+		<script src="js/script.js"></script>	
+		<script>			
+			
+		</script>
+	</body>
+</html>

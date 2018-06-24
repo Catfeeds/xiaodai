@@ -1,0 +1,405 @@
+<!doctype html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>{$title}</title>
+<include file="Public/scripts" />
+<style>
+.order-item{width:50px; margin:0px; float:left;}
+</style>
+<script language="javascript">
+$(function(){
+	InitArea();
+	
+	$("#paystatus").change(function(){
+		var v=$(this).val();
+		if(v==1){
+			$("#paybox").show();	
+		}else{
+			$("#paybox").hide();
+		}
+	}).change();
+	
+	//减数量
+	$(".btn-deduct").click(function(){
+		var $input=$(this).next("input");
+		var v=$input.val();
+		if(isNaN(v)){
+			v=1;	
+		}
+		v--;
+		if(v<1){
+				var $obj=$(this);
+				bootbox.confirm("您确定要删除该商品吗?", function(result) {
+				if (result) {
+					$obj.parent().parent().parent().remove();
+					$.caculateTotal();
+				}else{
+					$input.val(v+1);
+				}  
+				});
+		}else{
+			$input.val(v);
+			$input.change();
+		}
+	});
+	
+	//加数量
+	$(".btn-plus").click(function(){
+		var $input=$(this).prev("input");	
+		var v=$input.val();
+		if(isNaN(v)){
+			v=1;	
+		}
+		v++;
+		$input.val(v);
+		$input.change();
+	});
+	
+	$(".order-item").change(function(){
+		var id=$(this).attr("data-id");
+		var price=$(this).attr("data-price");
+		var num=$(this).val();
+		$("#sum_"+id).text((price*num).toFixed(2));
+		$.caculateTotal();	
+	});
+	
+	$.caculateTotal=function(){
+		var $total=0;
+		var $num=0;
+		$(".order-item").each(function(index, element) {
+            var num=$(this).val();
+            var price=$(this).attr("data-price");
+			if(isNaN(num)){num=1;}else{
+				num=parseInt(num);
+			}
+			price=parseFloat(price);
+			
+			$num+=num;
+			$total+=parseFloat(num*price);
+        });
+		
+		$total=$total.toFixed(2);
+		$("#label_total").text($total);
+		$("#label_num").text($num);
+		//其它框
+		var $discount=$("#discount").val();
+		if(isNaN($discount)){
+			$discount=0;
+			$("#discount").val($discount);
+		} 
+		var $shipfee=$("#shipfee").val();
+		if(isNaN($shipfee)){
+			$shipfee=0;
+			$("#shipfee").val($shipfee);
+		}
+		var $amount=($total-parseFloat($discount)+parseFloat($shipfee)).toFixed(2);
+		if($amount<0){
+			alerterr("对不起，应收金额不能小于0！");	
+			$("#btnSubmit").attr("disabled",true);
+			return false;
+		}else{
+			$("#btnSubmit").attr("disabled",false);
+		}
+		$("#total").val($total);
+		$("#amount").val($amount);
+	}
+	
+	$("#discount").change(function(){
+		$.caculateTotal();
+	});
+	$("#shipfee").change(function(){
+		$.caculateTotal();
+	});
+	
+});
+</script>
+</head>
+<body>
+<div class="row">
+  <div class="col-md-12 " >
+    <h2>{$title}</h2>
+  </div>
+  <div class="col-md-12 " >
+    <form action="" method="post" name="form1" id="form1" class="ajaxformx">
+      <input type="hidden" id="id" name="id" value="{$db.id}" />
+      <div class="fancy-tab-container">
+        <ul class="nav nav-tabs fancy">
+          <li class="active"><a href="#autotab_1" data-toggle="tab">基本信息</a></li>
+          <li><a href="#autotab_2" data-toggle="tab">付款信息</a></li>
+          <li><a href="#autotab_3" data-toggle="tab">收货信息</a></li>
+          <li><a href="#autotab_4" data-toggle="tab">订单详细</a></li>
+        </ul>
+        <div class="tab-content">
+          <div class="tab-pane active" id="autotab_1">
+            <div class="col-md-6 custom-form">
+              <div class="form-group">
+                <label class="control-label">订单编号：</label>
+                <div class="controls">
+                  <input type="text" class="form-control w150" name="orderno" id="orderno"  value="{$db.orderno}" readonly  />
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label">下单用户：</label>
+                <div class="controls">
+                  <div class="input-group">
+                    <input type="hidden" name="memberid" id="memberid" value="{$db.memberid}" />
+                    <input type="text" class="form-control" name="membername" id="membername" value="{:get_cache_value('member',$db['memberid'],'username')}" readonly />
+                    <span class="input-group-addon">
+                    <button type="button" class="custom-upload custom-search" id="btnChoose" data-id="memberid" data-name="membername"><i class="fa fa-search"></i> 选择</button>
+                    </span> </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label">订单名称：</label>
+                <div class="controls">
+                  <input type="text" class="form-control" name="name" id="name"  value="{$db.name}" readonly />
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label">订单备注：</label>
+                <div class="controls">
+                  <textarea class="form-control" rows="5" name="remark" id="remark" placeholder="下单备注信息" >{$db.remark}</textarea>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label">订单状态：</label>
+                <div class="controls">
+                  <select class="form-control w80 " name="status" id="status">
+                    <volist name="statuslist" id="vo">
+                      <notempty name="db.id">
+                        <eq name="db.status" value="$key">
+                          <option value="{$key}" selected="selected">{$vo}</option>
+                          <else/>
+                          <option value="{$key}" >{$vo}</option>
+                        </eq>
+                        <else/>
+                        <eq name="key" value="1">
+                          <option value="{$key}" selected="selected">{$vo}</option>
+                          <else/>
+                          <option value="{$key}" >{$vo}</option>
+                        </eq>
+                      </notempty>
+                    </volist>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="clearfix"></div>
+          </div>
+          <div class="tab-pane" id="autotab_2">
+            <div class="col-md-6 custom-form">
+              <div class="form-group">
+                <label class="control-label">付款状态：</label>
+                <div class="controls">
+                  <select class="form-control w80 " name="paystatus" id="paystatus">
+                    <volist name="paystatuslist" id="vo">
+                      <eq name="db.paystatus" value="$key">
+                        <option value="{$key}" selected="selected">{$vo}</option>
+                        <else/>
+                        <option value="{$key}" >{$vo}</option>
+                      </eq>
+                    </volist>
+                  </select>
+                </div>
+              </div>
+              <div id="paybox">
+                <div class="form-group">
+                  <label class="control-label">付款方式：</label>
+                  <div class="controls">
+                    <select class="form-control w80 " name="paymethod" id="paymethod">
+                      <option value="">支付方式</option>
+                      <volist name="paymethodlist" id="vo">
+                        <eq name="db.paymethod" value="$key">
+                          <option value="{$key}" selected="selected">{$vo}</option>
+                          <else/>
+                          <option value="{$key}" >{$vo}</option>
+                        </eq>
+                      </volist>
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="control-label">交易号：</label>
+                  <div class="controls">
+                    <input type="text" class="form-control" name="tradeno" id="tradeno"  value="{$db.tradeno}"  />
+                    <div class="help-block">用户支付的交易流水号</div>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label">订单总额：</label>
+                <div class="controls">
+                  <input type="text" class="form-control w80" name="total" id="total"  value="{$db.total}" readonly />
+                  <div class="help-block">订单商品单价*数量之和</div>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label">折扣：</label>
+                <div class="controls">
+                  <input type="text" class="form-control w80" name="discount" id="discount"  value="{$db.discount}" />
+                  <div class="help-block">折扣金额，不要填负数</div>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label">运费：</label>
+                <div class="controls">
+                  <input type="text" class="form-control w80" name="shipfee" id="shipfee"  value="{$db.shipfee}" />
+                  <div class="help-block">运费金额，不要填负数</div>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label">应收金额：</label>
+                <div class="controls">
+                  <input type="text" class="form-control w80" readonly name="amount" id="amount"  value="{$db.amount}" />
+                  <div class="help-block">应收金额 = 订单总额 - 折扣 + 运费</div>
+                </div>
+              </div>
+            </div>
+            <div class="clearfix"></div>
+          </div>
+          <div class="tab-pane" id="autotab_3">
+            <div class="col-md-6 custom-form">
+              <div class="form-group">
+                <label class="control-label">快递公司：</label>
+                <div class="controls">
+                  <select class="form-control w80 " name="expressid" id="expressid">
+                        <option value="" >--选择--</option>
+                    <volist name="expresslist" id="vo">
+                      <eq name="db.expressid" value="$vo.id">
+                        <option value="{$vo.id}" selected="selected">{$vo.title}</option>
+                        <else/>
+                        <option value="{$vo.id}" >{$vo.title}</option>
+                      </eq>
+                    </volist>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label">快递单号：</label>
+                <div class="controls">
+                  <input type="text" class="form-control" name="expressno" id="expressno" placeholder="输入快递单号" value="{$db.expressno}" />
+                   <div class="help-block">如有发货，此处填写订单号</div>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label">收货姓名：</label>
+                <div class="controls">
+                  <input type="text" class="form-control w150" name="username" id="username" placeholder="输入收货姓名" value="{$db.username}" />
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label">联系电话：</label>
+                <div class="controls">
+                  <input type="text" class="form-control w150" name="telephone" id="telephone" placeholder="输入联系电话" value="{$db.telephone}" />
+                </div>
+              </div>
+              <div class="form-group col-md-12 row">
+                <label class="control-label">所在地：</label>
+                <div class="controls custom-area">
+                  <select id="China_Province" class="form-control" name="provinceid">
+                    
+                    
+                    
+            {:get_area('china_province',0,$db['provinceid'])}
+            
+                  
+                  
+                  </select>
+                  <select id="China_City" class="form-control" name="cityid"  >
+                    
+                    
+                    
+            {:get_area('china_city',$db['provinceid'],$db['cityid'])}
+            
+                  
+                  
+                  </select>
+                  <select id="China_District" class="form-control" name="districtid"  >
+                    
+                    
+                    
+            {:get_area('china_district',$db['cityid'],$db['districtid'])}
+            
+                  
+                  
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label">详细地址：</label>
+                <div class="controls">
+                  <input type="text" class="form-control" name="address" id="address" placeholder="输入详细地址" value="{$db.address}" />
+                </div>
+              </div>
+            </div>
+            <div class="clearfix"></div>
+          </div>
+          <div class="tab-pane" id="autotab_4">
+            <div class="col-md-8 custom-form">
+              <div class="form-group">
+                <label class="control-label">订单详情：</label>
+                <div class="controls row">
+                  <div class="col-md-12">
+                    <table class="table  table-first-column-number display full table-striped custom-table vm">
+                      <thead>
+                        <tr>
+                          <th >#</th>
+                          <th>产品ID</th>
+                          <th>产品名称</th>
+                          <th>单价</th>
+                          <th>数量</th>
+                          <th width="80">小计</th>
+                      </thead>
+                      <tbody>
+                        <volist name="detaillist" id="vo">
+                          <tr>
+                            <td>{$key+1}</td>
+                            <td>{$vo.productid}</td>
+                            <td>{$vo.title}</td>
+                            <td>{$vo.price}</td>
+                            <td>
+                              {$vo.num}
+                              <div style="display: none;" class="btn-group">
+                                <button class="btn btn-deduct" type="button">-</button>
+                                <input type="text" class="form-control order-item" data-id="{$vo.id}" data-price="{$vo.price}"  value="{$vo.num}" name="detail[{$vo.productid}]"  />
+                                <button class="btn btn-plus" type="button">+</button>
+                              </div></td>
+                            <td><span id="sum_{$vo.id}">{:to_price($vo['price']*$vo['num'])}</span></td>
+                          </tr>
+                        </volist>
+                        <tr>
+                          <td colspan="8"><div class="pull-right"> 数量：<span id="label_num">{$db.num}</span>，金额：<span id="label_total">{$db.total}</span> </div></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="clearfix"></div>
+          </div>
+          
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-group" style="padding:20px 0px;">
+            <div class="controls">
+              <hr />
+              <in name="db.status" value="3,4,5">
+              <button type="button" disabled class="btn btn-success" id="btnSubmit"><i class="fa fa-save"></i> 提交</button>
+              <else/>
+              <button type="submit" class="btn btn-success" id="btnSubmit"><i class="fa fa-save"></i> 提交</button>
+              </in>
+              <button type="button" class="btn btn-default" onClick="history.back();"><i class="fa fa-undo"></i> 返回</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+<include file="Public/form" />
+</body>
+</html>

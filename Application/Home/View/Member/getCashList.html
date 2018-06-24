@@ -1,0 +1,14 @@
+<empty name="list">
+  <eq name="p" value="1">
+    <div class="mui-table-view-cell display-box"> <div class="box-flex-1">暂无记录 </div></div>
+  </eq>
+  <else/>
+
+    <volist name="list" id="vo">
+      <div class="mui-table-view-cell display-box">
+        <div class="number mui-col-xs-3">&yen;{$vo.amount|to_price}</div>
+        <div class="box-flex-1">{:$statuslist[$vo['status']]}</div>
+        <div>{$vo.addtime}</div>
+      </div>
+    </volist>
+</empty>

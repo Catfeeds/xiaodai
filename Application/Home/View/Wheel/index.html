@@ -1,0 +1,469 @@
+<!doctype html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>{$title}</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"/>
+<meta name="keywords" content="{$title}"/>
+<meta name="description" content="{$db.remark}"/>
+	<link rel="stylesheet" href="__PUBLIC__/Home/css/mui.css" />
+<js href="__PUBLIC__/Admin/lib/jquery-1.11.2.min.js" />
+<script src="__PUBLIC__/Home/js/mui.min.js"></script>
+<js href="__PUBLIC__/Home/js/jquery.form.js" />
+<js href="__PUBLIC__/Home/js/jquery.func.js" />
+<js href="__PUBLIC__/Home/wheel/js/awardRotate.js" />
+<style>
+html,body{margin:0px; padding:0px; height:100%;}
+/* 大转盘样式 */
+.dazhuanpan { display: block; padding: 0 20px; background: #e41b47 url(__PUBLIC__/Home/wheel/images/bgdzp.jpg) no-repeat center top; background-size: cover; }
+
+.dazhuanpan .turnplate { display: block; max-width: 400px; margin: 0 auto; position: relative; }
+
+.dazhuanpan .turnplate canvas.item { width: 100%; }
+
+.dazhuanpan .turnplate img.pointer { position: absolute; width: 31.5%; height: 42.5%; left: 34.6%; top: 23%; }
+
+.cishu { margin: 10px auto 0; text-align: center; color: #FFF; font-size: 16px; }
+.cishu .number { color: #FF0; }
+
+.huodongitem { margin: 10px 20px; padding: 10px; background-color: #c0173c; border-radius: 6px; color: #fafad4; }
+.huodongitem .tit { line-height: 32px; border-bottom: 1px dashed rgba(255, 255, 255, 0.4); font-size: 18px; font-weight: bold; color: #FF0; }
+.huodongitem .cont { margin-top: 10px; }
+.huodongitem .cont p { color: #fafad4; }
+
+.propbox { width: 100%; height: 100%; position: fixed; left: 0; top: 0; z-index: 99; display:none; }
+.propbox .bg { width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.8); }
+.propbox .cont { width: 85%; max-width: 400px; height: 240px; padding: 20px; box-sizing: border-box; text-align: center; background-color: #FFF; border-radius: 6px; position: absolute; left: 0; top: 0; right: 0; bottom: 0; margin: auto; }
+.propbox .cont .tit { margin-top: 15px; color: #F00; font-size: 16px; font-weight: bold; }
+.propbox .cont .txt { font-size: 12px; color: #666; }
+.propbox .cont .icon-01 { height: 90px; background: url(__PUBLIC__/Home/wheel/images/smile.png) no-repeat center; background-size: contain; }
+.propbox .cont .icon-02 { height: 90px; background: url(__PUBLIC__/Home/wheel/images/sad.png) no-repeat center; background-size: contain; }
+.propbox .input-row { margin-top: 10px; }
+.propbox .input-row input { width: 100%; height: 40px; box-sizing: border-box; margin: 0; padding: 0 10px; background-color: #FFF; border: 1px solid #CCC; border-radius: 4px; -webkit-appearance: none; font-size: 16px; }
+
+.sharebox { width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.8); position: fixed; left: 0; top: 0; z-index: 99; display:none;}
+.sharebox img { width: 100px; float: right; margin: 5px 10px 0 0; }
+
+.mui-text-center{ text-align:center; }
+.btn-share{ margin-top:10px;  position: relative;display: inline-block;padding: 6px 12px;margin-bottom: 0;font-size: 14px;font-weight: 400;line-height: 1.42;color: #333;text-align: center;color: #fff;background-color: #FA0;border: 1px solid #FA0;    border-radius: 3px; text-decoration:none; }
+#btn-fail,#btn-success{width:100%;}
+
+</style>
+<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<script type="text/javascript"> 
+var $share={
+  title: '{$share.sharetitle}',
+  desc: '{$share.shareintro}',
+  link: '{$share.shareurl}',
+  imgUrl: '{$share.sharelogo}',
+  trigger: function (res) {
+	//alert('用户点击发送给朋友');
+  },
+  success: function (res) {
+	//alert('已分享');
+	shared();
+  },
+  cancel: function (res) {
+	//alert('已取消');
+  },
+  fail: function (res) {
+  }
+};
+</script>
+<script type="text/javascript">
+var $ids=[],$prizes=[],$titles=[],$colors=[];
+	<volist name="prizes" id="vo">
+	$ids[{$key}]="{$vo['id']}";
+	$prizes[{$key}]="{$vo['prize']}";
+	$titles[{$key}]="{$vo['title']}";
+	$colors[{$key}]="{$vo['color']}";
+	</volist>
+	
+var turnplate={
+	prizes:[],				//奖项名称
+	titles:[],				//大转盘奖品名称
+	colors:[],					//大转盘奖品区块对应背景颜色
+	outsideRadius:192,			//大转盘外圆的半径
+	textRadius:155,				//大转盘奖品位置距离圆心的距离
+	insideRadius:68,			//大转盘内圆的半径
+	startAngle:0,				//开始角度
+	
+	bRotate:false				//false:停止;ture:旋转
+};
+
+$(document).ready(function(){
+	//动态添加大转盘的奖品与奖品区域背景颜色
+	turnplate.prizes = $prizes;
+	turnplate.titles = $titles;
+	turnplate.colors = $colors;
+
+	
+	var rotateTimeOut = function (){
+		$('#wheelcanvas').rotate({
+			angle:0,
+			animateTo:2160,
+			duration:8000,
+			callback:function (){
+				alert('网络超时，请检查您的网络设置！');
+			}
+		});
+	};
+
+	//旋转转盘 item:奖品位置; txt：提示语;
+	var rotateFn = function (item, txt, type){
+		var angles = item * (360 / turnplate.titles.length) - (360 / (turnplate.titles.length*2));
+		if(angles<270){
+			angles = 270 - angles; 
+		}else{
+			angles = 360 - angles + 270;
+		}
+		$('#wheelcanvas').stopRotate();
+		$('#wheelcanvas').rotate({
+			angle:0,
+			animateTo:angles+1800,
+			duration:8000,
+			callback:function (){
+				if(item==0){
+					alerterr(txt);
+				}else{
+					alertok(txt,(type==4?1:0));
+				}
+				//$("#result").html(txt);
+				turnplate.bRotate = !turnplate.bRotate;
+			}
+		});
+	};
+
+	$('.pointer').click(function (){ 
+	<eq name="check.status" value="0">
+	alerterr("{$check.info}");
+	return false;
+	</eq>
+	
+	<lt name="lotterynum" value="1">
+	alerterr("木有机会啦，亲~！");
+	return false;
+	</lt>
+		if(turnplate.bRotate)return;
+		turnplate.bRotate = !turnplate.bRotate;
+		//获取随机数(奖品个数范围内)
+		var url="{:U('Wheel/prize','actid='.$actid)}"; 
+		$.ajax({
+			url:url,
+			type:"POST",
+			success: function(data){ 
+				//$("#result").html(JSON.stringify(data));
+				var $data=data.info;//{id: "3", amount: "10.00", prize: "三等奖", type: "3", title: "10M流量"}
+				var $info,$item; 
+					$item=getItemById($data.id); 
+				if(data.status=="1"){
+					$("#sn").val($data.sn);
+					var $type=$data.type;
+					if($type==4){
+						$("#act").val("prize");
+					}else{
+						$("#act").val("info");
+					}
+					$info=turnplate.prizes[$item-1]+":"+turnplate.titles[$item-1];	
+					rotateFn($item, $info,$data.type);  
+					getTimes(); 
+				}else{ 
+					$info=$data;
+					$("#act").val("");
+					
+					if($info=='未中奖'){
+						rotateFn($item, $info,0);  
+						getTimes(); 
+					}else{ 
+						turnplate.bRotate = !turnplate.bRotate;
+						alerterr($info);	
+					}
+				} 
+			}
+		});
+		 
+	});
+	
+	$("#btn-success").click(function(){
+		var $tel=$("#telephone");
+		if($tel.length>0){
+			if($.trim($tel.val())	==""){
+				alert("对不起，为确保顺利领取奖品，请填写您的联系方式！");
+				$tel.focus();
+				return false;	
+			}
+			if($.trim($("#address").val())	==""){
+				alert("对不起，为确保顺利领取奖品，请填写您的联系地址！");
+				$("#address").focus();
+				return false;	
+			}
+		} 
+	});
+});
+ 
+
+function getItemById($id){
+	for(var $i=0;$i<$ids.length;$i++){
+		if($ids[$i]==$id){
+			return $i+1;
+			break	
+		}
+		//console.log($i);
+	}
+	return 0;
+}
+
+function rnd(n, m){
+	var random = Math.floor(Math.random()*(m-n+1)+n);
+	return random;
+	
+}
+
+
+//页面所有元素加载完毕后执行drawRouletteWheel()方法对转盘进行渲染
+window.onload=function(){
+	drawRouletteWheel();
+};
+
+function drawRouletteWheel() {    
+  var canvas = document.getElementById("wheelcanvas");    
+  if (canvas.getContext) {
+	  //根据奖品个数计算圆周角度
+	  var arc = Math.PI / (turnplate.titles.length/2);
+	  var ctx = canvas.getContext("2d");
+	  //在给定矩形内清空一个矩形
+	  ctx.clearRect(0,0,422,422);
+	  //strokeStyle 属性设置或返回用于笔触的颜色、渐变或模式  
+	  ctx.strokeStyle = "#FFBE04";
+	  //font 属性设置或返回画布上文本内容的当前字体属性
+	  ctx.font = '16px Microsoft YaHei';      
+	  for(var i = 0; i < turnplate.titles.length; i++) {       
+		  var angle = turnplate.startAngle + i * arc;
+		  ctx.fillStyle = turnplate.colors[i];
+		  ctx.beginPath();
+		  //arc(x,y,r,起始角,结束角,绘制方向) 方法创建弧/曲线（用于创建圆或部分圆）    
+		  ctx.arc(211, 211, turnplate.outsideRadius, angle, angle + arc, false);    
+		  ctx.arc(211, 211, turnplate.insideRadius, angle + arc, angle, true);
+		  ctx.stroke();  
+		  ctx.fill();
+		  //锁画布(为了保存之前的画布状态)
+		  ctx.save();   
+		  
+		  //----绘制奖品开始----
+		  ctx.fillStyle = "#E5302F";
+		  var text = turnplate.titles[i];
+		  var line_height = 17;
+		  //translate方法重新映射画布上的 (0,0) 位置
+		  ctx.translate(211 + Math.cos(angle + arc / 2) * turnplate.textRadius, 211 + Math.sin(angle + arc / 2) * turnplate.textRadius);
+		  
+		  //rotate方法旋转当前的绘图
+		  ctx.rotate(angle + arc / 2 + Math.PI / 2); 
+		  var prize=turnplate.prizes[i]
+		ctx.fillText(prize,-ctx.measureText(prize).width / 2,0);
+		text = text.substring(0,6)+"||"+text.substring(6);
+		var texts = text.split("||");
+		for(var j = 0; j<texts.length; j++){
+		  ctx.fillText(texts[j], -ctx.measureText(texts[j]).width / 2, (j+2) * line_height);
+		}
+		//把当前画布返回（调整）到上一个save()状态之前 
+		ctx.restore();
+		//----绘制奖品结束----
+	  }     
+  } 
+}
+
+function alertok($text,$credit){
+	if($credit==0){
+		
+		var $html='<div class="icon-01"></div>	<div class="tit">'+$text+'</div><div class="input-row"><input type="text" placeholder="填写手机号" name="telephone" id="telephone" maxlength="11" /></div><div class="input-row"><input type="text" placeholder="填写地址" name="address" id="address" maxlength="50" /></div>';
+		$("#box-success .alerttext").html($html);
+		$("#btn-success").text("完善资料");
+		$("#box-success .cont").height(280);
+		$("#box-success").show();	
+	}else{
+		var $html='<div class="icon-01"></div>	<div class="tit">'+$text+'</div>';
+		$("#box-success .alerttext").html($html);
+		$("#btn-success").text("立即领取");
+		$("#box-success .cont").height(180);
+		$("#box-success").show();	
+		
+	}
+}
+
+function alerterr($text){
+	var $html='<div class="icon-02"></div>	<div class="tit">'+$text+'</div>';
+	$("#box-fail .alerttext").html($html);
+	$("#box-fail").show();
+	
+}
+
+function reloadwin(){
+	location.reload();
+}
+
+</script> 
+</head>
+<body style="background:#e41b47;overflow-x:hidden;"> 
+	<img src="__PUBLIC__/Home/wheel/images/dzptop.jpg" width="100%">
+	<div class="dazhuanpan">
+		<div class="turnplate" style="background-image:url(__PUBLIC__/Home/wheel/images/turnplate-bg.png);background-size:100% 100%;">
+			<canvas class="item" id="wheelcanvas" width="422px" height="422px"></canvas>
+			<img class="pointer" src="__PUBLIC__/Home/wheel/images/turnplate-pointer.png"/>
+		</div>
+	</div>   
+	<div class="cishu">你还有 <span class="number" id="lotterynum">{$lotterynum}</span> 次抽奖机会</div>
+	<div class="mui-text-center mt10"><button type="button" class="btn-share" id="btn-share"><gt name="activity.sharenum" value="0">获取抽奖机会<else/>分享给好友</gt></button></div>
+    <notempty name="activity.remark">
+	<div class="huodongitem">
+		<div class="tit">活动说明</div>
+		<div class="cont mui-clearfix">
+			{$activity.remark|nl2br}
+		</div>
+	</div>
+    </notempty>
+	<div class="huodongitem">
+		<div class="tit">活动时间</div>
+		<div class="cont mui-clearfix">
+			{$activity.timefrom} 至 {$activity.timeto}
+		</div>
+	</div>
+    <eq name="activity.issubscribe" value="1">
+	<div class="huodongitem">
+		<div class="tit">参与条件</div>
+		<div class="cont mui-clearfix">
+			关注 “{:get_cache_value('wechat_mp',1,'panel_name')}” 官方微信公众号
+		</div>
+	</div>
+    </eq>
+    
+	<div class="huodongitem">
+		<div class="tit">奖品设置</div>
+		<div class="cont mui-clearfix">
+			<volist	name="prizes" id="vo">
+            <gt name="vo.id" value="0">
+			<p>{$vo.prize}：{$vo.title}  <!--/ {$vo.num}名--></p>
+            </gt>
+            </volist>
+            <p>
+            【提示：{:$activity['iseveryday']?'每天':'总共'}有{$activity.num}次抽奖机会<gt name="activity.sharenum" value="0">
+            ，分享朋友圈可额外获得{$activity.sharenum}次机会</gt>】
+            </p>
+		</div>
+	</div>
+    <notempty name="activity.content">
+	<div class="huodongitem">
+		<div class="tit">兑奖说明</div>
+		<div class="cont mui-clearfix">
+			{$activity.content|nl2br}
+		</div>
+	</div>
+    </notempty>
+    
+	<div class="mt10" style="padding: 10px; text-align: center;"><a  href="{:U('Wheel/record','actid='.$actid)}" class="btn-share">查看中奖记录</a></div>
+<div class="sharebox"><img src="__PUBLIC__/Home/wheel/images/fxtxt.png"></div> 
+
+
+<!--失败提示-->
+<div class="propbox" id="box-fail">
+  <div class="bg"></div>
+  <div class="cont">
+    <div class="alerttext"></div>
+    <div  style="margin-top: 10px;">
+      <button type="button" class="btn-share" id="btn-fail">确定</button>
+    </div>
+  </div>
+</div>
+
+<!--成功提示-->
+<div class="propbox" id="box-success">
+  <div class="bg"></div>
+  <form class="ajaxformx" method="post" id="formsuccess" action="{:U('Wheel/record')}">
+    <input type="hidden" name="actid" id="actid" value="{$actid}" />
+    <input type="hidden" name="act" id="act" value="" />
+    <input type="hidden" name="sn" id="sn" value="" />
+    <div class="cont">
+      <div class="alerttext"> </div>
+      <div  style="margin-top: 10px;">
+        <button type="submit" class="btn-share" id="btn-success">确定</button>
+      </div>
+    </div>
+  </form>
+</div>
+
+
+
+    
+<script type="text/javascript"> 
+
+//分享签名
+function getShare(){
+	var url="{:U('Wheel/share')}"; 
+	var data={
+		'url':'{:get_current_url()}'
+	};
+	$.ajax({
+		url:url,
+		type:"POST",
+		data:data,
+		success: function(data){
+			wx.config(data.info);	
+			wx.ready(function () {
+			  wx.onMenuShareAppMessage($share); 
+			  wx.onMenuShareTimeline($share); 
+			});
+		}
+	});	
+}
+
+//分享加高
+function shared(){
+	var url="{:U('Wheel/share','actid='.$actid)}";
+	$.ajax({
+		url:url,
+		type:"POST", 
+		success: function(data){
+			 getTimes();
+			//$("#result").html(JSON.stringify(data.info));
+		}
+	});	
+}
+//中奖记录
+function getRecord(){
+	
+	var url="{:U('Wheel/record','actid='.$actid)}";  
+	$.ajax({
+		url:url,
+		type:"POST", 
+		success: function(data){
+			$("#result").html(JSON.stringify(data.info));
+		}
+	});	
+}
+
+
+//抽奖机会
+function getTimes(){ 
+	var url="{:U('Wheel/times','actid='.$actid)}";  
+	$.ajax({
+		url:url,
+		type:"POST", 
+		success: function(data){
+			$("#lotterynum").html(data.info);
+		}
+	});	
+}
+$(function(){
+	getShare();
+	//getRecord();
+	getTimes(); 
+	
+	$("body").on("click", "#btn-share,.sharebox",function(){
+		$(".sharebox").toggle();
+	});
+	$("body").on("click","#btn-fail",function(){ 
+		$("#box-fail").toggle();
+	});
+}); 
+</script>
+</body>
+</html>

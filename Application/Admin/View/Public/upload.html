@@ -1,0 +1,60 @@
+<css href="__PUBLIC__/Admin/lib/uploadify/uploadify.css" />
+<js href="__PUBLIC__/Admin/lib/uploadify/jquery.uploadify.min.js"/>
+
+<script>
+
+
+    function getnewUrl(fil,classes) {
+        if(fil.length<=0){
+            return;
+        }
+        var Cnv = document.getElementById('myCanvas');
+        var Cntx = Cnv.getContext('2d');//获取2d编辑容器
+        var imgss =   new Image();
+        var agoimg=document.getElementById("agoimg");
+        var newimg=document.getElementById(classes);
+        newimg.src="/Public/Home/images/loading.gif";
+//        $("."+classes).html("<img style='width: 100%; height: 100%;' src=\"/Public/Home/images/loading.gif\"/>");
+//        alert(fil.length);
+        for (var intI = 0; intI < fil.length; intI++) {
+            var tmpFile = fil[intI];
+            var reader = new FileReader();
+            reader.readAsDataURL(tmpFile);
+            reader.onload = function (e) {
+                url = e.target.result;
+                imgss.src = url;
+                agoimg.src=url;
+            };
+
+            agoimg.onload = function () {
+                //等比缩放
+                var m = imgss.width / imgss.height;
+                Cnv.height =700;//该值影响缩放后图片的大小
+                Cnv.width= 700*m ;
+                //img放入画布中
+                //设置起始坐标，结束坐标
+                Cntx.drawImage(agoimg, 0, 0,Cnv.width, Cnv.height);
+                var Pic = document.getElementById("myCanvas").toDataURL("image/png");
+
+                $.ajax({
+                    url:"/Member/saveimg.html",
+                    data:{pic:Pic},
+                    type:"POST",
+                    success: function (data) {
+                        if(data.status==1){
+//                            var html="<img class=\"idimg\" style=\"\" src=\""+data.info+"\"/>" ;
+                            newimg.src=data.info;
+//                            $("."+classes).html(html);
+                            $('input[name="'+classes+'"]').val(data.info);
+                        }else{
+                            alerterr(data.info);
+                        }
+                    }
+                });
+
+
+            };
+        }
+
+    }
+</script>

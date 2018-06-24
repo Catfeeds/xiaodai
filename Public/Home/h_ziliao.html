@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+		<meta name="format-detection" content="telephone=no">
+		<title>汇智共创</title>
+		<link rel="stylesheet" href="css/loading.css" />
+		<script src="js/loading.js"></script>		
+		<link rel="stylesheet" href="css/mui.css" />
+		<link rel="stylesheet" href="css/fonts.css" />
+		<link rel="stylesheet" href="css/style.css" />
+	</head>
+	<body >
+		
+		<div class="mui-content">			
+			<form action="success.html" id="form">
+				<div class="mui-input-group mt10">
+					<div class="mui-input-row">
+						<label>姓名：</label>
+						<input type="text" placeholder="请填写你的真实姓名" class="mui-input-clear" id="name" />
+					</div>
+					<div class="mui-input-row">
+						<label>电话：</label>
+						<input type="tel" placeholder="请填写你的电话号码" class="mui-input-clear" id="tel" />
+					</div>
+					<div class="mui-input-row">
+						<label>邮箱：</label>
+						<input type="tel" placeholder="请填写你的电子邮箱" class="mui-input-clear" id="email" />
+					</div>
+					<div class="mui-input-row">
+						<label>公司：</label>
+						<input type="text" placeholder="请填写公司名称" class="mui-input-clear" id="gongsi" />
+					</div>
+					<div class="mui-table-view-divider">职位</div>
+					<div class="ziliao_zw">
+						<ul class="clearListStyle box-flex-1 mui-clearfix">
+							<li><input type="radio" name="size" checked><label>CEO</label></li>
+							<li><input type="radio" name="size"><label>董事长</label></li>
+							<li><input type="radio" name="size"><label>经理</label></li>
+							<li><input type="radio" name="size"><label>财务</label></li>
+							<li><input type="radio" name="size"><label>专家</label></li>
+							<li><input type="radio" name="size"><label>讲师</label></li>
+							<li><input type="radio" name="size"><label>大学生</label></li>
+							<li><input type="radio" name="size"><label>其他</label></li>
+						</ul>
+					</div>
+					<div class="mui-table-view-divider">我有什么</div>
+					<div class="mui-input-row autoh">
+						<textarea rows="3" placeholder="请填写内容" id="beizhu"></textarea>
+					</div>
+					<div class="mui-table-view-divider">我需什么</div>
+					<div class="mui-input-row autoh">
+						<textarea rows="3" placeholder="请填写内容" id="beizhu"></textarea>
+					</div>
+					
+						
+					
+				</div>
+				<div class="mui-content-padded">			
+					<button type="submit" class="mui-btn mui-btn-primary mui-btn-block mui-btn-sm">提交</button>
+				</div>
+			</form>
+		</div>
+		<script src="js/mui.min.js"></script>
+		<script src="js/jquery-2.2.3.min.js"></script>		
+		<script src="js/Validform_v5.3.2_min.js"></script>
+		<script src="js/mui.previewimage.js"></script>
+		<script src="js/mui.zoom.js"></script>
+		<link rel="stylesheet" href="css/priview.css" />
+		<script src="js/script.js"></script>
+		<script>
+			mui.previewImage();
+			mui('.photolist').on('tap','.close',function(){
+				$(this).parents('li').remove();
+			});
+			
+			var form=$("#form").Validform({
+				tiptype:function(msg){
+					if(msg.length>1){
+						mui.toast(msg);
+						//mui.alert(msg, '提示');
+					}
+				},
+				showAllError:false,//逐条验证			
+				postonce:true,
+			});
+				form.addRule([
+				{
+			        ele:"#name",
+			        datatype:"*",        
+			        nullmsg:"请填写你的真实姓名",
+			        sucmsg:" ",			        
+			    },
+			    
+			    {
+			        ele:"#email",
+			        datatype:"e",        
+			        nullmsg:"请填写你的电子邮箱",
+			        sucmsg:" ",			        
+			    },
+			    
+			    {
+			        ele:"#tel",
+			        datatype:"m",        
+			        nullmsg:"请填写收货人手机号",
+			        sucmsg:" ",
+			        errormsg:"手机号格式错误"
+			    },		    
+			    {
+			        ele:"#qq",
+			        datatype:"n",        
+			        nullmsg:"请填写你的QQ号码",
+			        sucmsg:" ",
+			        errormsg:"请填写正确的QQ号码"
+			    },
+			   		    
+			    {
+			        ele:"#gongsi",
+			        datatype:"*",        
+			        nullmsg:"请填写公司名称",
+			        sucmsg:" ",
+			        
+			    },
+			    {
+			        ele:"#beizhu",
+			        datatype:"*",        
+			        nullmsg:"请填写内容",
+			        sucmsg:" ",
+			        
+			    },
+			    
+			   
+			]);
+			
+		</script>
+	</body>
+</html>

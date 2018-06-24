@@ -1,0 +1,33 @@
+
+<empty name="list">
+    <eq name="p" value="1">
+        <li>
+            <div class="text-box" style="">
+                <h1 class="title" style="">暂无记录</h1>
+            </div>
+        </li>
+    </eq>
+</empty>
+<volist name="list" id="vo">
+    <?php
+            if(!isN($vo['linkurl'])){
+                $url=$vo['linkurl'];
+            }else{
+                $url=U('News/nview','id='.$vo['id']);
+            }
+        ?>
+    <li>
+        <a href="{$url}">
+            <div class="imgbox" style="">
+                <img style="width: 100%;height: 100%;" src="{$vo.indexpic|default=C('DEFAULT_NOPIC')}">
+            </div>
+            <div class="text-box" style="">
+                <h1 class="title" style="">{$vo.title}</h1>
+                <h5 class="introduction">{$vo.description}</h5>
+                <h5 class="times">{$vo.addtime|date2format}</h5>
+            </div>
+        </a>
+    </li>
+
+
+</volist>

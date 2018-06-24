@@ -1,0 +1,449 @@
+<!doctype html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>{$title}</title>
+<include file="Public/scripts" /><include file="Public/upload" /><include file="Public/editor" />
+</head>
+<body>
+<div class="row">
+  <div class="col-md-12 " >
+    <h2>{$title}</h2>
+  </div>
+  <div class="col-md-12 " >
+    <form action="" method="post" name="form1" id="form1" class="ajaxformx">
+      <input type="hidden" id="id" name="id" value="{$db.id}" />
+      <div class="fancy-tab-container">
+        <ul class="nav nav-tabs fancy">
+          <li class="active"><a href="#autotab_1" data-toggle="tab">基本信息</a></li>
+          <!--<li><a href="#autotab_2" data-toggle="tab">消费项目</a></li>-->
+          <li><a href="#autotab_3" data-toggle="tab">图片集</a></li>
+          <li id="daohang"><a href="#autotab_4" data-toggle="tab">门店地址</a></li>
+        </ul>
+        <div class="tab-content">
+          <div class="tab-pane active" id="autotab_1">
+            <div class="col-md-6 custom-form">
+
+              <div class="form-group">
+                <label class="control-label">门店名称：</label>
+                <div class="controls">
+                  <input type="text" class="form-control" name="title" id="title" placeholder="输入{$name}门店名称" value="{$db.title}" />
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label">形象图：</label>
+                <div class="controls">
+                  <div class="input-group">
+                    <input type="text" class="form-control" name="indexpic" id="indexpic" value="{$db.indexpic}" readonly />
+                    <span class="input-group-addon">
+                    <button type="button" id="btnUpload" class="custom-upload"><i class="fa fa-upload"></i></button>
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label">联系电话：</label>
+                <div class="controls">
+                  <input type="text" class="form-control" name="telephone" id="telephone" placeholder="输入{$name}联系电话" value="{$db.telephone}" />
+                </div>
+              </div>
+              <!--<div class="form-group">-->
+                <!--<label class="control-label">门店地址：</label>-->
+                <!--<div class="controls">-->
+                  <!--<input type="text" class="form-control" name="address" id="address" placeholder="输入{$name}地址" value="{$db.address}" />-->
+                <!--</div>-->
+              <!--</div>-->
+              <!--<div class="form-group">-->
+                <!--<label class="control-label"></label>-->
+                <!--<div class="controls">-->
+                  <!--<span style="float: left; padding: 5px;">经度：</span><input type="text" class="form-control fl w150" name="longitude" id="longitude" placeholder="输入{$name}经度" value="{$db.longitude}" />-->
+                  <!--<span style="float: left; padding: 5px;">纬度：</span><input type="text" class="form-control w150" name="latitude" id="latitude" placeholder="输入{$name}纬度" value="{$db.latitude}" />-->
+                <!--</div>-->
+              <!--</div>-->
+
+              <div class="form-group">
+                <label class="control-label">营业执照编号：</label>
+                <div class="controls">
+                  <input type="text" class="form-control" name="licenseno" id="licenseno" placeholder="输入{$name}营业执照编号" value="{$db.licenseno}" />
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label">法人身份证号：</label>
+                <div class="controls">
+                  <input type="text" class="form-control" name="legalidcard" id="legalidcard" placeholder="输入{$name}法人身份证号" value="{$db.legalidcard}" />
+                </div>
+              </div>
+
+              <div class="custom-form">
+                <div class="form-group">
+                  <label class="control-label">商家简介：</label>
+                  <div class="controls">
+                    <textarea  id="content" name="content" class="myueditor" >{$db.content}</textarea>
+                  </div>
+                </div>
+              </div>
+
+
+
+              <div class="form-group">
+                <label class="control-label">排序：</label>
+                <div class="controls">
+                  <input type="text" class="form-control w80" name="sort" id="sort" value="{$db.sort}"  />
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label">状态：</label>
+                <div class="controls">
+                  <select class="form-control w80 " name="status" id="status">
+                    <volist name="statuslist" id="vo">
+                      <notempty name="db.id">
+                        <eq name="db.status" value="$key">
+                          <option value="{$key}" selected="selected">{$vo}</option>
+                          <else/>
+                          <option value="{$key}" >{$vo}</option>
+                        </eq>
+                        <else/>
+                        <eq name="key" value="1">
+                          <option value="{$key}" selected="selected">{$vo}</option>
+                          <else/>
+                          <option value="{$key}" >{$vo}</option>
+                        </eq>
+                      </notempty>
+                    </volist>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+
+
+            <div class="clearfix"></div>
+          </div>
+
+          <div class="tab-pane" id="autotab_2">
+            <div class="col-md-6 custom-form">
+              <div class="form-group">
+              <label class="control-label">消费项目<span style=" color: red;">（消费金额单位：元）</span></label>
+              <div class="controls">
+                <table class="col-md-12" >
+                  <tr class="row0 template">
+                    <td id="itemsid">
+                      <?php
+                        $items=json_decode($db['items'],true);
+                        $itemsnum=count($items);
+                        if($itemsnum==0){
+                          $itemsnum=1;
+                        }
+                        ?>
+                      <input type="hidden" name="itemsnum" id="itemsnum" value="{$itemsnum}" />
+                      <?php
+                            $kk=1;
+                          foreach($items as $key=>$val){
+                      ?>
+                      <table class="table vm">
+                        <tr class="row0">
+                          <td width="70"  class="tc" > 第<span class="day">{$kk}</span>项 <br />
+                            <a href="javascript:void(0);" onclick="if(confirm('您确定要删除吗？')){$(this).parent().parent().parent().parent().remove();}">删除</a></td>
+                          <td >
+                            <div class="input-group">
+                              <input type="text" placeholder="消费项目（如：普通洗车，精细洗车）" class="form-control" name="items_name[]" value="{$key}"  />
+                            </div>
+                          </td>
+                          <td >
+                            <div class="input-group">
+                              <input type="text" placeholder="消费金额" class="form-control" name="items_value[]" value="{$val}"  />
+                            </div>
+                          </td>
+                        </tr>
+                      </table>
+
+                      <?php $kk++;}?>
+                    </td>
+                  </tr>
+                  <tr class="row0">
+                    <td colspan="3"><button class="btn" type="button" id="additems"><i class="fa fa-plus"></i> 1项</button></td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+            </div>
+            <div class="clearfix"></div>
+          </div>
+          <div class="tab-pane" id="autotab_3">
+            <div class="form-group" >
+              <div class="controls">
+                <table class="col-md-6" >
+                  <tr class="row0 template">
+                    <td id="tempid"><?php
+                $detail=json_decode($db['images']);
+                $daynum=count($detail);
+                if($daynum==0){
+                  $daynum=1;
+                }
+                ?>
+                      <input type="hidden" name="daynum" id="daynum" value="{$daynum}" />
+                      <for start="0" end="$daynum" name="k" >
+                        <script language="javascript">
+                          $(function(){
+                            $.rendUploader("#btnUpload{:$k+1}");
+                          });
+                        </script>
+                        <table class="table vm">
+                          <tr class="row0">
+                            <td width="70"  class="tc" > 第<span class="day">{:$k+1}</span>项 <br />
+                              <a href="javascript:void(0);" onclick="if(confirm('您确定要删除吗？')){$(this).parent().parent().parent().parent().remove();}">删除</a></td>
+                            <td ><div class="input-group">
+                              <input type="text" class="form-control" name="images[]"   value="{:$detail[$k]}"  />
+                                <span class="input-group-addon">
+                                <button type="button" id='btnUpload{$k+1}' class="custom-upload"><i class="fa fa-upload"></i></button>
+                                </span> </div></td>
+                          </tr>
+                        </table>
+                      </for></td>
+                  </tr>
+                  <tr class="row0">
+                    <td colspan="3"><button class="btn" type="button" id="addDay"><i class="fa fa-plus"></i> 1项</button></td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+            <div class="clearfix"></div>
+          </div>
+          <div class="tab-pane" id="autotab_4">
+            <div class="col-md-4 custom-form">
+              <div class="form-group">
+                <label class="control-label">地址(鼠标点击地图目标位置可拾取地址和坐标，也可通过地址搜索地图位置)：</label>
+                <div class="controls">
+                  <textarea class="form-control" rows="2" id="address" name="address" placeholder="请填写门店地址">{$db.address}</textarea>
+                  <input type="button" onclick="searchByStationName()" style="padding: 4px 8px; border: 1px solid #ddd; background: #eee; font-size: 12px;
+                 margin: 15px; border-radius: 3px" class="btn-search mui-btn mui-btn-primary mui-bum-xs" value="查找地址" />
+
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label">经度：</label>
+                <div class="controls">
+                  <input type="text" value="{$db.longitude}" class="form-control w150" name="longitude" id="longitude" />
+                </div>
+                <label class="control-label">纬度：</label>
+                <div class="controls">
+                  <input type="text" value="{$db.latitude}" class="form-control w150" name="latitude" id="latitude" />
+                </div>
+              </div>
+              <!--<div class="form-group">-->
+              <!--<label class="control-label">地图：</label>-->
+              <!--<div class="controls">-->
+              <!--<div id="container" style="width: 100%; height: 500px;">-->
+              <!--</div>-->
+              <!--</div>-->
+              <!--</div>-->
+
+            </div>
+            <div class="col-md-8 custom-form">
+
+              <div class="form-group">
+                <label class="control-label">地图：</label>
+                <div class="controls">
+                  <div id="container" style="width: 100%; height: 500px;">
+                  </div>
+                </div>
+              </div>
+
+            </div>
+            <div class="clearfix"></div>
+          </div>
+
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-group" style="padding:20px 0px;">
+            <div class="controls">
+              <hr />
+              <button type="submit" class="btn btn-success" id="btnSubmit"><i class="fa fa-save"></i> 提交</button>
+              <button type="button" class="btn btn-default" onClick="history.back();"><i class="fa fa-undo"></i> 返回</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+<script language="javascript">
+var $fields={
+	pid: {
+		validators: {
+			notEmpty: {
+				message: '必须选择所属分类'
+			}
+		}
+	} ,
+	title: {
+		validators: {
+			notEmpty: {
+				message: '{$name}标题不能为空'
+			}
+		}
+	} 
+	};
+</script> 
+<include file="Public/form" />
+<script language="JavaScript" type="text/javascript" >
+  $(function(){
+
+    $("#addDay").click(function(){
+      var num=parseInt($("#daynum").val());
+      var html=$.addDay(num+1);
+      $("#tempid").append(html);
+      if($("#pid").val()==3){
+        $(".datatype").val(3).attr("disabled",true).change();
+      }
+      //$(".editor").xheditor(default_setting);
+      $("#daynum").val(num+1);
+      $.rendUploader("#btnUpload"+(num+1));
+    });
+
+    $("#additems").click(function(){
+      var num=parseInt($("#itemsnum").val());
+      var html=$.additems(num+1);
+      $("#itemsid").append(html);
+
+
+      $("#itemsnum").val(num+1);
+
+    });
+
+
+  });
+  (function(){
+    $.addDay=function(n){
+      var html="";
+      html+=("<table class=\"table vm\">");
+      html+=("  <tr class=\"row0\">");
+      html+=("    <td width=\"70\"  class=\"tc\" >第<span class=\"day\">"+n+"</span>项 <br /><a href=\"javascript:void(0);\" onclick=\"if(confirm('您确定要删除吗？')){$(this).parent().parent().parent().parent().remove();}\">删除</a></td>");
+
+      html+=("    <td ><div class=\"input-group\"><input type=\"text\" class=\"form-control\" name=\"images[]\"   value=\"\"   /><span class=\"input-group-addon\"><button type=\"button\" id='btnUpload"+n+"' class=\"custom-upload\"><i class=\"fa fa-upload\"></i></button></span></div>  </td>");
+      html+=("  </tr>");
+      html+=("</table>");
+      return html;
+    }
+
+
+    $.additems=function(n){
+      var html="";
+      html+=("<table class=\"table vm\">");
+      html+=("  <tr class=\"row0\">");
+      html+=("    <td width=\"70\"  class=\"tc\" >第<span class=\"day\">"+n+"</span>项 <br /><a href=\"javascript:void(0);\" onclick=\"if(confirm('您确定要删除吗？')){$(this).parent().parent().parent().parent().remove();}\">删除</a></td>");
+
+      html+=("    <td ><div class=\"input-group\"><input type=\"text\" placeholder=\"消费项目（如：普通洗车，精细洗车）\" class=\"form-control\" name=\"items_name[]\"  value=\"\"   /></div>  </td>");
+      html+=("    <td ><div class=\"input-group\"><input type=\"text\" placeholder=\"消费金额\" class=\"form-control\" name=\"items_value[]\"  value=\"\"   /></div>  </td>");
+      html+=("  </tr>");
+      html+=("</table>");
+      return html;
+    }
+
+  })(jQuery);
+</script>
+
+
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=UfB3fUxvHlk6KhpLMd0iL3PuxnzyfuWm"></script>
+<script type="text/javascript">
+  var address=$("#address").val();
+  var map = new BMap.Map("container");
+  var point = new BMap.Point('{$db.longitude}', '{$db.latitude}');
+  if($.trim(address)!=""){
+    map.centerAndZoom(point, 15);
+  }else{
+    map.centerAndZoom("成都市", 12);
+  }
+
+  var marker = new BMap.Marker(point);
+  map.addOverlay(marker);
+
+
+  map.enableScrollWheelZoom();    //启用滚轮放大缩小，默认禁用
+  map.enableContinuousZoom();    //启用地图惯性拖拽，默认禁用
+  map.enableDoubleClickZoom();  //启用双击放大缩小
+  map.enablePinchToZoom();//启用双指操作缩放，默认启用。
+  map.addControl(new BMap.NavigationControl());  //添加默认缩放平移控件
+  map.addControl(new BMap.OverviewMapControl()); //添加默认缩略地图控件
+  map.addControl(new BMap.OverviewMapControl({ isOpen: false, anchor: BMAP_ANCHOR_BOTTOM_RIGHT }));   //右下角，打开
+
+  map.addEventListener("click", function (e) {
+    map.centerAndZoom(e.point, 18);
+    document.getElementById("longitude").value = e.point.lng;
+    document.getElementById("latitude").value =  e.point.lat;
+    var marker = new BMap.Marker(new BMap.Point(e.point.lng, e.point.lat));  // 创建标注，为要查询的地方对应的经纬度
+    map.clearOverlays();//清空原来的标注
+    map.addOverlay(marker);
+    var point = new BMap.Point(e.point.lng,e.point.lat);
+    if(!point){
+      mui.toast('未找到该地址');return;
+    }
+    var gc = new BMap.Geocoder();
+    gc.getLocation(point, function(rs){
+      var addComp = rs.addressComponents;
+      $("#address").val(addComp.province  + addComp.city  + addComp.district  + addComp.street  + addComp.streetNumber);
+      //alert(addComp.province + ", " + addComp.city + ", " + addComp.district + ", " + addComp.street + ", " + addComp.streetNumber);
+    });
+
+  });
+
+  var localSearch = new BMap.LocalSearch(map);
+  localSearch.enableAutoViewport(); //允许自动调节窗体大小
+
+  map.addEventListener("click", function (e) {
+    map.centerAndZoom(e.point, 15);
+    document.getElementById("longitude").value = e.point.lng;
+    document.getElementById("latitude").value =  e.point.lat;
+    var marker = new BMap.Marker(new BMap.Point(e.point.lng, e.point.lat));  // 创建标注，为要查询的地方对应的经纬度
+    map.clearOverlays();//清空原来的标注
+    map.addOverlay(marker);
+    var point = new BMap.Point(e.point.lng,e.point.lat);
+    if(!point){
+      mui.toast('未找到该地址');return;
+    }
+    var gc = new BMap.Geocoder();
+    gc.getLocation(point, function(rs){
+      var addComp = rs.addressComponents;
+      $("#address").val(addComp.province  + addComp.city  + addComp.district  + addComp.street  + addComp.streetNumber);
+      //alert(addComp.province + ", " + addComp.city + ", " + addComp.district + ", " + addComp.street + ", " + addComp.streetNumber);
+    });
+
+  });
+
+  function searchByStationName() {
+    var localSearch = new BMap.LocalSearch(map);
+    localSearch.enableAutoViewport(); //允许自动调节窗体大小
+//        var map = new BMap.Map("container");
+    map.clearOverlays();//清空原来的标注
+    var keyword = document.getElementById("address").value;
+    localSearch.setSearchCompleteCallback(function (searchResult) {
+      var poi = searchResult.getPoi(0);
+      if(!poi){
+        mui.toast('未找到该地址');return;
+      }
+      document.getElementById("longitude").value = poi.point.lng;
+      document.getElementById("latitude").value =  poi.point.lat;
+
+      map.centerAndZoom(poi.point, 18);
+      var marker = new BMap.Marker(new BMap.Point(poi.point.lng, poi.point.lat));  // 创建标注，为要查询的地方对应的经纬度
+      map.addOverlay(marker);
+    });
+    localSearch.search(keyword);
+  }
+
+
+  $("#daohang").click(function(){
+    if($.trim(address)!=""){
+      $(".btn-search").click();
+    }else{
+      map.centerAndZoom("成都市", 12);
+    }
+  });
+
+</script>
+
+
+</body>
+</html>

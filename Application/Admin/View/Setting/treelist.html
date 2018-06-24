@@ -1,0 +1,21 @@
+<volist name="tree" id="list">
+  <tr>
+    <td>{$list.id}</td>
+    <td>{:str_repeat("&nbsp;",($list['depth']-1)*4)}|- {$list.name}</td>
+    <td>{$list.remark|cut_str}</td>
+    <td><input name="Item_{$list.id}" id="Item_{$list.id}" onchange="setVal('{$tblname}','sort',{$list.id},$(this).val())" class="form-control w80" value="{$list.sort}" /></td>
+    <td>
+    <eq name="list.status" value="1"> 
+    <a href="javascript:void(0);" onclick="setVal('{$tblname}','status',{$list.id},0,this,'')" class="btn btn-link" rel="tooltip" data-original-title="点击{$statuslist.1}"><i class="fa fa-check-circle"></i> {$statuslist.1}</a>
+        <else/>
+        <a href="javascript:void(0);" onclick="setVal('{$tblname}','status',{$list.id},1,this,'')" class="btn btn-link fc_red"  rel="tooltip" data-original-title="点击{$statuslist.1}"><i class="fa fa-times-circle"></i> {$statuslist.0}</a> 
+        </eq>
+       </td>
+    <td>
+    <a href="{:U($control.'/add'.$action,'pid='.$list['id'])}" class="btn" rel="tooltip" data-original-title="添加"><i class="fa fa-plus"></i></a> 
+    <a href="{:U($control.'/edit'.$action,'id='.$list['id'])}" class="btn" rel="tooltip" data-original-title="修改"><i class="fa fa-edit"></i></a> 
+    <a   href="javascript:void(0);" onclick="setDelete('{:U("Setting/delete".$action,"id=".$list['id'])}')" class="btn" rel="tooltip" data-original-title="删除"><i class="fa fa-trash"></i></a>
+    </td>
+  </tr>
+  <notempty name="list['_child']"> {:R($control.'/treelist', array($list['_child']))} </notempty>
+</volist>

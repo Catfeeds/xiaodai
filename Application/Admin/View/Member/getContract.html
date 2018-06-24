@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+		<meta content="yes" name="apple-mobile-web-app-capable">
+		<meta content="black" name="apple-mobile-web-app-status-bar-style">
+		<meta content="telephone=no" name="format-detection">
+		<!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+		<meta http-equiv="Cache-Control" content="no-siteapp" />
+		<!--百度禁止转码 -->
+		<meta name="keywords" content="">
+		<title></title>
+		<!--<script type="text/javascript" src="../js/jquery-1.9.1.js"></script>-->
+		<style type="text/css">
+			* {
+				margin: 0;
+				padding: 0;
+				font-family: arial, "微软雅黑";
+				color: #333;
+			}
+/*	/*	/*	/*
+			.center {
+				max-width: 800px;
+				margin: 0 auto;
+				box-sizing: border-box;
+				padding: 20px;
+			}
+			
+			.text {
+				line-height: 1.5;font-size: 14px;
+			}
+			
+			.setitle {
+				font-size: 18px;
+				font-weight: bold;
+				margin: 20px 0;
+			}
+			
+			.foot {
+				overflow: hidden;
+				margin-top: 20px;
+				float: right;
+			}
+			*/
+			.foot p {margin: 10px 0;width: 300px;font-size: 12px;
+			}
+			
+			@media only screen and (max-width: 576px) {
+				.foot {
+					float: left !important;
+				}
+				.foot p {
+					width: auto !important;
+				}
+			}
+		</style>
+	</head>
+	<script type="text/javascript" src="/Public/newcss1/js/jquery-1.9.1.js"></script>
+	<body id="html">
+		<div class="center" style="max-width: 800px;margin: 0 auto;box-sizing: border-box;padding: 20px;">
+			<h1 class="shengming" style="font-size: 16px;color: #ff5151;">
+				郑重声明: U易平台不从事任何放贷业务，如果有他人以“U易平台”名义进行放贷，均与“U易平台”无关，U易服务平台保留追究其法律责任的权利。
+			</h1>
+			<h1 class="hetongming" style="font-size: 18px;margin: 20px 0;text-align: center;">
+				借款协议
+			</h1>
+			<div class="text" style="line-height: 1.5;font-size: 14px;">
+				协议编号:{$loan['bianhao']}
+				甲方(出借人):王海雨 (已认证) 甲方身份证号:    甲方手机号:13518143416 甲方 乙方(借款人):{$member['username']} (已认证)
+				乙方身份证号:{$member['idcard']} 乙方手机号:{$member['telephone']}  甲乙双方因借款事宜，经协商达成如下协议:
+				<div style="margin-top: 10px;">本协议内容如下:</div>
+			</div>
+			<div class="setitle" style="font-size: 18px;font-weight: bold;margin: 20px 0;">
+				一、借款主要内容
+			</div>
+			<div class="text" style="line-height: 1.5;font-size: 14px;">
+				借款金额:{$loan['damount']}元 借款日期:{$loan['addtime']} 还款日期:{$loan['deadline']} 年化利率:0.24 借款用途:其他 本息共计{$loan['amount']}:元 还款方式:到期还本付息
+				注:利息 = 借款金额*年化利率*(借款天数/365),其中\"借款天数\"为\"借款日期(包
+				括当天)\"和\"还款日期(不包括当天)\"间的天数，此处的“借款日期” 方实际支付款项且款项已到账的日期。
+				借款人可多次还款直至待还本息全部还清，但提前还款并不减少待还本 息。
+
+			</div>
+			<div class="setitle" style="font-size: 18px;font-weight: bold;margin: 20px 0;">
+				二、打借条流程
+			</div>
+			<div class="text" style="line-height: 1.5;font-size: 14px;">
+				1、出借人和借款人在线下完成了借款资金的划转交割后，如认为有需要 过「U易服务」平台完善借款手续的，
+				借款人(或出借人)均可在「U易服务」平台起草借条，起草完成后发送给对方，对方确认该借条后即 代表承
+				认借条中约定的借款金额、起借日期、还款日期、年化利率等信 息。在出借人(或借款人)确认该借条之前，借款人(
+				或出借人)有权利将该借条删除。 2、出借人(或借款人)收到借条后，如果发觉借条信息有误，可以驳回 给借款人(或出借
+				人):如果确认无误，点击确认借条按钮即代表认可借条中约定信息，确认后借款手续办理完毕。 3、出借人和借款人可根据需要决
+				定是否进行本流程，居间服务商在此仅 提供借条模板，具体借款经过及其他约定以出借人和借款人的约定为准
+			</div>
+			<div class="setitle" style="font-size: 18px;font-weight: bold;margin: 20px 0;">
+				三、借还款方式
+			</div>
+			<div class="text" style="line-height: 1.5;font-size: 14px;">
+				1、甲乙双方借还款项方式，由甲乙双方自行约定。甲方将约定款项汇至 乙方指定
+				账户(甲乙双方指定账户包括且不限于微信、支付宝、银行转 账，下同),即视为已放款。乙方按时将约定款项汇至甲方指定账户,即 视为已还款。
+				2、最终的实际履行，以甲乙双方转账记录为准。
+			</div>
+			<div class="setitle" style="font-size: 18px;font-weight: bold;margin: 20px 0;">
+				四、违约
+			</div>
+			<div class="text" style="line-height: 1.5;font-size: 14px;">
+				乙方归还的款项不足以清偿本协议项下应付数额的，
+				甲方可以选择先将该款项用于归还本金、利息、违约金、复利或者相关费用。
+			</div>
+			<div class="setitle" style="font-size: 18px;font-weight: bold;margin: 20px 0;">
+				五、违约与还款能力降低
+			</div>
+			<div class="text" style="line-height: 1.5;font-size: 14px;">
+				1、乙方行为符合以下情形中任意一种的即视为违约，包括: (1)乙方交易到期未足额偿还借款本金、利息及相应费用的; (2)违反中国的法律法规、将所借资金用于违规或非法用途的; (3)乙方提供虚假资料或隐瞒重要事实的;
+				2、乙方行为符合以下情形中之任意一种即视为还款能力降低: (1)在甲方以外任何第三方的其他借款、担保、赔偿、承诺或任何 其他债务出现严重违约情况，影响或可能影响乙方还款能力的; (2)部分或者全部丧失民事行为能力、死亡、被宣告死亡或者被宣 告失踪，影响或可能影响乙方还款能力的 (3)乙方被采取刑事强制措施，影响或可能影响乙方还款能力的; (4)乙方财产被没收、征用、查封、损坏、扣押、冻结的或乙方财 产遭受重大损失，影响或可能影响乙方还款能力的; (5)出现任何其他影响或可能影响乙方还款能力的事件;
+				3、若乙方发生违约行为或者还款能力降低事件，或根据甲方/「U易服务」合理判断乙方可能发生本协议第四条第1款和第2款所述事件的，甲方与乙方一致同意甲方有权采取下列任何一项、几项或全部措施予以债权救济:
+				(1)立即取消全部或部分借款; (2)宣布借款全部提前到期，乙方应立即偿还所有应付款，包括但 不限于欠款本金、利息、罚息及其他各项相关费用等; (3)解除本协议; (4)对拒不归还欠款的，在「米房服务」平台上向所有用户披露乙 方的违约信息; (5)将乙方违约情况提供给依法成立的个人征信机构;
+				(6)采取法律、法规以及本协议约定的其他救济措施
+			</div>
+			<div class="setitle" style="font-size: 18px;font-weight: bold;margin: 20px 0;">
+				六、违约金
+			</div>
+			<div class="text" style="line-height: 1.5;font-size: 14px;">
+				从还款日的次日计算违约金，以截至当日未偿还借款本金利息之和为基 数,每日按年化利率24%计收罚息。
+			</div>
+			<div class="setitle" style="font-size: 18px;font-weight: bold;margin: 20px 0;">
+				七、其他
+			</div>
+			<div class="text" style="line-height: 1.5;font-size: 14px;">
+				1、本协议经甲、乙双方通过「U易服务」平台以网络在线点击确认的方式签订，点击确认后本协议生效。
+				由于「U易服务」平台的业务流程,一 旦点击确认本协议,本协议同时自动生效。双方委托「U易服务」
+				平台保管所有与本协议有关的书面文件或电子信息,且认可「U易服务」平台在 未来发生的相关纠纷中向有关裁判机构提交该等文件信息的权利和证明 争议事实的效力。
+				2、双方均确认，本协议的签订、生效和履行以不违反法律为前提。如果 本协议中的任何一条或多条违反适用的法律，则该条将被视为无效,但该
+				无效条款并不影响本协议其他条款的效力。 3、本协议中所使用的定义,除非另有规定,否则应适用「U易服务」平台 释义规则，「U易服务」平台对本文定义享有最终解释权。
+			</div>
+
+			<div class="foot" style="overflow: hidden;margin-top: 20px;float: right;">
+				<p style="margin: 10px 0;width: 300px;font-size: 12px;">甲方(出借人):王海雨</p>
+				<p style="margin: 10px 0;width: 300px;font-size: 12px;">乙方(借款人):{$member['username']}</p>
+				<p style="margin: 10px 0;width: 300px;font-size: 12px;">丙方(居间服务商): U易网络技术有限公司</p>
+				<p style="margin: 10px 0;width: 300px;font-size: 12px;">签订日期:{$time}</p>
+			</div>
+		</div>
+
+	</body>
+
+</html>
+<script>
+	alert("请点击页面保存为pdf文件");
+	$("body").click(function () {
+		//var html=encodeURI($("#html").html());
+		//alert(html);
+		window.location.href="/Admin/Member/getpdf/str/{$loan['orderno']}.html";
+
+	})
+
+
+</script>

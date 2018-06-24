@@ -1,0 +1,103 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>{$title}</title>
+<include file="Public:scripts" />
+</head>
+
+<body>
+
+
+
+<div class="mui-content mui-scroll-wrapper">
+	<div class="mui-scroll">
+		<div class="yue display-box">
+			<div class="box-flex-1">
+				当前佣金【大于2元时可提现】
+				<div class="mt10">
+					&yen;
+					<span class="number">{$member.balance}</span>
+
+				</div>
+
+			</div>
+			<if condition="$member['balance'] egt 2">
+				<a href="{:U('Member/cash')}"  class="mui-btn" style="border: none;">提现</a>
+				<else/>
+				<a href="javascript:mui.toast('佣金大于2元才能提现')"  class="mui-btn" style="border: none;">提现</a>
+			</if>
+
+		</div>
+
+		<div class="mui-table-view jilu mt10" id="upload">
+			<ul class="clearListStyle cp-tab">
+
+				<li style="line-height: 40px;" class="mui-col-xs-12 active"><span data-status="5" >返利记录</span> </li>
+				<li style="line-height: 40px; display:none;" class="mui-col-xs-6"><span  data-status="4" >提现记录</span> </li>
+			</ul>
+			<div id="msg-list">
+
+			</div>
+		</div>
+	</div>
+</div>
+<include file="Public:footer" />
+<js href="__PUBLIC__/Home/js/jquery.form.js" />
+<script language="javascript">
+	var p = 1;
+	$(function(){
+		//获取车列表
+		$.getBalanceList = function() {
+			var $p = arguments[0];
+			if ($p) {
+				p = $p;
+			}
+			$(".slectitem li.active").click();
+			var url = "{:U('Member/getBalanceList')}";
+			if (p != 0) {
+				if (p == 1) {
+					$("#msg-list").html('<div class="mui-table-view-cell display-box noresult loading"><img src="__PUBLIC__/Home/images/loading.gif" /></div>');
+				}
+				var $type=$(".cp-tab .active").find('span').attr("data-status");
+
+				var $data = {};
+				$data['type']=$type;
+				$data['p'] = p;
+				$.ajax({
+					url: url,
+					type: 'POST',
+					data: $data,
+					success: function(msg) {
+						$(".loading").hide();
+						if (msg != "") {
+							$("#msg-list").html($("#msg-list").html() + msg);
+							p += 1;
+						} else {
+							p = 0;
+						}
+					}
+				});
+			}
+		};
+
+		$.getBalanceList();
+		$(window).scroll(function() {
+			var height_bottom = 0; // 距离底边多少像素开始加载
+			if ($(document).scrollTop() + height_bottom >= $(document).height() - $(window).height()) {
+				$.getBalanceList();
+			}
+		});
+
+		$(".cp-tab li").click(function(){
+			$(".cp-tab li").removeClass('active');
+			$(this).addClass('active');
+			p=1;
+			$.getBalanceList();
+		});
+	});
+</script>
+
+
+</body>
+</html>

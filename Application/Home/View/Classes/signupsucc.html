@@ -1,0 +1,34 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>签到成功</title>
+    <include file="Public:scripts" />
+    <link href="__PUBLIC__/Home/font2/iconfont.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div class="mui-content">
+    <div class="mui-content-padded mui-text-center jieguo">
+        <div class="jgicon">
+            <span class="mui-icon mui-icon-checkmarkempty gou"></span>
+            <!--<span class="mui-icon mui-icon-closeempty cha"></span>-->
+        </div>
+        <div class="fz18">签到成功</div>
+        <div class="qiandao">
+            <table border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                    <td class="w30">课程名称</td>
+                    <td class="w70">{$find.title}</td>
+                </tr>
+                <tr>
+                    <td class="w30">签到时间</td>
+                    <td class="w70">{$time}</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+<include file="Public:footer" />
+
+</body>
+</html>

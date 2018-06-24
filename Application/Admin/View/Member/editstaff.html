@@ -1,0 +1,175 @@
+<!doctype html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>{$title}</title>
+    <include file="Public/scripts" /><include file="Public/upload" /><include file="Public/editor" />
+
+</head>
+<body>
+<div class="row">
+    <div class="col-md-12 " >
+        <h2>{$title}</h2>
+    </div>
+    <div class="col-md-12 " >
+        <form action="" method="post" name="form1" id="form1" class="ajaxformx">
+            <input type="hidden" id="id" name="id" value="{$db.id}" />
+            <div class="fancy-tab-container">
+                <ul class="nav nav-tabs fancy">
+                    <li class="active"><a href="#autotab_1" data-toggle="tab">基本信息</a></li>
+                    <notempty name="db.openid">
+                        <li><a href="#autotab_2" data-toggle="tab">微信资料</a></li>
+                    </notempty>
+                    <!--<li><a href="#autotab_3" data-toggle="tab">会员关系</a></li>-->
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane active" id="autotab_1">
+                        <div class="col-md-6">
+
+                            <div class="form-group">
+                                <label class="control-label">登录名：</label>
+                                <div class="controls">
+                                    <input type="text" class="form-control w150" name="username" id="username" placeholder="输入{$name}登录名" value="{$db.username}"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label">密码：</label>
+                                <div class="controls">
+                                    <input type="text" class="form-control w150" name="userpwd" id="userpwd" placeholder="输入{$name}密码" value="" />
+                                    <gt name="db.id" value="0">
+                                        <div class="help-block">留空不修改</div>
+                                        <else/>
+                                        <div class="help-block">请设置6位以上，数字字母组合</div>
+                                    </gt>
+                                </div>
+                            </div>
+                            <hr />
+                            <div class="form-group">
+                                <label class="control-label">姓名：</label>
+                                <div class="controls">
+                                    <input type="text" class="form-control" name="name" id="name" placeholder="输入{$name}姓名" value="{$db.name}" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label">联系电话：</label>
+                                <div class="controls">
+                                    <input type="text" class="form-control" name="telephone" id="telephone" placeholder="输入{$name}联系电话" value="{$db.telephone}" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label">部门：</label>
+                                <div class="controls">
+                                    <select name="departmentid" class="form-control w80 fl">
+                                        <volist name="department" id="vo">
+                                            <option <if condition="$db['departmentid'] eq $vo['id']">selected</if> value="{$vo.id}">{$vo.name}</option>
+                                        </volist>
+                                    </select>
+                                    &nbsp;&nbsp;&nbsp;
+                                    <input type="radio" <if condition="$db['ismaster'] eq 0">checked</if> value="0" name="ismaster" />员工
+                                    &nbsp;&nbsp;
+
+                                    <input type="radio" <if condition="$db['ismaster'] eq 1">checked</if> value="1" name="ismaster" />部门负责人
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label">部门权限：</label>
+                                <div class="controls">
+                                    <volist name="department" id="vo" key="k">
+                                       <label style="padding-right: 20px;" for="departlimit_{$k}">
+                                           <if condition="in_array($vo['id'],$limit)">
+                                                <input type="checkbox" checked value="{$vo.id}" name="departlimit[]" id="departlimit_{$k}" />
+                                               <else/>
+                                               <input type="checkbox" value="{$vo.id}" name="departlimit[]" id="departlimit_{$k}" />
+                                           </if>
+                                           {$vo.name}</label>
+
+                                    </volist>
+                                </div>
+                            </div>
+
+
+
+                            <div class="form-group">
+                                <label class="control-label">职位：</label>
+                                <div class="controls">
+                                    <input type="text" class="form-control" name="position" id="position" placeholder="输入{$name}职位" value="{$db.position}" />
+                                </div>
+                            </div>
+
+
+                            <div class="form-group">
+                                <label class="control-label">状态：</label>
+                                <div class="controls">
+                                    <select class="form-control w80 " name="status" id="status">
+                                        <volist name="statuslist" id="vo">
+                                            <notempty name="db.id">
+                                                <eq name="db.status" value="$key">
+                                                    <option value="{$key}" selected="selected">{$vo}</option>
+                                                    <else/>
+                                                    <option value="{$key}" >{$vo}</option>
+                                                </eq>
+                                                <else/>
+                                                <eq name="key" value="1">
+                                                    <option value="{$key}" selected="selected">{$vo}</option>
+                                                    <else/>
+                                                    <option value="{$key}" >{$vo}</option>
+                                                </eq>
+                                            </notempty>
+                                        </volist>
+                                    </select>
+                                </div>
+                            </div>
+
+
+
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+
+                    <div class="clearfix"></div>
+
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group" style="padding:20px 0px;">
+                        <div class="controls">
+                            <hr />
+                            <button type="submit" class="btn btn-success" id="btnSubmit"><i class="fa fa-save"></i> 提交</button>
+                            <button type="button" class="btn btn-default" onClick="history.back();"><i class="fa fa-undo"></i> 返回</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="col-md-12 " >
+        <form action="" method="post" name="form1" id="form1" class="ajaxformx">
+            <input type="hidden" id="id" name="id" value="{$db.id}" />
+            <div class="col-md-6 custom-form"> </div>
+        </form>
+    </div>
+</div>
+<script language="javascript">
+    var $fields={
+        pid: {
+            validators: {
+                notEmpty: {
+                    message: '必须选择所属分类'
+                }
+            }
+        } ,
+        username: {
+            validators: {
+                notEmpty: {
+                    message: '用户名不能为空'
+                }
+            }
+        }
+    };
+</script>
+<include file="Public/form" />
+</body>
+</html>

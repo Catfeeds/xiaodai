@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{$title}</title>
+    <include file="Public:scripts" />
+
+</head>
+<body>
+<include file="Public:footer" />
+<div class="mui-content hz_info">
+    <input  type="hidden" id="worktype" value="1" />
+    <div style="background-color: white;padding: 5px;height: 50px;margin-bottom:5px;">
+        <ul style="list-style: none; text-align: center;    padding: 0px;">
+            <li style="float: left;width:46%;   line-height: 30px;"><a href="{:U('Work/index')}">我的日程</a></li>
+            <li style="float: left;width:46%;  border-bottom: 1px solid red;  line-height: 30px;"><a href="{:U('Work/adminwork','type=1')}">同事日程</a></li>
+            <li style="float: left;width:8%;  line-height: 30px;"><a href="{:U('Work/addwork')}"><img style="width: 50%;" src="__PUBLIC__/Crm/images/add1.png"/></a></li>
+        </ul>
+    </div>
+    <div id="calendar" style="background-color: white;padding: 0px 5px;"></div>
+    <div class="mui-table-view" style="margin: 0px;background-color: transparent;margin-top: 5px;">
+        <div class="biaoti" style="background-color: white;">工作日程(<span id="nowworknum">0</span>)</div>
+        <div id="upload" style="background-color: white;">
+
+        </div>
+    </div>
+</div>
+<link href="__PUBLIC__/Crm/clander/css/common.css" type="text/css"  rel="stylesheet">
+<script type="text/javascript" src="__PUBLIC__/Crm/clander/js/jquery-1.11.0.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/Crm/clander/js/timebar.js"></script>
+<script type="text/javascript">
+    timebar.init("calendar",null);
+    $("body").on("click","#barbox p", function () {
+        var act=$(this).attr('data-id');
+        if(parseInt(act)==1){
+            timebar.lastWeek();
+        }else{
+            timebar.nextWeek();
+        }
+    })
+
+</script>
+<script src="__PUBLIC__/Crm/js/mui.min.js"></script>
+<script src="__PUBLIC__/Crm/js/jquery-2.2.3.min.js"></script>
+<script src="__PUBLIC__/Crm/js/script.js"></script>
+<script type="text/javascript">
+    function deletework(id){
+        var btnArray = ['否', '是'];
+        mui.confirm('确认删除该工作计划？', '删除', btnArray, function(e) {
+            if (e.index == 1) {
+                $.ajax({
+                    url:"/Crm/Work/deletework.html",
+                    data:{id:id},
+                    type:"POST",
+                    success: function (data) {
+                        mui.toast(data.info);
+                        if(data.status==1){
+                            $(".dele"+id).remove();
+                        }
+                    }
+                })
+            }
+        });
+    }
+
+
+
+    function praise(id,praise){
+                var zannum=parseInt($("#zannum"+id).html());
+                $.ajax({
+                    url:"/Crm/Work/setpraise.html",
+                    data:{id:id},
+                    type:"POST",
+                    success: function (data) {
+                        mui.toast(data.info);
+                        if(data.status==1){
+                            if(parseInt(parseInt(data.praise))==0){
+                                $("#zannum"+id).html(zannum-1);
+                                $("#zanimg"+id).attr('src','/Public/Crm/images/zan.png');
+                            }else{
+                                $("#zannum"+id).html(zannum+1);
+                                $("#zanimg"+id).attr('src','/Public/Crm/images/zan1.png');
+                            }
+                        }
+                    }
+                })
+            }
+
+</script>
+</body>
+</html>

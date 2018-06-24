@@ -1,0 +1,174 @@
+	<!doctype html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>{$title}</title>
+<include file="Public/scripts" /><include file="Public/date" />
+</head>
+<body>
+<include file="Public/activity" />
+<div class="row">
+  <empty name="actlist">
+    <div class="col-md-12">您尚未添加任何活动，请先添加！</div>
+    <else/>
+    <lt name="actid" value="1">
+      <div class="col-md-12"></div>
+      <else/>
+      <div class="col-md-12">
+        <div class="col-md-12 custom-tool" >
+          <h2> {$title}</h2>
+        </div>
+        <form action="" method="get" class="ajaxformx_" name="form1" id="form1">
+          <input type="hidden" name="p" id="p" value="1" />
+          <table class="table vm">
+            <thead>
+            <th colspan="2">筛选</th>
+                </thead>
+            <tbody>
+              <tr>
+                <td class="text-right" width="140"> 日期： </td>
+                <td><div class="col-md-6">
+                    <div class="input-group"> <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                      <input class="form-control datepicker" size="16" type="text" value="{$timefrom}" id="timefrom" name="timefrom"  placeholder="开始日期" >
+                      <span class="input-group-addon">-</span>
+                      <input class="form-control datepicker" size="16" type="text" value="{$timeto}"  id="timeto" name="timeto"  placeholder="结束日期" >
+                    </div>
+                  </div></td>
+              </tr>
+              <tr>
+                <td  class="text-right" width="140">状态：</td>
+                <td><div class="col-md-12"> <a href="{:set_url('status','')}" ><span class="label label-default">全部</span></a>
+                    <volist name="statuslist" id="vo">
+                      <eq name="status" value="$key">
+                        <if condition="isN($status) eq true"> <a href="{:set_url('status',$key)}"><span class="label label-default">{$statuslist.$key}</span></a>
+                          <else/>
+                          <a href="{:set_url('status',$key)}" ><span class="label label-info">{$statuslist.$key}</span></a> </if>
+                        <else/>
+                        <a href="{:set_url('status',$key)}"  ><span class="label label-default">{$statuslist.$key}</span></a> </eq>
+                    </volist>
+                  </div></td>
+              </tr>
+              <tr>
+                <td  class="text-right" width="140">奖项：</td>
+                <td><div class="col-md-6"> 
+                	<select name="prizeid" id="prizeid" class="form-control">
+                    <option value="">--全部奖项--</option>
+                    <volist name="prizelist" id="vo">
+                      <eq name="prizeid" value="$vo['id']"> 
+                      <option value="{$vo.id}" selected>【{$vo.prize}】{$vo.title}</option>
+                        <else/>
+                      <option value="{$vo.id}" >【{$vo.prize}】{$vo.title}</option>
+                        </eq>
+                    </volist>
+                    </select>
+                  </div></td>
+              </tr>
+              <tr>
+                <td  class="text-right">关键词：</td>
+                <td><div class="col-md-6">
+                    <div class="input-group">
+                      <input type="text" class="form-control" placeholder="输入关键词" name="keyword" id="keyword" value="{$keyword}">
+                      <span class="input-group-btn">
+                      <select class="btn" name="searchtype" id="searchtype">
+                        <eq name="searchtype" value="3">
+                          <option value="3" selected="selected">中奖码</option>
+                          <else/>
+                          <option value="3">中奖码</option>
+                        </eq>
+                        <eq name="searchtype" value="0">
+                          <option value="0" selected="selected">昵称</option>
+                          <else/>
+                          <option value="0">昵称</option>
+                        </eq>
+                        <eq name="searchtype" value="1">
+                          <option value="1" selected="selected">用户名</option>
+                          <else/>
+                          <option value="1">用户名</option>
+                        </eq>
+                        <eq name="searchtype" value="2">
+                          <option value="2" selected="selected">手机号</option>
+                          <else/>
+                          <option value="2">手机号</option>
+                        </eq>
+                      </select>
+                      </span> <span class="input-group-btn">
+                      <button type="submit" class="btn fl"><i class="fa fa-search"></i> 查询</button>
+                      </span> </div>
+                  </div></td>
+              </tr>
+            </tbody>
+          </table>
+        </form>
+        <table class="table  table-first-column-number display full table-striped custom-table vm">
+          <thead>
+            <tr>
+              <th >#</th>
+              <th>会员</th>
+              <th >奖项</th>
+              <th >奖品</th>
+              <th>中奖码</th>
+              <th >中奖时间</th>
+              <th >领奖资料</th>
+              <th width="140">操作</th>
+          </thead>
+          <tbody>
+            <volist name="contentlist" id="vo">
+              <?php
+        $prize=json_decode($vo['prize'],true);
+        ?>
+              <tr>
+                <td>{$vo.id}</td>
+                <td><notempty name="vo.headimgurl"><a href="{$vo.headimgurl}" target="_blank"><img src="{$vo.headimgurl}" style="width:30px; height:30px;"></a></notempty>
+                  {$vo.username|default=$vo['nickname']}</td>
+                <td>{$prize.prize}</td>
+                <td>【{:$prizetypelist[$prize['type']]}：{$prize.amount}】{$prize.title}</td>
+                <td>{$vo.sn}</td>
+                <td>{$vo.addtime}</td>
+                <td>
+                <notempty name="vo.info">
+                <?php
+                $info=json_decode($vo['info'],true);
+                ?>
+                <volist name="info" id="vo2" key="key2">
+               {$key}：{$vo2}<br />
+                </volist>
+                <else/>
+                -
+                </notempty>
+                </td>
+                <td>
+                  <eq name="vo.status" value="1">
+                    <button class="btn" disabled>{:$statuslist[$vo['status']]}</button>
+                    <else/>
+                    <div class="btn-group">
+                      <button class="btn dropdown-toggle" data-toggle="dropdown" aria-expanded="false">{:$statuslist[$vo['status']]} <span class="caret"></span></button>
+                      <ul class="dropdown-menu  dropdown-menu-right">
+                        <li class="disabled text-center"><a href="javascript:void(0);">领取状态</a></li>
+                        <volist name="statuslist" id="vo1" key="key1"> <li 
+                        <eq name="key1-1" value="$vo.status"> class="active"</eq>
+                          ><a href="javascript:void(0);" onclick="setVal('{$tblname}','status',{$vo.id},{$key1-1})"  >{$vo1}</a>
+                          </li>
+                        </volist>
+                      </ul>
+                    </div>
+                  </eq>
+                </td>
+              </tr>
+            </volist>
+            <tr>
+              <td colspan="8"><notempty name="page">
+                  <div class="pull-left custom-footer">
+                    <ul class="pagination" style="margin: 0px;">
+                      {$page}
+                    </ul>
+                  </div>
+                </notempty></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </lt>
+  </empty>
+</div>
+</body>
+</html>

@@ -1,0 +1,91 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>{$title}</title>
+    <include file="Public:scripts" />
+
+</head>
+
+<body>
+<!--<header style="display: none;" class="mui-bar mui-bar-nav product-search">-->
+    <!--<form class="display-box" action="{:U('Manange/activemember')}" method="post">-->
+        <!--<div class="box-flex-1"><input name="keyword" type="text" value="{$keyword}" placeholder="没找到您想要的，赶快搜索一下吧！"></div>-->
+        <!--<div><button type="submit" class="iconfont icon-search"></button></div>-->
+    <!--</form>-->
+<!--</header>-->
+<header class="mui-bar mui-bar-nav product-search">
+    <p style="line-height:40px;text-align: center;">
+        <a href="javascript:history.back()" class="l back mui-pull-left">< 返回</a>
+        <span >{$title}</span>
+    </p>
+</header>
+<div class="mui-content">
+    <div class="mui-scroll">
+
+
+        <div class="mui-table-view hdprofile">
+            <div class="mui-table-view-cell">
+                <div class="mui-h4">{$active.title}</div>
+                <div class="display-box" style="margin-top: 5px;">
+                    <span class="tit">报名经费：</span>
+                    <span class="box-flex-1 text-red">&yen;{$active.price}</span>
+                    <span class="tit">报名人数：</span>
+                    <span class="box-flex-1 text-red">{$active.nums}</span>
+                </div>
+            </div>
+
+        <div id="msg-list" style="padding-bottom: 30px;">
+            <empty name="list">
+                <eq name="p" value="1">
+                    <div class="mui-table-view cartitem">
+                        <div class="mui-table-view-cell"> 暂无记录 </div>
+                    </div>
+                </eq>
+            </empty>
+            <volist name="list" id="vo">
+
+                <div class="mui-table-view cartitem">
+                    <div class="mui-table-view-cell">
+                        <a href="javascript:void(0);" class="ordercp">
+
+                            <div class="display-box item">
+                                <div class="img1-1"><img src="{:get_cache_value('member',$vo['memberid'],'headimgurl')}"></div>
+                                <div class="box-flex-1">
+                                    <div class="mui-ellipsis-2 cpname">{$vo.name} &nbsp;&nbsp;{$vo.telephone}</div>
+                                    <p>
+                                        <eq name="vo.status" value="1"> 已支付
+                                            <else />
+                                            未支付
+                                        </eq>&nbsp;&nbsp;  其他信息：{$vo['other']?$vo['other']:'无'}&nbsp;&nbsp;
+                                        <br/>支付人：{:get_cache_value('member',$vo['memberid'],'nickname')}
+                                    </p>
+                                    <div class="pricenumber mui-clearfix">
+                                    <span class="price mui-pull-left">
+                                           &yen;{$vo.amount}
+                                    </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+
+                </div>
+
+            </volist>
+        </div>
+
+    </div>
+</div>
+
+
+<js href="__PUBLIC__/Home/js/jquery.form.js" />
+<script type="text/javascript">
+    var swiper = new Swiper('.screen-order .swiper-container',{
+        slidesPerView:2,
+        //spaceBetween : 8,
+        autoHeight: false,
+    });
+</script>
+</body>
+</html>

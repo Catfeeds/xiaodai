@@ -1,0 +1,180 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>{$title}</title>
+    <include file="Public:scripts" />
+</head>
+<body>
+<div id="hidemask" style="display:none;position: fixed;width: 100%;height: 100%;background-color: rgba(0,0,0,0.4);z-index:999;"></div>
+<if condition="$member['staffid'] gt 0">
+    <footer class="gjpush" style="background: none;border: none;">
+
+          <if condition="$member['staffid'] eq $manageid">
+            <img onclick="showlist()" style="width: 40px;" src="__PUBLIC__/Crm/images/add2.png" />
+        </if>
+        <style>
+            #listbox ul{ background-color: white;margin: 5px;  padding-left: 0px !important;}
+            #listbox ul li{text-align: center;border-bottom: 1px solid lightgray; }
+            #listbox ul li a{color:black; }
+        </style>
+        <div id="listbox" style="position: absolute;bottom: -500px;width: 100%; background-color: lightgrey;padding: 10px;">
+            <ul style="list-style: none;color:black;">
+                <li><a href="{:U('Custom/addfollowrecord',array('memberid'=>$member['id'],'type'=>1))}"><img style="width: 20px;margin-top:15px;margin-right:5px;" src="__PUBLIC__/Crm/images/gengjin1.png"/>跟进记录</a></li>
+                <li style='display:none;'><a href="{:U('Custom/addfollowrecord',array('memberid'=>$member['id'],'type'=>2))}"><img style="width: 20px;margin-top:15px;margin-right:5px;" src="__PUBLIC__/Crm/images/daikan.png"/>带看记录</a></li>
+                <li><a href="JavaScript:settopublic('{$member.id}')"><img style="width: 20px;margin-top:15px;margin-right:5px;" src="__PUBLIC__/Crm/images/fangqi.png"/>放弃客户</a></li>
+            </ul>
+            <ul style="list-style: none;color:black;">
+                <li onclick="cancleadd()" style="text-align: center;"><img style="width: 20px;margin-top:15px;margin-right:5px;" src="__PUBLIC__/Crm/images/cancle.png"/>取消</li>
+            </ul>
+        </div>
+    </footer>
+    <else/>
+    <footer class="gjpush"><a href="javascript:applymember('{$member.id}');">选择为私有客户</a></footer>
+</if>
+
+<div class="mui-content hz_info">
+
+    <a href="{:U('Custom/detail','id='.$member['id'])}" class="infohead">
+        <div class="fz20">{$member.company}&nbsp;&nbsp;
+            <span style="font-size: 12px;">[点击查看资料]</span>
+        </div>
+        <div class="infoli mt10">最后跟进时间：{$record[0]['addtime']?$record[0]['addtime']:'暂无'}</div>
+          <?php
+            $staffid=get_manageid();
+        ?>
+        <if condition="$member['staffid'] eq $staffid">
+            <div class="infoli">联系电话：{$member.telephone}</div>
+            <else/>
+            <div class="infoli">联系电话：{$member.telephone|cut_str=###,0,3,''}****{$member.telephone|cut_str=###,7,4,''}</div>
+        </if>
+        <div class="infoli">跟进状态：{:get_cache_value('member_status',$member['memberstatus'],'name')}</div>
+    </a>
+    <if condition="$member['staffid'] gt 0">
+        <div class="mui-table-view">
+            <div class="mui-table-view-cell display-box">
+                <span>跟进人</span>
+                <span class="box-flex-1 mui-text-right zlcon">{$staff.name}</span>
+            </div>
+            <div class="mui-table-view-cell display-box">
+                <span>客户状态</span>
+                <span class="box-flex-1 mui-text-right zlcon">{:get_cache_value('member_status',$member['memberstatus'],'name')}</span>
+            </div>
+        </div>
+    </if>
+
+    <style>
+        .color1{background-color: #00B83F;}
+        .color2{background-color: #aa7700;}
+        .color3{background-color: #699a33;}
+		.color4{background-color: #0d1b12;}
+		.color5{background-color: #7b72dc;}
+		.color6{background-color: #dc58c9;}
+    </style>
+    <div class="mui-table-view mt10">
+        <div class="biaoti">跟进记录({:count($record)})</div>
+        <empty name="record">
+            <div class="mui-table-view-cell">
+                <div class="con">
+                    没有跟进记录
+                </div>
+            </div>
+            <else/>
+            <volist name="record" id="vo" key="k">
+                <div class="mui-table-view-cell">
+                    <div class="jilu">
+                        <div style="width: 40px;
+								height: 40px;
+								font-size: 20px;
+								line-height: 40px;
+								text-align: center;
+								border-radius: 50%;
+								color:white;
+								margin-right: 10px;float:left;">
+                            <?php
+                            $headimgurl=M('staff')->where(array('id'=>$vo['staffid']))->getField('headimgurl');
+                            ?>
+                            <img src="{$headimgurl|default='/Public/Crm/images/nouser.png'}" alt="">
+                        </div>
+                        <div style="line-height: 20px;" class="cont">
+                            {:get_cache_value('staff',$vo['staffid'],'name')}
+                            <span class="color{$vo['type']}" style="font-size: 12px;color: white;padding:3px;border-radius: 3px;">{:getfollowtype($vo['type'])}</span>
+                            <span class="color{$vo['type']}" style="font-size: 12px;color: white;padding:3px;border-radius: 3px;">{:getfollowmethod($vo['method'])}</span>
+							<div class="time" style="text-overflow:ellipsis;height: 20px;">{$vo.addtime}&nbsp;&nbsp;{$vo.address}</div>
+                        </div>
+                    </div>
+                    <div class="con">
+                        {$vo.remark}
+                        <?php
+                        $images=explode(',',$vo['images']);
+                        $images=array_filter($images);
+                        ?><br/>
+                        <volist name="images" id="vom">
+                            <img style="width:33%;height:100px;padding-right:5%;padding-bottom:10px;"  data-preview-src="" data-preview-group="{$k}" src="{$vom}"/>
+                        </volist>
+                    </div>
+                </div>
+            </volist>
+        </empty>
+    </div>
+	<include file="Public:daohang" />
+</div>
+<script src="__PUBLIC__/Crm/js/mui.min.js"></script>
+<script src="__PUBLIC__/Crm/js/jquery-2.2.3.min.js"></script>
+<script src="__PUBLIC__/Crm/js/script.js"></script>
+<script src="__PUBLIC__/Crm/js/mui.previewimage.js"></script>
+<script src="__PUBLIC__/Crm/js/mui.zoom.js"></script>
+<link rel="stylesheet" href="__PUBLIC__/Crm/css/priview.css" />
+
+<script type="text/javascript">
+	mui.previewImage();
+    function applymember(id){
+        $.ajax({
+            url:"/Crm/Custom/applymember.html",
+            data:{id:id},
+            type:"POST",
+            success:function(data){
+                mui.toast(data.info);
+                if(data.status==1){
+                    setTimeout(function(){
+                        window.location.href="/Crm/Custom";
+                    },1000);
+                }
+            }
+        })
+    }
+
+    function cancleadd(){
+        $("#hidemask").fadeOut();
+        var height=$("#listbox").height();
+        $("#listbox").animate({"bottom":"-500px"});
+    }
+
+    function showlist(){
+        $("#hidemask").fadeIn();
+        var height=$("#listbox").height();
+        $("#listbox").animate({"bottom":"0px"});
+    }
+
+
+    function settopublic(id){
+        var btnArray = ['是', '否'];
+        mui.confirm('确认将该客户取消私有？', '取消私有', btnArray, function(e) {
+            if (e.index == 0) {
+                $.ajax({
+                    url:"/Crm/Custom/settopublic.html",
+                    data:{id:id},
+                    type:"POST",
+                    success:function(data){
+                        mui.toast(data.info);
+                        if(data.status==1){
+                            window.location.reload();
+                        }
+                    }
+                });
+            }
+        });
+    }
+</script>
+</body>
+</html>

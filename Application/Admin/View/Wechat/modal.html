@@ -1,0 +1,174 @@
+<include file="Public/scripts" />
+<css href="__PUBLIC__/Admin/stylesheets/wechat_reply.css" /> 
+<div class="modal_box">
+  <switch name="type">
+    <case value="text">
+      <div class="modal_common modal_text">
+        <textarea>{$val}</textarea>
+      </div>
+    </case>
+    <case value="image">
+    <script language="javascript">
+	(function(){
+		//图片分页
+		$.getMatrialImageList=function(p){
+			var url = "{:U('Wechat/modal','type=image')}"+"?p=" + p; 
+			location=url;
+		}
+	})(jQuery);
+	$(function(){
+		
+		$(".waterimg").hover(function(){
+			$(this).find(".mask").show();
+		},function(){
+			var mask=$(this).find(".mask");
+			var selected=mask.hasClass("selected");
+			if(!selected){
+				$(this).find(".mask").hide();	
+			}
+		});
+		$(".waterimg").click(function(){ 
+			$("#watterimgs").find(".mask").hide().removeClass("selected");
+			$(this).find(".mask").show().addClass("selected");
+		});
+		
+	});
+	</script>
+	
+      <div class="modal_common modal_image">
+       	<div class="pagination">{$page}</div>
+      	<div class="modal_info"  id="watterimgs">
+        	<volist name="list" id="vo">
+            <div class="waterimg">
+            <a href="javascript:void(0);" rel="tooltip" data-original-title="上传时间：{$vo.create_time|time_format}"><img src="{$vo.fullpath}" />
+                </a><div class="mask">sss</div>
+                </div> 
+            </volist>
+        </div>
+      </div>
+    </case>
+    <case value="news">
+    <js href="__PUBLIC__/Admin/lib/blocksit.min.js" />
+    <script language="javascript">
+	(function(){
+		//图片分页
+		$.getMatrialNewsList=function(p){
+			var url = "{:U('Wechat/modal','type=news')}"+"?p=" + p; 
+			location=url;
+		}
+	})(jQuery);
+	$(function(){ 
+		$.blocksme3();
+		
+		$(".water").hover(function(){
+			$(this).find(".mask").show();
+		},function(){
+			var mask=$(this).find(".mask");
+			var selected=mask.hasClass("selected");
+			if(!selected){
+				$(this).find(".mask").hide();	
+			}
+		});
+		$(".water").click(function(){ 
+			$("#blocks3").find(".mask").hide().removeClass("selected");
+			$(this).find(".mask").show().addClass("selected");
+		});
+	});
+	</script>
+      <div class="modal_common modal_news">
+      	<div class="modal_info">
+       	<div class="pagination">{$page}</div>
+        <div id="blocks3">
+        <volist id="vo" name="list">
+            <if condition="count($vo['_child']) gt 1"> 
+              <div class="item_news water" data-id="{$vo.id}" >
+                <volist id="vo1" name="vo._child">
+                  <eq name="key" value="0">
+                    <div class="first"> <em>{:date('m',strtotime($vo1['addtime']))}月{:date('d',strtotime($vo1['addtime']))}日</em> <img src="{$vo1.indexpic}"  alt="" /> <span>{$vo1.martrial_id}{$vo1.title}</span> </div>
+                    <else/>
+                    <div class="other"> <span>{$vo1.martrial_id}{$vo1.title}</span> <img src="{$vo1.indexpic}"  alt="" /> </div>
+                  </eq>
+                </volist> 
+                <div class="mask"></div>
+              </div>
+              <else/>
+              <volist id="vo1" name="vo._child">
+                <div class="item_news water"  data-id="{$vo.id}" >
+                  <div class="single"> <span>{$vo1.title}</span> <em>{:date('m',strtotime($vo1['addtime']))}月{:date('d',strtotime($vo1['addtime']))}日</em> <img src="{$vo1.indexpic}"  alt="" /> </div>
+                   
+                <div class="mask"></div>
+                </div>
+              </volist>
+            </if>
+          </volist>
+          </div>
+        </div>
+      </div>
+    </case>
+    <case value="voice">
+      <div class="modal_common modal_voice">
+    
+      </div>
+    </case>
+    <case value="video">
+      <div class="modal_common modal_video">
+    
+      </div>
+    </case>
+  </switch>
+</div>
+<div class="clearfix"></div>
+<div class="modal_btn text-right"> 
+  <button class="btn btn-success" type="button" name="btn_savereply" id="btn_savereply" >确定</button>
+  <button class="btn" type="button" name="btn_cancelreply" id="btn_cancelreply" onclick="parent.bootbox.hideAll();"  >取消</button> 
+</div>
+
+<script language="javascript">
+ 
+$(function(){ 
+	$("#btn_savereply").click(function(){
+		var $type="{$type}";
+		var $info="";
+		switch($type){
+			case "text":
+				$info=$(".modal_text textarea").val();
+				$info=$.trim($info);
+				$.setReply(0,$info);
+			break;	
+			case "image":
+				var selected=$(".modal_image").find(".selected");
+				if(selected==undefined){
+					alert("对不起，请选择图片素材！");	
+					return false;
+				} 
+				$info=selected.parent().find("img").attr("src");
+				$.setReply(1,$info);
+			break;	
+			case "news": 
+				var selected=$(".modal_news").find(".selected");
+				if(selected==undefined){
+					alert("对不起，请选择图文素材！");	
+					return false;
+				} 
+				$info=selected.parent().attr("data-id");
+				$.setReply(2,$info);
+			break;	
+			case "voice": 
+			break;	
+			case "video": 
+			break;	
+		}
+	}); 
+});
+
+(function(){
+	
+	$.setReply=function($type,$info){
+		var html="";
+			html = '<input type="hidden" name="reply_type[]" value="'+$type+'" /><input type="hidden" name="reply_info[]" value="'+$info+'"  />';
+			parent.$(".reply_info").append(html);	
+			parent.$("#btnSubmit").click();
+			parent.bootbox.hideAll();
+	}
+})(jQuery);
+</script>

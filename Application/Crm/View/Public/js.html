@@ -1,0 +1,95 @@
+<img id="agoimg" style="display:none;"/>
+<script>
+
+    /**
+     * 图片压缩
+     * @param fil
+     * @param id
+     */
+    function getUrl(fil, classs,name,num) {
+        var i=0;
+        $("input[name='"+name+"']").each(function () {
+            i++;
+        });
+        if(i>=num){
+            mui.toast("最多上传"+num+"张图片");return;
+        }
+        $("."+classs).prev(".loadingpic").show();
+        var Cnv = document.getElementById('myCanvas');
+        var Cntx = Cnv.getContext('2d');//获取2d编辑容器
+        var imgss =   new Image();
+        var agoimg=document.getElementById("agoimg");
+//        agoimg.src="/Public/Home/images/loading.gif";
+//        alert(fil.length);
+        for (var intI = 0; intI < fil.length; intI++) {
+            var tmpFile = fil[intI];
+            var reader = new FileReader();
+            reader.readAsDataURL(tmpFile);
+            reader.onload = function (e) {
+                url = e.target.result;
+                imgss.src = url;
+                agoimg.src=url;
+            };
+
+            agoimg.onload = function () {
+                //等比缩放
+                var m = imgss.width / imgss.height;
+                Cnv.height =1100;//该值影响缩放后图片的大小
+                Cnv.width= 1100*m ;
+                //img放入画布中
+                //设置起始坐标，结束坐标
+                Cntx.drawImage(agoimg, 0, 0,1100*m,1100);
+                var Pic = document.getElementById("myCanvas").toDataURL("image/png");
+
+                $.ajax({
+                    url:"/Crm/Contract/saveimg.html",
+                    data:{pic:Pic},
+                    type:"POST",
+                    success: function (data) {
+                        if(data.status==1){
+                            var html="";
+                            html+=' <li class="mui-pull-left mui-col-xs-4 mui-col-sm-3"><div class="cont">' +
+                                    '<img src="'+data.info+'" data-preview-src="'+data.info+'" data-preview-group="'+classs+'">' +
+                                    '<input type="hidden" class="photos" name="'+name+'" value="'+data.info+'"/>'+
+                                    '<div onclick="closeli($(this))" class="close"><span class="mui-icon mui-icon-closeempty"></span></div></div></li>';
+
+                            $("."+classs).prev(".loadingpic").before(html);
+
+                            $("."+classs).prev(".loadingpic").hide();
+                        }else{
+                            mui.toast("上传失败，请稍后再试");
+                        }
+                    }
+                });
+
+
+            };
+        }
+
+    }
+
+    function closeli(obj){
+        $(obj).parent().parent("li").remove();
+    }
+
+
+
+    //参数1：父级class，参数2：子级class，参数3：传到后台的input name，一般用数组形式name[]；参数4：最多上传的照片数
+
+    function madepicupload(fclass,cclass,name,num,type){
+        var attr='';
+        if(type=='cam'){
+            //调用相机
+            attr='accept="image/*" capture="camera"';
+        }
+        var html="";
+        html+='<li style="display: none;" class="mui-pull-left mui-col-xs-4 mui-col-sm-3 loadingpic">' +
+                '<div class="cont loading display-box"><span class="mui-spinner"></span></div></li>' +
+                '<li class="mui-pull-left mui-col-xs-4 mui-col-sm-3 '+cclass+'"><div class="cont">' +
+                '<label class="display-box"><input '+attr+' type="file" onchange="getUrl(this.files,\''+cclass+'\',\''+name+'\','+num+');" style="display: none;" id="'+cclass+'" /> ' +
+                '<span onclick="$(this).prev(\'#'+cclass+'\').click();" class="iconfont icon-fujian"></span></label></div></li>';
+        $("."+fclass).append(html);
+    }
+
+
+</script>

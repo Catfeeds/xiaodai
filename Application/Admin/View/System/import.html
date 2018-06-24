@@ -1,0 +1,106 @@
+<!doctype html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>{$title}</title>
+<include file="Public/scripts" />
+</head>
+<body>
+<div class="row">
+  <div class="col-md-12">
+    <div class="col-md-12 custom-tool" >
+      <h2>{$title}</h2>
+      <div class="pull-right"> <button type="button" class="btn"  id="export"  onclick="location='{:U('System/database')}';" ><i class="fa fa"></i>我要备份</button> </div>
+    </div>
+    <table class="table  table-first-column-number display full table-striped custom-table vm">
+      <thead>
+      <th >#</th>
+        <th width="200">备份名称</th>
+        <th width="80">卷数</th>
+        <th width="80">压缩</th>
+        <th width="80">数据大小</th>
+        <th width="200">备份时间</th>
+        <th>状态</th>
+        <th width="120">操作</th>
+          </thead>
+      <tbody>
+        <volist id="vo" name="list">
+          <tr >
+            <td>{$i}</td>
+            <td>{$vo.time|date='Ymd-His',###}</td>
+            <td>{$vo.part}</td>
+            <td>{$vo.compress}</td>
+            <td>{$vo.size|format_bytes}</td>
+            <td>{$key}</td>
+            <td>-</td>
+            <td class="action"><a class="db-import btn" rel="tooltip" data-original-title="还原" href="{:U('System/database?action=import&time='.$vo['time'])}"><i class="fa fa-history"></i></a> 
+            <a class="ajax-get confirm btn db-delete" rel="tooltip" data-original-title="删除" href="{:U('System/database?action=del&time='.$vo['time'])}"><i class="fa fa-trash"></i></a></td>
+          </tr>
+        </volist>
+      </tbody>
+    </table>
+  </div>
+</div>
+<script type="text/javascript">
+$(function() {
+	$(".db-delete").click(function() {
+		var url=$(this).attr("href");
+		bootbox.confirm("您确定要删除所选备份吗?", function(result) {
+		if (result) {
+			$.ajax({url:url,success: function(data){
+				if(data.status){
+                    alertok(data.info);
+					reloadwin();
+                } else {
+                    alerterr(data.info);
+                }
+			}
+			});	
+		};
+		});
+	 
+		return false;
+	});
+$(".db-import").click(function() {
+	 var self = this,
+		status = ".";
+	bootbox.confirm("您确定要还原所选备份吗?", function(result) {
+		if (result) {
+			$.get(self.href, success, "json");
+			window.onbeforeunload = function() {
+				return "正在还原数据库，请不要关闭！"
+			}
+		};
+	});
+	return false;
+	
+	function success(data) {
+		if (data.status) {
+			if (data.gz) {
+				data.info += status;
+				if (status.length === 5) {
+					status = ".";
+				} else {
+					status += ".";
+				}
+			}
+			$(self).parent().prev().text(data.info);
+			if (data.part) {
+				$.get(self.href, {
+					"part": data.part,
+					"start": data.start
+				}, success, "json");
+			} else {
+				window.onbeforeunload = function() {
+					return null;
+				}
+			}
+		} else {
+			alert(data.info);
+		}
+	}
+});
+});
+    </script>
+</body>
+</html>

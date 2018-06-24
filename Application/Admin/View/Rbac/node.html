@@ -1,0 +1,93 @@
+<!doctype html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>{$title}</title>
+<include file="Public/scripts" />
+</head>
+<body>
+<div class="row">
+  <div class="col-md-12">
+    <div class="col-md-12 custom-tool" >
+      <h2>{$title}</h2>
+      <div class="pull-right"> <a href="{:U($control.'/add'.$action)}" class="btn btn-success" title="添加"><i class="fa fa-plus"></i> 添加</a> </div>
+    </div>
+    <table class="table  table-first-column-number display full table-striped custom-table vm">
+      <thead>
+      <th width="50">#</th>
+        <th>节点名称</th>
+        <th>描述</th>
+        <th width="80">常用</th>
+        <th width="80">排序</th>
+        <th width="80">状态</th>
+        <th width="140">操作</th>
+          </thead>
+      <tbody>
+        <volist name="list" id="vo">
+          <tr >
+            <td>{$vo.id}</td>
+            <td>{$vo.title}【{$vo.name}】</td>
+            <td>{$vo.remark}&nbsp;</td>
+             <td> </td>
+                
+            <td><input class="form-control" name="Item_1" id="Item_1" onchange="setVal('node','sort',{$vo.id},$(this).val())"   value="{$vo.sort}" /></td>
+            <td><if condition="($vo.status eq 1)"> <a 	href="javascript:void(0);" 	onclick="setVal('node','status',{$vo.id},0,this,'隐藏')" class="btn btn-link"  rel="tooltip" data-original-title="点击隐藏"><i class="fa fa-check-circle"></i> 显示</a>
+                <else />
+                <a href="javascript:void(0);" 	onclick="setVal('node','status',{$vo.id},1,this,'显示')" class="btn btn-link fc_red"  rel="tooltip" data-original-title="点击显示"><i class="fa fa-times-circle"></i> 隐藏</a> </if></td>
+            <td><a href="{:U('Rbac/addNode',Array("pid"=>$vo["id"],"level"=>$vo["level"]))}" class="btn" rel="tooltip" data-original-title="添加"><i class="fa fa-plus"></i></a> <a href="{:U('Rbac/editNode','id='.$vo['id'])}" class="btn" rel="tooltip" data-original-title="修改"><i class="fa fa-edit"></i></a> <a  href="javascript:void(0);" onclick="setDelete('{:U($control.'/delete'.$action,"id=".$vo['id'])}')" class="btn" rel="tooltip" data-original-title="删除"><i class="fa fa-trash"></i></a></td>
+          </tr>
+          <volist id="action" name="vo.child">
+            <tr >
+              <td>{$action.id}</td>
+              <td><?php echo(str_repeat("&nbsp;",4));?><i class="{$action.icon|default='fa fa-chevron-right'}"></i> {$action.title}【{$action.name}】</td>
+              <td>{$action.remark}&nbsp;</td>
+               <td> </td>
+                
+              <td><input class="form-control" name="Item_1" id="Item_1" onchange="setVal('node','sort',{$action.id},$(this).val())"   value="{$action.sort}" /></td>
+              <td><if condition="($action.status eq 1)"> <a 	href="javascript:void(0);" 	onclick="setVal('node','status',{$action.id},0,this,'隐藏')" class="btn btn-link"  rel="tooltip" data-original-title="点击隐藏"><i class="fa fa-check-circle"></i> 显示</a>
+                  <else />
+                  <a href="javascript:void(0);" 	onclick="setVal('node','status',{$action.id},1,this,'显示')" class="btn btn-link fc_red"  rel="tooltip" data-original-title="点击显示"><i class="fa fa-times-circle"></i> 隐藏</a> </if></td>
+              <td><a href="{:U('Rbac/addNode',Array("pid"=>$action["id"],"level"=>$action["level"]))}" class="btn" rel="tooltip" data-original-title="添加"><i class="fa fa-plus"></i></a> <a href="{:U('Rbac/editNode','id='.$action['id'])}" class="btn" rel="tooltip" data-original-title="修改"><i class="fa fa-edit"></i></a> <a  href="javascript:void(0);" onclick="setDelete('{:U($control.'/delete'.$action,"id=".$action['id'])}')" class="btn" rel="tooltip" data-original-title="删除"><i class="fa fa-trash"></i></a></td>
+            </tr>
+            <volist id="method" name="action.child">
+              <tr >
+                <td>{$method.id}</td>
+                <td><?php echo(str_repeat("&nbsp;",8));?><i class="{$method.icon|default='fa fa-chevron-right'}"></i> {$method.title}【{$method.name}】</td>
+                <td>{$method.remark}&nbsp;</td>
+                 <td><if condition="($method.isresume eq 1)"> <a 	href="javascript:void(0);" 	onclick="setVal('node','isresume',{$method.id},0,this,'普通')" class="btn btn-link fc_red"  rel="tooltip" data-original-title="点击设置普通"><i class="fa fa-arrow-up"></i> 常用</a>
+                <else />
+                <a href="javascript:void(0);" 	onclick="setVal('node','isresume',{$method.id},1,this,'常用')" class="btn btn-link "  rel="tooltip" data-original-title="点击设置常用">普通</a> </if></td>
+                
+                <td><input class="form-control" name="Item_1" id="Item_1" onchange="setVal('node','sort',{$method.id},$(this).val())"   value="{$method.sort}" /></td>
+                <td><if condition="($method.status eq 1)"> <a 	href="javascript:void(0);" 	onclick="setVal('node','status',{$method.id},0,this,'隐藏')" class="btn btn-link"  rel="tooltip" data-original-title="点击隐藏"><i class="fa fa-check-circle"></i> 显示</a>
+                    <else />
+                    <a href="javascript:void(0);" 	onclick="setVal('node','status',{$method.id},1,this,'显示')" class="btn btn-link fc_red"  rel="tooltip" data-original-title="点击显示"><i class="fa fa-times-circle"></i> 隐藏</a> </if></td>
+                <td><a href="{:U('Rbac/addNode',Array("pid"=>$method["id"],"level"=>$method["level"]))}" class="btn" rel="tooltip" data-original-title="添加"><i class="fa fa-plus"></i></a> 
+                <a href="{:U('Rbac/editNode','id='.$method['id'])}" class="btn" rel="tooltip" data-original-title="修改"><i class="fa fa-edit"></i></a> <a  href="javascript:void(0);" onclick="setDelete('{:U($control.'/delete'.$action,"id=".$method['id'])}')" class="btn" rel="tooltip" data-original-title="删除"><i class="fa fa-trash"></i></a></td>
+              </tr>
+              <foreach item="son" name="method.child">
+              <tr >
+                <td>{$son.id}</td>
+                <td><?php echo(str_repeat("&nbsp;",12));?><i class="{$son.icon|default='fa fa-chevron-right'}"></i> {$son.title}【{$son.name}】</td>
+                <td>{$son.remark}&nbsp;</td>
+                 <td><if condition="($son.isresume eq 1)"> <a 	href="javascript:void(0);" 	onclick="setVal('node','isresume',{$son.id},0,this,'普通')" class="btn btn-link fc_red"  rel="tooltip" data-original-title="点击设置普通"><i class="fa fa-arrow-up"></i> 常用</a>
+                <else />
+                <a href="javascript:void(0);" 	onclick="setVal('node','isresume',{$son.id},1,this,'常用')" class="btn btn-link "  rel="tooltip" data-original-title="点击设置常用">普通</a> </if></td>
+                
+                <td><input class="form-control" name="Item_1" id="Item_1" onchange="setVal('node','sort',{$son.id},$(this).val())"   value="{$son.sort}" /></td>
+                <td><if condition="($son.status eq 1)"> <a 	href="javascript:void(0);" 	onclick="setVal('node','status',{$son.id},0,this,'隐藏')" class="btn btn-link"  rel="tooltip" data-original-title="点击隐藏"><i class="fa fa-check-circle"></i> 显示</a>
+                    <else />
+                    <a href="javascript:void(0);" 	onclick="setVal('node','status',{$son.id},1,this,'显示')" class="btn btn-link fc_red"  rel="tooltip" data-original-title="点击显示"><i class="fa fa-times-circle"></i> 隐藏</a> </if></td>
+                <td><a href="{:U('Rbac/editNode','id='.$son['id'])}" class="btn" rel="tooltip" data-original-title="修改"><i class="fa fa-edit"></i></a> <a  href="javascript:void(0);" onclick="setDelete('{:U($control.'/delete'.$action,"id=".$son['id'])}')" class="btn" rel="tooltip" data-original-title="删除"><i class="fa fa-trash"></i></a></td>
+              </tr>
+            </foreach>
+            
+            </volist>
+          </volist>
+        </volist>
+      </tbody>
+    </table>
+  </div>
+</div>
+</body>
+</html>

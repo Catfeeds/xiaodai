@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+		<meta name="format-detection" content="telephone=no">
+		<title>汇智共创</title>
+		<link rel="stylesheet" href="css/loading.css" />
+		<script src="js/loading.js"></script>		
+		<link rel="stylesheet" href="css/mui.css" />
+		<link rel="stylesheet" href="css/fonts.css" />
+		<link rel="stylesheet" href="css/style.css" />
+	</head>
+	<body>
+		<a href="##"><div class="kcdetail_push">立即支付</div></a>
+		
+		<div class="mui-content">
+			<div class="kcdetail">
+				<div class="topcon">
+					<div class="img"><img src="images/shipin.png"><div class="play"></div></div>
+					<div class="name">财务管理真题解析班</div>
+					<div class="cont">
+						<ul class="clearListStyle mui-clearfix">
+							<li>播放次数：206</li>
+							<li>播放次数：206</li>
+							<li>播放次数：206</li>
+							<li>价格：<span class="red">￥59.00</span></li>
+						</ul>
+					</div>
+				</div>
+				<div class="intro">
+					<div class="name">详细介绍</div>
+					<div class="con">
+						本课程由拥有多年会计师辅导经验的韩伟丽老师倾力打造，包括两部分内容：一是历年真题综合分析（导学班），对历年真题进行比较，总结命题规律；二是精选讲解近几次考试真题，解析每道真题，详解难点重点。
+						本课程由拥有多年会计师辅导经验的韩伟丽老师倾力打造，包括两部分内容：一是历年真题综合分析（导学班），对历年真题进行比较，总结命题规律；二是精选讲解近几次考试真题，解析每道真题，详解难点重点。
+						本课程由拥有多年会计师辅导经验的韩伟丽老师倾力打造，包括两部分内容：一是历年真题综合分析（导学班），对历年真题进行比较，总结命题规律；二是精选讲解近几次考试真题，解析每道真题，详解难点重点。
+					</div>
+				</div>
+			</div>
+			
+		</div>
+		<script src="js/mui.min.js"></script>
+		<script src="js/jquery-2.2.3.min.js"></script>	
+		<script src="js/script.js"></script>	
+		
+		<script>
+			
+			$(document).ready(function(){
+				
+				//select文本框
+				$(".sewvtop").click(function(){
+					$(".sewvbm").slideToggle(150);
+					if($(this).find("em").hasClass("lbaxztop")){
+						$(this).find("em").addClass("lbaxztop2");
+						$(this).find("em").removeClass("lbaxztop");
+					}else{
+						$(this).find("em").addClass("lbaxztop");
+						$(this).find("em").removeClass("lbaxztop2");
+					}
+				});
+				
+				$(".sewvbm>li").click(function(){
+					var selva=$(this).text();
+					$(".sewvtop>span").text(selva);
+					$(this).parent("ul").hide();
+					
+					if($(this).parents(".sewv").find("em").hasClass("lbaxztop")){
+						$(this).parents(".sewv").find("em").addClass("lbaxztop2");
+						$(this).parents(".sewv").find("em").removeClass("lbaxztop");
+					}else{
+						$(this).parents(".sewv").find("em").addClass("lbaxztop");
+						$(this).parents(".sewv").find("em").removeClass("lbaxztop2");
+					}
+				});
+				
+				
+				
+			});
+			
+
+		</script>
+
+	</body>
+</html>

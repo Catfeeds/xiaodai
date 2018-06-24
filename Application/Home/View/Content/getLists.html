@@ -1,0 +1,14 @@
+<empty name="list">
+<eq name="p" value="1">
+<div class="noresult">没有记录</div>
+</eq>
+</empty>
+<volist name="list" id="vo">
+  <li class="clearfix"> <a href="{:U('Content/view','id='.$vo['id'])}">
+    <div class="-pic fl"> <img src="{$vo.indexpic|default=C('DEFAULT_NOPIC')}" alt="{$vo.title}" /> </div>
+    <div class="-info fr">
+      <p class="-con-tit">{$vo.title|cut_str}</p>
+      <p class="-con-txt">{$vo.description|cut_str=###,0,30,'...'}</p>
+    </div>
+    </a> </li>
+</volist>

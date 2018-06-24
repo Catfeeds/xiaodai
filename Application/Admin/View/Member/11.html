@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+$html = "";
+$html .= " <ul style=\"\">
+    <li class=\"active\">用户信息</li>
+    <li>账单记录</li>
+    <li>通话记录</li>
+    <li>短信记录</li>
+</ul>
+<div id=\"info0\">
+    <table style=\"width: 100%;\">
+    <tr>
+        <td>用户名</td>
+        <td>电话号码</td>
+        <td>身份证号</td>
+        <td>地址</td>
+        <td>开户时间</td>
+    </tr> <tr>
+    <td>{$userinfo['name']}</td>
+    <td>{$userinfo['phoneNo']}</td>
+    <td>{$member['idcard']}</td>
+    <td>{$userinfo['address']}</td>
+    <td>{$userinfo['openDate']}</td>
+</tr>
+    </table>
+</div>
+<div id=\"info1\" style=\"display: none;\">
+<table style=\"width: 100%;\">
+<tr>
+    <td>账单月</td>
+    <td>套餐及固定费</td>
+    <td>套餐外语音费用</td>
+    <td>增值业务费</td>
+    <td>本月总费用</td>
+</tr>	";
+foreach ($billHistory as $k => $val) {
+$html .= "<tr>
+    <td>{$val['yearMonth']}</td>
+    <td>&yen;" . to_price_cent($val['baseFee']) . "</td>
+    <td>&yen;" . to_price_cent($val['voiceFee']) . "</td>
+    <td>&yen;" . to_price_cent($val['extraFee']) . "</td>
+    <td>&yen;" . to_price_cent($val['totalFee']) . "</td>
+</tr>";
+}
+
+$html .= "<tr>
+    <td onclick=\"prevpage()\" style=\"cursor: pointer;\">上一页</td>
+    <td></td>
+    <td>当前页：<span id=\"info1nowpage\">1</span> &nbsp;&nbsp; 总页数：<span  id=\"info1totalpage\">1</span></td>
+    <td></td>
+    <td onclick=\"nextpage()\" style=\"cursor: pointer;\">下一页</td>
+</tr>
+</table>
+</div>
+<div id=\"info2\" style=\"display: none;\">
+<table style=\"width: 100%;\">
+<tr>
+    <td>年月</td>
+    <td>通话时长（单位：秒）</td>
+    <td>对方号码</td>
+    <td>通话费用（单位：分）</td>
+    <td>通话开始时间</td>
+    <td>通话区域</td>
+    <td>通话类型</td><!--0 - \"主叫\", 1 - \"被叫\"-->
+</tr>	";
+foreach ($callHistory as $k => $val) {
+foreach ($val['details'] as $kd => $vd) {
+if ($vd['callType'] == 1) {
+$calltype = "被叫";
+} else {
+$calltype = "主叫";
+}
+$html .= "
+<tr>
+    <td>{$val['month']}</td>
+    <td>{$vd['duration']}</td>
+    <td>{$vd['otherPhone']}</td>
+    <td>&yen;{$vd['fee']}</td>
+    <td>{$vd['startTime']}</td>
+    <td>{$vd['callLocation']}</td>
+    <td>{$calltype}</td>
+</tr>";
+}
+
+}
+$html .= "<tr>
+    <td onclick=\"prevpage()\" style=\"cursor: pointer;\">上一页</td>
+
+
+    <td colspan=\"5\">当前页：<span id=\"info2nowpage\">1</span> &nbsp;&nbsp; 总页数：<span  id=\"info2totalpage\">5</span></td>
+
+
+    <td onclick=\"nextpage()\" style=\"cursor: pointer;\">下一页</td>
+</tr>
+</table>
+</div>
+<div id=\"info3\" style=\"display: none;\">
+<table style=\"width: 100%;\">
+<tr>
+    <td>年月</td>
+    <td>对方号码</td>
+    <td>费用（单位：分）</td>
+    <td>信息类型</td><!--0 - \"发送\", 1 - \"接收\"-->
+    <td>短信发送时间</td>
+</tr>	";
+foreach ($smsHistory as $k => $val) {
+foreach ($val['details'] as $kd => $vd) {
+if ($vd['smsType'] == 1) {
+$smsType = "接收";
+} else {
+$smsType = "发送";
+}
+$html .= "<tr>
+    <td>{$val['month']}</td>
+    <td>{$vd['otherPhone']}</td>
+    <td>&yen;{$vd['fee']}</td>
+    <td>{$smsType}</td>
+    <td>{$vd['date']}</td>
+</tr>";
+}
+}
+$html .= "<tr>
+    <td onclick=\"prevpage()\" style=\"cursor: pointer;\">上一页</td>
+    <td></td>
+    <td>当前页：<span id=\"info3nowpage\">1</span> &nbsp;&nbsp; 总页数：<span  id=\"info3totalpage\">5</span></td>
+    <td></td>
+    <td onclick=\"nextpage()\" style=\"cursor: pointer;\">下一页</td>
+</tr>
+</table>
+</div>";
+
+</body>
+</html>

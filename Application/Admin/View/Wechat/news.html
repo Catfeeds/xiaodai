@@ -1,0 +1,133 @@
+<!doctype html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>{$title}</title>
+<include file="Public/scripts" />
+<include file="Public/upload" />
+<css href="__PUBLIC__/Admin/stylesheets/lightbox.css" />
+<js href="__PUBLIC__/Admin/lib/jquery.lightbox.min.js,__PUBLIC__/Admin/lib/blocksit.min.js" />
+ <script>
+$(function(){
+$("#btnUploadMaterial").hover(function(){
+	$(".btnas").show();
+},function(){
+	$(".btnas").hide();
+});
+	
+$.deleteImg=function(id){
+	bootbox.confirm("您确定删除该素材吗?", function(result) {
+			if (result) {
+			$.ajax({
+				url:"{:U('Wechat/deleteMaterial')}",
+				data:"id="+id+"&type=1",
+				success: function(msg){
+					if(msg.status==1){
+						window.location.reload();
+					}else{
+						alerterr(msg.info);	
+					}
+				}
+				});		
+		} 
+	});
+	
+	
+	 
+		 
+	}
+});
+</script>
+<style>
+#btnUploadMaterial{ width:100%; background: url(__PUBLIC__/Admin/assets/uploadnews.gif) no-repeat center;position: relative;min-height: 200px;border: 3px dashed #ddd;border-radius: 3px;vertical-align: middle;width:98%;cursor: pointer;padding: 0 15px 15px 0;-webkit-transition: all .2s;transition: all .2s;}
+
+#blocks{ position:relative;}
+
+/*多图文*/
+.item_news{border:1px #ccc solid; width:260px; height:auto; float:left; margin:5px ; background:#fff; position:relative; }
+.item_news .first{ padding:10px; height:160px;  position:relative; overflow:hidden}
+.item_news .first em{ width:100%;  display:block;height:20px; overflow:hidden; font-style:normal; }
+.item_news .first img{ width:100%;  height:140px; }
+.item_news .first span{ display:inline-block; width:100%; position:absolute; bottom:0px;color:#fff; background:#333; padding:0px; filter:alpha(opacity=90);-moz-opacity:0.9;-khtml-opacity: 0.9;opacity: 0.9;}
+
+.item_news .other{ padding:10px; height:70px; position:relative;border-top:1px #ccc solid;}
+.item_news .other span{  width:180px; float:left; line-height:20px; overflow:hidden; height:40px; padding:5px 0px;}
+.item_news .other img{ width:40px; height:40px; border:1px #ccc solid; float:right; margin:5px 0px;}
+
+.item_news .tool{ width:100%; height:30px; line-height:30px; background-image: -moz-linear-gradient(top, #fff, #eee);background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #fff), color-stop(1, #eee)); filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#eeeeee', GradientType='0');padding:0px 0px; box-shadow:0px 3px 3px #ccc; border-top:1px #ccc solid;}
+.item_news .tool a{ color:#ccc;}
+.item_news .tool a:hover{   background-image: -moz-linear-gradient(top, #fff, #ddd);background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #fff), color-stop(1, #ddd)); filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#dddddd', GradientType='0');padding:0px 0px;   color:#000;}
+.item_news .tool .btn_edit{ width:50%; float:left; text-align:center}
+.item_news .tool .btn_del{ width:50%; float:left; text-align:center}
+
+/*单图文*/
+.item_news .single{ padding:10px;  position:relative;}
+.item_news .single img{  width:100%; height:140px; }
+.item_news .single span{ width:100%; display:block; max-height:40px; overflow:hidden; font-size:1.2em;}
+.item_news .single em{ width:100%;  display:block;height:20px; overflow:hidden;font-style:normal; color:#666;}
+.btnas{ width:200px; margin:0px auto; margin-top:80px; height:80px; display:none;}
+.btnas .single{ width:100px; height:80px; background:url(__PUBLIC__/Admin/assets/btn_single.gif) no-repeat #fff; overflow:hidden; float:left; text-indent:-300px;}
+.btnas .single:hover{ background-position:0px -80px;}
+.btnas .multi{ width:100px; height:80px; background:url(__PUBLIC__/Admin/assets/btn_multi.gif) no-repeat #fff; overflow:hidden; float:left; text-indent:-300px;}
+.btnas .multi:hover{ background-position:0px -80px;}
+</style>
+</head>
+<body>
+<div class="row">
+  <div class="col-md-12"> 
+      <h2>{$title}</h2>   
+  </div>
+  <div class="col-md-12"> 
+       <div class="fancy-tab-container"> 
+       <ul class="nav nav-tabs fancy">
+          <li class=""><a href="{:U('Wechat/material')}"  aria-expanded="false">图片素材</a></li>
+          <li class="active"><a href="{:U('Wechat/news')}" aria-expanded="true">图文素材</a></li> 
+        </ul> 
+       <div style="padding:10px;">
+      	 <div class="item_add" id="btnUploadMaterial">
+        <div class="btnas">
+        <a href="{:U('Wechat/single')}" class="single">单图文消息</a>
+        <a href="{:U('Wechat/multi')}" class="multi">多图文消息</a>
+        </div>
+        </div>
+       </div>
+       </div>
+       <div >
+            <div  id="blocks">
+    <volist id="vo" name="list">
+        <if condition="count($vo['_child']) gt 1"> 
+          <!--多图文-->
+          <div class="item_news water" >
+            <volist id="vo1" name="vo._child">
+              <eq name="key" value="0">
+                <div class="first"> <em>{:date('m',strtotime($vo1['addtime']))}月{:date('d',strtotime($vo1['addtime']))}日</em> <img src="{$vo1.indexpic}"  alt="" /> <span><a href="{:get_app_news_url(0,0,$vo1['id'])}" target="_blank">{$vo1.title}</a></span> </div>
+                <else/>
+                <div class="other"> <span><a href="{:get_app_news_url(0,0,$vo1['id'])}" target="_blank">{$vo1.title}</a></span> <img src="{$vo1.indexpic}"  alt="" /> </div>
+              </eq>
+            </volist>
+            <div class="tool">
+               <a href="{:U('Wechat/multi','id='.$vo['id'])}" class="btn_edit">修改</a>
+            <a href="javascript:void(0);" onclick="$.deleteImg({$vo.id});" class="btn_del">删除</a>
+            </div>
+          </div>
+          <else/>
+          <volist id="vo1" name="vo._child">
+            <div class="item_news water" >
+              <div class="single"> <span><a href="{:get_app_news_url(0,0,$vo1['id'])}"  target="_blank">{$vo1.title}</a></span> <em>{:date('m',strtotime($vo1['addtime']))}月{:date('d',strtotime($vo1['addtime']))}日</em> <img src="{$vo1.indexpic}"  alt="" /> </div>
+                <div class="tool">
+                <a href="{:U('Wechat/single','id='.$vo['id'])}" class="btn_edit">修改</a>
+                <a href="javascript:void(0);" onclick="$.deleteImg({$vo.id});" class="btn_del">删除</a>
+                </div>
+            </div>
+          </volist>
+        </if>
+      </volist>
+      </div>
+       </div>
+       <div class="row">
+       {$page}
+       </div>
+  </div>
+</div>
+</body>
+</html>

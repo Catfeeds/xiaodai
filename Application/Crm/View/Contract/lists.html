@@ -1,0 +1,212 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>{$title}</title>
+    <include file="Public:scripts" />
+</head>
+<body>
+
+<header class="mui-bar mui-bar-nav kehu_head">
+    <div class="kehu_search">
+        <div>
+            <input class="input1" type="text" name="keyword" id="keyword" placeholder="搜索合同名称，合同编号，描述，签约人">
+            <input type="button" onclick="srot('addtime');" class="course_sub  commonfont" value="" style="background-color: #f0eff4; border: none;">
+        </div>
+    </div>
+
+        <ul style="height: 40px;" class="clearListStyle mui-clearfix sort-product">
+            <li class="mui-col-xs-3 mui-pull-left">
+                <a href="javascript:srot('signtime');" id="signtime" data-field="signtime" class="active up">签约时间<span class="arr"></span></a>
+            </li>
+
+            <li class="mui-col-xs-3 mui-pull-left">
+                <a href="javascript:srot('end');" id="end" data-field="end">到期时间<span class="arr"></span></a>
+            </li>
+
+            <li class="mui-col-xs-3 mui-pull-left">
+                <select onchange="setsort()" id="status">
+                    <option value="">合同状态</option>
+                    <option value="0">正常签约</option>
+                    <option value="1">服务到期</option>
+                    <option value="2">已撤回</option>
+                </select>
+                <a style=" position: relative;top: -56px;left: 70px; width: 10px;" href="javascript:void(0);">
+                    <span class="arr"></span>
+                </a>
+            </li>
+            <li class="mui-col-xs-3 mui-pull-left">
+                <a href="{:U('Contract/addcontract')}" ><i class="iconfont icon-fujian"></i>新建合同</a>
+            </li>
+        </ul>
+
+</header>
+<style>
+    .itemul li{ width: 50%;  text-align: center; float: left;}
+    .itemul .active{ border-bottom: 1px solid red;}
+</style>
+
+
+<div class="mui-content" style="padding-bottom: 54px;">
+    <ul class="itemul" style="z-index: 9999;list-style: none;margin: 0px; background-color: white; height: 40px;line-height: 40px;padding: 0px;">
+        <li data-field="all" class="active">全部合同</li>
+        <li  data-field="my">我的合同</li>
+    </ul>
+    <div  class="mui-table-view mt10">
+        <ul class="clearListStyle mui-clearfix" id="upload">
+        </ul>
+    </div>
+    <div style="text-align: center;padding:20px;" id="loadmore">
+        载入更多
+    </div>
+</div>
+
+
+<div id="loading" style="position: fixed;top:20%;left: 10%; width: 80%;display: none;">
+    <img src="/Public/Home/images/loading.gif"/>
+</div>
+
+
+<include file="Public:footer" />
+
+<script language="javascript">
+    var p=1;
+    var $field='';
+    var $sort='';
+    var keyword="{$keyword?$keyword:''}";
+    var status="";
+    var act="";
+    (function(){
+        //设置提示信息
+        $.setTip=function($str){
+            $("#loadmore").html($str).show();
+        };
+
+
+        //获取列表
+        $.getLists=function(){
+
+            var url="{:U('Contract/getlists')}";
+            if(p!=0){
+                if(p!=1){
+                    $.setTip("载入中...");
+                }
+                status=$("#status").val();
+                keyword=$("#keyword").val();
+                $.ajax({url:url,type:'GET',data:"field="+$field+"&sort="+$sort+"&p="+p+"&keyword="+keyword+"&status="+status+"&act="+act,success: function(msg){
+                    if(msg!=""){
+                        p+=1;
+                        //$("#upload").append(msg);
+                        $("#upload").html($("#upload").html() + msg);
+
+                        if(msg.indexOf("没有记录")==-1){
+                            $.setTip("载入更多");
+                        }else{
+                            $("#loadmore").hide();
+                        }
+                    }else{
+                        p=0;
+                        $.setTip("没有了");
+                        setTimeout(function(){
+                            $("#loadmore").hide();
+                        },2000);
+                    }
+                }});
+            }
+        };
+    })(jQuery);
+
+    $(function(){
+        $.getLists();
+        $(window).scroll(function() {
+            var height_bottom = 0; // 距离底边多少像素开始加载
+            if ($(document).scrollTop() + height_bottom == $(document).height() - $(window).height()) {
+                $.getLists();
+            }
+        });
+
+        $("#loadmore").click(function(){
+            $.getLists();
+        });
+
+    });
+
+    $(".itemul li").click(function () {
+        var index=$(this).index();
+        $(".itemul li").removeClass('active');
+        $(this).addClass('active');
+        act=$(this).attr('data-field');
+
+        p=1;
+        $("#upload").html("");
+        $.getLists();
+
+    });
+
+    function setact(acts){
+        act=acts;
+        $.getLists();
+    }
+
+    function setsort(status){
+
+        p=1;
+        $("#upload").html("");
+        $.getLists();
+    }
+
+
+    function srot(field){
+
+        $("#"+field).parents().siblings().find("a").removeClass("down").removeClass("up");
+        $("#"+field).parents().siblings().find("a").removeClass("active");
+
+        var $a=$("#"+field);
+        if($a.hasClass("up")){
+            $a.removeClass("up");
+            $a.addClass("down");
+            $sort="desc";
+        }else{
+            $a.removeClass("down");
+            $a.addClass("up");
+            $sort="asc";
+        }
+
+        $("#"+field).addClass("active");
+        $field=field;
+        p=1;
+        $("#upload").html("");
+        $.getLists();
+    }
+
+
+
+
+</script>
+<script type="text/javascript">
+    function sendcontracttip(id){
+        var btn=['否','是'];
+        var tip='您确定要发送合同到期短信提醒吗?';
+        mui.confirm(tip,'合同提醒',btn, function (e) {
+            if(e.index==1){
+                $("#loading").show();
+                $.ajax({
+                    url:"/Admin/Api/sendcontracttip.html",
+                    data:{id:id},
+                    type:"POST",
+                    success: function (data) {
+                        $("#loading").hide();
+                        $("#tip_"+id).hide();
+                        mui.confirm(data);
+                    }
+                })
+            }
+        });
+    }
+
+
+
+</script>
+
+</body>
+</html>

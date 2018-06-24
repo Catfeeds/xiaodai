@@ -1,0 +1,162 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>{$title}</title>
+    <include file="Public:scripts" />
+</head>
+<body>
+
+<header class="mui-bar mui-bar-nav kehu_head">
+    <div class="kehu_search">
+        <div>
+            <input class="input1" type="text" name="keyword" id="keyword" placeholder="搜索项目名称，描述">
+            <input type="button" onclick="srot('updatetime');" class="course_sub  commonfont" value="" style="background-color: #f0eff4; border: none;">
+        </div>
+    </div>
+    <ul class="clearListStyle mui-clearfix sort-product">
+        <ul class="clearListStyle mui-clearfix">
+		
+		
+			<li class="mui-col-xs-3 mui-pull-left">
+                <a href="javascript:srot('updatetime');" id="updatetime" class="active up" data-field="updatetime">更新时间<span class="arr"></span></a>
+            </li>
+            <li class="mui-col-xs-3 mui-pull-left">
+                <a href="javascript:srot('addtime');" id="addtime" data-field="addtime">创建时间<span class="arr"></span></a>
+            </li>
+
+            
+
+            <li class="mui-col-xs-3 mui-pull-left">
+                <select onchange="setsort()" id="status">
+                    <option value="">项目状态</option>
+                    <option value="0">跟进中</option>
+                    <option value="1">已签约</option>
+                    <option value="2">已放弃</option>
+                    <option value="3">服务中</option>
+                    <option value="4">服务结束</option>
+                </select>
+                <a style=" position: relative;top: -56px;left: 70px; width: 10px;" href="javascript:void(0);">
+                <span class="arr"></span>
+                </a>
+            </li>
+            <li class="mui-col-xs-3 mui-pull-left">
+                <a href="{:U('Item/additem')}" ><i class="iconfont icon-fujian"></i>新建项目</a>
+            </li>
+        </ul>
+    </ul>
+</header>
+
+<div class="mui-content" style="padding-bottom: 54px;">
+    <div  class="mui-table-view mt10">
+        <ul class="clearListStyle mui-clearfix" id="upload">
+        </ul>
+    </div>
+    <div style="text-align: center;padding:20px;" id="loadmore">
+        载入更多
+    </div>
+</div>
+
+
+
+
+
+<include file="Public:footer" />
+
+<script language="javascript">
+    var p=1;
+    var $field='';
+    var $sort='';
+    var keyword="{$keyword?$keyword:''}";
+    var status="";
+    (function(){
+        //设置提示信息
+        $.setTip=function($str){
+            $("#loadmore").html($str).show();
+        };
+
+
+        //获取列表
+        $.getLists=function(){
+
+            var url="{:U('Item/getLists')}";
+            if(p!=0){
+                if(p!=1){
+                    $.setTip("载入中...");
+                }
+                status=$("#status").val();
+                keyword=$("#keyword").val();
+                $.ajax({url:url,type:'GET',data:"field="+$field+"&sort="+$sort+"&p="+p+"&keyword="+keyword+"&status="+status,success: function(msg){
+                    if(msg!=""){
+                        p+=1;
+                        //$("#upload").append(msg);
+                        $("#upload").html($("#upload").html() + msg);
+
+                        if(msg.indexOf("没有记录")==-1){
+                            $.setTip("载入更多");
+                        }else{
+                            $("#loadmore").hide();
+                        }
+                    }else{
+                        p=0;
+                        $.setTip("没有了");
+                        setTimeout(function(){
+                            $("#loadmore").hide();
+                        },2000);
+                    }
+                }});
+            }
+        };
+    })(jQuery);
+
+    $(function(){
+        $.getLists();
+        $(window).scroll(function() {
+            var height_bottom = 0; // 距离底边多少像素开始加载
+            if ($(document).scrollTop() + height_bottom == $(document).height() - $(window).height()) {
+                $.getLists();
+            }
+        });
+
+        $("#loadmore").click(function(){
+            $.getLists();
+        });
+
+    });
+
+
+    function setsort(status){
+
+        p=1;
+        $("#upload").html("");
+        $.getLists();
+    }
+
+
+    function srot(field){
+
+        $("#"+field).parents().siblings().find("a").removeClass("down").removeClass("up");
+        $("#"+field).parents().siblings().find("a").removeClass("active");
+
+        var $a=$("#"+field);
+        if($a.hasClass("up")){
+            $a.removeClass("up");
+            $a.addClass("down");
+            $sort="desc";
+        }else{
+            $a.removeClass("down");
+            $a.addClass("up");
+            $sort="asc";
+        }
+
+        $("#"+field).addClass("active");
+        $field=field;
+        p=1;
+        $("#upload").html("");
+        $.getLists();
+    }
+
+</script>
+
+</body>
+</html>

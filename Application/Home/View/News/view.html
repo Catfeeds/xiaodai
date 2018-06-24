@@ -1,0 +1,276 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="author" content="www.weimicn.com"/>
+<title>{$title}</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"/>
+<meta name="keywords" content="{$title}"/>
+<meta name="description" content="{$db.remark}"/>
+<link rel="stylesheet" href="__PUBLIC__/Home/css/news.css"/> 
+<js href="__PUBLIC__/Admin/js/jquery-1.8.3.min.js" />
+<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<script type="text/javascript">
+wx.config({
+      debug: false,
+      appId: '{$signPackage.appId}',
+      timestamp: {$signPackage.timestamp|0},
+      nonceStr: '{$signPackage.nonceStr}',
+      signature: '{$signPackage.signature}',
+      jsApiList: [
+        'onMenuShareTimeline',
+        'onMenuShareAppMessage',
+        'onMenuShareQQ',
+        'onMenuShareWeibo',
+		'previewImage'
+      ]
+  });
+  var $share={
+      title: '{$title}',
+      desc: '{:htmlclr($db["info"],30)}',
+      link: '',
+      imgUrl: '{$db.indexpic|get_thumb=160,160|get_resource_url}',
+      trigger: function (res) {
+        //alert('用户点击发送给朋友');
+      },
+      success: function (res) {
+        //alert('已分享');
+      },
+      cancel: function (res) {
+        //alert('已取消');
+      },
+      fail: function (res) {
+        //alert(JSON.stringify(res));
+      }
+    };
+	
+  wx.ready(function () {
+	  wx.onMenuShareAppMessage($share); 
+	  wx.onMenuShareTimeline($share); 
+  });
+  
+</script>
+ 
+</head>
+<body>
+<div> 
+  <div> <!-- article -->
+    <div class="main">
+      <div class="article_inner no-padding-b">
+        <div class="article_head">
+          <h2 class="rich_media_title" onClick="location='{:get_current_url()}?t={:rand_str()}';">{$db.title}</h2>
+		  <!--viewProfile()-->
+          <div class="rich_media_meta_list"> <em class="rich_media_meta text">{:time_format(strtotime($db['addtime']),'Y-m-d')}</em> <em class="rich_media_meta text">阅读({$db.hits})</em> <a class="rich_media_meta link nickname" >{$db.panel_name}</a><notempty name="db.author"> <em class="rich_media_meta text">by {$db.author}</em> </notempty></div>
+        </div>
+        <div class="article_content">
+          <eq name="db.isshowpic" value="1">
+            <notempty name="db.indexpic">
+              <div class="img-con"> <img src="{$db.indexpic}" style="width: 100%"> </div>
+            </notempty>
+          </eq>
+          <div class="article-con" >
+          <div id="MAINBOX">
+          <?php
+          $content=$db['info'];
+          $content=str_replace("white-space:pre-wrap;","",$content);
+          $content=htmlspecialchars_decode($content); 
+		  $content = str_replace ( '/Public/', 'http://' . get_base_domain ()  . '/Public/', $content );	 
+          ?>
+          {$content}</div>
+		  <br>
+		  <br>
+		  
+		  </div>
+          
+        </div>
+      </div>
+      <!--版权--> 
+    </div>
+    <!--qr code-->
+    
+    <!--点击分享  start-->
+    
+    <!--点击分享  end--> 
+	<!--点击‘展讯科技’  start-->
+    
+		
+    </div>
+    <!--点击‘展讯科技’  end-->
+    
+  </div>
+  <!-- /.content-wrapper--> 
+  
+</div>
+<script>
+var detailId="{$db.id}";
+//    显示头像
+function showimg(){
+	$("#js-img").show(); 
+}
+//    显示分享
+function showshare(){
+	$("#sharetan").show();
+}
+function hideit(){
+	$("#sharetan").hide();
+}
+//    显示'展讯科技'
+function showzhan(){
+	$(".showSubscribe").show();
+}
+
+function moveEnd(c) {
+c.focus();
+var a = c.value.length;
+if (document.selection) {
+	var b = c.createTextRange();
+	b.moveStart("character", a);
+	b.collapse();
+	b.select()
+} else {
+	if (typeof c.selectionStart == "number" && typeof c.selectionEnd == "number") {
+		c.selectionStart = c.selectionEnd = a
+	}
+}
+}
+$(function(){
+	$.getComment(1);
+	$(window).scroll(function() {
+         var height_bottom = 0; // 距离底边多少像素开始加载
+		 if ($(document).scrollTop() + height_bottom >= $(document).height() - $(window).height()) {
+			$.getComment();
+		}
+	});
+
+	//删除
+	$(".msg-list li").hover(function(){
+		var del=$(this).find(".msg-del").eq(0);
+		del.show();	
+	},function(){
+		var del=$(this).find(".msg-del").eq(0);
+		del.hide();	
+	});
+	
+	//回复
+	$("#comment-btn").click(function(){
+		var pid=$.trim($("#pid").val());
+		var name=$.trim($("#comment-name").val());
+		var info=$.trim($("#comment-info").val());
+		if(info.substr(0,1)!='@'){
+			pid=0;
+		}
+		var indexpic="{$headimgurl|default=C('DEFAULT_AVATAR')}"; 
+		if(name==''){alerterr('对不起，您的昵称不能为空！','微觅提示',function(){$("#comment-name").focus();});return false;} 
+		if(info==''){alerterr('对不起，评论内容不能为空！','微觅提示',function(){$("#comment-info").focus();});return false;} 
+		var url="{:U('News/comment')}";
+		$.ajax({url:url,type:'POST',data:"detailId="+detailId+"&pid="+pid+"&name="+(name)+"&info="+(info)+"&indexpic="+(indexpic),success: function(msg){
+			if(msg.status==1){
+				$("#comment-info").val('');
+				alertok(msg.info);
+				reloadme();	
+			}else{
+				alerterr(msg.info);
+			}
+		}});	
+	});
+	
+	//点赞
+	$("#comment-praise").click(function(){ 
+		var url="{:U('News/praise')}";
+		$.ajax({url:url,type:'POST',data:"detailId="+detailId,success: function(msg){
+			if(msg.status==1){ 
+				var n=parseInt($("#praise").text());
+					++n;
+				$("#praise").text(n);
+                        }else if(msg.status == 2){
+                            alerterr("您已经赞过了");
+			}else{
+				alerterr(msg.info);
+			}
+		}});	
+	});
+	
+});
+var p=1; 
+(function(){
+	$.updown=function(id,type){ 
+		var url="{:U('News/updown')}";
+		$.ajax({url:url,type:'GET',data:"id="+id+"&type="+type,success: function(msg){
+			if(msg.status=="1"){
+				var v=parseInt($('#i_'+type+'_'+id).text());  
+				$('#i_'+type+'_'+id).text(v+1);
+			}else{
+				 alerterr("对不起，您表过态了！");
+			}
+		}});  
+	};
+	
+	$.getComment=function(){ 
+		var url="{:U('News/getComment')}";
+		if(p!=0){
+			$.ajax({url:url,type:'GET',data:"id="+detailId+"&p="+p,success: function(msg){
+				if(msg!=""){
+					//$("#msg-list").append(msg);
+                    $("#msg-list").html($("#msg-list").html() + msg);
+					p+=1;
+				}else{
+					p=0;
+				}
+			}}); 
+		}
+	};
+	
+	$.delComment=function(id){
+		if (confirm("您确定要删除该评论吗？")){ 
+			var url="{:U('News/delete')}";
+			$.ajax({url:url,type:'POST',data:"detailId="+detailId+"&commentid="+id,success: function(msg){
+				if(msg.status==1){ 
+					reloadme();
+				}else{
+					alerterr(msg.info);
+				}
+			}});	
+		} 
+	};
+	
+	$.reply=function(id,to){ 
+		$("#comment-info").val(to);
+		$("#pid").val(id);
+		moveEnd($("#comment-info").get(0));
+	};
+})(jQuery); 
+
+
+//这个是调用微信图片浏览器的函数  
+function imagePreview(curSrc,srcList) { 
+	//这个检测是否参数为空 
+	if(!curSrc || !srcList || srcList.length == 0) { 
+		return; 
+	} 
+	 wx.previewImage({
+		'current' : curSrc, 
+		'urls' : srcList
+	 });
+}; 
+  
+$(function(){ 
+	//下面是获取当前页面所有的img的src 转成数组 并且 转换成json格式 
+	var aa=[]; 
+	var i=0; 
+	var src=[]; 
+	var json=null; 
+	aa=$('#MAINBOX img'); 
+	for (i=0;i<aa.length;i++){ 
+		src[i]=aa[i].src;    //把所有的src存到数组里 
+	} 
+	
+	//下面是点击图片的时候获取当前第几个图片并且启用咱们做的调用微信图片浏览器的函数 
+	$('#MAINBOX img').click(function(){ 
+		var index = $('#MAINBOX img').index(this);  
+		imagePreview(src[index],src); 
+	});
+	  
+});
+</script>
+</body>
+</html>

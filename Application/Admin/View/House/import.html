@@ -1,0 +1,139 @@
+<!doctype html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>{$title}</title>
+    <include file="Public/scripts" />
+</head>
+<body>
+<div class="row">
+    <div class="col-md-12">
+        <div class="col-md-12 custom-tool" >
+            <h2>{$title}
+                &nbsp;&nbsp;&nbsp;<a style="color:red;" href="/Public/uploadfile/房源导入模板.xlsx">下载房源导入模板</a>
+            </h2>
+        </div>
+        <form action="{:U('Api/importhouse')}" method="post" class="ajaxformx" name="form1" id="form1" enctype="multipart/form-data">
+            <table class="table vm">
+                <thead>
+                <th colspan="2">导入</th>
+                </thead>
+                <tbody>
+                <tr>
+                    <td  class="text-right" width="240">请选择要导入的excel文件：</td>
+                    <td>
+                        <div class="col-md-12">
+                            <p style="padding-top: 10px;">
+                                <!--<input type="hidden" class="inputText1 w350" name="regulation" id="regulation" maxlength="100" value="请上传文件！！" />&nbsp;&nbsp;&nbsp;-->
+                                <!--<input type="button" class="btn btn-default btn-xs btnUpload" id="btnUploadgupiao" value="导入" />&nbsp;&nbsp;&nbsp;-->
+
+
+
+                                <input class="form-control" style="float: left; width:300px;" type="file" name="file">
+                                <input type="submit" id="import" class="btn btn-success" value="导入excel">
+                            </p>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+
+            </table>
+        </form>
+    </div>
+    <div class="col-md-12">
+        <table class="table vm">
+            <thead>
+            <th colspan="2">结果</th>
+            </thead>
+            <tbody>
+            <tr>
+                <td  class="text-right" width="240">合计</td>
+                <td>
+                    excel文件合计【<span id="allnum">0</span>】条
+                </td>
+            </tr>
+            <tr>
+                <td  class="text-right" width="240">成功</td>
+                <td>
+                    成功导入数据【<span id="savenum">0</span>】条
+                </td>
+            </tr>
+            <tr>
+                <td  class="text-right" width="240">失败</td>
+                <td>
+                    失败的数据【<span id="unsavenum">0</span>】条，
+                    <span class="text-danger">
+                        原因可能是：<br/><span id="reason"></span>
+                    </span>
+                </td>
+            </tr>
+            </tbody>
+
+        </table>
+    </div>
+
+</div>
+
+<js href="__PUBLIC__/Admin/lib/bootstrapValidator.min.js,__PUBLIC__/Admin/lib/jquery.form.js" />
+<script type="text/javascript">
+    //    $(function(){
+    //        $.rendUploadergupiao("#btnUploadgupiao");
+    //    });
+
+
+    $(document).ready(function() {
+        var $form= $('.ajaxformx');
+        if(typeof($fields)=="undefined"){
+            $.rendAjaxForm1($form);
+        }else{
+            $form.find("input:text").eq(0).focus();
+            $form.on('success.form.bv', function(e) {
+                $.rendAjaxForm1($form);
+            }).bootstrapValidator({
+                message: '输入不合法',
+                feedbackIcons: {
+                    valid: 'fa fa-check',
+                    invalid: 'fa fa-remove',
+                    validating: 'fa fa-refresh'
+                },
+                fields: $fields
+            });
+        }
+    });
+    (function() {
+        $.rendAjaxForm1 = function($form) {
+            var $obj=$("button[type='submit']");
+            $form.ajaxForm({
+                beforeSubmit:function(){
+                    $("#import").attr('disabled','disabled');
+                },
+                success: function(data) {
+                    if (data.status == 1) {
+                        var allnum=data.allnum;
+                        var savenum=data.allnum;
+                        var unsavenum=parseInt(data.allnum)-parseInt(data.savenum);
+                        $("#allnum").html(allnum);
+                        $("#savenum").html(savenum);
+                        $("#unsavenum").html(unsavenum);
+
+                        $("#import").removeAttr('disabled');
+                        alertok('操作成功');
+                    } else {
+                        $("#import").removeAttr('disabled');
+                        var allnum=data.allnum;
+                        var savenum=0;
+                        var unsavenum=data.allnum;
+                        $("#allnum").html(allnum);
+                        $("#savenum").html(savenum);
+                        $("#unsavenum").html(unsavenum);
+                        $("#reason").html(data.info);
+                        alerterr('操作失败');
+                    }
+                }
+            });
+        };
+    })(jQuery);
+
+</script>
+</body>
+</html>

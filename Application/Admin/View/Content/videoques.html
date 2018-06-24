@@ -1,0 +1,127 @@
+<!doctype html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>{$title}</title>
+    <include file="Public/scripts" /><include file="Public/upload" /><include file="Public/editor" />
+</head>
+<body>
+<div class="row">
+    <div class="col-md-12 " >
+        <h2>{$title}</h2>
+    </div>
+    <div class="col-md-12 " >
+        <form action="" method="post" name="form1" id="form1" class="ajaxformx">
+            <input type="hidden" id="id" name="id" value="{$db.id}" />
+            <div class="fancy-tab-container">
+                <ul class="nav nav-tabs fancy">
+                    <li class="active"><a href="#autotab_1" data-toggle="tab">视频</a></li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane active" id="autotab_1">
+                        <div class="col-md-6 custom-form">
+                            <div  class="form-group">
+                                <label class="control-label">问题：</label>
+                                <div class="controls">
+                                    <table class="col-md-12" >
+                                        <tr class="row0 template">
+                                            <td id="attrid">
+                                                <?php
+                                          $attr=json_decode($json,true);
+                                          $attrnum=count($attr);
+
+                                          ?>
+                                                <input type="hidden" name="attrnum" id="attrnum" value="{$attrnum}" />
+                                                <?php
+                                            $kk=1;
+                                          foreach($attr as $key=>$val){
+                                                ?>
+                                                <table class="table vm">
+                                                    <tr class="row0">
+                                                        <td width="70"  class="tc" > 第<span class="day">{$kk}</span>项 <br />
+                                                            <a href="javascript:void(0);" onclick="if(confirm('您确定要删除吗？')){$(this).parent().parent().parent().parent().remove();}">删除</a></td>
+                                                        <td >
+                                                            <div class="input-group col-md-12">
+                                                                <input type="text" placeholder="问题" class="form-control" name="attr_name[]" value="{$val.ques}"  />
+                                                            </div>
+                                                        </td>
+                                                        <td >
+                                                            <div class="input-group">
+                                                                <input type="radio" name="attr_value{$kk}" <if condition="$val['answ'] eq 1"> checked</if> value="1"/>对
+                                                                <input type="radio" name="attr_value{$kk}" <if condition="$val['answ'] eq 2"> checked</if> value="2"/>错
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                                <?php $kk++;}?>
+                                            </td>
+                                        </tr>
+                                        <tr class="row0">
+                                            <td colspan="3"><button class="btn" type="button" id="addattr"><i class="fa fa-plus"></i> 1项</button></td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+
+
+                        </div>
+
+
+                        <div class="clearfix"></div>
+                    </div>
+
+
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group" style="padding:20px 0px;">
+                        <div class="controls">
+                            <hr />
+                            <button type="submit" class="btn btn-success" id="btnSubmit"><i class="fa fa-save"></i> 提交</button>
+                            <button type="button" class="btn btn-default" onClick="history.back();"><i class="fa fa-undo"></i> 返回</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<script language="JavaScript" type="text/javascript" >
+    $(function(){
+
+
+        $("#addattr").click(function(){
+            var num=parseInt($("#attrnum").val());
+            var html=$.addattr(num+1);
+            $("#attrid").append(html);
+
+
+            $("#attrnum").val(num+1);
+
+        });
+
+
+    });
+    (function(){
+
+
+
+        $.addattr=function(n){
+            var html="";
+            html+=("<table class=\"table vm\">");
+            html+=("  <tr class=\"row0\">");
+            html+=("    <td width=\"70\"  class=\"tc\" >第<span class=\"day\">"+n+"</span>项 <br /><a href=\"javascript:void(0);\" onclick=\"if(confirm('您确定要删除吗？')){$(this).parent().parent().parent().parent().remove();}\">删除</a></td>");
+
+            html+=("    <td ><div class=\"input-group col-md-12\"><input type=\"text\" placeholder=\"问题\" class=\"form-control\" name=\"attr_name[]\"  value=\"\"   /></div>  </td>");
+            html+=("    <td ><div class=\"input-group\">      <input type=\"radio\" name=\"attr_value"+n+"\" value=\"1\"/>对  <input type=\"radio\" name=\"attr_value"+n+"\" value=\"2\"/>错</div>  </td>");
+            html+=("  </tr>");
+            html+=("</table>");
+            return html;
+        }
+
+    })(jQuery);
+</script>
+<include file="Public/form" />
+</body>
+</html>

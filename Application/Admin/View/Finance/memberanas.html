@@ -1,0 +1,180 @@
+<!doctype html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>{$title}</title>
+    <include file="Public/scripts" /><include file="Public/upload" /><include file="Public/editor" />
+</head>
+<body>
+<div class="row">
+    <div class="col-md-12 " >
+        <h2>{$title}</h2>
+    </div>
+    <div class="col-md-12 " >
+
+
+            <div class="fancy-tab-container">
+                <ul class="nav nav-tabs fancy">
+                    <li><a href="{:U('Finance/articleanas')}">概览</a></li>
+                    <li><a href="{:U('Finance/detail')}">文章列表</a></li>
+                    <li class="active"><a href="{:U('Finance/memberanas')}">用户分析</a></li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane active" id="autotab_1">
+                        <div class="col-md-12" >
+                            <div class="panel panel-default col-md-12" style="padding: 0px;">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title fl">详细数据</h3>
+                                    <ol style="margin: 0px 0px 0px 100px; padding:0px;" class="breadcrumb">
+                                        <style>
+                                            .breadcrumb .active a{color: red;}
+                                        </style>
+                                        <li <if condition="$order eq 'spred'"> class="active"</if> ><a href="{:U('Finance/memberanas','order=spred')}">传播数</a></li>
+                                        <li <if condition="$order eq 'reads'"> class="active"</if> ><a href="{:U('Finance/memberanas','order=reads')}">阅读数</a></li>
+                                        <li <if condition="$order eq 'shares'"> class="active"</if> ><a href="{:U('Finance/memberanas','order=shares')}">分享数</a></li>
+                                        <li <if condition="$order eq 'praise'"> class="active"</if> ><a href="{:U('Finance/memberanas','order=praise')}">点赞数</a></li>
+                                    </ol>
+                                    <form action="" method="post">
+                                        <div class="input-group " style="width: 200px;    top: -25px;left: 300px;">
+
+                                            <input value="{$keyword}" name="keyword" class="form-control" id="keyword" />
+                                            <span class="input-group-btn">
+                                                  <button type="submit" class="btn fl"><i class="fa fa-search"></i> 查询</button>
+                                            </span>
+
+                                        </div>
+                                    </form>
+                                </div>
+                                <div style="width:100%;height: 300px;" class="panel-body">
+                                    <style>
+                                        .panel-body table{border-left: none;border-right: none;}
+                                        .panel-body table tr td{border-left: none;border-right: none; text-align: center;}
+                                    </style>
+                                    <table class="table table-hover col-md-12">
+                                        <tr id="arttemp">
+                                            <th  class="col-md-1" >选择</th>
+                                            <td class="col-md-3">用户名</td>
+                                            <td class="col-md-2">传播数</td>
+                                            <td class="col-md-2">阅读数</td>
+                                            <td class="col-md-2">分享数</td>
+                                            <td class="col-md-1">点赞数</td>
+                                            <th class="col-md-1">操作</th>
+                                        </tr>
+                                        <volist name="memberlist" id="vo">
+                                            <tr>
+                                                <td {$css}><input type="checkbox" name="selectids" value="{$vo.id}"></td>
+                                                <td><a href="{:U('Finance/memberdetail','id='.$vo['id'])}">{$vo.nickname}&nbsp;{$vo['telephone']?$vo['telephone']:''} </a></td>
+                                                <td>{$vo.spred}</td>
+                                                <td>{$vo.reads}</td>
+                                                <td>{$vo.shares}</td>
+                                                <td>{$vo.praise}</td>
+                                                <td {$css}>
+                                                    <a data-toggle="modal" data-target="#myModal" onclick="showmodal('{$vo.id}')"
+                                                       href="javascript:void(0);" class="btn btn-primary  btn-sm" rel="tooltip" data-original-title="发送消息">
+                                                        <i class="fa fa-reorder"></i>
+                                                    </a>
+
+                                                </td>
+                                            </tr>
+                                        </volist>
+                                        <tr>
+                                            <td colspan="6">{$page}</td>
+                                            <td>   <a data-toggle="modal" data-target="#myModal" onclick="sendmuiltmsg()"
+                                                      href="javascript:void(0);" class="btn btn-primary  btn-sm" rel="tooltip" data-original-title="批量发送消息">
+                                                <i class="fa fa-reorder"></i>
+                                            </a>
+                                            </td>
+                                        </tr>
+
+                                    </table>
+                                </div>
+
+                            </div>
+                            <!--<div id="detailchart" class="col-md-12" style="width: 500px;height: 300px;"></div>-->
+                        </div>
+
+
+                        <div class="clearfix"></div>
+                    </div>
+
+                </div>
+            </div>
+
+
+    </div>
+</div>
+
+
+<div id="myModal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">关闭</span></button>
+                <h4 class="modal-title">发送消息</h4>
+            </div>
+            <div class="modal-body">
+                <input id="memberid" type="hidden" value=""/>
+                <input placeholder="url链接：模板消息的URL链接，跳转的页面" id="url" class="form-control" type="text" value=""/>
+                <br/>
+                <textarea rows="5" placeholder="模板消息：需要发送给用户的文字信息" id="msg" class="form-control"></textarea>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary" onclick="confirmsend()">发送</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<include file="Public/form" />
+<script src="__PUBLIC__/Admin/lib/echarts/echarts.js"></script>
+<script type="text/javascript">
+
+    function sendmuiltmsg(){
+        var selectids="";
+        $("input:checked[name='selectids']").each(function() {
+            selectids += $(this).val() + ",";
+        });
+        showmodal(selectids);
+    }
+
+    function showmodal(id){
+        $("#memberid").val(id);
+    }
+
+    function confirmsend(){
+        var id=$("#memberid").val();
+        var url=$("#url").val();
+        var msg=$("#msg").val();
+        if($.trim(id)==""){
+            alert("获取发送目标失败");return;
+        }
+        if($.trim(msg)==""){
+            alert("消息内容不能为空");return;
+        }
+
+        $.ajax({
+            url:ADMIN_PATH+"/Api/sendtempmsg.html",
+            data:{id:id,url:url,msg:msg},
+            type:"POST",
+            success: function (data) {
+                if(data.status==1){
+                    alertok(data.info);
+                    parent.bootbox.hideAll();
+//                    setTimeout(function () {
+//                        parent.bootbox.hideAll();
+//                    },500);
+                }else{
+                    alerterr(data.info);
+                }
+
+            }
+        })
+
+    }
+
+</script>
+
+</body>
+</html>

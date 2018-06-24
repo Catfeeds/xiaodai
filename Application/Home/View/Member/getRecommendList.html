@@ -1,0 +1,14 @@
+<empty name="list">
+  <eq name="p" value="1">
+    <div class="noresult"> 暂无记录 </div>
+  </eq>
+</empty>
+<volist name="list" id="vo"> 
+<div class="rbox display-box yhq">
+	<div class="price"><img src="{$vo.headimgurl|default=C('DEFAULT_AVATAR')}" style="width:50px; border-radius:50%;" /></div>
+	<div class="box-flex-1">
+		<div>{$vo.nickname}</div>
+		<div>注册时间：{:date2format($vo['addtime'])}</div>
+	</div>
+</div> 
+</volist>

@@ -1,0 +1,90 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>{$title}</title>
+    <include file="Public:scripts" />
+</head>
+<body>
+<div class="messages_on"><a href="#part1"><div class="on">立即留言</div></a></div>
+<div class="mui-content">
+    <div class="huatilist">
+        <empty name="question">
+            <div class="huati-item">
+
+                <div class="huati-cont">
+
+                    <div class="cont">暂时没有留言</div>
+
+                </div>
+            </div>
+            <else/>
+            <volist name="question" id="vo">
+                <div class="huati-item">
+                    <div class="huati-touxiang"><img src="{$vo.headimgurl}"></div>
+                    <div class="huati-cont">
+                        <div class="mui-clearfix">
+                            <span class="mui-pull-left name">{$vo.username}：</span>
+                            <span class="mui-pull-right date">{$vo.addtime|date2format}</span>
+                        </div>
+                        <div class="cont">{$vo.content}</div>
+                        <notempty name="vo['replay']">
+                            <div class="commentarea">
+                                <div class="topicblock">
+                                    <div class="huati-cont">
+                                        <div class="tit"><span class="name">回复：</span>{$vo.replay}</div>
+                                        <div class="date">{$vo.replaytime|date2format}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </notempty>
+                    </div>
+                </div>
+            </volist>
+        </empty>
+
+
+        <div class="messages" id="part1">
+
+
+                <div class="messlist textareas">
+                    <label>内容：</label>
+                    <textarea name="content" id="content" placeholder="请填写留言内容"></textarea>
+                    <div class="clears"></div>
+                </div>
+
+                <div class="messsub">
+                    <button type="button" onclick="subquestion()" class="push" style="color: #333;">提交</button>
+                </div>
+
+        </div>
+
+    </div>
+    <div class="copy">{:lbl('copyright')}<br>服务热线：{:lbl('telephone')}</div>
+</div>
+<script src="__PUBLIC__/Home/js/mui.min.js"></script>
+<script src="__PUBLIC__/Home/js/jquery-2.2.3.min.js"></script>
+<script type="text/javascript">
+    function subquestion(){
+        var content=$("#content").val();
+        $(".push").attr("disabled","disabled");
+        $.ajax({
+            url:"/Index/subquestion.html",
+            data:{content:content},
+            type:"POST",
+            success:function(data){
+                if(data.status==0){
+                    mui.toast(data.info);
+                }else{
+                    mui.toast(data.info);
+                    setTimeout(function(){window.location.reload();},2000);
+
+                }
+            }
+        });
+    }
+
+</script>
+
+</body>
+</html>

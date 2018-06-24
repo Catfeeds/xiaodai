@@ -1,0 +1,138 @@
+<!doctype html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>{$title}</title>
+    <include file="Public/scripts" />
+    <include file="Public/date" />
+</head>
+<body>
+<div class="row">
+    <div class="col-md-12">
+        <div class="col-md-12 custom-tool" >
+            <h2>
+               {$title}
+            </h2>
+            <div style="display: none;" class="pull-right"> <a href="{:U($control.'/add'.$action)}" class="btn btn-success" title="添加"><i class="fa fa-plus"></i> 添加</a> </div>
+        </div>
+        <form action="" method="get" class="ajaxformx_" name="form1" id="form1">
+        <input type="hidden" name="p" id="p" value="1" />
+        <input type="hidden" name="status" id="status" value="{$status}" />
+        <table class="table vm">
+            <thead>
+            <th colspan="2">筛选</th>
+            </thead>
+            <tbody>
+
+
+            <tr>
+                <td  class="text-right">时间段：</td>
+                <td>
+                    <div class="col-md-7">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                            <input class="form-control datepicker" size="16" value="{$timefrom}" type="text" id="timefrom" name="timefrom"  placeholder="开始日期" >
+                            <span class="input-group-addon">-</span>
+                            <input class="form-control datepicker" size="16" type="text"  value="{$timeto}" id="timeto" name="timeto"  placeholder="结束日期" >
+                             <span class="input-group-btn">
+                                  <select class="btn" name="staffid" id="staffid">
+                                      <option value="">--选择员工--</option>
+
+                                        <volist name="stafflist" id="vo">
+                                            <option <if condition="$staffid eq $vo['id']">selected</if> value="{$vo.id}">{$vo.name}</option>
+                                        </volist>
+
+                                  </select>
+                                  </span>
+                                <span class="input-group-btn">
+                                  <button type="submit" class="btn fl"><i class="fa fa-search"></i> 查询</button>
+                                  </span>
+                             <span class="input-group-btn">
+                                  <button type="button" onclick="cleartime()" class="btn fl">清除时间</button>
+                                  </span>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+
+
+
+            </tbody>
+        </table>
+        </form>
+
+        <table class="table  table-first-column-number display full table-striped custom-table vm">
+            <thead>
+            <tr>
+                <th></th>
+                <th width="80">#</th>
+                <th>客户姓名</th>
+                <th>客户联系电话</th>
+                <th width="240"> 内容</th>
+                <th>跟进地址</th>
+                <th>跟进时间</th>
+                <th>跟进人</th>
+                <th width="140">操作</th>
+            </tr>
+            </thead>
+            <style>
+                .color1{background-color: #00B83F;}
+                .color2{background-color: #aa7700;}
+                .color3{background-color: #699a33;}
+            </style>
+            <tbody>
+            <volist name="contentlist" id="vo">
+                <tr>
+                    <td></td>
+                    <td>{$vo.id}</td>
+                    <td>{$vo.musername}</td>
+                    <td>{$vo.mtelephone}</td>
+                    <td> <span class="color{$vo['type']}" style="font-size: 12px;color: white;padding:3px;border-radius: 3px;">{:getfollowtype($vo['type'])}</span>
+                        {$vo.remark}
+                        <?php
+                            $imglist=explode(',',$vo['images']);
+                            $imglist=array_filter($imglist);
+                            ?>
+                        <volist name="imglist" id="voc">
+                            <a href="{$voc}" target="_blank"><img src="{$voc}" style="width: 50px; height: 50px;" /></a>
+                        </volist>
+                    </td>
+                   
+                    <td>{$vo.address}</td>
+
+                    <td>{$vo.addtime}</td>
+                    <td>{:get_cache_value('staff',$vo['staffid'],'name')}</td>
+
+                    <td>
+                        <!--<a href="{:U('Crm/editstafffollow','id='.$vo['memberid'])}" class="btn" rel="tooltip" data-original-title="查看"><i class="fa fa-eye"></i></a>-->
+                        <a href="javascript:void(0);" onclick="setDelete('{:U($control.'/delete'.$action,"id=".$vo['id'])}')" class="btn" rel="tooltip" data-original-title="删除"><i class="fa fa-trash"></i></a>
+                    </td>
+                </tr>
+            </volist>
+            <tr>
+            <td colspan="11"><notempty name="page">
+                <div class="pull-left custom-footer">
+                    <ul class="pagination" style="margin: 0px;">
+                        {$page}
+                    </ul>
+                </div>
+            </notempty>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<script type="text/javascript">
+    function cleartime(){
+        $("#timefrom").val("");
+        $("#timeto").val("");
+    }
+    function exportmember(){
+        var timefrom=$("#timefrom").val();
+        var timeto=$("#timeto").val();
+        window.location.href=ADMIN_PATH+"/Member/expmember.html?timefrom="+timefrom+"&timeto="+timeto;
+    }
+</script>
+</body>
+</html>

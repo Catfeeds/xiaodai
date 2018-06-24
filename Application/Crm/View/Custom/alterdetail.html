@@ -1,0 +1,164 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>{$title}</title>
+    <include file="Public:scripts" />
+</head>
+<body>
+<footer class="gjpush"><a href="javascript:submitinfo();" style="font-size: 16px;">保&nbsp;&nbsp;&nbsp;存</a></footer>
+<div class="mui-content hz_khxq">
+    <form action="{:get_current_url()}" method="post" id="form">
+        <div class="pubtit">客户信息</div>
+        <div class="mui-input-group">
+		
+			<div class="mui-input-row">
+                <label>名称<span style="color:red;">*</span></label>
+                <input type="hidden" name="id" class="mui-input-clear fz14" value="{$member.id}" />
+                <input type="text" name="company" class="mui-input-clear fz14" value="{$member.company}" placeholder="请填写公司名称" />
+            </div>
+           
+            <div class="mui-input-row">
+                <label>姓名<span style="color:red;">*</span></label>
+                <input type="text" name="userreal" class="mui-input-clear fz14" value="{$member.userreal}" placeholder="请填写姓名" />
+            </div>
+            <div class="mui-input-row">
+                <label>性别</label>
+                <select name="sex">
+                    <option <if condition="$member['sex'] eq 1">selected</if> value="1">男</option>
+                    <option <if condition="$member['sex'] eq 2">selected</if> value="2">女</option>
+                </select>
+                <span class="iconfont icon-jiantou">
+                </span>
+            </div>
+            <div style="display: none;" class="mui-input-row">
+                <label>年龄</label>
+                <input type="text" name="age" class="mui-input-clear fz14" value="{$member.age}" placeholder="请填写年龄" />
+            </div>
+            <div class="mui-input-row">
+                <label>手机<span style="color:red;">*</span></label>
+                <input type="tel" name="telephone" class="mui-input-clear fz14" value="{$member.telephone}" placeholder="请填写手机号码" />
+            </div>
+            <div style="display: none;" class="mui-input-row">
+                <label>身份证号</label>
+                <input type="text" name="idcard" class="mui-input-clear fz14" value="{$member.idcard}" placeholder="请填写身份证号" />
+            </div>
+			  <div style="display: none;" class="mui-input-row">
+                <label>微信号</label>
+                <input type="text" name="wechat" class="mui-input-clear fz14" value="{$member.wechat}" placeholder="请填写微信号" />
+            </div>
+            <div class="mui-input-row">
+                <label>地址</label>
+                <input type="text" name="address" class="mui-input-clear fz14" value="{$member.address}" placeholder="请填写地址" />
+            </div>
+            <div class="mui-input-row">
+                <label>客户来源</label>
+                <select name="source">
+                    <option>选择客户来源</option>
+                    <volist name="source" id="vo">
+                        <option <if condition="$member['source'] eq $vo['id']">selected</if> value="{$vo.id}">{$vo.name}</option>
+                    </volist>
+                </select>
+                <span class="iconfont icon-jiantou">
+                </span>
+            </div>
+
+            <div class="mui-input-row">
+                <label>客户分级</label>
+                <select name="level">
+                    <option>选择客户分级</option>
+                    <volist name="level" id="vo">
+                        <option <if condition="$member['level'] eq $vo['id']">selected</if> value="{$vo.id}">{$vo.name}</option>
+                    </volist>
+                </select>
+                <span class="iconfont icon-jiantou">
+                </span>
+            </div>
+
+            <div class="mui-input-row">
+                <label>产品类别</label>
+                <select name="producttype">
+                    <option>选择产品类别</option>
+                    <volist name="producttype" id="vo">
+                        <option <if condition="$member['producttype'] eq $vo['id']">selected</if> value="{$vo.id}">{$vo.name}</option>
+                    </volist>
+                </select>
+                <span class="iconfont icon-jiantou">
+                </span>
+            </div>
+
+            <div class="mui-input-row">
+                <label>预估金额</label>
+                <input type="text" name="targetamount" class="mui-input-clear fz14" value="{$member.targetamount}" placeholder="请填写预估金额" />
+            </div>
+            <div class="mui-input-row">
+                <label>跟进状态</label>
+                <select name="memberstatus">
+                    
+                    <volist name="memberstatus" id="vo">
+                        <option <if condition="$member['memberstatus'] eq $vo['id']">selected</if> value="{$vo.id}">{$vo.name}</option>
+                    </volist>
+                </select>
+                <span class="iconfont icon-jiantou">
+                </span>
+            </div>
+
+            
+        </div>
+        <style>
+            .shaixuanbox{
+                padding: 5px;
+            }
+            .shaixuanbox ul li{    list-style: none;
+                float: left;
+                padding: 4px 8px;
+                margin: 3px;
+                background-color: #ececec;
+                border-radius: 5px;}
+            .shaixuanbox ul .active{box-shadow : 0 0 0 1px #f87dbf; background-color: #fde9ec;}
+        </style>
+        <div style='display:none;' class="pubtit">购房需求</div>
+        <div style='display:none;' class="mui-input-group shaixuanbox">
+            <volist name="housedic" id="vo">
+                <input type="hidden" value="{$vo.colname}" name="cols[] " />
+                <input type="hidden" value="{$member[$vo['colname']]}" name="{$vo.colname}" />
+                <p style="margin-bottom: 0px !important;font-size: 14px;">{$vo.name}</p>
+                <ul style="margin-top: 0px;padding: 4px 4px;margin-bottom: 0px;display: inline-block;">
+                    <volist name="vo['down']" id="vod">
+                        <li data-id="{$vod.id}" data-field="{$vo.colname}" <if condition="$vod['id'] eq $member[$vo['colname']]"> class="active"</if>>{$vod.name}</li>
+                    </volist>
+                </ul>
+            </volist>
+        </div>
+        <div class="pubtit">跟进人</div>
+        <div class="mui-input-group">
+            <div class="mui-input-row">
+                <label>跟进人</label>
+                <input type="text" class="mui-input-clear fz14" value="{$followman}" placeholder="请填写跟进人">
+            </div>
+        </div>
+
+        <div style="display: none;" class="mui-content-padded">
+            <button type="submit" class="mui-btn mui-btn-primary mui-btn-block mui-btn-sm">保存</button>
+        </div>
+    </form>
+	<include file="Public:daohang" />
+</div>
+<script src="__PUBLIC__/Crm/js/mui.min.js"></script>
+<script src="__PUBLIC__/Crm/js/jquery-2.2.3.min.js"></script>
+<script src="__PUBLIC__/Crm/js/script.js"></script>
+<script type="text/javascript">
+    function submitinfo(){
+        $("#form").submit();
+    }
+
+    $(".shaixuanbox ul li").click(function () {
+        var colname=$(this).attr('data-field');
+        var val=$(this).attr('data-id');
+        $(this).siblings("li").removeClass('active');
+        $(this).addClass('active');
+        $("input[name='"+colname+"']").val(val);
+    });
+</script>
+</body>
+</html>

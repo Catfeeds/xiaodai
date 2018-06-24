@@ -1,0 +1,74 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>{$title}</title>
+    <include file="Public:scripts" />
+</head>
+<body>
+
+
+<div class="mui-content">
+
+        <div class="mui-input-group mt10">
+            <div class="mui-input-row">
+                <label>姓名：</label>
+                <input type="text" placeholder="请填写你的真实姓名" class="mui-input-clear" id="userreal" />
+            </div>
+            <div class="mui-input-row">
+                <label>身份证号：</label>
+                <input type="text" placeholder="请填写你的身份证号" class="mui-input-clear" id="idcard" />
+            </div>
+            <div class="mui-input-row">
+                <label>手机：</label>
+                <input type="tel" placeholder="请填写你的手机号码" class="mui-input-clear" id="telephone" />
+            </div>
+            <div class="mui-input-row">
+                <label>QQ：</label>
+                <input type="number" placeholder="QQ号码" class="mui-input-clear" id="qq" />
+            </div>
+
+        </div>
+        <div class="mui-content-padded">
+            <button onclick="subreg()" class="mui-btn mui-btn-primary mui-btn-block mui-btn-sm">提交注册</button>
+        </div>
+</div>
+<include file="Public:footer" />
+
+<script type="text/javascript">
+    function subreg(){
+        var userreal=$("#userreal").val();
+        var idcard=$("#idcard").val();
+        var telephone=$("#telephone").val();
+        var qq=$("#qq").val();
+
+
+        if($.trim(userreal)==""|| $.trim(userreal)==null){
+            mui.toast("请输入姓名");return;
+        }
+        if($.trim(idcard)==""|| $.trim(idcard)==null){
+            mui.toast("请输入身份证号");return;
+        }
+        if($.trim(telephone)==""|| $.trim(telephone)==null){
+            mui.toast("请输入联系电话");return;
+        }
+
+        $.ajax({
+            url:"/Login/subregister.html",
+            data:{userreal:userreal,idcard:idcard,telephone:telephone,qq:qq},
+            type:"POST",
+            success:function(data){
+                mui.toast(data.info);
+                if(data.status==1){
+                    window.location.href="/Member/index.html";
+                }
+            }
+        })
+
+    }
+
+</script>
+
+
+</body>
+</html>

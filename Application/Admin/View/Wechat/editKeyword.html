@@ -1,0 +1,258 @@
+<!doctype html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>{$title}</title>
+<include file="Public/scripts" />
+<css href="__PUBLIC__/Admin/stylesheets/wechat_reply.css" />
+<js href="__PUBLIC__/Admin/lib/jquery.form.js" />
+<script language="javascript">
+
+$(function(){
+	$(".ajaxformx1").ajaxForm(
+		{
+			beforeSubmit:function(d,f,o){ 
+				var btnSubmit=f.find("input[type='submit']");
+				btnSubmit.attr("disabled",true);
+				var IsSubmit = true; 
+				f.find("span.fc_red").each(function(){ 
+					var obj=$(this).prev("input");
+					var label=$(this).parent().prev();
+					if(obj.val()==""){
+						var txt=(label.text().replace("：",""));
+						alerterr("对不起,"+txt+"不能为空！");
+						obj.focus();
+						IsSubmit = false;
+						btnSubmit.attr("disabled",false);
+						return false;
+					}
+				});
+				return IsSubmit;
+		
+			},success:
+			function(data){			
+				if(data.status==1){
+					if(!isNaN(data.info)){    
+					 location="{:U('Wechat/editKeyword')}?id="+data.info;
+					}else{
+					 alertok(data.info);   
+					 reloadwin();
+						
+					}
+				}else{
+					alerterr(data.info);
+				}
+						$("input[type='submit']").attr("disabled",false);
+			}
+		});
+		
+		
+	//文本
+	$("a.reply_text").click(function(){
+		var $value=$(this).attr("data-value");
+		if($value==undefined){
+			$value="";
+		}
+		$.showReply("text","文本",$value);
+	});
+	
+	//图片
+	$("a.reply_image").click(function(){ 
+		$.showReply("image","图片");
+	});
+	
+	//图文
+	$("a.reply_news").click(function(){ 
+		$.showReply("news","图文");
+	});
+	
+	//语音
+	$("a.reply_voice").click(function(){ 
+		$.showReply("voice","语音");
+	});
+	
+	//视频
+	$("a.reply_video").click(function(){ 
+		$.showReply("video","视频");
+	});
+	
+	$("#btnAddKeyword").click(function(){
+		var lastidx=$(".reply_keyword").last().attr("data-idx");
+		if(lastidx==undefined){lastidx=1;}else{lastidx++}
+		$.rendKeyword(lastidx,"",1);
+	});
+	
+	//删除关键词
+	$("body").on("click",".keyword_delete",function(){
+		var $obj=$(this).parent();
+		$obj.remove();
+	});
+	
+	//删除回复
+	$(".reply_delete").click(function(){
+		var $obj=$(this).parent().parent();
+		var id=$obj.attr("data-id");	
+		$("#reply_type_"+id).remove();
+		$("#reply_info_"+id).remove();
+		$obj.remove();
+	});
+});
+
+(function(){
+	
+	$.rendKeyword=function(lastidx,$title,$isfull){
+		var lastitem=$(".reply_keyword").last().attr("data-idx");
+		var lasttitle=$("#keyword_"+lastitem).val();
+		if(lasttitle==""){$("#keyword_"+lastitem).focus();return false;}
+		var html='<div class="reply_keyword" data-idx="'+lastidx+'"><input type="hidden" name="keywords[hidden][]" id="keyword_hidden_'+lastidx+'"  /><input class="form-control" type="text" name="reply_keyword[]" id="keyword_'+lastidx+'" value="'+$title+'" /><input type="checkbox"   value="1" id="isfull_'+lastidx+'" ';
+		if($isfull==1){
+			html+=' checked="checked" ';
+		}
+		html+=' /><label for="isfull_'+lastidx+'">全字匹配</label><a href="javascript:void(0);" rel="tooltip" class=" keyword_delete" data-original-title="删除">删除</a> </div>';
+	
+		$("#keyword_list").append(html);
+	}
+	
+	//显示回复模态框
+	$.showReply=function($type,$title){
+		$val=arguments[2];
+		if($val==undefined){
+			$val="";	
+		}
+		var $url="{:U('Wechat/modal')}?type="+$type+"&val="+$val;
+		jBox('<iframe src="'+$url+'" width="740" height="400" frameborder="0" />',"选择"+$title+"素材");
+	}
+	
+	$.getFull=function(){
+		$("#keyword_list .reply_keyword").each(function(){
+			var id=$(this).attr("data-idx");
+			var isfull=$("#isfull_"+id).attr("checked")?1:0;
+			var keyword=$("#keyword_"+id).val();
+			$("#keyword_hidden_"+id).val(keyword+"__"+isfull);
+		})
+	}
+})(jQuery);
+</script>
+<style>
+.reply_keywords{}
+.reply_keywords .reply_add{ width:100%; float:left; padding-bottom:5px;}
+.reply_keywords .reply_keyword{ width:100%; float:left; border-top:1px #E7E7EB solid; padding:5px 0px;}
+.reply_keywords .keyword_delete{ float:right;}
+.keyword_delete{   width:20px; height:30px; float:left; background:url(__PUBLIC__/Admin/assets/news_delete.png) no-repeat; text-indent:-100px; overflow:hidden;}
+.keyword_delete:hover{ background-position:0px -30px;}
+</style>
+
+</head>
+<body>
+<div class="row">
+  <div class="col-md-12">
+    <div class="col-md-12 " >
+      <h2>{$title}</h2>
+    </div>
+    <div class="col-md-12 " >
+      <form action="" method="post" name="form1" id="form1" class="ajaxformx1">
+        <input type="hidden" id="id" name="id" value="{$db.id}" />
+        <div class="col-md-6 custom-form">
+          <div class="form-group">
+            <label class="control-label">规则名：</label>
+            <div class="controls"> <input type="text" class="form-control" name="name" id="name" placeholder="输入{$name}名" value="{$db.name}" /> </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label">关键词：</label>
+            <div class="controls">
+               <div class="reply_keywords" id="keyword_list">
+          <div class="reply_add">
+            <button type="button" name="btnAddKeyword" id="btnAddKeyword" class="btn" ><i class="fa fa-plus"></i> 添加</button>
+            
+            <span class="fr">
+            <if condition="($keywords[0]['isall'] eq 1)">
+            <input type="checkbox" checked="checked" value="1" name="isall" id="isall" />
+            <else/>
+            <input type="checkbox"  value="1" name="isall" id="isall" />
+            </if>
+                <label for="isall">回复全部</label></span>
+          </div>
+          <volist name="keywords" id="vo">
+            <div class="reply_keyword" data-idx="{$vo.id}">
+              <input type="hidden" name="keywords[hidden][]" id="keyword_hidden_{$vo.id}"  />
+              <input class="form-control" type="text" name="keywords[title][]" id="keyword_{$vo.id}" value="{$vo.title}" />
+              <eq name="vo.isfull" value="1">
+                <input type="checkbox" checked="checked" value="1" id="isfull_{$vo.id}" />
+                <label for="isfull_{$vo.id}">全字匹配</label>
+                <else/>
+                <input type="checkbox" value="1"  id="isfull_{$vo.id}" />
+                <label for="isfull_{$vo.id}">全字匹配</label>
+              </eq>
+              <a href="javascript:void(0);" rel="tooltip" class=" keyword_delete" data-original-title="删除">删除</a>
+            </div>
+          </volist>
+        </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label">回复：</label>
+            <div class="controls">
+               <div class="reply_box">
+          <div class="reply_icon"> <a href="javascript:void(0);" rel="tooltip" class=" reply_text" data-original-title="文字">文字</a> <a href="javascript:void(0);" rel="tooltip" class=" reply_image" data-original-title="图片">图片</a> <a href="javascript:void(0);" rel="tooltip" class=" reply_news" data-original-title="图文">图文</a> <!--<a href="javascript:void(0);" rel="tooltip" class=" reply_voice" title="语音">语音</a> <a href="javascript:void(0);" rel="tooltip" class=" reply_video" title="视频">视频</a>--> 
+          <span class="fr"><?php $arr=unserialize($db['num']); ?> {:(int)array_sum($arr)}条（{:(int)$arr[0]}条文字， {:(int)$arr[1]}条图片， {:(int)$arr[2]}条图文）</span>
+          </div>
+          <div class="reply_info">
+            <volist name="reply" id="vo">
+            <input type="hidden" name="reply_type[]" value="{$vo.type}" id="reply_type_{$vo.id}" />
+            <input type="hidden" name="reply_info[]" value="{$vo.info}" id="reply_info_{$vo.id}"  />
+              <switch name="vo.type" >
+              <case value="0">
+                <div class="reply_common reply_info_text" data-id="{$vo.id}"> {$vo.info}
+                  <div class="reply_info_tool"> <a href="javascript:void(0);" rel="tooltip" class=" reply_delete" data-original-title="删除">删除</a> </div>
+                </div>
+              </case>
+              <case value="1">
+                <div class="reply_common reply_info_image"  data-id="{$vo.id}"> <img src="{$vo.info}" />
+                  <div class="reply_info_tool"> <a href="javascript:void(0);" rel="tooltip" class=" reply_delete" data-original-title="删除">删除</a> </div>
+                </div>
+              </case>
+              <case value="2">
+                <div class="reply_common reply_info_news"  data-id="{$vo.id}">
+                  <if condition="(count($vo['detail']) gt 1)">
+                      <div class="item_news" style="width: 280px;">
+                    <volist name="vo['detail']" id="vo1" key="key1">
+                        <eq name="key1" value="1">
+                          <div class="first"> <em>{:date('m',strtotime($vo1['addtime']))}月{:date('d',strtotime($vo1['addtime']))}日</em> <img src="{$vo1.indexpic}" alt=""> <span>{$vo1.title}</span> </div>
+                          <else/>
+                          <div class="other"> <span>{$vo1.title}</span> <img src="{$vo1.indexpic}" alt=""> </div>
+                        </eq>
+                    </volist>
+                      </div>
+                      <else/>
+                      <div class="item_news water" style="width: 280px;">
+                        <volist name="vo['detail']" id="vo1">
+                          <div class="single"> <span>{$vo1.title}</span> <em>{:date('m',strtotime($vo1['addtime']))}月{:date('d',strtotime($vo1['addtime']))}日</em> <img src="{$vo1.indexpic}" alt=""> </div>
+                        </volist>
+                      </div>
+                  </if>
+                  <div class="reply_info_tool"> <a href="javascript:void(0);" rel="tooltip" class=" reply_delete" data-original-title="删除">删除</a> </div>
+                </div>
+              </case>
+              <case value="3"> </case>
+              <case value="4"> </case>
+              </switch>
+            </volist>
+          </div>
+        </div>
+            </div>
+          </div>
+          <div class="clearfix"></div>
+          <div class="form-group" >
+            <div class="controls">
+              <hr />
+              <button type="submit" class="btn btn-success" id="btnSubmit" onclick="$.getFull();"><i class="fa fa-save"></i> 提交</button>
+              <button type="button" class="btn btn-default" onClick="history.back();"><i class="fa fa-undo"></i> 返回</button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+</body>
+</html>

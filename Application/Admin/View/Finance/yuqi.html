@@ -1,0 +1,120 @@
+<!doctype html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>{$title}</title>
+    <include file="Public/scripts" />
+
+    <include file="Public/date" />
+</head>
+<body>
+<div class="row">
+    <div class="col-md-12">
+        <div class="col-md-12 custom-tool" >
+            <h2>{$title}</h2>
+
+        </div>
+        <form action="" method="get" class="ajaxformx_" name="form1" id="form1">
+            <input type="hidden" name="p" id="p" value="1" />
+            <input type="hidden" name="status" id="status" value="{$status}" />
+            <table class="table vm">
+                <thead>
+                <th colspan="2">筛选</th>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="text-right" width="140">
+                        日期：
+                    </td>
+                    <td>
+                        <div class="col-md-7">
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                <input class="form-control datepicker" size="16" type="text" value="{$timefrom}" id="timefrom" name="timefrom"  placeholder="开始日期" >
+                                <span class="input-group-addon">-</span>
+                                <input class="form-control datepicker" size="16" type="text" value="{$timeto}"  id="timeto" name="timeto"  placeholder="结束日期" >
+                                <span class="input-group-btn">
+                                  <button type="submit" class="btn fl"><i class="fa fa-search"></i> 查询</button>
+                                </span>
+                                <span class="input-group-btn">
+                                  <span  onclick="cleartime()" class="btn fl">清除时间</span>
+                                </span>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+
+                </tbody>
+            </table>
+        </form>
+        <table class="table  table-first-column-number display full table-striped custom-table vm">
+            <thead>
+            <tr>
+                <th></th>
+                <th width="80">#</th>
+                <th width="180">贷款订单编号</th>
+                <th width="180">贷款金额</th>
+                <th width="180">收款金额</th>
+                <th width="80">逾期天数</th>
+                <th width="80">逾期费率</th>
+                <th width="180">姓名</th>
+                <th width="80">联系电话</th>
+                <th width="80">放款时间</th>
+            </tr>
+            </thead>
+            <tbody>
+            <volist name="contentlist" id="vo">
+                <tr>
+                    <td></td>
+                    <td>{$key+1}</td>
+                    <td><a href="{:U('Member/editloan','id='.$vo['mlid'])}">{$vo.orderno}</a></td>
+                    <td>{$vo.damount|to_price}</td>
+                    <td>{$vo.amount|to_price}</td>
+                    <td>{$vo.days}天</td>
+                    <td>{$vo.overduefee}%</td>
+                    <td>{$vo.username}</td>
+                    <td>
+                        {$vo.telephone}
+                    </td>
+                    <td>
+                        {$vo.addtime}
+                    </td>
+                </tr>
+            </volist>
+            <tr>
+                <td colspan="5"></td>
+                <td colspan="2" class="text-right">总合计：{$total|to_price}</td>
+                <td colspan="2">当页合计：{$pagetotal|to_price}</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td colspan="10"><notempty name="page">
+                    <div class="pull-left custom-footer">
+                        <ul class="pagination" style="margin: 0px;">
+                            {$page}
+                        </ul>
+                    </div>
+                </notempty>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<script type="text/javascript">
+    function exportxls(){
+        var timefrom=$("#timefrom").val();
+        var timeto=$("#timeto").val();
+        var status=$("#sstatus").val();
+        var act='order';
+        window.location.href=ADMIN_PATH+"/Rbac/exportxls.html?timefrom="+timefrom+"&timeto="+timeto+"&act="+act+"&status="+status;
+    }
+
+
+    function cleartime(){
+        $('#timefrom').val('');
+        $('#timeto').val('');
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+		<meta name="format-detection" content="telephone=no">
+		<title>汇智</title>
+		<link rel="stylesheet" href="css/loading.css" />
+		<script src="js/loading.js"></script>		
+		<link rel="stylesheet" href="css/mui.css" />
+		<link rel="stylesheet" href="css/style.css" />
+		<link href="font3/iconfont.css" rel="stylesheet" type="text/css" />
+	</head>
+	<body>
+		<footer class="mui-bar mui-bar-footer nav-bottom2">
+			<ul class="clearListStyle mui-clearfix">
+				<li><a href="hz_消息.html"><span class="iconfont icon-xiaoxi1 kx"></span><span class="iconfont icon-xiaoxi2 sx"></span>消息</a></li>
+				<li><a href="hz_通讯录.html"><span class="iconfont icon-tongxun1 kx"></span><span class="iconfont icon-tongxun2 sx"></span>通讯录</a></li>
+				<li><a href="hz_客户.html"><span class="iconfont icon-kehu1 kx"></span><span class="iconfont icon-kehu2 sx"></span>客户</a></li>
+				<li class="active"><a href="hz_会员.html"><span class="iconfont icon-wode1 kx"></span><span class="iconfont icon-wode2 sx"></span>我</a></li>
+			</ul>
+		</footer>
+		<div class="mui-content">
+
+				<div class="yue display-box">
+					<div class="box-flex-1">
+						业绩总额
+						<div class="mt10">&yen; <span class="number">5000</span></div>
+					</div>	
+				</div>
+				
+				<div class="mui-table-view jilu mt10" id="upload">
+					<div class="mui-table-view-cell display-box">
+					<div>
+						<span class="number">&yen;500</span>
+						<p>2016-05-18</p>
+					</div>
+					<div class="box-flex-1 mui-text-right">
+						<div class="mui-ellipsis">覃建方</div>
+						<div class="mui-ellipsis">订单号：020212131</div>
+					</div>
+				</div>
+				<div class="mui-table-view-cell display-box">
+					<div>
+						<span class="number">&yen;500</span>
+						<p>2016-05-18</p>
+					</div>
+					<div class="box-flex-1 mui-text-right">
+						<div class="mui-ellipsis">覃建方</div>
+						<div class="mui-ellipsis">订单号：020212131</div>
+					</div>
+				</div>
+				<div class="mui-table-view-cell display-box">
+					<div>
+						<span class="number">&yen;500</span>
+						<p>2016-05-18</p>
+					</div>
+					<div class="box-flex-1 mui-text-right">
+						<div class="mui-ellipsis">覃建方</div>
+						<div class="mui-ellipsis">订单号：020212131</div>
+					</div>
+				</div>
+				<div class="mui-table-view-cell display-box">
+					<div>
+						<span class="number">&yen;500</span>
+						<p>2016-05-18</p>
+					</div>
+					<div class="box-flex-1 mui-text-right">
+						<div class="mui-ellipsis">覃建方</div>
+						<div class="mui-ellipsis">订单号：020212131</div>
+					</div>
+				</div>
+				<div class="mui-table-view-cell display-box">
+					<div>
+						<span class="number">&yen;500</span>
+						<p>2016-05-18</p>
+					</div>
+					<div class="box-flex-1 mui-text-right">
+						<div class="mui-ellipsis">覃建方</div>
+						<div class="mui-ellipsis">订单号：020212131</div>
+					</div>
+				</div>
+				<div class="mui-table-view-cell display-box">
+					<div>
+						<span class="number">&yen;500</span>
+						<p>2016-05-18</p>
+					</div>
+					<div class="box-flex-1 mui-text-right">
+						<div class="mui-ellipsis">覃建方</div>
+						<div class="mui-ellipsis">订单号：020212131</div>
+					</div>
+				</div>
+				<div class="mui-table-view-cell display-box">
+					<div>
+						<span class="number">&yen;500</span>
+						<p>2016-05-18</p>
+					</div>
+					<div class="box-flex-1 mui-text-right">
+						<div class="mui-ellipsis">覃建方</div>
+						<div class="mui-ellipsis">订单号：020212131</div>
+					</div>
+				</div>
+					
+					
+
+			</div>
+		</div>
+		<script src="js/mui.min.js"></script>
+		<script src="js/jquery-2.2.3.min.js"></script>
+		<script src="js/script.js"></script>
+		<script>
+			mui.init({
+				pullRefresh: {
+					container: '.mui-scroll-wrapper',					
+					up: {
+						contentrefresh: '正在加载...',
+						callback: pullupRefresh
+					}
+				}
+			});	
+			var count = 0;
+			
+			function pullupRefresh() {
+				setTimeout(function() {
+					mui('.mui-scroll-wrapper').pullRefresh().endPullupToRefresh((count==1)); //参数为1代表没有更多数据了。
+					var table = document.body.querySelector('#upload');					
+					for (var i = 0, len = i + 2; i < len; i++) {
+						var li = document.createElement('div');
+						li.setAttribute("class",'index-item');
+						li.innerHTML = '插入内容'
+						table.appendChild(li);
+					}
+				}, 500);
+			}
+		</script>
+	</body>
+</html>

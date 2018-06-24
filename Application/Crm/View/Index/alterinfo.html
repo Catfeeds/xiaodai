@@ -1,0 +1,146 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>{$title}</title>
+    <include file="Public:scripts" />
+</head>
+<body>
+<include file="Public:footer" />
+<div class="mui-content hz_khxq">
+    <form action="{:get_current_url()}" method="post" id="form">
+        <div class="pubtit">我的信息</div>
+        <div class="mui-input-group">
+            <canvas id="myCanvas" style="display: none;"></canvas>
+            <img id="agoimg" style="display:none;"/>
+            <div class="mui-input-row">
+                <label>头像</label>
+                <input type="hidden" id="id" name="id" value="{$db['id']}"/>
+                <input type="hidden" id="headimgurl" name="headimgurl" value="{$db['headimgurl']}"/>
+                <input type="file" onchange="getnewUrl(this.files);" style="display: none;" id="uploadpic" />
+                <notempty name="db['headimgurl']">
+                    <img onclick="$(this).prev('#uploadpic').click();" style="width: 50px; height: 50px;   border-radius: 50%;float: right; margin-right: 30px;" id="imgurl" src="{$db['headimgurl']}"/>
+                    <else/>
+                    <img onclick="$(this).prev('#uploadpic').click();" style="width: 50px;  height: 50px;  border-radius: 50%;float: right; margin-right: 30px;"   id="imgurl" src="__PUBLIC__/Crm/images/nouser.png"/>
+                </notempty>
+            </div>
+
+			 <div class="mui-input-row">
+                <label>登录名<span style="color:red;">*</span></label>
+                <input type="text" class="mui-input-clear fz14" value="{$db.username}" readonly />
+            </div>
+
+            <div class="mui-input-row">
+                <label>密码</label>
+                <input type="password" name="userpwd" class="mui-input-clear fz14" value="" placeholder="留空则不修改" />
+            </div>
+            <div class="mui-input-row">
+                <label>确认密码</label>
+                <input type="password" name="checkpwd" class="mui-input-clear fz14" value="" placeholder="再次输入密码" />
+            </div>
+			
+            <div class="mui-input-row">
+                <label>姓名<span style="color:red;">*</span></label>
+                <input type="text" name="name" class="mui-input-clear fz14" value="{$db.name}" placeholder="请填写姓名" />
+            </div>
+            <div class="mui-input-row">
+                <label>手机<span style="color:red;">*</span></label>
+                <input type="tel" name="telephone" class="mui-input-clear fz14" value="{$db.telephone}" placeholder="请填写手机号码" />
+            </div>
+            <div  class="mui-input-row">
+                <label>部门</label>
+                <select name="departmentid">
+                    <option>选择部门</option>
+                    <volist name="department" id="vo">
+                        <option <if condition="$db['departmentid'] eq $vo['id']">selected</if> value="{$vo.id}">{$vo.name}</option>
+                    </volist>
+                </select>
+                <span class="iconfont icon-jiantou">
+                </span>
+
+            </div>
+            <div class="mui-input-row">
+                <label>职位</label>
+                <input type="text" name="position" class="mui-input-clear fz14" value="{$db.position}" placeholder="设置职位" />
+            </div>
+        </div>
+
+
+        <div class="mui-content-padded">
+            <a class="mui-btn mui-btn-primary mui-btn-block mui-btn-sm" href="javascript:submitinfo();" style="font-size: 16px;">保&nbsp;&nbsp;&nbsp;存</a>
+
+        </div>
+    </form>
+</div>
+<script src="__PUBLIC__/Crm/js/mui.min.js"></script>
+<script src="__PUBLIC__/Crm/js/jquery-2.2.3.min.js"></script>
+<script src="__PUBLIC__/Crm/js/script.js"></script>
+<script type="text/javascript">
+
+
+    function getnewUrl(fil) {
+
+        var Cnv = document.getElementById('myCanvas');
+        var Cntx = Cnv.getContext('2d');//获取2d编辑容器
+        var imgss =   new Image();
+        var agoimg=document.getElementById("agoimg");
+        $("#imgurl").attr('src',"/Public/Crm/images/loading.gif");
+//        alert(fil.length);
+        for (var intI = 0; intI < fil.length; intI++) {
+            var tmpFile = fil[intI];
+            var reader = new FileReader();
+            reader.readAsDataURL(tmpFile);
+            reader.onload = function (e) {
+                url = e.target.result;
+                imgss.src = url;
+                agoimg.src=url;
+            };
+
+            agoimg.onload = function () {
+                //等比缩放
+                var m = imgss.width / imgss.height;
+                Cnv.height =1100;//该值影响缩放后图片的大小
+                Cnv.width= 1100*m ;
+                //img放入画布中
+                //设置起始坐标，结束坐标
+                Cntx.drawImage(agoimg, 0, 0,1100*m,1100);
+                var Pic = document.getElementById("myCanvas").toDataURL("image/png");
+
+                $.ajax({
+                    url:"/Crm/Contract/saveimg.html",
+                    data:{pic:Pic},
+                    type:"POST",
+                    success: function (data) {
+                        if(data.status==1){
+
+                            $("#headimgurl").val(data.info);
+                            $("#imgurl").attr('src',data.info);
+
+                        }else{
+                            mui.toast("上传失败，请稍后再试");
+                        }
+                    }
+                });
+
+
+            };
+        }
+
+    }
+
+
+
+    function submitinfo(){
+        $("#form").submit();
+    }
+
+    $(".shaixuanbox ul li").click(function () {
+        var colname=$(this).attr('data-field');
+        var val=$(this).attr('data-id');
+        $(this).siblings("li").removeClass('active');
+        $(this).addClass('active');
+        $("input[name='"+colname+"']").val(val);
+    });
+</script>
+</body>
+</html>

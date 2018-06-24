@@ -1,0 +1,120 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>{$title}</title>
+<include file="Public/scripts" /> 
+
+</head>
+
+<body>
+<footer class="mui-bar mui-bar-footer display-box footerbar-cp">
+	<!--<label id="Checkall" class="mui-checkbox box-flex-1 xuanze quanxuan"><input type="checkbox">全选</label>-->
+	<label class="mui-checkbox box-flex-1 xuanze quanxuan"><input  id="Checkall" checked type="checkbox">全选</label>
+	<div class="mui-ellipsis box-flex-1 heji">合计: &yen;<span class="price allprice">0</span></div>
+	<button onclick="settleconfirm()"  class="mui-btn mui-btn-primary" id="jiesuanbtn">结算</button>
+	<button type="button" class="mui-btn mui-btn-primary mui-hidden" id="deletebtn">删除</button>
+</footer>
+
+<div class="mui-content">
+	<div class="cartlist">
+		<volist name="cart_items" id="vo">
+			<div class="mui-table-view cartitem cart_{$vo.id}">
+				<div class="mui-table-view-cell">
+					<input class="pro_price" value="{$vo.price}"  type="hidden"/>
+					<label class="mui-checkbox xuanze">
+						<input name="checkpro" onchange="setprice();" value="{$vo.id}" type="checkbox">选择
+					</label>
+					<a href="javascript:deletecart('{$vo.id}');" class="mui-btn mui-btn-danger mui-btn-outlined" >删除</a>
+				</div>
+				<div class="mui-table-view-cell display-box">
+					<a href="{:U('Item/view','id='.$vo['id'])}" class="img1-1"><img src="{$vo.indexpic}"></a>
+					<div class="box-flex-1">
+						<div class="mui-ellipsis-2 cpname">{$vo.name}</div>
+						<p><volist name="vo['attrs']" id="voatt">{$voatt}&nbsp;</volist></p>
+						<div class="mui-clearfix pricenumber">
+							<div class="price mui-pull-left">&yen;{$vo.price}</div>
+							<div class="mui-numbox mui-pull-right" data-numbox-step='1' data-numbox-min='1' data-numbox-max='100'>
+								<button class="mui-btn mui-numbox-btn-minus" type="button">-</button>
+								<input class="mui-numbox-input cartnum" type="number" onchange="setprice()" value="{$vo.num}" data-id="{$vo.id}" data-price="{$vo.price}"  />
+								<button class="mui-btn mui-numbox-btn-plus" type="button">+</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</volist>
+	</div>
+</div>
+
+<script src="__PUBLIC__/Home/js/mui.min.js"></script>
+<script src="__PUBLIC__/Home/js/jquery-2.2.3.min.js"></script>
+<script src="__PUBLIC__/Home/js/jquery.func.js"></script>
+<script src="__PUBLIC__/Home/js/script.js"></script>
+<script>
+
+	//加载时全选
+	function loadcheck(){
+		$(".cartitem input[name='checkpro']").each(function() {
+			$(this).prop("checked", true);
+		});
+		setprice();
+	}
+
+	loadcheck();
+	//全选
+$("#Checkall").click(function() {
+	$(".cartitem input[name='checkpro']").each(function() {
+
+
+		console.log($("#Checkall").prop("checked"));
+		$(this).prop("checked", $("#Checkall").prop("checked"));
+	});
+	setprice();
+});
+
+	//计算价格
+	function setprice(){
+		var price=0.00;
+		$(".cartitem input[name='checkpro']").each(function() {
+			if($(this).prop('checked')){
+				price+=parseFloat($(this).parent().prev(".pro_price").val())*parseFloat($(this).parents(".cartitem").find(".cartnum").val())*100;
+			}
+		});
+
+		$(".allprice").html(price/100);
+	}
+
+	//确认订单
+	function settleconfirm(){
+		var ids='';
+		$(".cartitem input[name='checkpro']").each(function() {
+			if($(this).prop('checked')){
+				ids+=$(this).val()+",";
+			}
+		});
+		ids=ids.substr(0,ids.length-1);
+		window.location.href='/Settle/confirm.html?ids='+ids;
+	}
+
+	//从购物车删除
+	function deletecart(id){
+		if(confirm('确认从购物车移除该商品？')){
+			$.ajax({
+				url:"/Settle/deletecart.html",
+				data:{id:id},
+				method:'POST',
+				success: function (data) {
+					mui.toast(data.info);
+					if(data.status==1){
+						$(".cart_"+id).remove();
+					}
+				}
+			})
+		}
+
+	}
+</script>
+
+</body>
+</html>

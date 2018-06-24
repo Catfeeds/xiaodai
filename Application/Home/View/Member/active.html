@@ -1,0 +1,88 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>{$title}</title>
+    <include file="Public:scripts" />
+
+</head>
+
+<body>
+<header class="mui-bar mui-bar-nav screen screen-order">
+    <div class="swiper-container">
+        <ul class="clearListStyle mui-clearfix swiper-wrapper">
+            <li class="swiper-slide active"><a href="{:U('Member/active')}">收费报名活动</a></li>
+
+            <li class="swiper-slide "><a href="{:U('Member/activep')}">亲自投票活动</a></li>
+
+        </ul>
+    </div>
+</header>
+
+<div class="mui-content">
+    <div class="mui-scroll">
+        <div id="msg-list" style="padding-bottom: 30px;">
+            <empty name="list">
+                <eq name="p" value="1">
+                    <div class="mui-table-view cartitem">
+                        <div class="mui-table-view-cell"> 暂无记录 </div>
+                    </div>
+                </eq>
+            </empty>
+            <volist name="list" id="vo">
+
+                <div class="mui-table-view cartitem">
+                    <div class="mui-table-view-cell">
+                        <a href="{:U('Active/view','id='.$vo['activeid'])}" class="ordercp">
+
+                            <div class="display-box item">
+                                <div class="img1-1"><img src="{:get_cache_value('content_active',$vo['activeid'],'indexpic')}"></div>
+                                <div class="box-flex-1">
+                                    <div class="mui-ellipsis-2 cpname">{$vo.activename}</div>
+                                    <p>{:get_cache_value('content_active',$vo['activeid'],'start')}至{:get_cache_value('content_active',$vo['activeid'],'end')}</p>
+                                    <div class="pricenumber mui-clearfix">
+                                    <span class="price mui-pull-left">
+                                           &yen;
+                                        {$vo.amount}
+                                    </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="mui-table-view-cell">
+                        <div class="mui-pull-left">
+                            <?php $address=get_cache_value('content_active',$vo['activeid'],'address');
+                                ?>
+                            <a class="iconfont icon-map" href="http://api.map.baidu.com/marker?location={:get_cache_value('content_active',$vo['activeid'],'latitude')},{:get_cache_value('content_active',$vo['activeid'],'longitude')}&title={$vo.activename}&content={$address}&output=html">
+
+                                {$address|cut_str=###,0,10}
+                            </a>
+                        </div>
+                        <div class="mui-pull-right">
+                            <eq name="vo.status" value="1">
+                                <a href="javascript:void(0);" class="mui-btn  mui-btn-primary mui-btn-sm">已支付【报名成功】</a>
+                                <else/>
+                                <a href="{:U('pay/activeorder','orderno='.$vo['no'])}" class="mui-btn  mui-btn-primary mui-btn-sm">立即支付</a>
+                            </eq>
+                        </div>
+                    </div>
+                </div>
+
+            </volist>
+        </div>
+
+    </div>
+</div>
+
+<include file="Public:footer" />
+<js href="__PUBLIC__/Home/js/jquery.form.js" />
+<script type="text/javascript">
+    var swiper = new Swiper('.screen-order .swiper-container',{
+        slidesPerView:2,
+        //spaceBetween : 8,
+        autoHeight: false,
+    });
+</script>
+</body>
+</html>

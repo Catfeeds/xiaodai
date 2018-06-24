@@ -1,0 +1,41 @@
+<empty name="list">
+  <eq name="p" value="1">
+    <div class="mui-table-view mt10">
+        <div class="mui-table-view-cell">暂无记录 </div>
+    </div>
+  </eq>
+</empty>
+<volist name="list" id="vo">
+<neq name="vo.isdefault" value="1">
+    <div class="mui-table-view mt10">
+        <div class="mui-table-view-cell">
+            <div> {$vo.username}  <span class="mui-pull-right">{$vo.telephone}</span></div>
+            <p class="mt10">{:get_area_name($vo['provinceid'])}{:get_area_name($vo['cityid'])}{:get_area_name($vo['districtid'])} {$vo.address}</p>
+        </div>
+        <div class="mui-table-view-cell">
+            <label class="mui-radio mui-pull-left xuanze"><input name="adr" onclick="$.setAddress({$vo.id});" type="radio">设为默认</label>
+            <div class="mui-pull-right">
+                <a href="{:U('Member/editAddress','id='.$vo['id'])}" class="mui-btn mui-btn-sm">编辑</a>&nbsp;&nbsp;<button onclick="$.deleteAddress({$vo.id})" class="mui-btn mui-btn-sm">删除</button>
+            </div>
+        </div>
+    </div>
+
+
+<else/>
+
+    <div class="mui-table-view mt10">
+        <div class="mui-table-view-cell">
+            <div> {$vo.username}  <span class="mui-pull-right">{$vo.telephone}</span></div>
+            <p class="mt10">{:get_area_name($vo['provinceid'])}{:get_area_name($vo['cityid'])}{:get_area_name($vo['districtid'])} {$vo.address}</p>
+        </div>
+        <div class="mui-table-view-cell">
+            <label class="mui-radio mui-pull-left xuanze">默认地址</label>
+            <div class="mui-pull-right">
+                <a href="{:U('Member/editAddress','id='.$vo['id'])}" class="mui-btn mui-btn-sm">编辑</a>&nbsp;&nbsp;<button onclick="$.deleteAddress({$vo.id})" class="mui-btn mui-btn-sm">删除</button>
+            </div>
+        </div>
+    </div>
+
+</neq>
+ 
+</volist>

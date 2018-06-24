@@ -1,0 +1,91 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>{$title}</title>
+<include file="Public:scripts" /> 
+</head>
+<body>
+
+<include file="Public:footer" />
+<div class="mui-content">
+    <div class="hzuser-header">
+        <div class="hzuser-head">
+            <a href="{:U('Index/alterinfo')}">
+                 <img src="{$staff.headimgurl}" />
+            </a>
+        </div>
+        <div class="box-flex-1 cont">
+            <div class="fz18 mui-navigate-right" style="font-size: 14px;text-align: left; color: black;">
+                <a href="{:U('Index/alterinfo')}">
+                    {$staff.name}<span style="color:gray;font-size: 12px;">&nbsp;&nbsp;&nbsp;[修改资料]</span>
+                </a>
+            </div>
+            <div class="fz14" style=" color: #9c9c9c; font-size: 12px;text-align: left;margin-top: 5px;">
+                <a style="color:#9b9999;" href="{:U('Index/alterinfo')}">
+                    <img style="margin-top: 5px;width: 15px; height: 14px;" src="__PUBLIC__/Crm/images/custom.png"/>客户:{$cusnum}&nbsp;&nbsp;&nbsp;
+                    <!--<img style="margin-top: 5px;width: 15px; height: 14px;" src="__PUBLIC__/Crm/images/hetong.png"/>带看:{$seenum}&nbsp;&nbsp;&nbsp;-->
+                    <img style="margin-top: 5px;width: 15px; height: 14px;" src="__PUBLIC__/Crm/images/yeji.png"/>跟进:{$follownum}
+                </a>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="mui-table-view nav-order mt5">
+        <div class="mui-table-view-cell">
+            <a href="{:U('Message/index')}" class="mui-navigate-right">
+                <if condition="$messagenum gt 0">
+                <span class="mui-badge mui-badge-danger">{$messagenum}</span>
+                </if>
+                <img style="width:20px; height: 20px;" src="__PUBLIC__/Crm/images/message.png"/>&nbsp;&nbsp;&nbsp;消息
+            </a>
+        </div>
+    </div>
+    <div class="mui-table-view user-nav">
+        <ul class="clearListStyle mui-clearfix">
+            <li><a href="{:U('Custom/index','act=my')}"><div class="iconfont icon-daikuanyewu">
+                <img style="margin-top: 5px;width:30px; height: 30px;" src="__PUBLIC__/Crm/images/custom1.png"/>
+            </div><div class="name">我的客户</div></a></li>
+            <li><a href="{:U('Custom/alterdetail')}"><div class="iconfont icon-qiandai col1">
+                <img style="margin-top: 5px;width:30px; height: 30px;" src="__PUBLIC__/Crm/images/add.png"/>
+            </div><div class="name">新增客户</div></a></li>
+            <li><a href="{:U('Work/adminwork')}"><div class="iconfont icon-dizhi col2">
+                <img style="margin-top: 5px;width:30px; height: 30px;" src="__PUBLIC__/Crm/images/work.png"/>
+            </div><div class="name">工作安排</div></a></li>
+            <li><a href="{:U('Work/Index')}"><div class="iconfont icon-djj col2">
+                <img style="margin-top: 5px;width:30px; height: 30px;" src="__PUBLIC__/Crm/images/wodeplan.png"/>
+            </div><div class="name">我的安排</div></a></li>
+            <li><a href="{:U('Custom/adminfollowrecord')}"><div class="iconfont icon-dingdan1 col1">
+                <img style="margin-top: 5px;width:30px; height: 30px;" src="__PUBLIC__/Crm/images/baifangtj.png"/>
+            </div><div class="name">拜访统计</div></a></li>
+            <li><a href="{:U('Contract/lists')}"><div class="iconfont icon-dingdan1 col1">
+                <img style="margin-top: 5px;width:30px; height: 30px;" src="__PUBLIC__/Crm/images/hetong1.png"/>
+            </div><div class="name">合同</div></a></li>
+		
+			
+			<li><a href="{:U('Item/itemlist')}"><div class="iconfont icon-dingdan1 col1">
+                <img style="margin-top: 5px;width:30px; height: 30px;" src="__PUBLIC__/Crm/images/item.png"/>
+            </div><div class="name">项目</div></a></li>
+			
+			<li><a href="{:U('Index/statistics')}"><div class="iconfont icon-dingdan1 col1">
+                <img style="margin-top: 5px;width:30px; height: 30px;" src="__PUBLIC__/Crm/images/shaixuan1.png"/>
+            </div><div class="name">销售漏斗</div></a></li>
+
+            <li><a href="{:U('Index/fenxitongji')}"><div class="iconfont icon-dingdan1 col1">
+                <img style="margin-top: 5px;width:30px; height: 30px;" src="__PUBLIC__/Crm/images/baobiao.png"/>
+            </div><div class="name">智能报表</div></a></li>
+
+
+
+
+        </ul>
+    </div>
+    <a href="{:U('Login/logout')}" class="tuichu"><span class="iconfont icon-tuichu"></span>退出登陆</a>
+
+    <div class="copy">{:lbl('copyright')}<br>服务热线：{:lbl('telephone')}</div>
+</div>
+
+</body>
+</html>

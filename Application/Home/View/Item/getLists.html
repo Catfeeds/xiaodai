@@ -1,0 +1,24 @@
+<empty name="list">
+<eq name="p" value="1">
+	<li class="mui-pull-left mui-col-xs-6 mui-col-sm-4">
+		没有记录
+	</li>
+</eq>
+</empty>
+<volist name="list" id="vo">
+	<li class="mui-pull-left mui-col-xs-6 mui-col-sm-4">
+		<a href="{:U('Item/view','id='.$vo['id'])}">
+			<div class="img1-1"><img data-original="{:C('DEFAULT_NOPIC')}" src="{$vo.indexpic|default=C('DEFAULT_NOPIC')}" alt="{$vo.title}"></div>
+			<div class="name mui-ellipsis-2">{$vo.title|cut_str}</div>
+			<div class="price">
+				<span class="xiaoliang">已售：{$vo.sold}</span>
+				<span class="fz16">
+					<if condition="$vo['type'] eq 1">&yen;{$vo.price}</if>
+
+					<if condition="$vo['type'] eq 2">{$vo.point}积分</if>
+				</span>
+			</div>
+		</a>
+	</li>
+
+</volist>

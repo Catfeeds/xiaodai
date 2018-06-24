@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+		<meta name="format-detection" content="telephone=no">
+		<title>四川艾青莲文化传播有限公司</title>
+		<link rel="stylesheet" href="css/loading.css" />
+		<script src="js/loading.js"></script>		
+		<link rel="stylesheet" href="css/mui.css" />
+		<link rel="stylesheet" href="css/fonts.css" />
+		<link rel="stylesheet" href="css/style.css" />
+	</head>
+	<body>
+		<footer class="mui-bar mui-bar-footer nav-bottom">
+			<ul class="clearListStyle mui-clearfix">
+				<li><a href="index.html"><span class="iconfont icon-home"></span>首页</a></li>
+				<li><a href="cpfl.html"><span class="iconfont icon-fenlei"></span>产品</a></li>
+				<li><a href="duihuan.html"><span class="iconfont icon-duihuan"></span>兑换</a></li>
+				<li><a href="cart.html"><span class="mui-badge mui-badge-danger">1</span><span class="iconfont icon-cart"></span>购物车</a></li>
+				<li class="active"><a href="usercenter.html"><span class="iconfont icon-user"></span>会员</a></li>
+			</ul>
+		</footer>
+		<div class="mui-content mui-scroll-wrapper">
+			<div class="mui-scroll">
+				<div class="mui-table-view" id="upload">
+						<div class="mui-table-view-cell mui-media">
+							<img src="images/touxiang.jpg" class="mui-media-object mui-pull-left">
+							<div class="mui-media-body">
+								张三
+								<p>消费总额：&yen;5000</p>
+							</div>
+						</div>
+						<div class="mui-table-view-cell mui-media">
+							<img src="images/touxiang.jpg" class="mui-media-object mui-pull-left">
+							<div class="mui-media-body">
+								张三
+								<p>消费总额：&yen;5000</p>
+							</div>
+						</div>
+						<div class="mui-table-view-cell mui-media">
+							<img src="images/touxiang.jpg" class="mui-media-object mui-pull-left">
+							<div class="mui-media-body">
+								张三
+								<p>消费总额：&yen;5000</p>
+							</div>
+						</div>
+						<div class="mui-table-view-cell mui-media">
+							<img src="images/touxiang.jpg" class="mui-media-object mui-pull-left">
+							<div class="mui-media-body">
+								张三
+								<p>消费总额：&yen;5000</p>
+							</div>
+						</div>
+						<div class="mui-table-view-cell mui-media">
+							<img src="images/touxiang.jpg" class="mui-media-object mui-pull-left">
+							<div class="mui-media-body">
+								张三
+								<p>消费总额：&yen;5000</p>
+							</div>
+						</div>
+						<div class="mui-table-view-cell mui-media">
+							<img src="images/touxiang.jpg" class="mui-media-object mui-pull-left">
+							<div class="mui-media-body">
+								张三
+								<p>消费总额：&yen;5000</p>
+							</div>
+						</div>
+						<div class="mui-table-view-cell mui-media">
+							<img src="images/touxiang.jpg" class="mui-media-object mui-pull-left">
+							<div class="mui-media-body">
+								张三
+								<p>消费总额：&yen;5000</p>
+							</div>
+						</div>
+						<div class="mui-table-view-cell mui-media">
+							<img src="images/touxiang.jpg" class="mui-media-object mui-pull-left">
+							<div class="mui-media-body">
+								张三
+								<p>消费总额：&yen;5000</p>
+							</div>
+						</div>
+						<div class="mui-table-view-cell mui-media">
+							<img src="images/touxiang.jpg" class="mui-media-object mui-pull-left">
+							<div class="mui-media-body">
+								张三
+								<p>消费总额：&yen;5000</p>
+							</div>
+						</div>
+						<div class="mui-table-view-cell mui-media">
+							<img src="images/touxiang.jpg" class="mui-media-object mui-pull-left">
+							<div class="mui-media-body">
+								张三
+								<p>消费总额：&yen;5000</p>
+							</div>
+						</div>
+					</div>							
+				
+			</div>
+		</div>
+		<script src="js/mui.min.js"></script>
+		<script src="js/jquery-2.2.3.min.js"></script>		
+		<script src="js/script.js"></script>	
+		<script>			
+			mui.init({
+				pullRefresh: {
+					container: '.mui-scroll-wrapper',					
+					up: {
+						contentrefresh: '正在加载...',
+						callback: pullupRefresh
+					}
+				}
+			});	
+			var count = 0;
+			
+			function pullupRefresh() {
+				setTimeout(function() {
+					mui('.mui-scroll-wrapper').pullRefresh().endPullupToRefresh((count==1)); //参数为1代表没有更多数据了。
+					var table = document.body.querySelector('#upload');					
+					for (var i = 0, len = i + 2; i < len; i++) {
+						var li = document.createElement('tr');						
+						li.innerHTML = '<td>张三</td>	<td>&yen;5000</td><td>15</td><td>&yen;500</td>';
+						
+						table.appendChild(li);
+					}
+				}, 500);
+			}
+		</script>
+	</body>
+</html>

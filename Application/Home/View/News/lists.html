@@ -1,0 +1,154 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>{$title}</title>
+    <include file="Public:newscripts" />
+    <style type="text/css">
+        .listbox li:after {
+            left: 0;
+            content: "";
+            position: absolute;
+            bottom: 0;
+            border-bottom: 1px solid #CCCCCC;
+            width: 100%;
+            -webkit-transform: scaley(.3);
+            transform: scaley(.3);
+        }
+
+        .listbox li:last-child:after {
+            border: 0;
+        }
+
+        .listbox li {
+            width: 94%;
+            padding: 0.1rem 0;
+            margin: 0 auto;
+            box-sizing: border-box;
+            position: relative;
+            overflow: hidden;
+            line-height: 1;
+            font-size: 0.14rem;
+        }
+        /*.listbox li {
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+        }*/
+
+        .listbox .imgbox {
+            background: url(../img/p2.jpg) no-repeat center / cover;
+            height: 0.8rem;
+            width: 1.2rem;
+            float: left;
+            border-radius: 0.16rem;
+            overflow: hidden;
+        }
+
+        .text-box {
+            margin-left: 1.3rem;
+        }
+
+        .title {
+            overflow: hidden;
+            line-height: 1;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            font-size: 0.16rem;
+            color: #000;
+            font-weight: normal;
+            margin-top: 0.04rem;
+        }
+
+        .times {
+            position: absolute;
+            bottom: 0.1rem;
+            right: 0;
+            color: #999999;
+            font-size: 0.12rem;
+            font-weight: normal;
+        }
+
+        .introduction {
+            font-size: 0.12rem;
+            color: #666666;
+            font-weight: normal;
+            line-height: 1.5;
+            height: 0.36rem;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin-top: 0.08rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            word-break: break-all;
+        }
+    </style>
+</head>
+
+<body style="background: #f5f5f5;">
+
+<section class="listbox" style="margin: 0.12rem;background: #fff;border-radius:0.2rem ;font-size: 0.14rem;">
+    <ul  id="msg-list">
+
+    </ul>
+    <div style="text-align: center;margin-top: 20px;    padding-bottom: 20px;" id="loadmore">
+        载入更多
+    </div>
+</section>
+
+<script language="javascript">
+    var p = 1;
+    var id={$categoryid?$categoryid:0};
+    $(function(){
+        //获取车列表
+        $.getOrderList = function() {
+            var $p = arguments[0];
+            if ($p) {
+                p = $p;
+            }
+            $(".slectitem li.active").click();
+            var url = "{:U('News/getnewsList')}";
+            if (p != 0) {
+                if (p == 1) {
+                    $("#msg-list").html('<div class="loading"><img src="__PUBLIC__/Home/images/loading.gif" /></div>');
+                }
+
+                var $data = {};
+                $data['id']=id;
+                $data['p'] = p;
+                $.ajax({
+                    url: url,
+                    type: 'POST',
+                    data: $data,
+                    success: function(msg) {
+                        $(".loading").hide();
+                        if (msg != "") {
+                            $("#msg-list").html($("#msg-list").html() + msg);
+                            p += 1;
+                        } else {
+						  $("#loadmore").html("没有了");
+                            $("#loadmore").fadeOut();
+                            p = 0;
+                        }
+                    }
+                });
+            }
+        };
+
+        $.getOrderList();
+        $(window).scroll(function() {
+            var height_bottom = 0; // 距离底边多少像素开始加载
+            if ($(document).scrollTop() + height_bottom >= $(document).height() - $(window).height()) {
+                $.getOrderList();
+            }
+        });
+        $("#loadmore").click(function () {
+            $.getOrderList();
+        });
+
+
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,19 @@
+<empty name="list">
+    <eq name="p" value="1">
+        <li style="text-align: center;" class="mui-pull-left mui-col-xs-12 mui-col-sm-4">
+            没有记录
+        </li>
+    </eq>
+</empty>
+<volist name="list" id="vo">
+    <li class="mui-col-xs-6 mui-col-sm-4 mui-pull-left">
+        <div class="cont">
+            <div class="piao">{$vo.no}</div>
+            <a href="{:U('Active/player','id='.$vo['id'])}" class="img1-1"><img src="{$vo.headimg}"></a>
+            <div style="padding: 10px;">
+                <div class="mui-clearfix"><span class="piaoshu">{$vo.tickets}票</span>{$vo.name}</div>
+                <button onclick="vote('{$vo.id}')" type="button" class="mui-btn mui-btn-primary mui-btn-block">投一票</button>
+            </div>
+        </div>
+    </li>
+</volist>

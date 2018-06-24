@@ -1,0 +1,224 @@
+<!doctype html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>{$title}</title>
+<include file="Public/scripts" /><include file="Public/upload" /><include file="Public/datetime" />
+<script language="javascript">
+$(function(){
+	$.rendUploader("#btnUpload1");
+	
+	$("#iseveryday").change(function(){
+		var $text=['全部','每天'];
+		var v=$(this).val();
+		$(".textday").html($text[v]);
+	}).change();
+});
+</script>
+</head>
+<body>
+<div class="row">
+  <div class="col-md-12 " >
+    <h2>{$title}</h2>
+  </div>
+  <div class="col-md-12 " >
+    <form action="" method="post" name="form1" id="form1" class="ajaxformx">
+      <input type="hidden" id="id" name="id" value="{$db.id}" />
+      <div class="fancy-tab-container">
+      <ul class="nav nav-tabs fancy">
+        <li class="active"><a href="#autotab_1" data-toggle="tab">基本信息</a></li>
+        <li><a href="#autotab_2" data-toggle="tab">活动设置</a></li> 
+      </ul>
+      <div class="tab-content">
+        <div class="tab-pane active" id="autotab_1">
+          <div class="col-md-6 custom-form">
+            <div class="form-group">
+              <label class="control-label">活动名称：</label>
+              <div class="controls">
+                <input type="text" class="form-control" name="title" id="title" placeholder="输入{$name}标题" value="{$db.title}" />
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="control-label">形象图：</label>
+              <div class="controls">
+                <div class="input-group">
+                  <input type="text" class="form-control" name="indexpic" id="indexpic" value="{$db.indexpic}" readonly />
+                  <span class="input-group-addon">
+                  <button type="button" id="btnUpload" class="custom-upload"><i class="fa fa-upload"></i></button>
+                  </span> </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="control-label">活动描述：</label>
+              <div class="controls">
+                <textarea class="form-control" rows="5" name="remark" id="remark" placeholder="输入描述" >{$db.remark}</textarea>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="control-label">兑奖密码：</label>
+              <div class="controls">
+                <input type="text" class="form-control" name="pwd" id="pwd" placeholder="输入兑奖密码" value="{$db.pwd}" />
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="control-label">兑奖说明：</label>
+              <div class="controls">
+                <textarea class="form-control" rows="5" name="content" id="content" placeholder="输入兑奖说明" >{$db.content}</textarea>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="control-label">状态：</label>
+              <div class="controls">
+                <select class="form-control w80 " name="status" id="status">
+                  <volist name="statuslist" id="vo">
+                    <notempty name="db.id">
+                      <eq name="db.status" value="$key">
+                        <option value="{$key}" selected="selected">{$vo}</option>
+                        <else/>
+                        <option value="{$key}" >{$vo}</option>
+                      </eq>
+                      <else/>
+                      <eq name="key" value="1">
+                        <option value="{$key}" selected="selected">{$vo}</option>
+                        <else/>
+                        <option value="{$key}" >{$vo}</option>
+                      </eq>
+                    </notempty>
+                  </volist>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="clearfix"></div>
+        </div>
+        <div class="tab-pane" id="autotab_2">
+          <div class="col-md-6 custom-form">
+            <div class="form-group">
+                <label class="control-label">活动时间：</label>
+                <div class="controls">
+                  <div class="col-md-12 custom-form">
+                    <div class="input-group"> <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                      <input class="form-control datepicker" size="16" type="text" value="{$db.timefrom}" id="timefrom" name="timefrom"  placeholder="开始日期" >
+                      <span class="input-group-addon">-</span>
+                      <input class="form-control datepicker" size="16" type="text" value="{$db.timeto}"  id="timeto" name="timeto"  placeholder="结束日期" >
+                    </div>
+                    <div class="help-block" >留空则活动一直有效</div>
+                  </div>
+                </div>
+            </div>
+            <div class="form-group">
+              <label class="control-label">关注抽奖：</label>
+              <div class="controls">
+                <select class="form-control" name="issubscribe" id="issubscribe" >
+                  <option value="1">是</option>
+                  <eq name="db.issubscribe" value="0">
+                    <option value="0" selected>否</option>
+                    <else/>
+                    <option value="0">否</option>
+                  </eq>
+                </select>
+              </div>
+              <div class="help-block" >是否必须关注了公众号才能参与抽奖</div>
+            </div>
+            <div class="form-group">
+              <label class="control-label">每天抽奖：</label>
+              <div class="controls">
+                <select class="form-control" name="iseveryday" id="iseveryday" >
+                  <option value="1">是</option>
+                  <eq name="db.iseveryday" value="0">
+                    <option value="0" selected>否</option>
+                    <else/>
+                    <option value="0">否</option>
+                  </eq>
+                </select>
+              </div>
+              <div class="help-block" >是否允许每天抽奖</div>
+            </div>
+            <div class="form-group">
+              <label class="control-label">抽奖次数：</label>
+              <div class="controls">
+                <input type="text" class="form-control w150" name="num" id="num" placeholder="每天可抽奖次数" value="{$db.num}" />
+              </div>
+              <div class="help-block" ><font class="textday"></font>可抽奖次数</div>
+            </div>
+            <div class="form-group">
+              <label class="control-label">中奖次数：</label>
+              <div class="controls">
+                <input type="text" class="form-control" name="times" id="times" placeholder="允许最多中奖次数" value="{$db.times}" />
+              </div>
+              <div class="help-block" ><font class="textday"></font>可中奖次数</div>
+            </div>
+            <hr />
+            <div class="form-group">
+              <label class="control-label">分享获得次数：</label>
+              <div class="controls">
+                <input type="text" class="form-control w150" name="sharenum" id="sharenum" placeholder="分享可获得抽奖次数" value="{$db.sharenum}" />
+              </div>
+              <div class="help-block" >分享活动页面可额外获得的抽奖次数</div>
+            </div>
+            <div class="form-group">
+              <label class="control-label">分享标题：</label>
+              <div class="controls">
+                <input type="text" class="form-control" name="sharetitle" id="sharetitle" placeholder="分享显示的标题" value="{$db.sharetitle}" />
+              </div>
+              <div class="help-block" >分享时显示的标题，默认为活动名称</div>
+            </div>
+            <div class="form-group">
+              <label class="control-label">分享图片：</label>
+              <div class="controls">
+                <div class="input-group">
+                  <input type="text" class="form-control" name="sharelogo" id="sharelogo" value="{$db.sharelogo}" readonly placeholder="分享时显示的图片" />
+                  <span class="input-group-addon">
+                  <button type="button" id="btnUpload1" class="custom-upload"><i class="fa fa-upload"></i></button>
+                  </span> </div>
+              </div>
+              <div class="help-block" >分享时显示的图片，默认为活动图片</div>
+            </div>
+            <div class="form-group">
+              <label class="control-label">分享描述：</label>
+              <div class="controls">
+                <textarea class="form-control" rows="5" name="shareintro" id="shareintro" placeholder="分享显示的描述" >{$db.shareintro}</textarea>
+              </div>
+              <div class="help-block" >分享时显示的描述，默认为活动描述</div>
+            </div>
+            <div class="form-group">
+              <label class="control-label">分享链接：</label>
+              <div class="controls">
+                <input type="text" class="form-control" name="shareurl" id="shareurl" placeholder="如：http://www.baidu.com" value="{$db.shareurl}" />
+              </div>
+              <div class="help-block" >点击分享打开的链接地址，默认为当前页面</div>
+            </div>
+          </div>
+          <div class="clearfix"></div>
+        </div>
+        
+      </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-group" style="padding:20px 0px;">
+            <div class="controls">
+              <hr />
+              <button type="submit" class="btn btn-success" id="btnSubmit"><i class="fa fa-save"></i> 提交</button>
+              <button type="button" class="btn btn-default" onClick="history.back();"><i class="fa fa-undo"></i> 返回</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+<script language="javascript">
+var $fields={ 
+	title: {
+		validators: {
+			notEmpty: {
+				message: '{$name}标题不能为空'
+			}
+		}
+	} 
+	};
+</script> 
+<include file="Public/form" />
+</body>
+</html>

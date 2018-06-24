@@ -1,0 +1,70 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>{$title}</title>
+    <include file="Public:scripts" />
+</head>
+
+<body>
+<div class="mui-content">
+        <div class="mui-input-group">
+            <div class="mui-input-row">
+                <label>充值金额</label>
+                <select name="amount" id="amount" class="mui-input-clear">
+                    <option value="">请选择充值金额</option>
+                    <option value="500">500</option>
+                    <option value="1000">1000</option>
+                    <option value="1500">1500</option>
+                    <option value="2000">2000</option>
+                    <option value="2500">2500</option>
+                    <option value="3000">3000</option>
+                </select>
+            </div>
+            <div class="mui-input-row">
+                <label>支付方式</label>
+                <select name="paymethod" id="paymethod">
+                    <!--<option value="1">支付宝</option>-->
+                    <option value="4">微信支付</option>
+                    <option value="2">佣金账户[{$balance}]</option>
+                </select>
+            </div>
+        </div>
+        <div class="mui-content-padded">
+            <button type="button" onclick="setcharge()" class="mui-btn mui-btn-primary mui-btn-block mui-btn-sm">立即充值</button>
+        </div>
+</div>
+<include file="Public:footer" />
+<script type="text/javascript">
+    function setcharge(){
+        var amount=$("#amount").val();
+        var paymethod=$("#paymethod option:selected").val();
+        if(amount=='' || amount==null){
+            mui.toast('请选择充值金额');
+            return;
+        }
+        $.ajax({
+            url:'/Member/setchargeorder.html',
+            data:{amount:amount,paymethod:paymethod},
+            method:'POST',
+            success:function(data){
+                if(data.status==1){
+
+                    if(parseInt(paymethod)==1)
+                        window.location.href="/Settle/chargeorder.html?orderno="+data.info;
+                    if(parseInt(paymethod)==4)
+                        window.location.href="/Pay/chargeorder/orderno/"+data.info+".html";
+                    if(parseInt(paymethod)==2){
+                        mui.toast(data.info);
+                        window.location.href="/Member/credit.html";
+                    }
+
+                }else{
+                    mui.toast(data.info);
+                }
+            }
+        })
+    }
+</script>
+</body>
+</html>

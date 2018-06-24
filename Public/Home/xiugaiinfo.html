@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+		<meta name="format-detection" content="telephone=no">
+		<title>四川艾青莲文化传播有限公司</title>
+		<link rel="stylesheet" href="css/loading.css" />
+		<script src="js/loading.js"></script>		
+		<link rel="stylesheet" href="css/mui.css" />
+		<link rel="stylesheet" href="css/fonts.css" />
+		<link rel="stylesheet" href="css/style.css" />
+	</head>
+	<body>
+		<footer class="mui-bar mui-bar-footer nav-bottom">
+			<ul class="clearListStyle mui-clearfix">
+				<li><a href="index.html"><span class="iconfont icon-home"></span>首页</a></li>
+				<li><a href="cpfl.html"><span class="iconfont icon-fenlei"></span>产品</a></li>
+				<li><a href="duihuan.html"><span class="iconfont icon-duihuan"></span>兑换</a></li>
+				<li><a href="cart.html"><span class="mui-badge mui-badge-danger">1</span><span class="iconfont icon-cart"></span>购物车</a></li>
+				<li class="active"><a href="usercenter.html"><span class="iconfont icon-user"></span>会员</a></li>
+			</ul>
+		</footer>
+		<div class="mui-content">
+			<form action="success.html" id="form">		
+				<div class="mui-input-group">													
+					<div class="mui-input-row">
+						<label>姓名</label>
+						<input type="text" class="mui-input-clear" value="张三" placeholder="请填写姓名" id="name" />
+					</div>
+					<div class="mui-input-row">
+						<label>手机号</label>
+						<input type="tel" class="mui-input-clear" value="15866887687" placeholder="请填写手机号" id="tel" />
+					</div>
+					<div class="mui-input-row">
+						<label>QQ</label>
+						<input type="number" class="mui-input-clear" value="123757647"  placeholder="请填写QQ号" id="qq" />
+					</div>
+					<div class="mui-input-row">
+						<label>Email</label>
+						<input type="email" class="mui-input-clear" value="123757647@qq.com"  placeholder="请填写Email地址" id="email" />
+					</div>	
+				</div>
+				<div class="mui-content-padded">			
+					<button type="submit" class="mui-btn mui-btn-primary mui-btn-block mui-btn-sm">保存</button>
+				</div>
+			</form>
+		</div>
+		<script src="js/mui.min.js"></script>
+		<script src="js/jquery-2.2.3.min.js"></script>
+		<script src="js/Validform_v5.3.2_min.js"></script>
+		<script src="js/script.js"></script>
+		<script>
+			
+			var form=$("#form").Validform({
+				tiptype:function(msg){
+					if(msg.length>1){
+						mui.toast(msg);
+						//mui.alert(msg, '提示');
+					}
+				},
+				showAllError:false,//逐条验证			
+				postonce:true,
+			});
+				form.addRule([
+				{
+			        ele:"#name",
+			        datatype:"*",        
+			        nullmsg:"请填写姓名",
+			        sucmsg:" ",
+			        errormsg:"请填写正确的用户名"
+			    },
+			    
+			    {
+			        ele:"#tel",
+			        datatype:"m",        
+			        nullmsg:"请输入您的手机号",
+			        sucmsg:" ",
+			        errormsg:"手机号格式错误"
+			    },		    
+			    {
+			        ele:"#qq",
+			        datatype:"n",        
+			        nullmsg:"请输入您的QQ号",
+			        sucmsg:" ",
+			        errormsg:"QQ号格式错误"
+			    },
+			   		    
+			    {
+			        ele:"#email",
+			        datatype:"e",        
+			        nullmsg:"请输入您的邮箱地址",
+			        sucmsg:" ",
+			        errormsg:"邮箱地址格式错误"
+			    },
+			   
+			]);
+		</script>
+	</body>
+</html>

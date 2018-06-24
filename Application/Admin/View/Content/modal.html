@@ -1,0 +1,80 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="content-Type" content="text/html; charset=utf-8" />
+<title>{$title}</title>
+<include file="Public/scripts" />
+</head>
+<body>
+<form action="" method="get" class="ajaxformx_" name="form1" id="form1">
+      <input type="hidden" name="p" id="p" value="1" />
+  <input type="hidden" name="type" id="type" value="{$type}" />
+  <input type="hidden" name="val" id="val" value="{$val}" /> 
+  <input type="hidden" name="id" id="id" value="{$id}" /> 
+  <input type="hidden" name="p" id="p" value="1" /> 
+   <div class="row">
+   <div class="col-md-12">
+            <div class="input-group">
+              <input type="text" class="form-control" placeholder="输入关键词" name="keyword" id="keyword" value="{$keyword}">
+              <span class="input-group-btn">
+              <select class="btn" name="searchtype" id="searchtype">
+                <option value="0">用户名</option>
+                <eq name="searchtype" value="1">
+                  <option value="1" selected="selected">{$name}ID</option>
+                  <else/>
+                  <option value="1">{$name}ID</option>
+                </eq>
+              </select>
+              </span> <span class="input-group-btn">
+              <button type="submit" class="btn fl"><i class="fa fa-search"></i> 查询</button>
+              </span> </div>
+          </div>
+          </div>
+          <br />
+</form>
+<table class="table  table-first-column-number display full table-striped custom-table vm">
+  <thead>
+  <th>#</th>
+    <th>用户名</th>
+    <th>真实姓名</th>
+    <th width="100">操作</th>
+      </thead>
+  <tbody>
+    <volist id="vo" name="list">
+      <?php
+  $css=($val==$vo['id']?" style='color:#f00;' ":"");
+  ?>
+      <tr class="row{$i % 2+1}" >
+        <td>{$vo.id}</td>
+        <td {$css}>{$vo.username|default=$vo['nickname']} </td>
+        <td {$css}>{$vo.userreal} </td>
+        <td><button type="button" class="btn btn-default btnChoose" ><i class="fa fa-check"></i> 选择</button></td>
+      </tr>
+    </volist>
+    <notempty name="page">
+      <tr>
+        <td colspan="4"><div class="pull-left custom-footer">
+            <ul class="pagination" style="margin: 0px;">
+              {$page}
+            </ul>
+          </div></td>
+      </tr>
+    </notempty>
+  </tbody>
+</table>
+<script language="javascript" type="text/javascript">
+$(function(){ 
+	$(".btnChoose").click(function(){
+		var $obj=$(this).parent().parent().find("td");
+		var btn=parent.$("#{$id}");
+		var $pid=btn.attr("data-id");
+		var $parentname=btn.attr("data-name");
+		parent.$("#"+$pid).val($.trim($obj.eq(0).text()));
+		parent.$("#"+$parentname).val($.trim($obj.eq(1).text()));
+		parent.bootbox.hideAll();
+	});
+});
+
+</script>
+</body>
+</html>

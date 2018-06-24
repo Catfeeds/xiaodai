@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <style type="text/css">
+        body, html,#allmap {width: 100%;height: 100%;overflow: hidden;margin:0;font-family:"微软雅黑";}
+    </style>
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=r1oOLGVQQXgDBb4RsxGtskD5"></script>
+    <script src="__PUBLIC__/Home/js/jquery-2.2.3.min.js"></script>
+    <title>签到</title>
+</head>
+<body>
+<div style="display: none;" id="allmap"></div>
+</body>
+</html>
+<script type="text/javascript">
+    // 百度地图API功能
+    var map = new BMap.Map("allmap");
+    var point = new BMap.Point(116.331398,39.897445);
+    map.centerAndZoom(point,12);
+
+    var geolocation = new BMap.Geolocation();
+    geolocation.getCurrentPosition(function(r){
+        if(this.getStatus() == BMAP_STATUS_SUCCESS){
+            var mk = new BMap.Marker(r.point);
+            var id="{$id?$id:0}";
+            var tolong="{$find.long}";
+            var tolat="{$find.lat}";
+            map.addOverlay(mk);
+            map.panTo(r.point);
+
+            $.ajax({
+                url:"/Classes/getsignup.html",
+                data:{id:id,tolong:tolong,tolat:tolat,long: r.point.lng,lat: r.point.lat},
+                type:"POST",
+                success:function(data){
+                    if(data.status==1){
+                        window.location.href="/Classes/signupsucc/id/"+id+".html";
+                    }else{
+                        window.location.href="/Classes/signuperr/info/"+data.info+".html";
+                    }
+                }
+            });
+           // window.location='/index/shoplist/lng/'+ r.point.lng+'/lat/'+ r.point.lat+'.html';
+            //alert('您的位置：'+r.point.lng+','+r.point.lat);
+        }
+        else {
+            alert('网络异常，定位失败！');
+        }
+    },{enableHighAccuracy: true})
+</script>

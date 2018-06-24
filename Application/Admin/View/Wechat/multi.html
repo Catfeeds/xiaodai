@@ -1,0 +1,464 @@
+<!doctype html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>{$title}</title>
+<include file="Public/scripts" />
+<include file="Public/upload" />
+<include file="Public/editor" />
+<js href="__PUBLIC__/Admin/lib/jquery.form.js" />
+<js href="__PUBLIC__/Admin/lib/template3.js,__PUBLIC__/Admin/lib/store.js" />
+<script language="javascript">
+var default_editor;
+$(function(){
+	default_editor=UE.getEditor("info",$ueconfig);
+});
+</script>
+<script>
+function logit(n){
+	 //$("#ddd").val($("#ddd").val()+n+":"+JSON.stringify($data)+"<br />");	
+} 
+function getdatetime(){
+	var d = new Date();
+	var vYear = d.getFullYear();
+	var vMon = d.getMonth() + 1;
+	var vDay = d.getDate();
+	var h = d.getHours(); 
+	var m = d.getMinutes(); 
+	var se = d.getSeconds(); 
+	var s=vYear+"-"+(vMon<10 ? "0" + vMon : vMon)+"-"+(vDay<10 ? "0"+ vDay : vDay)+" "+(h<10 ? "0"+ h : h)+":"+(m<10 ? "0" + m : m)+":"+(se<10 ? "0" +se : se);
+	return s;	
+}
+var isSave=false;
+var init = []; 
+var $data={:json_encode($list)}; 
+var $storename="storedata_{$id}";
+<empty name="id">
+	$storename="storenew";
+	</empty>
+	 if (!store.enabled) {
+		alerterr('对不起，您的浏览器不支持本地存储，将无法使用自动保存功能！建议升级浏览器，如chrome。'); 
+	}
+	
+
+	//自动保存到storeage
+	$store=store.get($storename);
+	if($store){
+		$data=$store;
+	};
+	
+var nextid;
+var currid=0;
+var indexpic="{:C('DEFAULT_NOPIC')}";
+$(function(){
+	if($data==null){
+		nextid=1;
+		$data=[];
+		addit(); 
+	}else{
+		nextid=parseInt($data[$data.length-1].id)+1;
+		
+		var firstid=parseInt($data[0].id);
+		editArray(firstid);
+		
+		//更新第一个
+		 
+		$("#single-title_"+firstid).text($data[0].title);
+		$("#single-image_"+firstid).attr("src",$data[0].indexpic);
+	}
+	
+	/*window.onbeforeunload   =   function(){
+		if(isSave){
+		}else{
+			editArray(currid); 
+			return  ("已自动保存"+getdatetime()+"时的内容！");
+		}
+	}*/
+
+	$.rendUploaderMaterial("#btnUploadMaterial");  
+	
+	$("#single-link a").click(function(){
+		$("#single-link a").removeClass('active');
+		
+		var v=$(this).data('value');
+		$(this).addClass('active');
+		
+		$("#islink").val(v);
+		$("#single-link"+v).show();
+		$("#single-link"+(v==1?0:1)).hide();
+		
+		$("#single-olink"+v).show();
+		$("#single-olink"+(v==1?0:1)).hide();
+	});
+	
+	/*var linkid="{$db.islink}";
+	$("#single-link a").eq(linkid).click();*/
+	
+	$("#formx_multi").ajaxForm(
+		{
+			beforeSubmit:function(){
+				$("#btn-saveme").attr("disabled",true);
+			},
+			data:{data:$data},
+			success:function(data){
+				if(data.status==1){
+					//清空自动保存
+					isSave=true;
+					store.remove($storename);
+					alertok(data.info);  
+					setTimeout(function(){
+						location="{:U('Wechat/news')}";
+						},1000);
+				}else{
+					alerterr(data.info);
+                    $("#btn-saveme").attr("disabled",false);
+				}
+			}
+		}
+	); 
+	
+	
+	
+});
+
+function addit(){ 
+	if($data.length>9){
+		alerterr("对不起，您最多只能添加10条消息！");	
+		return false;
+	}
+	var data = {
+		list:[{id:0,title:'标题',indexpic:indexpic},{id:nextid,title:'标题',indexpic:indexpic}]
+	};
+	var html = template('tplnews', data); 
+	$("#newslist").append(html);
+	addArray(nextid);
+	nextid++;
+}
+function delit(id){
+	$("#newsleft_"+id).remove();
+	$("#newsright").hide();
+	deleteArray(id);
+}
+
+//添加消息
+function addArray($nextid){
+	$data.push(newsblank($nextid));
+	editArray($nextid);
+}
+
+//编辑消息
+function editArray($newsid){
+	//保存前一条的消息 
+	savecurr();  
+	var idx=getIdxById($newsid);
+	$news=$data[idx]; 
+	//alert(JSON.stringify($news));
+	$("#title").val($news['title']);
+	$("#material_id").val($news['material_id']);
+	$("#remark").val($news['remark']);
+	$("#info").val($news['info']);
+	$("#indexpic").val($news['indexpic']);
+	$("#author").val($news['author']);
+	$("#isshowpic").val($news['isshowpic']);
+	$("#iscomment").val($news['iscomment']);
+	$("#islink").val($news['islink']);
+	$("#url").val($news['url']);  
+	$("#ourl").val($news['ourl']);  
+	$("#newsid").val($newsid); 
+	if($news['indexpic']==""){ 
+		$news['indexpic'] = indexpic;
+	}   
+	$("#indexpic").attr("data-image","#single-image_"+$newsid);
+	 
+	 //内容还是链接
+	var n=($("#islink").val());
+	$("#single-link a").eq(n).click(); 
+	//封面是否显示在正文
+	if($news['isshowpic']==1){
+		$("#isshowpic").attr("checked",true);	
+	}else{
+		$("#isshowpic").attr("checked",false);
+	} 
+	
+	//封面是否显示在正文
+	if($news['iscomment']==1){
+		$("#iscomment").attr("checked",true);	
+	}else{
+		$("#iscomment").attr("checked",false);
+	}
+	
+	if(arguments[1]!=undefined){
+	default_editor.setContent($news['info']);
+	}
+	//右框位置
+	var top=0; 
+	if(idx!=0){
+		top = 230+100*(idx-1);
+	}
+	$("#newsright").css('margin-top',top).show();
+	currid=$newsid; 
+	
+}
+//删除消息
+function deleteArray($newsid){
+	var idx=getIdxById($newsid);
+	$data.splice(idx,1);
+	logit(2);
+	currid=0;
+	store.set($storename,$data);
+	//alert(idx+"|"+JSON.stringify($data));
+	
+}
+
+//根据ID取得数组索引值
+function getIdxById($newsid){
+	//alert($newsid+"|"+JSON.stringify($data));
+	logit(1);
+	var idx=0;
+	for(var i=0;i<$data.length;i++){
+		if($data[i].id==$newsid){
+			idx=i;	
+			break;
+		}
+	}
+	return idx;
+}
+
+//新建空白消息
+function newsblank($newsid){ 
+	var news={
+		id:$newsid,
+		material_id:"",
+		title:"",
+		remark:"",
+		info:"",
+		indexpic:"",
+		author:"",
+		isshowpic:"",
+		iscomment:"1",
+		islink:"",
+		url:"",
+		ourl:""
+	};
+	return news;
+}
+
+//保存当前编辑
+function savecurr(){
+	if(currid==0){
+		return false;	
+	}
+	var news={
+		id:currid,
+		material_id:"{:I('id')}",
+		title:$.trim($("#title").val()),
+		remark:$.trim($("#remark").val()),
+		//info:$.trim($("#info").val()),
+		info:$.trim(default_editor.getContent()),
+		indexpic:$.trim($("#indexpic").val()),
+		author:$.trim($("#author").val()),
+		isshowpic:$.trim($("#isshowpic").attr("checked")?1:0),
+		iscomment:$.trim($("#iscomment").attr("checked")?1:0),
+		islink:$.trim($("#islink").val()),
+		url:$.trim($("#url").val()),
+		ourl:$.trim($("#ourl").val())
+	};
+	var idx=getIdxById(currid);
+	$data[idx]=news;
+	store.set($storename,$data);
+}
+		
+</script>
+<script> 
+$(function(){
+	var data = { 
+		list:$data
+	};
+	if(data.list!=null){
+	var html = template('tplnews', data); 
+	 $("#newslist").html(html);
+	} 
+	$("#title").keyup(function(){$("#single-title_"+currid).text($.trim($(this).val()))});
+	
+	 
+})
+</script>
+ 
+<style>
+.tblNews{ position:relative; }
+.tblNews .newsleft{ height:auto; border:1px #E7E7EB solid; padding:10px; position:relative}
+.newsleft .newsleft_title{ width:100%; height:auto; line-height:20px; float:left; font-size:16px;color:#666666; padding:5px 0px;}
+.newsleft .newsleft_remark{line-height:20px;  font-size:14px;color:#666666;}
+.newsleft .newsleft_cover{ width:100%; height:160px; float:left; background:#ECECEC; position:relative; overflow:hidden;}
+.newsleft .newsleft_cover .cover{ width:100px; height:30px; margin:0px auto; margin-top:65px; font-style:normal; font-size:18px; color:#C0C2CC; text-align:center}
+.newsleft .newsleft_cover img{ position:absolute; width:100%; height:100%; z-index:1; left:0px; top:0px; border:none; }
+
+.newsleft .overlay{ position:absolute; z-index:3; left:0px; top:0px; width:100%; height:160px; background:rgba(229,229,229,0.85); display:none;}
+.newsleft:hover .overlay{display:block;}
+
+.tblNews .newsright{width:600px; min-height:500px; min-width:600px; margin-left:20px; height:auto; border:1px #E7E7EB solid; padding:10px; background:#F4F5F9;}
+.tblNews .newsright table td{ font-size:14px;}
+
+#newsright{position:relative;}
+.tblNews .arrow_news{ width:14px; height:24px; background:url(__PUBLIC__/Admin/assets/arrow_news.gif) no-repeat; position:absolute; top:30px; left:7px;}
+.tblNews .inputText{ width:99%; height:24px; border:1px #E7E7EB solid; padding:2px 5px;}
+.tblNews .editor1,.tblNews .editor1:hover{ width:99%;   border:1px #E7E7EB solid;}
+.grey{color:#8D8D8D;}
+
+/**/
+.news_add{ width:300px; height:68px; float:left;  background:url(__PUBLIC__/Admin/assets/news_add.gif) no-repeat; margin:10px;}
+.news_add:hover{ background:url(__PUBLIC__/Admin/assets/news_addhover.gif) no-repeat;}
+
+#leftbox{ width:320px; height:auto; float:left; border:1px #E7E7EB solid; border-top:0px;}
+#leftbox .leftitem{  height:80px; padding:10px; border-bottom:1px #E7E7EB solid; position:relative; overflow:hidden;}
+#leftbox .leftitem .overlay{ position:absolute; left:0px; top:0px; width:100%; height:100%; background:rgba(229,229,229,0.85); display:none;}
+#leftbox .leftitem:hover .overlay{display:block;}
+
+
+.leftitem .left_title{ width:200px; float:left; overflow:hidden; line-height:20px;}
+.leftitem .left_img{ width:80px; height:80px; float:right; padding-left:20px;}
+.leftitem .left_img img{ width:100%;  float:left;}
+.news_edit{ margin-left:130px; margin-top:30px; width:20px; height:30px; float:left; background:url(__PUBLIC__/Admin/assets/news_edit.png) no-repeat; text-indent:-100px; overflow:hidden;}
+.news_edit:hover{ background-position:0px -30px;}
+.news_delete{ margin-left:10px; margin-top:30px; width:20px; height:30px; float:left; background:url(__PUBLIC__/Admin/assets/news_delete.png) no-repeat; text-indent:-100px; overflow:hidden;}
+.news_delete:hover{ background-position:0px -30px;}
+ 
+</style>
+</head>
+<body>
+<div class="row">
+  <div class="col-md-12">
+    <h2>{$title}</h2>
+  </div>
+  <div class="col-md-12">
+    <form action="" method="post" name="form1" id="formx_multi" >
+  <input type="hidden" name="id" id="id" value="{$Think.get.id}" />
+  <input type="hidden" name="newsid" id="newsid" value="">
+      <div class="fancy-tab-container">
+        <ul class="nav nav-tabs fancy">
+          <li class=""><a href="{:U('Wechat/material')}"  aria-expanded="true">图片素材</a></li>
+          <li class="active"><a href="{:U('Wechat/news')}" aria-expanded="false">图文素材</a></li>
+        </ul> 
+        <div style="padding:10px;">
+           <table width="100%" border="0" cellpadding="0" class="tblNews">
+          <tr>
+            <td width="320" valign="top"><if condition="(count($list) gt 1)">
+                <div class="newsleft" id="newsleft_1">
+                  <div class="newsleft_title"  id="single-title_{$list[0]['id']}"> {$list[0]['title']} </div>
+                  <div class="newsleft_cover" >
+                    <div class="overlay">
+		<a href="javascript:void(0);" class="news_edit"  onClick="editArray({$list[0]['id']},1)" >修改</a> 
+	</div>
+                    <div class="cover">封面图片</div>
+                    <img src="{$list[0]['indexpic']|default=C('DEFAULT_NOPIC')}"  id="single-image_{$list[0]['id']}" alt="">
+                    
+    </div>
+                  <div class="clr"></div>
+                </div>
+                <else/>
+                <div class="newsleft" id="newsleft_1">
+                  <div class="newsleft_title" id="single-title_1">标题</div>
+                  <div class="newsleft_cover"  >   <div class="overlay">
+		<a href="javascript:void(0);" class="news_edit"   onClick="editArray(1,1)" >修改</a> 
+	</div>
+                    <div class="cover">封面图片</div>
+                    <img src="{$list[0]['indexpic']|default=C('DEFAULT_NOPIC')}"  id="single-image_1" alt=""> 
+                 
+                    </div>
+                  <div class="clr"></div>
+                </div>
+              </if>
+              <div id="leftbox">
+                <div id="newslist"> </div>
+                <a href="javascript:void(0);" onclick="addit();" class="news_add"></a> </div>
+              <div class="clr"></div></td>
+            <td valign="top"><div id="newsright">
+                <div class="arrow_news"></div>
+                <div class="newsright">
+                  <table width="100%" border="0" cellpadding="0">
+                    <tr>
+                      <td>标题</td>
+                    </tr>
+                    <tr>
+                      <td><input type="text" class="inputText" name="title" id="title" value="{$db.title}" /></td>
+                    </tr>
+                    <tr>
+                      <td>作者<span class="grey">（选填）</span></td>
+                    </tr>
+                    <tr>
+                      <td><input type="text" class="inputText" name="author" id="author" value="{$db.author}" /></td>
+                    </tr>
+                    <tr>
+                      <td>封面 <span class="grey">（大图片建议尺寸：900像素 * 500像素）</span></td>
+                    </tr>
+                    <tr>
+                      <td><input type="hidden" class="inputText" name="indexpic" id="indexpic" value="{$db.indexpic}" data-image="#news_cover" />
+                        <input type="button" class="btn1 btnUpload" id="btnUploadMaterial" value="上传" /></td>
+                    </tr>
+                    <tr>
+                      <td><eq name="db.isshowpic" value="1">
+                          <input type="checkbox" name="isshowpic" id="isshowpic" checked="checked" value="1" />
+                          <else/>
+                          <input type="checkbox" name="isshowpic" id="isshowpic" value="1" />
+                        </eq>
+                        <label class="grey" for="isshowpic">封面图片显示在正文中</label></td>
+                    </tr>
+                    <tr>
+                      <td>摘要<span class="grey">（选填）</span></td>
+                    </tr>
+                    <tr>
+                      <td><textarea  class="editor1" name="remark" id="remark" >{$db.remark}</textarea></td>
+                    </tr>
+                    <tr>
+                      <td>正文</td>
+                    </tr>
+                    <tr>
+                      <td><textarea  class="inputText1" name="info" id="info" >{$db.info}</textarea></td>
+                    </tr>
+                    <tr>
+                      <td>外部链接<span class="grey">（选填，若填写则直接跳转，不显示正文内容）</span></td>
+                    </tr>
+                    <tr>
+                      <td><input type="text" class="inputText" name="url" id="url" value="{$db.url}" /></td>
+                    </tr>
+                    <tr>
+                      <td>原文链接<span class="grey">（选填）</span></td>
+                    </tr>
+                    <tr>
+                      <td><input type="text" class="inputText" name="ourl" id="ourl" value="{$db.ourl}" /></td>
+                    </tr>
+                    <tr>
+                      <td><div class="form-group" >
+                          <div class="controls">
+                            <hr />
+                            <button type="submit" class="btn btn-success" id="btn-saveme" onClick="editArray($('#newsid').val(),1);" ><i class="fa fa-save"></i> 提交</button>
+                            <button type="button" class="btn btn-default" onClick="history.back();"><i class="fa fa-undo"></i> 返回</button>
+                          </div>
+                        </div></td>
+                    </tr>
+                  </table>
+                </div>
+              </div></td>
+          </tr>
+        </table>
+        </div>
+      </div>
+    </form>
+  </div>
+</div> 
+<script id="tplnews" type="text/html"> 
+<% for (var i = 1; i < list.length; i ++) { 
+var blank="{:C('DEFAULT_NOPIC')}";
+%> 
+<div class="leftitem"  id="newsleft_<%= list[i].id %>">
+	<div class="left_title"  id="single-title_<%= list[i].id %>"><%= list[i].title %></div>
+	<div class="left_img"><img src="<%=(list[i].indexpic==''?blank:list[i].indexpic)%>" id="single-image_<%= list[i].id %>" /></div>
+	<div class="overlay">
+		<a href="javascript:void(0);" class="news_edit"  onClick="editArray(<%= list[i].id %>,1)">修改</a>
+		<a href="javascript:void(0);" class="news_delete" onclick="delit(<%= list[i].id %>)">删除</a>
+	</div>
+</div> 
+<% } %> 
+</script> 
+</body>
+</html>

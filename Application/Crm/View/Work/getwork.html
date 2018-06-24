@@ -1,0 +1,120 @@
+<input type="hidden" value="{$worknum}" id="worknum" />
+
+<style>
+    .color1{background-color: #00B83F;}
+    .color2{background-color: #aa7700;}
+    .color3{background-color: #699a33;}
+</style>
+<empty name="list">
+    <div class="mui-table-view-cell">
+        <div class="con">
+            没有工作日程，去添加吧
+        </div>
+    </div>
+    <else/>
+    <volist name="list" id="vo">
+        <div style=" border-radius: 5px; ">
+            <div class="mui-table-view-cell dele{$vo.id}" style=" background-color: white;  border-bottom: 1px solid #c1b3b3;">
+                <div class="jilu">
+                    <if condition="$vo['left'] eq 0">
+                        <div style="position: absolute;right: 0px;top: 40px;"><img style="width: 50px;height: 50px;" src="__PUBLIC__/Crm/images/expsoon.png"/></div>
+                    </if>
+                    <div style="width: 40px;
+                                        height: 40px;
+                                        font-size: 20px;
+                                        line-height: 40px;
+                                        text-align: center;
+                                        border-radius: 50%;
+                                        color:white;
+                                        margin-right: 10px;float:left;">
+                        <a href="{:U('Work/workcomment','id='.$vo['id'])}">
+                            <?php
+                            $headimgurl=M('staff')->where(array('id'=>$vo['staffid']))->getField('headimgurl');
+                            ?>
+                            <img src="{$headimgurl|default='/Public/Crm/images/nouser.png'}" alt="">
+                        </a>
+                    </div>
+                    <div style="line-height: 20px;" class="cont">
+                        <a href="{:U('Work/workcomment','id='.$vo['id'])}">
+                            {:get_cache_value('staff',$vo['staffid'],'name')}&nbsp;&nbsp;<span class="color{$vo['type']}" style="font-size: 12px;color: white;padding:3px;border-radius: 3px;">{:getworktype($vo['type'])}</span>
+                                    <span style="font-size:12px;float:right;">
+                                        {$vo['start']}至{$vo['end']}&nbsp;&nbsp;
+                                        <span class="text-red">
+                                                <switch name="vo['status']">
+                                                    <case value="0">
+                                                        执行中
+                                                        <if condition="$vo['guoqi'] eq 1">
+                                                            <div style="position: absolute;right: 0px;top: 40px;"><img style="width: 50px;height: 50px;" src="__PUBLIC__/Crm/images/guoqi.png"/></div>
+                                                        </if>
+
+                                                    </case>
+                                                    <case value="1">
+                                                        已完成
+                                                        <if condition="$vo['guoqi'] eq 1">
+                                                            <div style="position: absolute;right: 0px;top: 40px;"><img style="width: 50px;height: 50px;" src="__PUBLIC__/Crm/images/ok.png"/></div>
+                                                        </if>
+                                                    </case>
+                                                    <case value="2">
+                                                        未完成
+                                                        <if condition="$vo['guoqi'] eq 1">
+                                                            <div style="position: absolute;right: 0px;top: 40px;"><img style="width: 50px;height: 50px;" src="__PUBLIC__/Crm/images/guoqi.png"/></div>
+                                                        </if>
+                                                    </case>
+                                                    <case value="3">
+                                                        不能完成
+                                                        <if condition="$vo['guoqi'] eq 1">
+                                                            <div style="position: absolute;right: 0px;top: 40px;"><img style="width: 50px;height: 50px;" src="__PUBLIC__/Crm/images/guoqi.png"/></div>
+                                                        </if>
+                                                    </case>
+                                                </switch>
+
+
+                                        </span>
+                                    </span>
+                            <div class="time" style="text-overflow:ellipsis;height: 20px;">{$vo.address}</div>
+                        </a>
+                    </div>
+                </div>
+                <div class="con" style="padding-bottom: 5px;">
+                    <a href="{:U('Work/workcomment','id='.$vo['id'])}">
+                        {$vo.content}
+                    </a>
+                </div>
+                <div style="width: 100%;padding: 5px 15px; border-top: 1px solid #c1b3b3;background-color: white;">
+                    <div style="width: 50%;text-align: center;float: left;border-right: 1px solid #c1b3b3;">
+                        <if condition="$type eq 0">
+                            <a href="{:U('Work/addwork','id='.$vo['id'])}">
+                                <img style="width: 20px;" src="__PUBLIC__/Crm/images/msg.png"/><span style="padding-left:10px;">编辑</span>
+                            </a>
+                            <else/>
+                            <a href="{:U('Work/workcomment','id='.$vo['id'])}">
+                                <img style="width: 20px;" src="__PUBLIC__/Crm/images/msg.png"/><span style="padding-left:10px;">{$vo.commentnum}</span>
+                            </a>
+                        </if>
+                    </div>
+                    <div style="width: 50%;text-align: center;float: right;">
+
+                        <if condition="$type eq 0">
+                            <span onclick="deletework('{$vo.id}')"><img style="width: 20px;" src="__PUBLIC__/Crm/images/delete.png"/><span style="padding-left:10px;">删除</span></span>
+
+                            <else/>
+                            <span onclick="praise('{$vo.id}','{$vo.praise}')">
+                                <if condition="$vo['praise'] eq 1">
+                                    <img id="zanimg{$vo.id}" style="width: 20px;" src="__PUBLIC__/Crm/images/zan1.png"/>
+                                    <else/>
+                                    <img  id="zanimg{$vo.id}" style="width: 20px;" src="__PUBLIC__/Crm/images/zan.png"/>
+                                </if>
+                                <span id="zannum{$vo.id}" style="padding-left:10px;">{$vo.praisenum}</span>
+                            </span>
+                        </if>
+
+
+
+                        </div>
+                </div>
+
+            </div>
+
+        </div>
+    </volist>
+</empty>

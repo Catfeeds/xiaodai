@@ -1,0 +1,115 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>{$title}</title>
+    <include file="Public:scripts" />
+    <style>
+        #__MUI_PREVIEWIMAGE{z-index:999 !important;}
+    </style>
+</head>
+<body>
+<if condition="$item['masterid'] eq $manageid">
+    <footer onclick="window.location.href='{:U('Contract/addcontract','id='.$item['id'])}'" class="gjpush">
+        <a href="{:U('Contract/addcontract','id='.$item['id'])}" style="font-size: 16px;">修&nbsp;&nbsp;&nbsp;&nbsp;改</a>
+    </footer>
+</if>
+<div class="mui-content hz_khxq">
+
+    <canvas id="myCanvas" style="display: none;"></canvas>
+    <div class="pubtit">合同信息 <span class="mui-pull-right" onclick="window.history.back();">< 返回</span></div>
+    <div class="mui-input-group">
+        <div class="mui-input-row">
+            <label>合同名称<span style="color:red;">*</span></label>
+            <input type="hidden" name="id" id="id" class="mui-input-clear fz14" value="{$item.id}" />
+            <input type="text" disabled name="name" id="name" class="mui-input-clear fz14" value="{$item.name}" placeholder="请填写合同名称" />
+        </div>
+        <div class="mui-input-row">
+            <label>合同编号<span style="color:red;">*</span></label>
+            <input type="text" name="no" disabled id="no" class="mui-input-clear fz14" value="{$item.no}" placeholder="请填写合同编号" />
+        </div>
+        <div class="mui-input-row">
+            <label>合同金额<span style="color:red;">*</span></label>
+            <input type="number" name="amount" disabled id="amount" class="mui-input-clear fz14" value="{$item.amount}" placeholder="请填写合同金额" />
+        </div>
+        <div class="mui-input-row">
+            <label>已收款</label>
+            <input type="number" name="getamount" disabled id="getamount" class="mui-input-clear fz14" value="{$item.getamount}" placeholder="请填写合同已收款" />
+        </div>
+        <div class="mui-input-row">
+            <label>签约日期<span style="color:red;">*</span></label>
+            <input type="date" name="signtime" disabled id="signtime" class="mui-input-clear fz14" value="{$item.signtime}" placeholder="选择签约日期" />
+        </div>
+    </div>
+    <style>
+        .mui-input-group{margin-bottom: 5px;}
+    </style>
+    <div class="mui-input-group">
+        <div class="mui-input-row">
+            <label>关联客户<span style="color:red;">*</span></label>
+
+            <input type="text" disabled id="keyword" name="keyword"
+                   value="{:get_cache_value('member',$item['customid'],'company')}"  placeholder="输入客户名称，姓名选择客户" />
+            <input type="hidden" id="customid" name="customid" />
+            </span>
+        </div>
+        <ul style="background-color: rgb(213, 79, 67);color: white;line-height: 25px;position: absolute;  z-index: 999; list-style: none; width: 100%;margin: 1px;  border-radius: 5px;"
+            id="mylist">
+        </ul>
+        <div class="mui-input-row">
+            <label>签约员工<span style="color:red;">*</span></label>
+            <input type="hidden" id="masterid" value="{$item['masterid']}"/>
+            <input type="text" name="mastername" disabled id="mastername" class="mui-input-clear fz14" value="{$item['mastername']}"  />
+        </div>
+        <div class="mui-input-row">
+
+            <input type="text" disabled style="width: 50%; float: left;"  value="{$item['start']}" name="start" id="start" placeholder="选择结束时间" />
+            <input type="text" disabled style="width: 50%;" value="{$item['end']}" name="end" id="end" placeholder="选择结束时间" />
+
+        </div>
+
+        <div class="mui-input-row">
+            <label>合同状态</label>
+            <select name="status" disabled id="status">
+                <option <if condition="$item['status'] eq 0">selected</if> value="0">正常</option>
+                <option <if condition="$item['status'] eq 1">selected</if> value="1">撤回</option>
+                <option <if condition="$item['status'] eq 2">selected</if> value="2">服务到期</option>
+            </select>
+                <span class="iconfont icon-jiantou">
+                </span>
+        </div>
+        <div class="mui-input-row auto">
+            <textarea rows="3" name="remark" disabled id="remark" placeholder="请填写合同描述">{$item.remark}</textarea>
+        </div>
+
+        <div class="mui-table-view-divider">合同附件（上传合同照片）</div>
+        <div class="mui-table-view">
+            <ul class="clearListStyle mui-clearfix photolist contractpicload">
+                <volist name="contractimages" id="vo">
+                    <li class="mui-pull-left mui-col-xs-4 mui-col-sm-3">
+                        <div class="cont">
+                            <img src="{$vo}" data-preview-src="" data-preview-group="contractimagesadd">
+                            <input name="contractimages[]" value="{$vo}" type="hidden"/>
+                            <div style="display: none;" onclick="closeli($(this))" class="close"><span class="mui-icon mui-icon-closeempty"></span></div>
+                        </div>
+                    </li>
+                </volist>
+            </ul>
+        </div>
+
+    </div>
+	<include file="Public:daohang" />
+</div>
+<script src="__PUBLIC__/Crm/js/mui.min.js"></script>
+<script src="__PUBLIC__/Crm/js/jquery-2.2.3.min.js"></script>
+<script src="__PUBLIC__/Crm/js/script.js"></script>
+
+<script src="__PUBLIC__/Crm/js/mui.previewimage.js"></script>
+<script src="__PUBLIC__/Crm/js/mui.zoom.js"></script>
+<link rel="stylesheet" href="__PUBLIC__/Crm/css/priview.css" />
+<script>
+
+    mui.previewImage();
+</script>
+</body>
+</html>

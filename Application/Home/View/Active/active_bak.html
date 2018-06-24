@@ -1,0 +1,188 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>{$title}</title>
+    <include file="Public:scripts" />
+</head>
+<body>
+
+<div class="mui-content">
+    <div style="padding-bottom: 30px;">
+        <div style="position:relative;">
+            <img src="{$db.indexpic}" width="100%">
+            <div style="position:absolute;bottom:0px;color:white;width: 100%;height: 40px; background-color: rgba(0,0,0,0.5);">
+                <span style="float: right;line-height: 40px;padding-right: 10px;font-size: 16px;">浏览：{$db.hits}  |  报名：{$db.sold}</span>
+            </div>
+        </div>
+
+
+        <div class="mui-table-view hdprofile">
+            <div class="mui-table-view-cell">
+                <div class="mui-h4">{$db.title}</div>
+                <div class="display-box" style="margin-top: 5px;">
+                    <span class="tit">报名经费：</span>
+                    <span class="box-flex-1 text-red">&yen;{$db.price}</span>
+
+                </div>
+
+                <div class="display-box" style="margin-top: 5px;">
+                    <span class="tit">活动时间：</span>
+                    <span class="box-flex-1 text-red">{$db.start|date2format} 至 {$db.end|date2format}</span>
+                    <if condition="$cansign eq 1">
+                        仅剩<span style="width: auto;" class="text-red">{$leftdays}</span>天
+                    </if>
+                </div>
+                <if condition="$cansign eq 1">
+                    <span class="tit" style="position: absolute;background-color: red;color:white;padding: 5px;top: 40px;right: 0px;border-radius: 40% 0 0 40%;">{$tip}</span>
+                    <else/>
+                    <span class="tit" style="position: absolute;background-color: darkgray;color:white;padding: 5px;top: 40px;right: 0px;border-radius: 40% 0 0 40%;">{$tip}</span>
+                </if>
+
+            </div>
+
+            <div class="mui-table-view-cell">
+                <if condition="$cansign eq 1">
+                    <div><a href="{:U('Active/sign','id='.$id)}" class="mui-btn mui-btn-primary mui-btn-block mui-btn-sm" style="margin: 0;">立即报名</a></div>
+                    <else/>
+                    <div><a href="javascript:void(0);" style="background-color: darkgray;border: none;" class="mui-btn mui-btn-primary mui-btn-block mui-btn-sm" style="margin: 0;">{$tip}</a></div>
+                </if>
+            </div>
+            <div class="mui-table-view-cell">
+                <span class="tit">活动说明：</span>
+                <hr/>
+                <div class="display-box"><span class="box-flex-1">{$db.explain}</span></div>
+            </div>
+        </div>
+        <div class="mui-content-padded">
+            <div class="huodong-search display-box">
+                <div class="box-flex-1"><input id="keyword" type="text" vlaue="" placeholder="输入搜索关键字"></div>
+                <div><button type="button" onclick="$.getLists('reset')"><span class="iconfont icon-search"></span></button></div>
+            </div>
+        </div>
+        <div class="mui-table-view sort-product">
+            <ul class="clearListStyle mui-clearfix">
+                <li class="mui-col-xs-6 mui-pull-left">
+                    <a href="javascript:srot('addtime');" id="addtime" data-field="addtime" class="active up">参赛时间<span class="arr"></span></a>
+                </li>
+                <li class="mui-col-xs-6 mui-pull-left">
+                    <a href="javascript:srot('tickets');" id="tickets" data-field="tickets">得票数量<span class="arr"></span></a>
+                </li>
+            </ul>
+        </div>
+        <ul class="clearListStyle mui-clearfix people-list" id="upload">
+
+        </ul>
+        <div style="text-align: center;" id="loadmore">
+            载入更多
+        </div>
+    </div>
+</div>
+
+
+<include file="Public:footer" />
+<script language="javascript">
+    var p=1;
+    var $field='';
+    var $sort='';
+
+    (function(){
+        //设置提示信息
+        $.setTip=function($str){
+            $("#loadmore").html($str).show();
+        };
+
+        //获取列表
+        $.getLists=function( reset){
+            if(reset){
+                $("#upload").empty();
+                p=1;
+                $field='';
+                $sort='';
+            }
+
+            var keyword=$("#keyword").val();
+            var url="{:U('Active/getplayerlist','id='.$id)}";
+            if(p!=0){
+//                if(p!=1){
+                $.setTip("载入中...");
+//                }
+                $.ajax({url:url,type:'GET',data:"field="+$field+"&sort="+$sort+"&p="+p+"&keyword="+keyword,success: function(msg){
+                    if(msg!=""){
+                        //$("#upload").append(msg);
+                        $("#upload").html($("#upload").html() + msg);
+                        p+=1;
+                        if(msg.indexOf("没有记录")==-1){
+                            $.setTip("载入更多");
+                        }else{
+                            $("#loadmore").hide();
+                        }
+                    }else{
+                        p=0;
+                        $.setTip("没有了");
+                        setTimeout(function(){
+                            $("#loadmore").hide();
+                        },2000);
+                    }
+                }});
+            }
+        };
+    })(jQuery);
+
+    $(function(){
+        $.getLists();
+//        $(window).scroll(function() {
+//            var height_bottom = 0; // 距离底边多少像素开始加载
+//            if ($(document).scrollTop() + height_bottom >= $(document).height() - $(window).height()) {
+//                $.getLists();
+//            }
+//        });
+
+        $("#loadmore").click(function(){
+            $.getLists();
+        });
+
+    });
+
+    function srot(field){
+
+        $("#"+field).parents().siblings().find("a").removeClass("down").removeClass("up");
+        $("#"+field).parents().siblings().find("a").removeClass("active");
+
+        var $a=$("#"+field);
+        if($a.hasClass("up")){
+            $a.removeClass("up");
+            $a.addClass("down");
+            $sort="desc";
+        }else{
+            $a.removeClass("down");
+            $a.addClass("up");
+            $sort="asc";
+        }
+
+        $("#"+field).addClass("active");
+        $field=field;
+        p=1;
+        $("#upload").html("");
+        $.getLists();
+    }
+
+
+
+
+    function vote(id){
+        $.ajax({
+            url:"/Active/vote.html?id="+id,
+            success: function (data) {
+                mui.toast(data.info);
+                if(data.status==1){
+                    window.location.reload();
+                }
+
+            }
+        })
+    }
+
+</script>
+</body>
+</html>

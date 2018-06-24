@@ -1,0 +1,245 @@
+<!doctype html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>{$title}</title>
+    <include file="Public/scripts" /><include file="Public/upload" /><include file="Public/editor" />
+</head>
+<body>
+<div class="row">
+    <div class="col-md-12 " >
+        <h2>{$title}</h2>
+    </div>
+    <div class="col-md-12 " >
+        <form action="" method="post" name="form1" id="form1" class="ajaxformx">
+            <input type="hidden" id="id" name="id" value="{$db.id}" />
+            <div class="fancy-tab-container">
+                <ul class="nav nav-tabs fancy">
+                    <li class="active"><a href="#autotab_1" data-toggle="tab">基本信息</a></li>
+
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane active" id="autotab_1">
+                        <div class="col-md-8 custom-form">
+
+                            <div class="form-group">
+                                <label class="control-label">标题：</label>
+                                <div class="controls">
+                                    <input type="text" class="form-control" name="title" id="title" placeholder="输入{$name}标题" value="{$db.title}" />
+                                </div>
+                            </div>
+
+
+
+                            <div class="form-group">
+                                <label class="control-label">形象图：</label>
+                                <div class="controls">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" name="indexpic" id="indexpic" value="{$db.indexpic}" readonly />
+                                            <span class="input-group-addon">
+                                            <button type="button" id="btnUpload" class="custom-upload"><i class="fa fa-upload"></i></button>
+                                            </span>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="form-group">
+                                <label class="control-label">利率：</label>
+                                <div class="controls">
+
+                                    <div class="input-group col-md-4">
+                                        <input type="text" class="form-control" name="interest" id="interest" placeholder="输入{$name}利率" value="{$db.interest}" />
+                                        <span class="input-group-addon">%</span> </div>
+
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label">期限【用“,”隔开多个期限，如：5,7,20,365】：</label>
+                                <div class="controls">
+
+                                    <div class="input-group col-md-4">
+                                        <input type="text" class="form-control" name="days" id="days" placeholder="输入{$name}期限" value="{$db.days}"  />
+                                        <span class="input-group-addon"> 天</span> </div>
+
+                                </div>
+                            </div>
+
+
+                            <div class="form-group">
+                                <label class="control-label">起始额度（元）：</label>
+                                <div class="controls">
+
+                                    <div class="input-group col-md-4">
+                                        <input type="text" class="form-control" name="limitstart" id="limitstart" placeholder="输入{$name}起始额度" value="{$db.limitstart}" />
+                                        <span class="input-group-addon"> <i class="fa fa-cny"></i></span> </div>
+
+                                </div>
+                                <label class="control-label">最大额度（元）：</label>
+                                <div class="controls">
+
+                                    <div class="input-group col-md-4">
+                                        <input type="text" class="form-control" name="limitend" id="limitend" placeholder="输入{$name}最大额度" value="{$db.limitend}"  />
+                                        <span class="input-group-addon"> <i class="fa fa-cny"></i></span> </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label">逾期费（每天费用）：</label>
+                                <div class="controls">
+
+                                    <div class="input-group col-md-4">
+                                        <input type="text" class="form-control" name="overdue" id="overdue" placeholder="输入{$name}逾期费" value="{$db.overdue}"  />
+                                        <span class="input-group-addon"> %</span> </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-6 custom-form">
+
+
+
+                            <div class="form-group">
+                                <label class="control-label">状态：</label>
+                                <div class="controls">
+                                    <select class="form-control w80 " name="status" id="status">
+                                        <volist name="statuslist" id="vo">
+                                            <notempty name="db.id">
+                                                <eq name="db.status" value="$key">
+                                                    <option value="{$key}" selected="selected">{$vo}</option>
+                                                    <else/>
+                                                    <option value="{$key}" >{$vo}</option>
+                                                </eq>
+                                                <else/>
+                                                <eq name="key" value="1">
+                                                    <option value="{$key}" selected="selected">{$vo}</option>
+                                                    <else/>
+                                                    <option value="{$key}" >{$vo}</option>
+                                                </eq>
+                                            </notempty>
+                                        </volist>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+
+
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group" style="padding:20px 0px;">
+                        <div class="controls">
+                            <hr />
+                            <button type="submit" class="btn btn-success" id="btnSubmit"><i class="fa fa-save"></i> 提交</button>
+                            <button type="button" class="btn btn-default" onClick="history.back();"><i class="fa fa-undo"></i> 返回</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<script language="JavaScript" type="text/javascript" >
+    $.rendUploader("#btnUploadhaibao");
+    $(function(){
+
+        $("#addDay").click(function(){
+            var num=parseInt($("#daynum").val());
+            var html=$.addDay(num+1);
+            $("#tempid").append(html);
+            if($("#pid").val()==3){
+                $(".datatype").val(3).attr("disabled",true).change();
+            }
+            //$(".editor").xheditor(default_setting);
+            $("#daynum").val(num+1);
+            $.rendUploader("#btnUpload"+(num+1));
+        });
+
+        $("#addattr").click(function(){
+            var num=parseInt($("#attrnum").val());
+            var html=$.addattr(num+1);
+            $("#attrid").append(html);
+
+
+            $("#attrnum").val(num+1);
+
+        });
+
+
+    });
+    (function(){
+        $.addDay=function(n){
+            var html="";
+            html+=("<table class=\"table vm\">");
+            html+=("  <tr class=\"row0\">");
+            html+=("    <td width=\"70\"  class=\"tc\" >第<span class=\"day\">"+n+"</span>项 <br /><a href=\"javascript:void(0);\" onclick=\"if(confirm('您确定要删除吗？')){$(this).parent().parent().parent().parent().remove();}\">删除</a></td>");
+
+            html+=("    <td ><div class=\"input-group\"><input type=\"text\" class=\"form-control\" name=\"images[]\"   value=\"\"   /><span class=\"input-group-addon\"><button type=\"button\" id='btnUpload"+n+"' class=\"custom-upload\"><i class=\"fa fa-upload\"></i></button></span></div>  </td>");
+            html+=("  </tr>");
+            html+=("</table>");
+            return html;
+        }
+
+
+        $.addattr=function(n){
+            var html="";
+            html+=("<table class=\"table vm\">");
+            html+=("  <tr class=\"row0\">");
+            html+=("    <td width=\"70\"  class=\"tc\" >第<span class=\"day\">"+n+"</span>项 <br /><a href=\"javascript:void(0);\" onclick=\"if(confirm('您确定要删除吗？')){$(this).parent().parent().parent().parent().remove();}\">删除</a></td>");
+
+            html+=("    <td ><div class=\"input-group\"><input type=\"text\" placeholder=\"属性名（如：颜色，尺寸）\" class=\"form-control\" name=\"attr_name[]\"  value=\"\"   /></div>  </td>");
+            html+=("    <td ><div class=\"input-group\"><input type=\"text\" placeholder=\"属性值（如：红色，蓝色，白色）\" class=\"form-control\" name=\"attr_value[]\"  value=\"\"   /></div>  </td>");
+            html+=("  </tr>");
+            html+=("</table>");
+            return html;
+        }
+
+    })(jQuery);
+</script>
+<script language="javascript">
+    var $fields={
+        pid: {
+            validators: {
+                notEmpty: {
+                    message: '必须选择所属分类'
+                }
+            }
+        } ,
+        title: {
+            validators: {
+                notEmpty: {
+                    message: '{$name}标题不能为空'
+                }
+            }
+        }  ,
+        price: {
+            validators: {
+                notEmpty: {
+                    message: '{$name}价格不能为空'
+                }
+            }
+        }  ,
+        stock: {
+            validators: {
+                notEmpty: {
+                    message: '{$name}库存不能为空'
+                }
+            }
+        } ,
+        weight: {
+            validators: {
+                notEmpty: {
+                    message: '{$name}重量不能为空'
+                }
+            }
+        }
+    };
+</script>
+<include file="Public/form" />
+</body>
+</html>

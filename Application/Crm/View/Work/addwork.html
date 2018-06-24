@@ -1,0 +1,156 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>{$title}</title>
+    <include file="Public:scripts" />
+
+</head>
+<body>
+<div class="mui-content hz_gjjl">
+
+    <div id="form">
+        <div class="add" style=" background-color: white;">{:date("Y-m-d H:i:s")}<br/>
+
+            <?php
+                $alteraddress=C('config.ALTER_ADDRESS');
+            ?>
+            <input  <if condition="$alteraddress neq 1">readonly</if> style="font-size: 12px;
+            color: gray;
+            background: #ffffff;
+            border: none;
+            padding: 0px;
+            margin: 0px;    width: 80%;
+            height: 20px;" type="text" id="geoaddress" value="{$db['address']?$db['address']:'地址获取中'}" />
+            <if condition="$alteraddress eq 1">
+                <img onclick="$('#geoaddress').focus();$('#geoaddress').css('border-bottom','1px solid gray');" style="width: 20px;" src="/Public/Crm/images/edit.png"/>
+            </if>
+
+
+        </div>
+        <div class="mui-input-group">
+            <div class="mui-input-row autoh">
+                <input type="hidden" id="id" value="{$db['id']?$db['id']:0}" />
+                <textarea rows="5" placeholder="输入工作安排" id="content" class="fz16">{$db.content}</textarea>
+            </div>
+            <div class="mui-input-row autoh">
+                <textarea rows="5" placeholder="输入备注" id="remark" class="fz16">{$db['remark']}</textarea>
+            </div>
+
+            <div class="mui-input-row">
+
+                <input type="text" style="width: 50%; float: left;" onfocus="$(this).attr('type','date');" value="{$db['start']?$db['start']:date('Y-m-d')}" name="start" id="start" placeholder="选择结束时间" />
+                <input type="text" style="width: 50%;" onfocus="$(this).attr('type','date');" value="{$db['end']}" name="end" id="end" placeholder="选择结束时间" />
+
+            </div>
+            <div class="mui-input-row">
+                <label>选择状态</label>
+                <select id="status">
+                    <option <if condition="$db['status'] eq 0">selected</if>  value="0">执行中</option>
+                    <option <if condition="$db['status'] eq 1">selected</if>  value="1">已完成</option>
+                    <option <if condition="$db['status'] eq 2">selected</if>  value="2">未完成</option>
+                    <option <if condition="$db['status'] eq 3">selected</if>  value="3">不能完成</option>
+                </select>
+                <span class="iconfont icon-jiantou">
+                </span>
+            </div>
+        </div>
+        <div class="mui-content-padded">
+            <button type="button" onclick="subwork()" class="mui-btn mui-btn-primary mui-btn-block mui-btn-sm subwork">提交</button>
+        </div>
+    </div>
+
+<include file="Public:daohang" />
+
+</div>
+<div id="container" style="display:none;width: 100%; height: 500px;">
+</div>
+<script src="__PUBLIC__/Crm/js/mui.min.js"></script>
+<script src="__PUBLIC__/Crm/js/jquery-2.2.3.min.js"></script>
+<script src="__PUBLIC__/Crm/js/script.js"></script>
+
+
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=UfB3fUxvHlk6KhpLMd0iL3PuxnzyfuWm"></script>
+<script type="text/javascript">
+    var id='{$id}';
+    if(parseInt(id)<=0){
+        var map = new BMap.Map("container");
+        var point = new BMap.Point(104.072329,30.66342);
+        map.centerAndZoom("成都市", 12);
+
+
+        var geolocation = new BMap.Geolocation();
+        // 开启SDK辅助定位
+        geolocation.enableSDKLocation();
+        geolocation.getCurrentPosition(function(r){
+            if(this.getStatus() == BMAP_STATUS_SUCCESS){
+                var point = new BMap.Point(r.point.lng,r.point.lat);
+                if(!point){
+                    mui.toast('定位失败！');return;
+                }
+                var gc = new BMap.Geocoder();
+                gc.getLocation(point, function(rs){
+                    var addComp = rs.addressComponents;
+                    $("#geoaddress").val(addComp.province  + addComp.city  + addComp.district  + addComp.street  + addComp.streetNumber);
+                    //alert(addComp.province + ", " + addComp.city + ", " + addComp.district + ", " + addComp.street + ", " + addComp.streetNumber);
+                });
+            }
+            else {
+                alert('failed'+this.getStatus());
+            }
+        });
+    }
+
+
+
+</script>
+
+<script type="text/javascript">
+
+
+    function closeli(obj){
+        obj.parent("li").remove();
+    }
+
+    function subwork(){
+        var id=$("#id").val();
+        var address=$("#geoaddress").val();
+        var content=$("#content").val();
+        var remark=$("#remark").val();
+        var status=$("#status").val();
+        var start=$("#start").val();
+        var end=$("#end").val();
+
+        if(content==''|| content==null){
+            mui.toast('请输入工作安排');return;
+        }
+        if(start==''|| start==null){
+            mui.toast('选择开始时间');return;
+        }
+        if(end==''|| end==null){
+            mui.toast('选择结束时间');return;
+        }
+
+
+        $(".subwork").attr('disabled','disabled');
+        $.ajax({
+            url:"/Crm/Work/subwork.html",
+            data:{id:id,address:address,remark:remark,status:status,content:content,start:start,end:end},
+            method:'POST',
+            success:function(data){
+                mui.toast(data.info);
+                if(data.status==1){
+                    window.location.href="/Crm/Work/index.html";
+                }else{
+                    $(".subwork").removeAttr('disabled');
+                }
+            }
+        })
+    }
+
+
+</script>
+
+
+</body>
+</html>

@@ -1,0 +1,159 @@
+<!doctype html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>{$title}</title>
+    <include file="Public/scripts" /><include file="Public/upload" /><include file="Public/editor" />
+</head>
+<body>
+<div class="row">
+    <div class="col-md-12 " >
+        <h2>{$title}</h2>
+    </div>
+    <div class="col-md-12 " >
+        <form action="" method="post" name="form1" id="form1" class="ajaxformx">
+
+            <div class="fancy-tab-container">
+                <ul class="nav nav-tabs fancy">
+                    <li class="active"><a href="{:U('Finance/articleanas')}">概览</a></li><!--javascript:getanalysis('all');-->
+                    <li><a href="{:U('Finance/detail')}">文章列表</a></li><!--javascript:getanalysis('detail');-->
+                    <li><a href="{:U('Finance/memberanas')}">用户分析</a></li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane active" id="autotab_1">
+                        <div id="all" class="col-md-12">
+                            <div class="col-md-3">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title">文章总量</h3>
+                                    </div>
+                                    <div class="panel-body allnum">
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title">总阅读量</h3>
+                                    </div>
+                                    <div class="panel-body allread">
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title">总转发量</h3>
+                                    </div>
+                                    <div class="panel-body allshare">
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title">总点赞量</h3>
+                                    </div>
+                                    <div class="panel-body allpraise">
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-3">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title">昨日新增文章量</h3>
+                                    </div>
+                                    <div class="panel-body yesterdaynum">
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title">昨日新增阅读量</h3>
+                                    </div>
+                                    <div class="panel-body yesterdayread">
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title">昨日新增转发量</h3>
+                                    </div>
+                                    <div class="panel-body yesterdayshare">
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title">昨日新增点赞量</h3>
+                                    </div>
+                                    <div class="panel-body yesterdaypraise">
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                        <div class="clearfix"></div>
+                    </div>
+
+                </div>
+            </div>
+
+        </form>
+    </div>
+</div>
+<include file="Public/form" />
+<script src="__PUBLIC__/Admin/lib/echarts/echarts.js"></script>
+<script type="text/javascript">
+
+
+
+    function getanalysis(type){
+        var ddays=$(".breadcrumb li.active a").html();
+
+        $.ajax({
+            url:ADMIN_PATH+"/Api/getanalysis.html",
+            data:{type:type,ddays:ddays},
+            type:"POST",
+            success: function (data) {
+                switch(type){
+                    case 'all':
+                        $(".allnum").html(data.allnum);
+                        $(".allread").html(data.allread);
+                        $(".allshare").html(data.allshare);
+                        $(".allpraise").html(data.allpraise);
+                        $(".yesterdaynum").html(data.yesterdaynum);
+                        $(".yesterdayread").html(data.yesterdayread);
+                        $(".yesterdayshare").html(data.yesterdayshare);
+                        $(".yesterdaypraise").html(data.yesterdaypraise);
+                        $("#all").show();
+                        $("#detail").hide();
+                        break;
+
+                    default:
+                        $("#all").hide();
+                        $("#detail").show();
+                }
+            }
+        });
+        //$("#echarts").html(type);
+    }
+getanalysis('all');
+
+</script>
+</body>
+</html>

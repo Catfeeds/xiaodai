@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>{$title}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"/>
+    <meta name="keywords" content="{$title}"/>
+    <meta name="description" content="{$db.remark}"/>
+    <link rel="stylesheet" href="__PUBLIC__/Home/css/mui.css" />
+    <js href="__PUBLIC__/Home/js/jquery-2.2.3.min.js" />
+    <script src="__PUBLIC__/Home/js/mui.min.js"></script>
+    <js href="__PUBLIC__/Home/js/jquery.form.js" />
+    <js href="__PUBLIC__/Home/js/jquery.func.js" />
+    <script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+    <script type="text/javascript">
+        var $share={
+            title: '{$share.sharetitle}',
+            desc: '{$share.shareintro}',
+            link: '{$share.shareurl}',
+            imgUrl: '{$share.sharelogo}',
+            trigger: function (res) {
+                //alert('用户点击发送给朋友');
+            },
+            success: function (res) {
+                //alert('已分享');
+                shared();
+            },
+            cancel: function (res) {
+                //alert('已取消');
+            },
+            fail: function (res) {
+            }
+        };
+    </script>
+
+    <style type="text/css">
+        *{
+            padding: 0;
+            margin: 0;
+            list-style: none;
+        }
+        body{
+            background: #df412b;
+            position: relative;
+        }
+        .banner1{
+            display: block;
+            width: 100%;
+            height: auto;
+            overflow: hidden;
+        }
+        .ggl{
+            position: relative;
+            width: 85.6%;
+            height: 90px;
+            margin: -5px auto;
+            background: url(/Public/Home/lottery/ggl.png) no-repeat center center;
+            background-size: 100% 100%;
+        }
+        .canvas{
+            position:absolute;
+            top:2px;
+            left:2.5%;
+            width:95%;
+            height:82px;
+            line-height:82px;
+            text-align:center;
+            z-index: 2;
+
+        }
+        .info{
+            position:absolute;
+            top:2px;
+            left:2.5%;
+            width:95%;
+            height:82px;
+            text-align:center;
+        }
+        .info span{
+            display: block;
+            font-size: 18px;
+        }
+        #prompt{
+            line-height: 40px;
+        }
+        .btnprize{
+            position: relative;
+            width: 50%;
+            height: 35px;
+            line-height: 35px;
+            background: #df412b;
+            color: #fff;
+            border-radius: 5px;
+            margin: 0 auto;
+            z-index: 1;
+        }
+        .guize{
+            display: block;
+            width: 85.6%;
+            height: auto;
+            margin: 5% auto 10% auto;
+            border-radius: 5px;
+        }
+        .num{
+            width: 100%;
+            height: 30px;
+            line-height: 30px;
+            text-align: center;
+            font-size:14px;
+            margin-top: 5%;
+        }
+        #ok, #no{display: none;}
+        .pop{
+            position: fixed;
+            left: 0;
+            top: 0;
+            z-index: 3;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.6);
+            display: none;
+        }
+        .pop img{
+            width: 100%;
+            height: auto;
+            overflow: hidden;
+            margin: 15% auto;
+        }
+        .huodongitem { margin: 10px 20px; padding: 10px; background-color: #c0173c; border-radius: 6px; color: #fafad4; }
+        .huodongitem .tit { line-height: 32px; border-bottom: 1px dashed rgba(255, 255, 255, 0.4); font-size: 18px; font-weight: bold; color: #FF0; }
+        .huodongitem .cont { margin-top: 10px; }
+        .huodongitem .cont p { color: #fafad4; }
+        .btn-share{ margin-top:10px;  position: relative;display: inline-block;padding: 6px 12px;margin-bottom: 0;font-size: 14px;font-weight: 400;line-height: 1.42;color: #333;text-align: center;color: #fff;background-color: #FA0;border: 1px solid #FA0;    border-radius: 3px; text-decoration:none; }
+
+        .propbox { width: 100%; height: 100%; position: fixed; left: 0; top: 0; z-index: 99; display:none; }
+        .propbox .bg { width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.8); }
+        .propbox .cont { width: 85%; max-width: 400px; height: 240px; padding: 20px; box-sizing: border-box; text-align: center; background-color: #FFF; border-radius: 6px; position: absolute; left: 0; top: 0; right: 0; bottom: 0; margin: auto; }
+        .propbox .cont .tit { margin-top: 15px; color: #F00; font-size: 16px; font-weight: bold; }
+        .propbox .cont .txt { font-size: 12px; color: #666; }
+        .propbox .cont .icon-01 { height: 90px; background: url(__PUBLIC__/Home/wheel/images/smile.png) no-repeat center; background-size: contain; }
+        .propbox .cont .icon-02 { height: 90px; background: url(__PUBLIC__/Home/wheel/images/sad.png) no-repeat center; background-size: contain; }
+        .propbox .input-row { margin-top: 10px; }
+        .propbox .input-row input { width: 100%; height: 40px; box-sizing: border-box; margin: 0; padding: 0 10px; background-color: #FFF; border: 1px solid #CCC; border-radius: 4px; -webkit-appearance: none; font-size: 16px; }
+
+        .sharebox { width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.8); position: fixed; left: 0; top: 0; z-index: 99; display:none;}
+        .sharebox img { width: 100px; float: right; margin: 5px 10px 0 0; }
+        #btn-fail,#btn-success{width:100%;}
+
+    </style>
+</head>
+<body>
+<img src="{$activity.indexpic}" class="banner1"/>
+<div class="ggl" id="top">
+    <div class="info" id="prize">
+        <span id="prompt"></span>
+        <span class="btnprize" id="ok">领取奖品</span>
+        <span class="btnprize" id="no">再来一次</span>
+        <!--onclick="window.location.reload();"-->
+    </div>
+    <canvas id="c1" class="canvas"></canvas>
+</div>
+<div class="num">
+    您还有<span id="lotterynum" class="num1"></span>次刮卡机会
+</div>
+
+<div class="mui-text-center mt10">
+    <button type="button" class="btn-share" id="btn-share">
+        <gt name="activity.sharenum" value="0">获取抽奖机会<else/>分享给好友</gt>
+    </button>
+</div>
+<notempty name="activity.remark">
+    <div class="huodongitem">
+        <div class="tit">活动说明</div>
+        <div class="cont mui-clearfix">
+            {$activity.remark|nl2br}
+        </div>
+    </div>
+</notempty>
+<div class="huodongitem">
+    <div class="tit">活动时间</div>
+    <div class="cont mui-clearfix">
+        {$activity.timefrom} 至 {$activity.timeto}
+    </div>
+</div>
+<eq name="activity.issubscribe" value="1">
+    <div class="huodongitem">
+        <div class="tit">参与条件</div>
+        <div class="cont mui-clearfix">
+            关注 “{:get_cache_value('wechat_mp',1,'panel_name')}” 官方微信公众号
+        </div>
+    </div>
+</eq>
+
+<div class="huodongitem">
+    <div class="tit">奖品设置</div>
+    <div class="cont mui-clearfix">
+        <volist	name="prizes" id="vo">
+            <gt name="vo.id" value="0">
+                <p>{$vo.prize}：{$vo.title}  <!--/ {$vo.num}名--></p>
+            </gt>
+        </volist>
+        <p>
+            【提示：{:$activity['iseveryday']?'每天':'总共'}有{$activity.num}次抽奖机会<gt name="activity.sharenum" value="0">
+            ，分享朋友圈可额外获得{$activity.sharenum}次机会</gt>】
+        </p>
+    </div>
+</div>
+<notempty name="activity.content">
+    <div class="huodongitem">
+        <div class="tit">兑奖说明</div>
+        <div class="cont mui-clearfix">
+            {$activity.content|nl2br}
+        </div>
+    </div>
+</notempty>
+
+<div class="mt10" style="padding: 10px; text-align: center;">
+    <a  href="{:U('Lottery/record','actid='.$actid)}" class="btn-share">查看中奖记录</a>
+</div>
+<div class="sharebox"><img src="__PUBLIC__/Home/wheel/images/fxtxt.png"></div>
+
+
+
+<!--失败提示-->
+<div class="propbox" id="box-fail">
+    <div class="bg"></div>
+    <div class="cont">
+        <div class="alerttext"></div>
+        <div  style="margin-top: 10px;">
+            <button type="button" class="btn-share" id="btn-fail">确定</button>
+        </div>
+    </div>
+</div>
+
+<!--成功提示-->
+<div class="propbox" id="box-success">
+    <div class="bg"></div>
+    <form class="ajaxformx" method="post" id="formsuccess" action="{:U('Lottery/record')}">
+        <input type="hidden" name="actid" id="actid" value="{$actid}" />
+        <input type="hidden" name="act" id="act" value="" />
+        <input type="hidden" name="sn" id="sn" value="" />
+        <div class="cont">
+            <div class="alerttext"> </div>
+            <div  style="margin-top: 10px;">
+                <button type="submit" class="btn-share" id="btn-success">确定</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+<script>
+    //控制刮卡次数
+    var t = '{$lotterynum}';
+    //初始化所有数据
+    var initialize  = function () {
+        //剩余刮卡次数
+        $('.num1').html(t);
+
+        var btn = document.getElementsByClassName("btnprize");
+        for(var i=0; i<btn.length; i++){
+            btn[i].style.zIndex = '1';
+        }
+        document.getElementById("no").style.display = "none";
+        document.getElementById("ok").style.display = "none";
+
+        //初始化涂抹面积
+        isOk = 0;
+
+    };
+
+    var c1;				//画布
+    var ctx;			//画笔
+    var ismousedown;	//标志用户是否按下鼠标或开始触摸
+    var isOk=0;			//标志用户是否已经刮开了一半以上
+    var fontem = parseInt(window.getComputedStyle(document.documentElement, null)["font-size"]);//这是为了不同分辨率上配合@media自动调节刮的宽度
+
+    /* 页面加载后开始初始化画布 */
+    window.onload = function(){
+        initialize();
+        c1 = document.getElementById("c1");
+
+        //这里很关键，canvas自带两个属性width、height,我理解为画布的分辨率，跟style中的width、height意义不同。
+        //最好设置成跟画布在页面中的实际大小一样
+        //不然canvas中的坐标跟鼠标的坐标无法匹配
+        c1.width=c1.clientWidth;
+        c1.height=c1.clientHeight;
+        ctx = c1.getContext("2d");
+
+        //PC端的处理
+        c1.addEventListener("mousemove",eventMove,false);
+        c1.addEventListener("mousedown",eventDown,false);
+        c1.addEventListener("mouseup",eventUp,false);
+
+        //移动端的处理
+        c1.addEventListener('touchstart', eventDown,false);
+        c1.addEventListener('touchend', eventUp,false);
+        c1.addEventListener('touchmove', eventMove,false);
+
+        //初始化
+        initCanvas();
+    };
+
+    //初始化画布，画灰色的矩形铺满
+    function initCanvas(){
+        //网上的做法是给canvas设置一张背景图片，我这里的做法是直接在canvas下面另外放了个div。
+        //c1.style.backgroundImage="url(中奖图片.jpg)";
+        ctx.globalCompositeOperation = "source-over";
+        ctx.fillStyle = '#aaaaaa';
+        ctx.fillRect(0,0,c1.clientWidth,c1.clientHeight);
+        ctx.fill();
+
+        ctx.font = "Bold 30px Arial";
+        ctx.textAlign = "center";
+        ctx.fillStyle = "#999999";
+        ctx.fillText("刮一刮",c1.width/2,50);
+
+        //把这个属性设为这个就可以做出圆形橡皮擦的效果
+        //有些老的手机自带浏览器不支持destination-out,下面的代码中有修复的方法
+        ctx.globalCompositeOperation = 'destination-out';
+    }
+
+    //鼠标按下 和 触摸开始
+    function eventDown(e){
+        if(isOk==0){
+            var num=$("#lotterynum").html();
+            if(parseInt(num)<=0){
+                alerterr("抽奖机会已经用完");
+            }
+            isOk = 1;
+        }
+
+        e.preventDefault();
+        ismousedown=true;
+    }
+
+    //鼠标抬起 和 触摸结束
+    function eventUp(e){
+        e.preventDefault();
+
+        //得到canvas的全部数据
+        var a = ctx.getImageData(0,0,c1.width,c1.height);
+        var j=0;
+        for(var i=3;i<a.data.length;i+=4){
+            if(a.data[i]==0)j++;
+        }
+
+        //当开始刮奖时，则可以开始处理结果
+
+//         if (isOk == 0) {
+//             isOk = 1;
+//         }
+
+        if(j>=a.data.length/8){
+            //a.data.length/8：标识刮开面积大于一半
+            var btn = document.getElementsByClassName("btnprize");
+            for(var x=0; x<btn.length; x++){
+                btn[x].style.zIndex = '3';
+            }
+        }
+
+       // }
+        ismousedown=false;
+    }
+
+    //鼠标移动 和 触摸移动   触摸时开始抽奖，触发抽奖程序
+    function eventMove(e){
+        e.preventDefault();
+        if(ismousedown) {
+            if(e.changedTouches){
+                e=e.changedTouches[e.changedTouches.length-1];
+            }
+            var topY = document.getElementById("top").offsetTop;
+            var oX = c1.offsetLeft,
+                    oY = c1.offsetTop+topY;
+
+            var x = (e.clientX + document.body.scrollLeft || e.pageX) - oX || 0,
+                    y = (e.clientY + document.body.scrollTop || e.pageY) - oY || 0;
+
+            //画360度的弧线，就是一个圆，因为设置了ctx.globalCompositeOperation = 'destination-out';
+            //画出来是透明的
+            ctx.beginPath();
+            ctx.arc(x, y, fontem*1.2, 0, Math.PI * 2,true);
+
+            //下面3行代码是为了修复部分手机浏览器不支持destination-out
+            //我也不是很清楚这样做的原理是什么
+            c1.style.display = 'none';
+            c1.offsetHeight;
+            c1.style.display = 'inherit';
+
+            ctx.fill();
+        }
+        //isok==1，则开始抽奖，执行一次抽奖过程，然后将isok处理为2
+        if(isOk==1){
+            isOk=2;
+            var url="{:U('Lottery/prize','actid='.$actid)}";
+            $.ajax({
+                url:url,
+                async:false,
+                type:"POST",
+                success: function(data){
+                    //$("#result").html(JSON.stringify(data));
+                    var $data=data.info;//{id: "3", amount: "10.00", prize: "三等奖", type: "3", title: "10M流量"}
+                    var $info,$item;
+                    //$item=getItemById($data.id);
+                    if(data.status=="1"){
+                        $info=$data.prize+":"+$data.title;
+                        document.getElementById("prompt").innerHTML=$data.prize+":"+$data.title;
+                        $("#sn").val($data.sn);
+                        var $type=$data.type;
+                        if($type==4){
+                            $("#act").val("prize");
+                        }else{
+                            $("#act").val("info");
+                        }
+                        getTimes();
+                        //$(".btnprize").css('z-index','3');
+                        var ok =document.getElementById("ok");
+                        ok.style.display = "block";
+                        ok.onclick = function () {
+                            alertok($info,($type==4?1:0));
+                        };
+
+
+                    }else{
+                        $info=$data;
+                        document.getElementById("prompt").innerHTML=$info;
+                        $("#act").val("");
+
+                        getTimes();
+                        //$(".btnprize").css('z-index','3');
+                        $("#no").css('display','block');
+
+                    }
+                }
+            });
+        }
+    }
+
+    $("body").on("click","#btn-fail",function(){
+        $("#box-fail").toggle();
+    });
+
+    $(function(){
+        getShare();
+        //getRecord();
+        getTimes();
+
+        $("body").on("click", "#btn-share,.sharebox",function(){
+            $(".sharebox").toggle();
+        });
+
+        $("body").on("click", "#no",function(){
+//            document.getElementById("no").style.display = "none";
+//            document.getElementById("ok").style.display = "none";
+//            document.getElementById("prompt").innerHTML="";
+            //mui.reload();
+            //location.reload();
+            reloadwin();
+        });
+
+    });
+
+    //分享加高
+    function shared(){
+        var url="{:U('Lottery/share','actid='.$actid)}";
+        $.ajax({
+            url:url,
+            type:"POST",
+            success: function(data){
+                getTimes();
+                //$("#result").html(JSON.stringify(data.info));
+            }
+        });
+    }
+
+    function getItemById($id){
+        for(var $i=0;$i<$ids.length;$i++){
+            if($ids[$i]==$id){
+                return $i+1;
+                break
+            }
+            //console.log($i);
+        }
+        return 0;
+    }
+
+    //抽奖机会
+    function getTimes(){
+        var url="{:U('Lottery/times','actid='.$actid)}";
+        $.ajax({
+            url:url,
+            type:"POST",
+            success: function(data){
+                $("#lotterynum").html(data.info);
+            }
+        });
+    }
+
+    //分享签名
+    function getShare(){
+        var url="{:U('Lottery/share')}";
+        var data={
+            'url':'{:get_current_url()}'
+        };
+        $.ajax({
+            url:url,
+            type:"POST",
+            data:data,
+            success: function(data){
+                wx.config(data.info);
+                wx.ready(function () {
+                    wx.onMenuShareAppMessage($share);
+                    wx.onMenuShareTimeline($share);
+                });
+            }
+        });
+    }
+
+    //中奖记录
+    function getRecord(){
+
+        var url="{:U('Lottery/record','actid='.$actid)}";
+        $.ajax({
+            url:url,
+            type:"POST",
+            success: function(data){
+                $("#result").html(JSON.stringify(data.info));
+            }
+        });
+    }
+
+
+
+    function alertok($text,$credit){
+        if($credit==0){
+
+            var $html='<div class="icon-01"></div>	<div class="tit">'+$text+'</div><div class="input-row"><input type="text" placeholder="填写手机号" name="telephone" id="telephone" maxlength="11" /></div><div class="input-row"><input type="text" placeholder="填写地址" name="address" id="address" maxlength="50" /></div>';
+            $("#box-success .alerttext").html($html);
+            $("#btn-success").text("完善资料");
+            $("#box-success .cont").height(280);
+            $("#box-success").show();
+        }else{
+            var $html='<div class="icon-01"></div>	<div class="tit">'+$text+'</div>';
+            $("#box-success .alerttext").html($html);
+            $("#btn-success").text("立即领取");
+            $("#box-success .cont").height(180);
+            $("#box-success").show();
+
+        }
+    }
+
+    function alerterr($text){
+        var $html='<div class="icon-02"></div>	<div class="tit">'+$text+'</div>';
+        $("#box-fail .alerttext").html($html);
+        $("#box-fail").show();
+
+    }
+
+</script>
+
+</body>
+
+</html>

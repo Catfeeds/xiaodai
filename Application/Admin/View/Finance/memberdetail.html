@@ -1,0 +1,255 @@
+<!doctype html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>{$title}</title>
+    <include file="Public/scripts" /><include file="Public/upload" /><include file="Public/editor" />
+</head>
+<body>
+<div class="row">
+    <div class="col-md-12 " >
+        <h2>{$title}</h2>
+    </div>
+    <div class="col-md-12 " >
+        <form action="" method="post" name="form1" id="form1" class="ajaxformx">
+
+            <div class="fancy-tab-container">
+                <ul class="nav nav-tabs fancy">
+                    <li><a href="{:U('Finance/articleanas')}">概览</a></li>
+                    <li><a href="{:U('Finance/detail')}">文章列表</a></li>
+                    <li class="active"><a href="{:U('Finance/memberanas')}">用户分析</a></li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane active" id="autotab_1">
+                        <div class="col-md-12" >
+                            <div class="panel panel-default col-md-12" style="padding: 0px;">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title ">用户信息</h3>
+
+                                </div>
+                                <div style="width:100%;" class="panel-body">
+                                    <style>
+                                        .panel-body table{border-left: none;border-right: none;}
+                                        .panel-body table tr td{border-left: none;border-right: none; text-align: center;}
+                                    </style>
+                                    <table class="table table-hover col-md-12">
+                                        <tr>
+                                            <td class="col-md-4">用户名</td>
+                                            <td class="col-md-2">阅读数</td>
+                                            <td class="col-md-2">分享数</td>
+                                            <td class="col-md-2">点赞数</td>
+                                            <td class="col-md-2">传播影响力</td>
+                                        </tr>
+
+                                        <tr>
+                                            <td>{$member.nickname}</td>
+                                            <td>{$countread}</td>
+                                            <td>{$countshare}</td>
+                                            <td>{$countpraise}</td>
+                                            <td>{$countspred}</td>
+                                        </tr>
+                                    </table>
+                                </div>
+
+                            </div>
+                            <!--<div id="detailchart" class="col-md-12" style="width: 500px;height: 300px;"></div>-->
+                        </div>
+
+
+
+
+                        <div class="col-md-12" >
+                            <div class="panel panel-default col-md-12" style="padding: 0px;">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">阅读的文章</h3>
+                                </div>
+                                <div style="width:100%;" class="panel-body">
+                                    <style>
+                                        .panel-body table{border-left: none;border-right: none;}
+                                        .panel-body table tr td{border-left: none;border-right: none; text-align: center;}
+                                    </style>
+                                    <table class="table table-hover col-md-12">
+                                        <tr>
+                                            <td class="col-md-4">文章名称</td>
+                                            <td class="col-md-2">最近时间</td>
+                                            <td class="col-md-2">阅读次数</td>
+                                            <td class="col-md-2">阅读来源</td>
+                                        </tr>
+
+                                        <empty name="read">
+                                            <tr>
+                                                <td colspan="4">暂时没有阅读文章</td>
+                                            </tr>
+                                            <else/>
+                                            <volist name="read" id="vo">
+                                                <tr>
+                                                    <td>{$vo.title}</td>
+                                                    <td>{$vo.addtime}</td>
+                                                    <td>{$vo.allnum}</td>
+                                                    <td>
+                                                        <switch name="vo['from']">
+                                                            <case value="0">公众号</case>
+                                                            <case value="1">朋友圈</case>
+                                                            <case value="2">微信群</case>
+                                                            <case value="3">好友分享</case>
+                                                        </switch>
+                                                    </td>
+
+                                                </tr>
+                                            </volist>
+                                        </empty>
+
+
+
+                                        <tr>
+                                            <td colspan="5">{$page3}</td>
+                                        </tr>
+
+                                    </table>
+                                </div>
+
+                            </div>
+                            <!--<div id="detailchart" class="col-md-12" style="width: 500px;height: 300px;"></div>-->
+                        </div>
+
+                        <div class="col-md-12" >
+                            <div class="panel panel-default col-md-12" style="padding: 0px;">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title ">文章分享数</h3>
+
+                                </div>
+                                <div style="width:100%;" class="panel-body">
+                                    <style>
+                                        .panel-body table{border-left: none;border-right: none;}
+                                        .panel-body table tr td{border-left: none;border-right: none; text-align: center;}
+                                    </style>
+                                    <table class="table table-hover col-md-12">
+                                        <tr>
+                                            <td class="col-md-4">文章名称</td>
+                                            <td class="col-md-2">最近时间</td>
+                                            <td class="col-md-2">分享次数</td>
+                                        </tr>
+                                        <empty name="share">
+                                            <tr>
+                                                <td colspan="3">暂时没有分享的文章</td>
+                                            </tr>
+                                            <else/>
+                                            <volist name="share" id="vo">
+                                                <tr>
+                                                    <td>{$vo.title}</td>
+                                                    <td>{$vo.addtime}</td>
+                                                    <td>{$vo.allnum}</td>
+
+                                                </tr>
+                                            </volist>
+                                        </empty>
+
+                                        <tr>
+                                            <td colspan="5">{$page2}</td>
+                                        </tr>
+
+                                    </table>
+                                </div>
+
+                            </div>
+                            <!--<div id="detailchart" class="col-md-12" style="width: 500px;height: 300px;"></div>-->
+                        </div>
+
+
+                        <div class="col-md-12" >
+                            <div class="panel panel-default col-md-12" style="padding: 0px;">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">点赞的文章</h3>
+
+                                </div>
+                                <div style="width:100%;" class="panel-body">
+                                    <style>
+                                        .panel-body table{border-left: none;border-right: none;}
+                                        .panel-body table tr td{border-left: none;border-right: none; text-align: center;}
+                                    </style>
+                                    <table class="table table-hover col-md-12">
+                                        <tr>
+                                            <td class="col-md-4">文章名称</td>
+                                            <td class="col-md-2">点赞时间</td>
+                                        </tr>
+                                        <empty name="praises">
+                                            <tr>
+                                                <td colspan="2">暂时没有点赞的文章</td>
+                                            </tr>
+                                            <else/>
+                                            <volist name="praises" id="vo">
+                                                <tr>
+                                                    <td>{$vo.title}</td>
+                                                    <td>{$vo.addtime}</td>
+
+                                                </tr>
+                                            </volist>
+                                        </empty>
+
+                                        <tr>
+                                            <td colspan="5">{$page1}</td>
+                                        </tr>
+
+                                    </table>
+                                </div>
+
+                            </div>
+                            <!--<div id="detailchart" class="col-md-12" style="width: 500px;height: 300px;"></div>-->
+                        </div>
+
+
+                        <div class="col-md-12" >
+                            <div class="panel panel-default col-md-12" style="padding: 0px;">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">传播的文章</h3>
+
+                                </div>
+                                <div style="width:100%;" class="panel-body">
+                                    <style>
+                                        .panel-body table{border-left: none;border-right: none;}
+                                        .panel-body table tr td{border-left: none;border-right: none; text-align: center;}
+                                    </style>
+                                    <table class="table table-hover col-md-12">
+                                        <tr>
+                                            <td class="col-md-4">文章名称</td>
+                                            <td class="col-md-2">影响力</td>
+                                        </tr>
+                                        <empty name="spred">
+                                            <tr>
+                                                <td colspan="2">分享的文章还没有产生影响</td>
+                                            </tr>
+                                            <else/>
+                                            <volist name="spred" id="vo">
+                                                <tr>
+                                                    <td>{$vo.title}</td>
+                                                    <td>{$vo.allnum}</td>
+                                                </tr>
+                                            </volist>
+                                        </empty>
+
+                                        <tr>
+                                            <td colspan="5">{$page4}</td>
+                                        </tr>
+
+                                    </table>
+                                </div>
+
+                            </div>
+                            <!--<div id="detailchart" class="col-md-12" style="width: 500px;height: 300px;"></div>-->
+                        </div>
+
+
+                        <div class="clearfix"></div>
+                    </div>
+
+                </div>
+            </div>
+
+        </form>
+    </div>
+</div>
+<include file="Public/form" />
+<script src="__PUBLIC__/Admin/lib/echarts/echarts.js"></script>
+
+</body>
+</html>

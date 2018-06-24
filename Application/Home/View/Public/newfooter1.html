@@ -1,0 +1,43 @@
+<style type="text/css">
+    .bot-btn {
+        padding: 0.1rem 0.12rem;
+        background: #fff;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        box-sizing: border-box;
+        border-radius: 0.25rem 0.25rem 0 0;
+        box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.1);
+    }
+
+    .bot-btn button {
+        background: #e6bc85;
+        height: 0.4rem;
+        border-radius: 0.25rem;
+        display: block;
+        color: #fff;
+        font-size: 0.18rem;
+        text-align: center;
+        font-weight: bold;
+        border: 0;
+        width: 48%;
+        float: left;
+    }
+    .bot-btn button:nth-child(2){
+        margin-left: 4%;
+    }
+    .footpadding {
+        padding-top: 0.5rem;
+    }
+</style>
+<div class="footpadding"></div>
+<div class="bot-btn">
+    <button>
+        <a style="color: #fff;" href="{:U('Index/menu')}">贷款申请</a>
+    </button>
+    <button>
+        <a style="color: #fff;" href="{:U('Member/personal')}">我的贷款</a>
+    </button>
+</div>
+

@@ -1,0 +1,120 @@
+
+
+<!doctype html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>{$title}</title>
+    <include file="Public/scripts" /><include file="Public/editor" />
+    <style>
+        .jumbotrondiv1{padding-bottom:0px;margin-bottom:0px;border-radius: 5px;padding-top: 10px; height: 580px;overflow: scroll;}
+        .jumbotrondiv2{padding-bottom:0px;margin-bottom:0px;border-radius: 5px;padding-top: 10px; height:570px;overflow: hidden;}
+        .panel1{padding-bottom:0px;margin-bottom:0px;height: 480px; overflow:scroll;}
+        .panelc{min-height: 50px;padding:5px 0 0 10px;margin-left: 10px; border-radius: 3px;background-color: rgba(0,0,0,0.1);}
+        .answ{float:left; text-align: left;}
+        .ques{float:right; text-align: right;}
+    </style>
+
+</head>
+<body>
+<div class="row">
+    <div class="col-md-12 " >
+        <h2>{$title}</h2>
+    </div>
+    <div class="col-md-12 " >
+        <div class="col-md-3 jumbotron jumbotrondiv1">
+            <div class="panel panel-default", style="margin-bottom: 10px">
+                <div class="panel-body">
+                    消息列表
+                </div>
+            </div>
+            <ul class="list-group msglist">
+                <volist name="list" id="vo">
+                    <li data-id="{$vo.memberid}" style="cursor: pointer;" class="list-group-item">
+                        {$vo.nickname}
+                        <span class="badge" <if condition="$vo['isquesnew'] eq 1"><else/>style="display:none;" </if>>新</span>
+                    </li>
+                </volist>
+            </ul>
+        </div>
+        <div class="col-md-9 jumbotron jumbotrondiv2">
+
+            <div id="mesgpanel" class="panel panel-default panel1">
+
+            </div>
+            <div class="panel panel-default" style="margin-bottom: 10px;position: relative;bottom: 0px;">
+                <div class="input-group">
+                    <input type="hidden" id="memberid"value="" />
+                    <textarea placeholder="输入内容" id="content" class="form-control" rows="3"></textarea>
+                    <span class="input-group-btn" style="height: 100%;">
+                        <button onclick="sendmessage()" style="height: 74px;" class="btn btn-default" type="button">发送</button>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<include file="Public/form" />
+<script type="text/javascript">
+    $(".msglist li").on('click','',function(){
+        var memberid=$(this).attr("data-id");
+        $("#memberid").val(memberid);
+        $.ajax({
+            url:ADMIN_PATH+"/Api/getmessage.html",
+            data:{memberid:memberid},
+            async:false,
+            type:"POST",
+            success:function(data){
+                $("#mesgpanel").html("");
+                var html="";
+                $.each(data,function(index,value){
+                    html+="<div class=\"panel panel-default\" style=\"border: none;\"><div class=\"panel-body\">" +
+                            " <img width=\"50\" src=\""+value.headimgurl+"\" class=\"img-rounded "+value.type+" col-md-1\">" +
+                            "<div class=\""+value.type+" col-md-10 panelc\">"+value.content+"<br/>"+value.addtime+"</div></div></div>"
+
+                });
+                $("#mesgpanel").append(html);
+            }
+        });
+        $("#mesgpanel").scrollTop($("#mesgpanel")[0].scrollHeight);
+        $(this).siblings().removeClass("active");
+        $(this).addClass('active');
+        $(this).find(".badge").hide();
+    });
+
+    function sendmessage(){
+        var content=$("#content").val();
+        var memberid=$("#memberid").val();
+        if($.trim(content)==""|| $.trim(content)==null){
+            alerterr('请输入内容');return;
+        }
+        if($.trim(memberid)==""|| $.trim(memberid)==null){
+            alerterr('获取会员id失败');return;
+        }
+        $.ajax({
+            url:ADMIN_PATH+"/Api/sendmessage.html",
+            data:{content:content,memberid:memberid},
+            async:false,
+            type:"POST",
+            success:function(data){
+                if(data.status==1){
+                    //appendTo
+                    $("#content").val("");
+                    var html='';
+                    html+="<div class=\"panel panel-default\" style=\"border: none;\"><div class=\"panel-body\">" +
+                            " <img width=\"50\" src=\""+data.headimgurl+"\" class=\"img-rounded ques col-md-1\">" +
+                            "<div class=\"ques col-md-10 panelc\">"+content+"<br/>"+data.addtime+"</div></div></div>"
+                    $("#mesgpanel").append(html);
+                }else{
+                    alerterr(data.info);
+                }
+
+            }
+        });
+        $("#mesgpanel").scrollTop($("#mesgpanel")[0].scrollHeight);
+    }
+</script>
+</body>
+</html>
+
+

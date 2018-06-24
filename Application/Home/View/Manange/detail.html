@@ -1,0 +1,169 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>{$title}</title>
+<include file="Public:scripts" /> 
+</head>
+<body>
+<header class="mui-bar mui-bar-nav">
+    <p style="line-height:40px;text-align: center;">
+        <a href="javascript:history.back()" class="l back mui-pull-left">< 返回</a>
+        <span >{$title}</span>
+    </p>
+</header>
+<div class="mui-content">
+    <div class="mui-table-view orderitem mt10">
+        <div class="mui-table-view-cell">
+            <span class="mui-pull-left">文章趋势图 </span>
+            <ul class="breadcrumb mui-pull-right" style="margin: 0;z-index: 999;">
+                <style>
+                    .breadcrumb .active a{color: red;}
+                    .breadcrumb li a{color: black;}
+                </style>
+                <li class="active" style="list-style: none;float: left;margin-right: 20px;"><a href="javascript:void(0)">7天</a></li>
+                <li style="list-style: none;float: left;margin-right: 20px;"><a href="javascript:void(0)">14天</a></li>
+                <li style="list-style: none;float: left;margin-right: 20px;"><a href="javascript:void(0)">30天</a></li>
+            </ul>
+        </div>
+        <div id="detailchart" style="width: 100%;height: 300px;" class="mui-table-view-cell">
+
+        </div>
+    </div>
+
+
+    <div class="mui-table-view cartitem">
+        <div class="mui-table-view-cell">
+            详细数据
+        </div>
+        <div id="msg-list" class="mui-table-view kclist" >
+            <volist name="contentlist" id="vo">
+                <div class="mui-table-view-cell">
+                    <a href="{:U('Manange/article','id='.$vo['id'])}" class="listcont">
+                        <div class="display-box">
+                            <div class="img4-3"><img src="{$vo.indexpic|default=C('DEFAULT_NOPIC')}"></div>
+                            <div class="box-flex-1">
+                                <div class="mui-ellipsis fz16">{$vo.title}</div>
+                                <div class="mui-ellipsis-2 desc">阅读:{$vo.hits}/分享:{$vo.shares}/点赞:{$vo.praises}</div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </volist>
+            <div class="mui-table-view-cell">
+                <style>
+                    .pagination li{
+                        text-align: center;
+                        float: left;
+                        list-style: none;
+
+                        width: 50%;
+                    }
+                </style>
+                {$page}
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+
+
+<script src="__PUBLIC__/Home/js/mui.min.js"></script>
+<script src="__PUBLIC__/Home/js/jquery-2.2.3.min.js"></script>
+<script src="__PUBLIC__/Home/js/jquery.func.js"></script>
+<script src="__PUBLIC__/Home/js/swiper/swiper.3.1.2.jquery.min.js"></script>
+<link rel="stylesheet" href="__PUBLIC__/Home/js/swiper/swiper.3.1.2.min.css" />
+<script src="__PUBLIC__/Home/js/script.js"></script>
+<script>
+    var duihuan_swiper = new Swiper('.duihuan .swiper-container',{
+        slidesPerView:3.2,
+        spaceBetween : 8,
+        autoHeight: true,
+    });
+</script>
+
+<script src="__PUBLIC__/Admin/lib/echarts/echarts.js"></script>
+<script type="text/javascript">
+    $(".breadcrumb li").click(function () {
+        $(this).siblings().removeClass('active');
+        $(this).addClass('active');
+        getanalysis('detail');
+    });
+
+    function getanalysis(type){
+        var ddays=$(".breadcrumb li.active a").html();
+
+        $.ajax({
+            url:"/Admin/Api/getanalysis.html",
+            data:{type:type,ddays:ddays},
+            type:"POST",
+            success: function (data) {
+                switch(type){
+                    case 'detail':
+                        var myChart = echarts.init(document.getElementById("detailchart"));
+                        var option = {
+                            title : {
+                                text: '',
+//                                subtext: '纯属虚构'文章趋势图
+                            },
+                            tooltip : {
+                                trigger: 'axis'
+                            },
+                            legend: {
+                                data:['阅读数','分享数','点赞数']
+                            },
+//                            //右上角工具条
+//                            toolbox: {
+//                                show : true,
+//                                feature : {
+//                                    mark : {show: true},
+//                                    dataView : {show: true, readOnly: false},
+//                                    magicType : {show: true, type: ['line', 'bar']},
+//                                    restore : {show: true},
+//                                    saveAsImage : {show: true}
+//                                }
+//                            },
+                            calculable : true,
+                            xAxis : [
+                                {
+                                    type : 'category',
+                                    boundaryGap : false,
+                                    data : data.dates
+                                }
+                            ],
+                            yAxis : [
+                                {
+                                    type : 'value',
+                                    axisLabel : {
+                                        formatter: '{value}'
+                                    }
+                                }
+                            ],
+                            series : [
+                                data.reads,
+                                data.shares,
+                                data.praises
+                            ]
+                        };
+
+                        // 为echarts对象加载数据
+                        myChart.setOption(option);
+
+
+                    break;
+
+                    default:
+                     break;
+
+                }
+            }
+        });
+        //$("#echarts").html(type);
+    }
+    getanalysis('detail');
+
+</script>
+</body>
+</html>

@@ -1,0 +1,359 @@
+<!doctype html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>{$title}</title>
+    <include file="Public/scripts" /><include file="Public/upload" /><include file="Public/editor" />
+    <script language="javascript">
+        $(function(){
+            InitArea();
+        });
+    </script>
+
+    <js href="__PUBLIC__/Admin/lib/ztree/js/jquery.ztree.all-3.5.min.js" />
+    <css href="__PUBLIC__/Admin/lib/ztree/css/zTreeStyle/zTreeStyle.css" />
+    <style>
+        #nodeTree {
+            margin-top: 0px;
+            border: none;
+        }
+        #nodeTree ul, #nodeTree li {
+            width: 100%;
+        }
+        ul.ztree {
+            width:auto;
+            margin: 0px;
+            overflow-x: hidden;
+        }
+        .ztree li span.button.ico_open {
+            background: url(__PUBLIC__/Admin/lib/ztree/css/zTreeStyle/img/diy/a1.png) no-repeat 0px 0px;
+        }
+        .ztree li span.button.ico_close {
+            background: url(__PUBLIC__/Admin/lib/ztree/css/zTreeStyle/img/diy/a2.png) no-repeat 0px 0px;
+        }
+        .ztree li span.button.ico_docu {
+            background: url(__PUBLIC__/Admin/lib/ztree/css/zTreeStyle/img/diy/a3.png) no-repeat 0px 0px;
+        }
+        #nodeTree_1_switch {
+            visibility: hidden;
+            width: 1px;
+        }
+        /*会员信息*/
+        #memberbox {
+            position: relative;
+            float: left;
+            width: 99%;
+            border: 1px #ddd solid;
+        }
+        #memberinfo {
+            position: absolute;
+            right: 0px;
+            top: 0px;
+            width: 240px;
+            height: 100%;
+            display: none;
+            overflow: hidden;
+            border-left:1px #ddd solid;
+        }
+        #memberinfo .MainTbl{margin:10px;}
+    </style>
+    <script type="text/javascript">
+
+        var setting = {
+            async: {
+                enable: true,
+                url:"{:U('Member/getChildren')}",
+                autoParam:["id=pid", "name=n", "level=lv"],
+                otherParam:{"otherParam":"zTreeAsyncTest"}
+                //,dataFilter: filter
+            },
+            callback: {
+                onClick: onClick
+            }
+        };
+        function onClick(event, treeId, treeNode, clickFlag) {
+            $.getMemberInfo(treeNode.id);
+        }
+
+        $.getMemberInfo=function(id){
+            var url="{:U('Member/getMemberInfo')}?id="+id;
+            $.ajax({url:url,success: function(msg){
+                if(msg.status==1){
+                    for(var itm in msg.info){
+                        if(itm=='headimgurl'){
+                            var $url=msg.info[itm];
+                            if($url==""){
+                                $url="{:C('DEFAULT_AVATAR')}";
+                            }
+                            $("#info-"+itm).attr("src",$url);
+                        }else{
+                            $("#info-"+itm).html(msg.info[itm]);
+                        }
+                    }
+                    $("#memberinfo").show();
+                }else{
+                    $("#memberinfo").hide();
+                };
+            }
+            });
+        };
+        var zNodes = [
+            { id:{$db.id}, pId:{$db.fid}, name:"{$db.username|addslashes}[真实姓名：{$db.userreal}]", open:true }
+        <volist id="vo" name="nodelist" key="k"> ,
+        {
+            id : {$vo.id},pId : {$vo.fid},name : "{$vo.username|addslashes}[真实姓名：{$vo.userreal}] ",isParent:{:$vo['isParent']?1:0},checked : false,open :true
+        }
+        </volist>
+        ];
+
+        $(document).ready(function(){
+            $.fn.zTree.init($("#nodeTree"), setting,zNodes);
+        });
+
+    </script>
+
+</head>
+<body>
+<div class="row">
+    <div class="col-md-12 " >
+        <h2>{$title}</h2>
+    </div>
+    <div class="col-md-12 " >
+        <form action="" method="post" name="form1" id="form1" class="ajaxformx">
+            <input type="hidden" id="id" name="id" value="{$db.id}" />
+            <div class="fancy-tab-container">
+                <ul class="nav nav-tabs fancy">
+                    <li class="active"><a href="#autotab_1" data-toggle="tab">跟进信息</a></li>
+                    <li><a href="#autotab_4" data-toggle="tab">客户信息</a></li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane active" id="autotab_1">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label">跟进时间：</label>
+                                <div class="controls">
+                                    {$db.addtime}
+                                </div>
+                            </div>
+                            <hr />
+                            <div class="form-group">
+                                <label class="control-label">地址：</label>
+                                <div class="controls">
+                                    {$db.address}
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label">备注：</label>
+                                <div class="controls">
+                                    {$db.remark}
+                                </div>
+                            </div>
+							  <div class="form-group">
+                                <label class="control-label">跟进员工：</label>
+                                <div class="controls">
+                                    {:get_cache_value('staff',$db['staffid'],'username')}
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label">图片：</label>
+                                <div class="controls">
+                                    <?php
+										$imglist=explode(',',$db['images']);
+                                       $imglist=array_filter($imglist);
+                                    ?>
+                                    <volist name="imglist" id="vo">
+                                        <img style="width: 200px;" src="{$vo}"/>&nbsp;&nbsp;
+                                    </volist>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="tab-pane" id="autotab_2">
+                        <div class="col-md-6">
+
+                            <div class="form-group">
+                                <label class="control-label">openid：</label>
+                                <div class="controls">
+                                    {$db.openid}
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label">头像：</label>
+                                <div class="controls">
+                                    <a href="{$db.headimgurl|default=C('DEFAULT_AVATAR')}" target="_blank"><img src="{$db.headimgurl|default=C('DEFAULT_AVATAR')}" alt="{$db.nickname}" width="80" /></a>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label">昵称：</label>
+                                <div class="controls">
+                                    {$db.nickname}
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label">关注：</label>
+                                <div class="controls">
+                                    <eq name="db.subscribe" value="1">已关注 {$db.subscribe_time|time_format}<else/>未关注</eq>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label">性别：</label>
+                                <div class="controls">
+                                    <eq name="db.sex" value="2">女<else/>男</eq>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label">所在地：</label>
+                                <div class="controls">
+                                    {$db.country} {$db.province} {$db.city}
+                                </div>
+                            </div>
+
+
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="tab-pane" id="autotab_3">
+                        <div class="col-md-12">
+
+                            <div class="form-group">
+                                <label class="control-label">下级列表：</label>
+                                <div class="controls">
+                                    <div id="memberbox">
+                                        <ul id="nodeTree" class="ztree">
+                                        </ul>
+                                        <div id="memberinfo">
+                                            <table border="0" cellspacing="1" cellpadding="5" class="MainTbl">
+                                                <tr class="toolbar">
+                                                    <td colspan="2" class="tc" onclick="$('#memberinfo').hide();">基本信息</td>
+                                                </tr>
+                                                <tr class="row0">
+                                                    <td  colspan="2" align="center">
+                                                        <img id="info-headimgurl" src=""  style="width:100px; height:100px; border-radius:50%;"/>
+                                                    </td>
+                                                </tr>
+                                                <tr class="row0">
+                                                    <td class="col1" >会员昵称：</td>
+                                                    <td  ><span id="info-username"></span></td>
+                                                </tr>
+                                                <tr class="row0">
+                                                    <td class="col1" >会员姓名：</td>
+                                                    <td  ><span id="info-userreal"></span></td>
+                                                </tr>
+                                                <tr class="row0">
+                                                    <td class="col1" >身份证号：</td>
+                                                    <td  ><span id="info-idcard"></span></td>
+                                                </tr>
+                                                <tr class="row0">
+                                                    <td class="col1" >联系电话：</td>
+                                                    <td  ><span id="info-telephone"></span></td>
+                                                </tr>
+                                                <tr class="row0">
+                                                    <td class="col1" >消费积分：</td>
+                                                    <td  ><span id="info-credit"></span></td>
+                                                </tr>
+                                                <tr class="row0">
+                                                    <td class="col1" >佣金账户：</td>
+                                                    <td  ><span id="info-balance"></span></td>
+                                                </tr>
+                                                <tr class="row0">
+                                                    <td class="col1" >会员等级：</td>
+                                                    <td  ><span id="info-level"></span></td>
+                                                </tr>
+                                                <tr class="row0">
+                                                    <td class="col1" >关注时间：</td>
+                                                    <td  ><span id="info-addtime"></span></td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="tab-pane" id="autotab_4">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label">用户名：</label>
+                                <div class="controls">{$member.username} </div>
+                            </div>
+                            <hr />
+                            <div class="form-group">
+                                <label class="control-label">真实姓名：</label>
+                                <div class="controls">
+                                    {$member.userreal}
+
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label">联系电话：</label>
+                                <div class="controls">
+                                    {$member.telephone}
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label">地址：</label>
+                                <div class="controls">
+                                    {$member.address}
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label">Email：</label>
+                                <div class="controls">
+                                    {$member.email}
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label">公司名称：</label>
+                                <div class="controls">
+                                    {$member.company}
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label">职位：</label>
+                                <div class="controls">
+                                    {$member.zhiwei}
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label">有什么：【用“^”分隔】</label>
+                                <div class="controls">
+                                    {$member.have}
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label">需要什么：【用“^”分隔】</label>
+                                <div class="controls">
+                                    {$member.need}
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group" style="padding:20px 0px;">
+                        <div class="controls">
+                            <hr />
+                            <!--<button type="submit" class="btn btn-success" id="btnSubmit"><i class="fa fa-save"></i> 提交</button>-->
+                            <button type="button" class="btn btn-default" onClick="history.back();"><i class="fa fa-undo"></i> 返回</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<include file="Public/form" />
+</body>
+</html>

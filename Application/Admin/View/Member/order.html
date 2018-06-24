@@ -1,0 +1,201 @@
+<!doctype html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>{$title}</title>
+<include file="Public/scripts" />
+<script language="javascript">
+(function(){
+	//退款
+	$.refund=function($orderno){
+		var url="{:U('Member/refund')}";
+		 
+		 bootbox.confirm("您确定给该订单退款吗？款项将原路退回！", function(result) {
+			if (result) {
+				$.ajax({url:url,data:'out_trade_no='+$orderno,success: function(data){ 
+				if (!(data.toString()).substr(0,1)=="{")
+					{
+						alerterr("对不起，支付证书错误！");
+					}else{
+						if(data.status=="1"){
+							alertok(data.info); 
+						}else{
+							alerterr(data.info);	
+						} 
+					}
+				}
+				}); 
+			}
+		}); 
+	};
+	
+	//退款查询
+	$.refundQuery=function($orderno){
+		var url="{:U('Member/refundQuery')}"; 
+		$.ajax({url:url,data:'out_trade_no='+$orderno,success: function(data){ 
+			//if (!(data.toString()).match("^\{(.+:.+,*){1,}\}$"))
+			if (!(data.toString()).substr(0,1)=="{")
+			{
+				alerterr("对不起，支付证书错误！");
+			}else{
+				if(data.status=="1"){
+					alertok(data.info); 
+				}else{
+					alerterr(data.info);	
+				} 
+			}
+		}
+		});
+	};
+	
+})(jQuery);
+</script>
+</head>
+<body>
+<div class="row">
+  <div class="col-md-12">
+    <div class="col-md-12 custom-tool" >
+      <h2>{$title}</h2>
+      <div style="display: none;" class="pull-right"> <a href="{:U($control.'/statistic')}" class="btn btn-success" title="订单统计"><i class="fa fa-bar-chart"></i> 订单统计</a> </div>
+    </div>
+    <form action="" method="get" class="ajaxformx_" name="form1" id="form1">
+      <input type="hidden" name="p" id="p" value="1" />
+      <input type="hidden" name="status" id="status" value="{$status}" />
+      <table class="table vm">
+        <thead>
+        <th colspan="2">筛选</th>
+            </thead>
+        <tbody>
+          <tr>
+            <td  class="text-right" width="140">状态：</td>
+            <td><div class="col-md-12"> <a href="{:set_url('status','')}" ><span class="label label-default">全部</span></a>
+                <volist name="statuslist" id="vo">
+                  <eq name="status" value="$key">
+                    <if condition="isN($status) eq true"> <a href="{:set_url('status',$key)}"><span class="label label-default">{$statuslist.$key}</span></a>
+                      <else/>
+                      <a href="{:set_url('status',$key)}" ><span class="label label-info">{$statuslist.$key}</span></a> </if>
+                    <else/>
+                    <a href="{:set_url('status',$key)}"  ><span class="label label-default">{$statuslist.$key}</span></a> </eq>
+                </volist>
+              </div></td>
+          </tr>
+          <tr>
+            <td  class="text-right" width="140">类型：</td>
+            <td><div class="col-md-12">
+                <a href="{:set_url('type','')}" ><span <if condition="isN($type) eq true"> class="label label-info"<else/> class="label label-default"</if>>全部</span></a>
+                <a href="{:set_url('type',4)}"><span <if condition="$type eq 4"> class="label label-info"<else/> class="label label-default"</if>>交易订单</span></a>
+                <a href="{:set_url('type',2)}" ><span <if condition="$type eq 2"> class="label label-info"<else/> class="label label-default"</if>>积分订单</span></a>
+
+            </div></td>
+          </tr>
+
+          <tr>
+            <td  class="text-right">关键词：</td>
+            <td><div class="col-md-6">
+                <div class="input-group">
+                  <input type="text" class="form-control" placeholder="输入关键词" name="keyword" id="keyword" value="{$keyword}">
+                  <span class="input-group-btn">
+                  <select class="btn" name="searchtype" id="searchtype">
+                    <option value="0">订单号</option>
+                    <eq name="searchtype" value="1">
+                      <option value="1" selected="selected">收货姓名</option>
+                      <else/>
+                      <option value="1">收货姓名</option>
+                    </eq>
+                    <eq name="searchtype" value="2">
+                      <option value="2" selected="selected">联系电话</option>
+                      <else/>
+                      <option value="2">联系电话</option>
+                    </eq>
+                  </select>
+                  </span> <span class="input-group-btn">
+                  <button type="submit" class="btn fl"><i class="fa fa-search"></i> 查询</button>
+                  </span> </div>
+              </div></td>
+          </tr>
+		  <tr>
+            <td  class="text-right">时间段：</td>
+            <td>
+              <div class="col-md-7">
+                <div class="input-group">
+                  <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                  <input class="form-control datepicker" size="16" type="text" id="timefrom" name="timefrom"  placeholder="开始日期" >
+                  <span class="input-group-addon">-</span>
+                  <input class="form-control datepicker" size="16" type="text"  id="timeto" name="timeto"  placeholder="结束日期" >
+              <span class="input-group-btn">
+                <button onclick="exportorder()" type="button" class="btn fl" >导出</button>
+              </span>
+                </div>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </form>
+    <table class="table  table-first-column-number display full table-striped custom-table vm">
+      <thead>
+      <tr>
+        <th>#</th>
+        <th width="170">订单号</th>
+        <th>用户名</th>
+        <th>订单名称</th>
+        <th>下单时间</th>
+        <th>收货姓名</th>
+        <th>联系电话</th>
+        <th width="80">状态</th>
+        <th width="150">操作</th>
+          </thead>
+      <tbody>
+        <volist name="contentlist" id="vo">
+          <tr>
+            <td></td>
+            <td>{$vo.orderno}</td>
+            <td>{$vo.nickname|default=get_cache_value('member',$vo['memberid'],'username')}</td> 
+            <td>{$vo.name}</td>
+            <td>{$vo.addtime}</td>
+            <td>{$vo.username}</td>
+            <td>{$vo.telephone}</td>
+            <td>{:$statuslist[$vo['status']]}</td>
+            <td>
+            <notempty name="vo.refundinfo">
+            <!--<a href="javascript:void(0);" class="btn" rel="tooltip" onClick="$.refundQuery('{$vo.orderno}')" data-original-title="查询退款"><i class="fa fa-exclamation-circle"></i></a> -->
+            </notempty>
+            <eq name="vo.paystatus" value="1">
+            	<in name="vo.status" value="1,2,3">
+                  <!--<a href="javascript:void(0);" class="btn" onClick="$.refund('{$vo.orderno}')"  rel="tooltip" data-original-title="立即退款"><i class="fa fa-dollar"></i></a>-->
+                </in>
+            </eq>
+            <a href="{:U($control.'/edit'.$action,'id='.$vo['id'])}" class="btn" rel="tooltip" data-original-title="查看"><i class="fa fa-eye"></i></a> 
+            <eq name="vo.status" value="4">
+              <a href="javascript:void(0);" onclick="setDelete('{:U($control.'/delete'.$action,"id=".$vo['id'])}')" class="btn" rel="tooltip" data-original-title="删除"><i class="fa fa-trash"></i></a>
+            </eq>
+            </td>
+          </tr>
+        </volist>
+        <tr>
+          <td colspan="9"><notempty name="page">
+              <div class="pull-left custom-footer">
+                <ul class="pagination" style="margin: 0px;">
+                  {$page}
+                </ul>
+              </div>
+            </notempty> 
+             </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<script type="text/javascript">
+  function exportorder(){
+    var type='{$type?$type:0}';
+    var searchtype=$("#searchtype").val();
+    var keyword=$("#keyword").val();
+    var status='{$status?$status:0}';
+    var timefrom=$('#timefrom').val();
+    var timeto=$('#timeto').val();
+    window.location.href=ADMIN_PATH+"/Rbac/exportxls.html?timefrom="+timefrom+"&timeto="+timeto+"&type="+type+"&searchtype="+searchtype+"&keyword="+keyword+"&act=orderlist&status="+status;
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,108 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>{$title}</title>
+<include file="Public:scripts" />
+
+</head>
+
+<body>
+
+<div class="mui-content">
+	<div class="address-list"  id="msg-list">
+
+	</div>
+
+	<div class="mui-table-view mt10">
+		<div class="mui-table-view-cell">
+			<a href="{:U('Member/editAddress','fromurl='.think_encrypt(get_current_url()))}"class="mui-text-center">+新增收货地址</a>
+		</div>
+	</div>
+
+</div>
+
+
+<include file="Public:footer" />
+<js href="__PUBLIC__/Home/js/jquery.form.js" />
+<script language="javascript">
+	var p = 1;
+	$(function(){
+
+		//删除地址
+		$.deleteAddress=function($id){
+			if(confirm("您确定要删除该地址吗？")){
+				var url="{:U('Member/deleteAddress')}?id="+$id;
+				$.ajax({url:url,success: function(data){
+					if(data.status=="1"){
+						mui.toast(data.info);
+						p=1;
+						$.getAddressList();
+					}else{
+						mui.toast(data.info);
+					}
+				}
+				});
+			}
+		}
+
+		//删除地址
+		$.setAddress=function($id){
+			var url="{:U('Member/setAddress')}?id="+$id;
+			$.ajax({url:url,success: function(data){
+				if(data.status=="1"){
+					mui.toast(data.info);
+					p=1;
+					$.getAddressList();
+				}else{
+					mui.toast(data.info);
+				}
+			}
+			});
+		}
+		//获取车列表
+		$.getAddressList = function() {
+			var $p = arguments[0];
+			if ($p) {
+				p = $p;
+			}
+			$(".slectitem li.active").click();
+			var url = "{:U('Member/getAddressList')}";
+			if (p != 0) {
+				if (p == 1) {
+					$("#msg-list").html('<div class="noresult loading"><img src="__PUBLIC__/Home/images/loading.gif" /></div>');
+				}
+				var $status=$(".sequence .current").attr("data-status");
+
+				var $data = {};
+				$data['status']=$status;
+				$data['p'] = p;
+				$.ajax({
+					url: url,
+					type: 'POST',
+					data: $data,
+					success: function(msg) {
+						$(".loading").hide();
+						if (msg != "") {
+							$("#msg-list").html($("#msg-list").html() + msg);
+							p += 1;
+						} else {
+							p = 0;
+						}
+					}
+				});
+			}
+		};
+
+		$.getAddressList(1);
+		$(window).scroll(function() {
+			var height_bottom = 0; // 距离底边多少像素开始加载
+			if ($(document).scrollTop() + height_bottom >= $(document).height() - $(window).height()) {
+				$.getAddressList();
+			}
+		});
+
+	});
+</script>
+</body>
+</html>

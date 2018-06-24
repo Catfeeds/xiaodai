@@ -1,0 +1,127 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>{$title}</title>
+    <include file="Public:scripts" />
+</head>
+<body>
+<include file="Public:footer" />
+<style>
+    .tjul .active{ border-bottom: 1px solid red;}
+</style>
+<div class="mui-content hz_address">
+    <div style="background-color: white;padding: 5px;height: 50px;margin-bottom:5px;">
+        <ul class="tjul" style="list-style: none; text-align: center;padding: 0px;">
+            <li data-id="1" class="active" style="float: left;width:50%;line-height: 30px;">内部通讯录</li>
+            <li data-id="2" style="float: left;width:50%;  line-height: 30px;">客户通讯录</li>
+        </ul>
+    </div>
+    <div class="add_search">
+        <div>
+            <input class="input1" type="text" name="keyword" id="keyword" placeholder="搜索姓名/电话">
+            <input type="button" onclick="srot()" class="course_sub  commonfont" value="" style="background-color: #f0eff4; border: none;">
+        </div>
+    </div>
+    <div class="add-tit">联系人(<span id="count">{$count}</span>)</div>
+    <div class="mui-table-view addcon" id="upload">
+
+    </div>
+    <div style="text-align: center;padding:20px;" id="loadmore">
+        载入更多
+    </div>
+</div>
+
+
+
+
+
+
+
+<script language="javascript">
+    var allcount='{$count}';
+    var staffcount='{$staffcount}';
+    var p=1;
+
+    var keyword="{$keyword?$keyword:''}";
+    (function(){
+        //设置提示信息
+        $.setTip=function($str){
+            $("#loadmore").html($str).show();
+        };
+
+        //获取列表
+        $.getLists=function(){
+
+            var url="{:U('Contact/getLists','id='.$id)}";
+            var act=$(".tjul .active").attr("data-id");
+            if(parseInt(act)==1){
+                $("#count").html(staffcount);
+            }else{
+                $("#count").html(allcount);
+            }
+            if(p!=0){
+                if(p!=1){
+                    $.setTip("载入中...");
+                }
+                keyword=$("#keyword").val();
+                $.ajax({url:url,type:'GET',data:"p="+p+"&keyword="+keyword+"&act="+act,success: function(msg){
+                    if(msg!=""){
+                        p+=1;
+                        //$("#upload").append(msg);
+                        $("#upload").html($("#upload").html() + msg);
+
+                        if(msg.indexOf("没有记录")==-1){
+                            $.setTip("载入更多");
+                        }else{
+                            $("#loadmore").hide();
+                        }
+                    }else{
+                        p=0;
+                        $.setTip("没有了");
+                        setTimeout(function(){
+                            $("#loadmore").hide();
+                        },2000);
+                    }
+                }});
+            }
+        };
+    })(jQuery);
+
+    $(function(){
+        $.getLists();
+        $(window).scroll(function() {
+            var height_bottom = 0; // 距离底边多少像素开始加载
+            if ($(document).scrollTop() + height_bottom >= $(document).height() - $(window).height()) {
+                $.getLists();
+            }
+        });
+
+        $("#loadmore").click(function(){
+            $.getLists();
+        });
+
+    });
+
+    function srot(){
+        p=1;
+        $("#upload").html("");
+        $.getLists();
+    }
+
+    $(".tjul li").click(function () {
+        $(this).siblings("li").removeClass("active");
+        $(this).addClass("active");
+        p=1;
+        $("#upload").html("");
+        $.getLists();
+    })
+
+
+
+</script>
+<script type="text/javascript">
+
+</script>
+</body>
+</html>

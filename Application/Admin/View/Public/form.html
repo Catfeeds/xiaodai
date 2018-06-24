@@ -1,0 +1,22 @@
+<js href="__PUBLIC__/Admin/lib/bootstrapValidator.min.js,__PUBLIC__/Admin/lib/jquery.form.js" />
+<script type="text/javascript">
+$(document).ready(function() {
+var $form= $('.ajaxformx');
+	if(typeof($fields)=="undefined"){
+		$.rendAjaxForm($form);
+	}else{
+		$form.find("input:text").eq(0).focus();
+		$form.on('success.form.bv', function(e) {
+			$.rendAjaxForm($form);
+		}).bootstrapValidator({ 
+			message: '输入不合法',
+			feedbackIcons: {
+				valid: 'fa fa-check',
+				invalid: 'fa fa-remove',
+				validating: 'fa fa-refresh'
+			},
+			fields: $fields
+		}); 
+	}
+});
+</script>

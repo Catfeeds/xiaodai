@@ -1,0 +1,20 @@
+<empty name="list">
+  <eq name="p" value="1">
+    <div class="noresult"> 暂无记录 </div>
+  </eq>
+</empty>
+<volist name="list" id="vo">
+<?php
+$css='';
+if($vo['status']==1||strtotime($vo['timeto'])<NOW_TIME){
+	$css=' disabled ';
+}
+?>
+<div class="rbox display-box yhq {$css}" data-no="{$vo.no}">
+	<div class="price">&yen;{$vo.amount}</div>
+	<div class="box-flex-1">
+		<div>满{$vo.cost}使用，券号：{$vo.no}</div>
+		<div>使用期限：{:date2format($vo['timefrom'])} 至 {:date2format($vo['timeto'])}</div>
+	</div>
+</div> 
+</volist>

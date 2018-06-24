@@ -1,0 +1,39 @@
+
+<?php
+$navclass=array(); 
+$ctrl=strtolower(CONTROLLER_NAME); 
+    switch($ctrl){
+    	case 'index':
+    	case 'login':
+       		$navclass[0]='class="active"';
+        break;
+    	case 'custom':
+       		$navclass[1]='class="active"';
+        break;
+    	case 'contact':
+       		$navclass[3]='class="active"';
+        break;
+    	case 'message':
+       		$navclass[2]='class="active"';
+        break;
+        default:
+       		$navclass[0]='class="active"';
+    }
+
+?>
+
+
+<footer class="mui-bar mui-bar-footer nav-bottom2">
+    <ul class="clearListStyle mui-clearfix">
+        <li {$navclass[2]}><a href="{:U('Message/index')}">
+		   <if condition="$messagenum gt 0"><span class="mui-badge mui-badge-danger">{$messagenum}</span></if>
+		<span class="iconfont icon-xiaoxi1 kx"></span><span class="iconfont icon-xiaoxi2 sx"></span>消息</a></li>
+        <li {$navclass[3]}><a href="{:U('Contact/index')}"><span class="iconfont icon-tongxun1 kx"></span><span class="iconfont icon-tongxun2 sx"></span>通讯录</a></li>
+        <li {$navclass[1]}><a href="{:U('Custom/index')}"><span class="iconfont icon-kehu1 kx"></span><span class="iconfont icon-kehu2 sx"></span>客户</a></li>
+        <li {$navclass[0]}><a href="{:U('Index/index')}"><span class="iconfont icon-wode1 kx"></span><span class="iconfont icon-wode2 sx"></span>我</a></li>
+    </ul>
+</footer>
+
+<script src="__PUBLIC__/Crm/js/mui.min.js"></script>
+<script src="__PUBLIC__/Crm/js/jquery-2.2.3.min.js"></script>
+<script src="__PUBLIC__/Crm/js/script.js"></script>

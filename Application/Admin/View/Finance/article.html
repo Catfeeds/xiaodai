@@ -1,0 +1,211 @@
+<!doctype html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>{$title}</title>
+    <include file="Public/scripts" /><include file="Public/upload" /><include file="Public/editor" />
+</head>
+<body>
+<div class="row">
+
+    <div class="col-md-12 " >
+        <form action="" method="post" name="form1" id="form1" class="ajaxformx">
+
+            <div class="fancy-tab-container">
+                <ul class="nav nav-tabs fancy">
+                    <li><a href="{:U('Finance/articleanas')}">概览</a></li>
+                    <li class="active"><a href="{:U('Finance/detail')}">文章列表</a></li>
+                    <li><a href="{:U('Finance/memberanas')}">用户分析</a></li>
+                </ul>
+
+
+                <div class="tab-content">
+                    <div class="tab-pane active" id="autotab_1">
+                        <div class="col-md-12 " >
+                            <h4>文章详细数据 > {$title}</h4>
+                        </div>
+                        <div class="col-md-4">
+
+                            <div class="col-md-12">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title">阅读来源</h3>
+                                    </div>
+                                    <div class="panel-body">
+                                        <div id="sorcecharts" style="position:relative;width: 100%;height: 300px;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="col-md-12">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title">文章阅读数
+                                          <span style="cursor: pointer;"
+                                                class="detail-search pull-right" data-name="read" data-id="{$id}">查看详细</span></h3>
+
+                                    </div>
+                                    <div class="panel-body allnum">
+                                           <span class="label label-primary" style="font-size: 20px;">{$db.hits}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title">分享数
+                                          <span style="cursor: pointer;"
+                                                class="detail-search pull-right" data-name="share" data-id="{$id}">查看详细</span></h3>
+
+                                    </div>
+                                    <div class="panel-body allread">
+                                           <span class="label label-primary" style="font-size: 20px;">{$db.shares}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title">点赞数
+                                        <span style="cursor: pointer;"
+                                              class="detail-search pull-right" data-name="praise" data-id="{$id}">查看详细</span></h3>
+
+                                    </div>
+                                    <div class="panel-body allshare">
+                                        <span class="label label-primary" style="font-size: 20px;">{$db.praises}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                                <div class="col-md-12">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <h3 class="panel-title">
+                                                关键传播节点（前4名）
+                                                <span style="cursor: pointer;" class="article-search pull-right" id="btnChoose" data-id="{$id}" data-name="membername">more>></span>
+                                            </h3>
+
+                                        </div>
+                                        <div class="panel-body allshare">
+                                            <volist name="members" id="vo">
+                                                <div class="col-md-6" style="margin: 0 auto;">
+                                                    <div style="width: 100px; border-radius: 50%;overflow: hidden;float: left;">
+                                                        <img style="width: 100%;" src="{$vo['headimgurl']}"/>
+                                                    </div>
+                                                    <div style="float: left;position:relative;font-size: 16px;text-align: center;">
+                                                        {$vo.nickname}<br/>
+                                                        传播量：{$vo.num}
+                                                    </div>
+                                                </div>
+
+                                            </volist>
+                                        </div>
+
+                                    </div>
+                                </div>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </form>
+    </div>
+</div>
+<include file="Public/form" />
+<script src="__PUBLIC__/Admin/lib/echarts/echarts.js"></script>
+<script type="text/javascript">
+
+    function getanalysis(type){
+
+        var id='{$id}';
+        $.ajax({
+            url:ADMIN_PATH+"/Api/getanalysis.html",
+            data:{type:type,id:id},
+            type:"POST",
+            success: function (data) {
+
+//                data= $.parseJSON(data);
+//                console.log(data);
+                switch(type){
+                    case 'single':
+                        var myChart = echarts.init(document.getElementById("sorcecharts"));
+                        option = {
+                            backgroundColor: '#2c343c',
+                            title: {
+                                text: '',
+                                left: 'center',
+                                top: 20,
+                                textStyle: {
+                                    color: '#ccc'
+                                }
+                            },
+
+                            tooltip : {
+                                trigger: 'item',
+                                formatter: "{a} <br/>{b} : {c} ({d}%)"
+                            },
+
+                            series : [
+                                {
+                                    name:'访问来源',
+                                    type:'pie',
+                                    radius : '55%',
+                                    center: ['50%', '50%'],
+                                    data:data,
+                                    roseType: 'radius',
+                                    label: {
+                                        normal: {
+                                            textStyle: {
+                                                color: 'rgba(255, 255, 255, 0.3)'
+                                            }
+                                        }
+                                    },
+                                    labelLine: {
+                                        normal: {
+                                            lineStyle: {
+                                                color: 'rgba(255, 255, 255, 0.3)'
+                                            },
+                                            smooth: 0.2,
+                                            length: 10,
+                                            length2: 20
+                                        }
+                                    },
+                                    itemStyle: {
+                                        normal: {
+                                            color: '#c23531',
+                                            shadowBlur:100,
+                                            shadowColor: 'rgba(0, 0, 0, 0.5)'
+                                        }
+                                    },
+
+                                    animationType: 'scale',
+                                    animationEasing: 'elasticOut',
+                                    animationDelay: function (idx) {
+                                        return Math.random() * 200;
+                                    }
+                                }
+                            ]
+                        };
+
+                        // 为echarts对象加载数据
+                        myChart.setOption(option);
+                      break;
+                    default:
+
+                        break;
+                }
+            }
+        });
+        //$("#echarts").html(type);
+    }
+    getanalysis('single');
+
+</script>
+</body>
+</html>

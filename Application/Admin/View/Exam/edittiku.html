@@ -1,0 +1,184 @@
+<!doctype html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>{$title}</title>
+    <include file="Public/scripts" />
+    <include file="Public/date" />
+</head>
+<body>
+<div class="row">
+    <div class="col-md-12 " >
+        <h2>{$title}</h2>
+    </div>
+    <div class="col-md-12 " >
+        <form action="" method="post" name="form1" id="form1" class="ajaxformx">
+            <input type="hidden" id="id" name="id" value="{$db.id}" />
+            <div class="col-md-6 custom-form">
+
+                <div class="form-group">
+                    <label class="control-label">标题：</label>
+                    <div class="controls">
+                        <input type="text" class="form-control" name="title" id="title" placeholder="输入{$name}标题" value="{$db.title}" />
+                    </div>
+                </div>
+
+                <div class="items">
+                    <notempty name="items">
+                        <volist name="items" id="vo" key="k">
+                            <div class="form-group" style="padding-bottom: 10px;">
+                                <label class="control-label fl" style="line-height: 30px;">{$itemtitle[$k-1]}：</label>
+                                <div class="controls">
+                                    <input type="hidden" name="itemtitle[]" value="{$itemtitle[$k-1]}" />
+                                    <input type="text" style="width: 400px;"
+                                           class="form-control fl" name="items[]" placeholder="{$itemtitle[$k-1]}选项" value="{$vo}" />
+                                    &nbsp;&nbsp;&nbsp;
+                                    <input type="checkbox" name="answer[]" <in name="itemtitle[$k-1]" value="$answer">checked</in> value="{$itemtitle[$k-1]}" />答案
+                                    &nbsp;&nbsp;&nbsp;
+
+                                </div>
+
+                            </div>
+                        </volist>
+                        <else/>
+                        <div class="form-group" style="padding-bottom: 10px;">
+                            <label class="control-label fl" style="line-height: 30px;">A：</label>
+                            <div class="controls">
+                                <input type="hidden" name="itemtitle[]" value="A" />
+                                <input type="text" style="width: 400px;"  class="form-control fl" name="items[]" placeholder="A选项" value="" />
+                                &nbsp;&nbsp;&nbsp;
+                                <input type="checkbox" name="answer[]" value="A" />答案
+                            </div>
+                        </div>
+                        <div class="form-group" style="padding-bottom: 10px;">
+                            <label class="control-label fl" style="line-height: 30px;">B：</label>
+                            <div class="controls">
+                                <input type="hidden" name="itemtitle[]" value="B" />
+                                <input type="text" style="width: 400px;"  class="form-control fl" name="items[]" placeholder="B选项" value="" />
+                                &nbsp;&nbsp;&nbsp;
+                                <input type="checkbox" name="answer[]" value="B" />答案
+                            </div>
+                        </div>
+                        <div class="form-group" style="padding-bottom: 10px;">
+                            <label class="control-label fl" style="line-height: 30px;">C：</label>
+                            <div class="controls">
+                                <input type="hidden" name="itemtitle[]" value="C" />
+                                <input type="text" style="width: 400px;"  class="form-control fl" name="items[]" placeholder="C选项" value="" />
+                                &nbsp;&nbsp;&nbsp;
+                                <input type="checkbox" name="answer[]" value="C" />答案
+                            </div>
+                        </div>
+                        <div class="form-group" style="padding-bottom: 10px;">
+                            <label class="control-label fl" style="line-height: 30px;">D：</label>
+                            <div class="controls">
+                                <input type="hidden" name="itemtitle[]" value="D" />
+                                <input type="text" style="width: 400px;" class="form-control fl" name="items[]" placeholder="D选项" value="" />
+                                &nbsp;&nbsp;&nbsp;
+                                <input type="checkbox" name="answer[]" value="D" />答案
+                            </div>
+                        </div>
+                    </notempty>
+                </div>
+                <div class="form-group">
+
+                    <div class="controls">
+                        <a href="javascript:additem()" class="btn btn-success" title="加一项"><i class="fa fa-plus"></i> 加一项</a>
+
+                        <a href="javascript:deleteitem();" onclick="" class="btn" title="删一项"><i class="fa fa-trash"></i>删一项</a>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label">排序：</label>
+                    <div class="controls">
+                        <input type="text" class="form-control w80" name="sort" id="sort" placeholder="排序" value="{$db.sort}" />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label">此题分值：</label>
+                    <div class="controls">
+                        <input type="text" class="form-control w80" name="point" id="point" placeholder="分值" value="{$db['point']?$db['point']:5}" />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label">状态：</label>
+                    <div class="controls">
+                        <select class="form-control w80 " name="status" id="status">
+                            <volist name="statuslist" id="vo">
+                                <notempty name="db.id">
+                                    <eq name="db.status" value="$key">
+                                        <option value="{$key}" selected="selected">{$vo}</option>
+                                        <else/>
+                                        <option value="{$key}" >{$vo}</option>
+                                    </eq>
+                                    <else/>
+                                    <eq name="key" value="1">
+                                        <option value="{$key}" selected="selected">{$vo}</option>
+                                        <else/>
+                                        <option value="{$key}" >{$vo}</option>
+                                    </eq>
+                                </notempty>
+                            </volist>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group" >
+                    <div class="controls">
+                        <hr />
+                        <button type="submit" class="btn btn-success" id="btnSubmit"><i class="fa fa-save"></i> 提交</button>
+                        <button type="button" class="btn btn-default" onClick="history.back();"><i class="fa fa-undo"></i> 返回</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<script language="javascript">
+
+    function deleteitem(){
+        var itemlength=$(".items .form-group").length;
+        if(itemlength<=2){
+            alert('选项不能少于2项');return;
+        }
+        $(".items .form-group:last").remove();
+
+    }
+
+
+    var character = new Array("A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","X","Y","Z");
+
+
+    function additem(){
+
+        var lastitem=$("input[name='answer[]']:last").val();
+        var index=$("input[name='answer[]']").length;
+        var tihao=character[index];
+
+        var html="<div class='form-group' style='padding-bottom: 10px;'>" +
+                "<label class='control-label fl' style='line-height: 30px;'>"+tihao+"：</label> " +
+                "<div class='controls'>" +
+               "<input type='hidden' name='itemtitle[]' value='"+tihao+"' />"+
+                "<input type='text' style='width: 400px;' class='form-control fl' name='items[]' placeholder='"+tihao+"选项' value='' />" +
+                " &nbsp;&nbsp;&nbsp;<input type='checkbox' name='answer[]' value='"+tihao+"' />答案" +
+                "</div></div>";
+
+
+        $(".items").append(html);
+    }
+
+
+    var $fields={
+        "title": {
+            validators: {
+                notEmpty: {
+                    message: '{$name}标题不能为空'
+                }
+            }
+        }
+    };
+</script>
+<include file="Public/form" />
+</body>
+</html>

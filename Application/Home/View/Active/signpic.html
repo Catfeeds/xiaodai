@@ -1,0 +1,191 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>{$title}</title>
+    <include file="Public:scripts" />
+</head>
+<body>
+
+<div class="mui-content">
+    <!--<form action="success.html" id="form">-->
+    <div class="mui-input-group mt10">
+        <div class="mui-input-row">
+            <label>姓名：</label>
+            <input type="text" placeholder="请填写你的真实姓名" class="mui-input-clear" id="name" />
+        </div>
+        <div class="mui-input-row">
+            <label>QQ：</label>
+            <input type="number" placeholder="请填写你的QQ号码" class="mui-input-clear" id="QQ" />
+        </div>
+        <div class="mui-input-row">
+            <label>手机：</label>
+            <input type="tel" placeholder="请填写你的手机号码" class="mui-input-clear" id="mobile" />
+        </div>
+        <div class="mui-input-row">
+            <label>爱好：</label>
+            <input type="text" placeholder="兴趣爱好" class="mui-input-clear" id="fav" />
+        </div>
+        <div class="mui-input-row">
+            <label>身高：</label>
+            <input type="text" placeholder="身高" class="mui-input-clear" id="height" />
+        </div>
+        <div class="mui-input-row">
+            <label>体重：</label>
+            <input type="text" placeholder="体重" class="mui-input-clear" id="weight" />
+        </div>
+
+        <div class="mui-table-view-divider">个人介绍</div>
+        <div class="mui-input-row autoh">
+            <textarea rows="3" placeholder="请填写你的个人介绍，限200字" id="content"></textarea>
+        </div>
+        <div class="mui-table-view-divider">上传个人形象照片【将自动选择一张作为展示】</div>
+        <div class="mui-table-view">
+            <ul class="clearListStyle mui-clearfix photolist">
+
+                <li id="photoloading" style="display: none;" class="mui-pull-left mui-col-xs-4 mui-col-sm-3">
+                    <div class="cont loading display-box">
+                        <span class="mui-spinner"></span>
+                    </div>
+                </li>
+
+                <li class="mui-pull-left mui-col-xs-4 mui-col-sm-3">
+                    <div class="cont">
+                        <label class="display-box">
+                            <form  id="file_upload" name="file_upload" method="post" action="/Admin/File/upload.html" enctype="multipart/form-data">
+                                <input type="file" id="photo"  name="download" onchange="submitImgForm()" />
+                                <span class="iconfont icon-xj"></span>
+                            </form>
+                        </label>
+                    </div>
+                </li>
+
+            </ul>
+        </div>
+
+    </div>
+    <div class="mui-content-padded">
+        <button onclick="tijiao()" type="button" class="mui-btn mui-btn-primary mui-btn-block mui-btn-sm">提交</button>
+    </div>
+    <!--</form>-->
+</div>
+
+<script src="__PUBLIC__/Home/js/mui.min.js"></script>
+<script src="__PUBLIC__/Home/js/jquery-2.2.3.min.js"></script>
+<script src="__PUBLIC__/Home/js/Validform_v5.3.2_min.js"></script>
+<script src="__PUBLIC__/Home/js/mui.previewimage.js"></script>
+<script src="__PUBLIC__/Home/js/mui.zoom.js"></script>
+<link rel="stylesheet" href="__PUBLIC__/Home/css/priview.css" />
+<script src="__PUBLIC__/Home/js/script.js"></script>
+<script src="__PUBLIC__/Admin/lib/jquery.form.js"></script>
+<script>
+    mui.previewImage();
+    mui('.photolist').on('tap','.close',function(){
+        $(this).parents('li').remove();
+    });
+
+    function submitImgForm(){
+
+        if ($("#photo").val() == "") {
+            alert("请选择一个图片文件，再点击上传。");
+            return;
+        }
+        var file_form = $("#file_upload");
+//        var show_img = $("#img");
+        var options = {
+            type : 'post',
+            url : "/Admin/File/upload.html",
+            dataType: 'text',
+            //contentType: "application/json; charset=utf-8",
+            beforeSubmit:function(){
+                $("#photoloading").css('display','');
+            },
+            success:function(data) {
+                var json_obj = JSON.parse(data);
+                $("#photoloading").css('display','none');
+
+                var html="<li class='mui-pull-left mui-col-xs-4 mui-col-sm-3'>"+
+                        "<input class='photos' type='hidden' value='"+json_obj.info+"' name='photos' />"+
+                        "<div class='cont'>"+
+                        "<img src='"+json_obj.info+"' data-preview-src='' data-preview-group='1'>"+
+                        "<div class='close'><span class='mui-icon mui-icon-closeempty'></span></div>"+
+                        "</div></li>";
+                $(".photolist").prepend(html);
+
+            },
+            error:function(XmlHttpRequest, textStatus, errorThrown){
+                alert(textStatus);
+                alert(errorThrown);
+            }
+        };
+        file_form.ajaxSubmit(options);
+
+    }
+
+    function tijiao(){
+        var name=$("#name").val();
+        var QQ=$("#QQ").val();
+        var mobile=$("#mobile").val();
+        var fav=$("#fav").val();
+        var content=$("#content").val();
+        var height = $("#height").val();
+        var weight = $("#weight").val();
+
+        var photos='';
+        $(".photos").each(function() {
+
+            photos+=$(this).val()+",";
+
+        });
+        if(name==''|| name==null){
+            mui.toast('请输入名字');return;
+        }
+        if(QQ==''|| QQ==null){
+            mui.toast('请输入QQ');return;
+        }
+        if(mobile==''|| mobile==null){
+            mui.toast('请输入手机');return;
+        }
+        if(fav==''|| fav==null){
+            mui.toast('请输入兴趣爱好');return;
+        }
+        if(content==''|| content==null){
+            mui.toast('请输入详细介绍');return;
+        }
+        if(height==''|| height==null){
+            mui.toast('请输入身高');return;
+        }
+        if(weight==''|| weight==null){
+            mui.toast('请输入体重');return;
+        }
+        if(photos==''|| photos==null){
+            mui.toast('上传照片');return;
+        }
+
+        var amount='{$db.price}';
+
+
+
+        $.ajax({
+            url:"/Active/signuppic.html",
+            data:{name:name,qq:QQ,mobile:mobile,fav:fav,content:content,height:height,weight:weight,photo:photos,activeid:'{$id}'},
+            method:'POST',
+            success:function(data){
+                mui.toast(data.info);
+                if(data.status==1){
+
+                    if(parseFloat(amount)>0){
+                        window.location.href="/pay/activeorder/orderno/"+data.info+".html";
+                    }else{
+                        window.location.href="/Active/signsuccess/id/{$id}.html";
+                    }
+
+                    // window.location.href="/Active/view/id/{$id}.html";
+                }
+            }
+        })
+    }
+
+</script>
+</body>
+</html>

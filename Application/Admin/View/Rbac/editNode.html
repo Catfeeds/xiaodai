@@ -1,0 +1,152 @@
+<!doctype html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>{$title}</title>
+<include file="Public/scripts" />
+</head>
+<body>
+<div class="row">
+  <div class="col-md-12 " >
+    <h2>{$title}</h2>
+  </div>
+  <div class="col-md-12 " >
+    <form action="" method="post" name="form1" id="form1" class="ajaxformx">
+      <input type="hidden" id="id" name="id" value="{$db.id}" />
+		<input type="hidden" name="level" id="level" value="{$level}" />
+      <div class="col-md-6 custom-form">
+        <div class="form-group">
+          <label class="control-label">上级：</label>
+          <div class="controls">
+            <select name="pid" id="pid" class="form-control">
+              <option value="0">顶级</option>
+              <volist id="vo" name="list">
+                <if condition="($pid eq $vo['id'])">
+                  <option value="{$vo.id}" selected="selected">{$vo.title}</option>
+                  <else />
+                  <option value="{$vo.id}">{$vo.title}</option>
+                </if>
+                <volist id="action" name="vo.child">
+                  <if condition="($pid eq $action['id'])">
+                    <option value="{$action.id}" selected="selected"> <?php echo(str_repeat("&nbsp;",4));?> |-{$action.title} </option>
+                    <else />
+                    <option value="{$action.id}"> <?php echo(str_repeat("&nbsp;",4));?> |-{$action.title} </option>
+                  </if>
+                  <volist id="method" name="action.child">
+                  <if condition="($pid eq $method['id'])">
+                    <option value="{$method.id}" selected="selected"> <?php echo(str_repeat("&nbsp;",8));?> |-{$method.title} </option>
+                    <else />
+                    <option value="{$method.id}"> <?php echo(str_repeat("&nbsp;",8));?> |-{$method.title} </option>
+                  </if>
+                </volist>
+                
+                </volist>
+              </volist>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="control-label">节点名：</label>
+          <div class="controls">
+            <input type="text" class="form-control" name="name" id="name" placeholder="英文{$name}名" value="{$db.name}" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="control-label">显示名称：</label>
+          <div class="controls">
+            <input type="text" class="form-control" name="title" id="title" placeholder="{$name}名称" value="{$db.title}" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="control-label">描述：</label>
+          <div class="controls">
+            <input type="text" class="form-control" rows="5" name="remark" id="remark" value="{$db.remark}" placeholder="{$name}描述" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="control-label">图标：</label>
+          <div class="controls">
+            <input type="text" class="form-control" name="icon" id="icon" placeholder="图标样式 font awesome" value="{$db.icon}" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="control-label">排序：</label>
+          <div class="controls">
+            <input type="text" class="form-control w80" name="sort" id="sort" value="{$db.sort}"  />
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="control-label">超级：</label>
+          <div class="controls">
+            <select class="form-control w80 "  name="super" id="super">
+              <option value="1">是</option>
+              <if condition="($db.super eq 0)">
+                <option value="0" selected="selected">否</option>
+                <else/>
+                <option value="0">否</option>
+              </if>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="control-label">状态：</label>
+          <div class="controls">
+            <select class="form-control w80 " name="status" id="status">
+              <volist name="statuslist" id="vo">
+                <notempty name="db.id">
+                  <eq name="db.status" value="$key">
+                    <option value="{$key}" selected="selected">{$vo}</option>
+                    <else/>
+                    <option value="{$key}" >{$vo}</option>
+                  </eq>
+                  <else/>
+                  <eq name="key" value="1">
+                    <option value="{$key}" selected="selected">{$vo}</option>
+                    <else/>
+                    <option value="{$key}" >{$vo}</option>
+                  </eq>
+                </notempty>
+              </volist>
+            </select>
+          </div>
+        </div>
+        <div class="form-group" >
+          <div class="controls">
+            <hr />
+            <button type="submit" class="btn btn-success" id="btnSubmit"><i class="fa fa-save"></i> 提交</button>
+            <button type="button" class="btn btn-default" onClick="history.back();"><i class="fa fa-undo"></i> 返回</button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+<script language="javascript">
+var $fields={
+	name: {
+		validators: {
+			notEmpty: {
+				message: '{$name}名不能为空'
+			},stringLength: {
+				message: '最多只能输入10个字'
+			},regexp: {
+				regexp: /^[a-zA-Z0-9\.]+$/,
+				message: '必须是字母'
+			}
+		}
+	} ,
+	title: {
+		validators: {
+			notEmpty: {
+				message: '{$name}显示名称不能为空'
+			}/*,regexp: {
+				regexp: /^[0-9\.]+$/,
+				message: '必须是数字'
+			}*/
+		}
+	} 
+	};
+</script> 
+<include file="Public/form" />
+</body>
+</html>

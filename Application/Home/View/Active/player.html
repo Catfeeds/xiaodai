@@ -1,0 +1,77 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>{$title}</title>
+    <include file="Public:scripts" />
+</head>
+<body>
+<div class="mui-content">
+    <img src="{$player.headimg}" width="100%">
+    <div class="mui-table-view xuanshouinfo">
+        <div class="mui-table-view-cell">
+            <div class="tit">当前票数</div>
+            <div class="box-flex-1">{$player.tickets}</div>
+        </div>
+        <div class="mui-table-view-cell">
+            <div class="tit">姓名</div>
+            <div class="box-flex-1">{$player.name}</div>
+        </div>
+        <div class="mui-table-view-cell">
+            <div class="tit">QQ</div>
+            <div class="box-flex-1">{$player.qq}</div>
+        </div>
+        <div class="mui-table-view-cell">
+            <div class="tit">手机</div>
+            <div class="box-flex-1">{$player.mobile}</div>
+        </div>
+        <div class="mui-table-view-cell">
+            <div class="tit">爱好</div>
+            <div class="box-flex-1">{$player.fav}</div>
+        </div>
+        <div class="mui-table-view-cell">
+            <div class="tit">个人介绍</div>
+            <div class="box-flex-1">{$player.content}</div>
+        </div>
+        <div class="mui-table-view-cell">
+            <div class="tit">形象照片</div>
+            <div class="box-flex-1">
+                <ul class="clearListStyle mui-clearfix photolist">
+                    <volist name="player.photo" id="vo">
+                        <li class="mui-pull-left mui-col-xs-4 mui-col-sm-3">
+                            <div class="cont">
+                                <a href="{$vo}">
+                                <img src="{$vo}" data-preview-src="" data-preview-group="1">
+                                </a>
+                            </div>
+                        </li>
+                    </volist>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="mui-table-view-cell">
+        <div><button type="button" onclick="vote('{$id}')" class="mui-btn mui-btn-primary mui-btn-block mui-btn-sm">投一票</button></div>
+    </div>
+</div>
+
+
+<include file="Public:footer" />
+<script type="text/javascript">
+
+    function vote(id){
+        $.ajax({
+            url:"/Active/vote.html?id="+id,
+            success: function (data) {
+                mui.toast(data.info);
+                if(data.status==1){
+                    window.location.reload();
+                }
+            }
+        })
+    }
+</script>
+
+
+</body>
+</html>

@@ -1,0 +1,104 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>{$title}</title>
+<include file="Public:scripts" />
+
+
+</head>
+
+<body>
+
+<div class="mui-content">
+	<form action="" method="post" class="ajaxformx1" id="form1" name="form1">
+		<input type="hidden" name="fromurl" id="fromurl" value="{$fromurl}" />
+		<div class="mui-input-group mt10">
+			<div class="mui-input-row">
+				<label>收货人：</label>
+				<input type="text" class="mui-input-clear" placeholder="收货人姓名" name="username" id="username" maxlength="10" value="{$db.username}">
+			</div>
+			<div class="mui-input-row">
+				<label>手机号码：</label>
+				<input type="tel" class="mui-input-clear" placeholder="收货人手机电话"  name="telephone" id="telephone" maxlength="11" value="{$db.telephone}">
+			</div>
+			<div class="mui-input-row">
+				<label>所在地区：</label>
+				<if condition="$db">
+					<select id="China_Province" style="width:20%;float: left;"  name="China_Province">
+						{:get_area('china_province',0,$db['provinceid'])}
+					</select>
+					<select id="China_City"  style="width:20%;float: left;" name="China_City"  >
+						{:get_area('china_city',$db['provinceid'],$db['cityid'])}
+					</select>
+					<select id="China_District" style="width:20%;float: left;"  name="China_District"  >
+						{:get_area('china_district',$db['cityid'],$db['districtid'])}
+					</select>
+					<else/>
+					<select id="China_Province" style="width:20%;float: left;"  name="China_Province">
+						{:get_area('china_province',0,$db['provinceid'])}
+					</select>
+					<select id="China_City"  style="width:20%;float: left;display: none;" name="China_City"  >
+						{:get_area('china_city',$db['provinceid'],$db['cityid'])}
+					</select>
+					<select id="China_District" style="width:20%;float: left;display: none;"  name="China_District"  >
+						{:get_area('china_district',$db['cityid'],$db['districtid'])}
+					</select>
+				</if>
+			</div>
+			<div class="mui-input-row autoh">
+				<textarea rows="3" placeholder="详细地址" name="address" id="address" >{$db.address}</textarea>
+			</div>
+
+		</div>
+		<div class="mui-content-padded">
+			<button type="submit" class="mui-btn mui-btn-primary mui-btn-block mui-btn-sm">保存</button>
+		</div>
+	</form>
+</div>
+
+<include file="Public:footer" />
+<js href="__PUBLIC__/Home/js/jquery.form.js" />
+<script language="javascript">
+	$(function(){
+		InitArea();
+		$(".ajaxformx1").ajaxForm(
+				{
+					beforeSubmit:function(d,f,o){
+						var btnSubmit=f.find("input[type='submit']");
+						btnSubmit.attr("disabled",true);
+						var IsSubmit = true;
+						f.find("span.fc_red").each(function(){
+							var obj=$(this).prev("input");
+							var label=$(this).parent().prev();
+							if(obj.val()==""){
+								var txt=(label.text().replace("：",""));
+								mui.toast("对不起,"+txt+"不能为空！");
+								obj.focus();
+								IsSubmit = false;
+								btnSubmit.attr("disabled",false);
+								return false;
+							}
+						});
+						return IsSubmit;
+
+					},success:
+						function(data){
+							if(data.status==1){
+								mui.toast(data.info);
+								var $url=$("#fromurl").val();
+								if($url!=""){
+									location=$url;
+								}else{
+									reloadwin();
+								}
+							}else{
+								mui.toast(data.info);
+							}
+							$("input[type='submit']").attr("disabled",false);
+						}
+				});
+	});
+</script>
+</body>
+</html>
