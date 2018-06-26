@@ -282,6 +282,8 @@ class MemberController extends BaseController {
 			$data['bankinfo']=$bankinfo;
 			unset($data['bankusername'],$data['banktelephone'],$data['bankidcard'],$data['bankbankno'],$data['bankbankname']);
 
+
+			$data['work'] = json_encode($_POST['work']);
 			if ($id) {
 				$db = M ( $tblname )->where ( array (
 						'id' => $id
@@ -331,6 +333,8 @@ class MemberController extends BaseController {
 
 				// 修改
 				$db = M ( $tblname )->find ( $id );
+				$idcard = $db['idcard'];
+                $db['age'] = $this->getAgeByID($idcard);
 				$this->assign ( 'db', $db );
 				$this->assign ( 'title', '修改' . $name . '【' . $id . '】' );
 				// 修改的时候取父ID参数
@@ -389,7 +393,6 @@ class MemberController extends BaseController {
 				$smsHistory[$k]['details']=arraySequence($v['details'],'date','SORT_DESC');
 			}
 			$smsHistory=arraySequence($smsHistory,'month','SORT_DESC');
-
 
 			$sdetails = $result['taskResult']['smsHistory']['details'];
 			$callHistory =$result['taskResult']['callHistory'];
@@ -466,6 +469,8 @@ class MemberController extends BaseController {
 		// var_dump($blackAllArr);
 		// die();
 
+		$this->assign('isBan',getArrVal($blackAllArr['black']['response']['taskResult'],'isBan'));
+		$this->assign('isb',getArrVal($blackAllArr['blackcourt']['response']['taskResult'],'isBan'));
 			// 状态标识
 			$this->assign ( "statuslist", C ( 'STATUS' ) );
 			$this->assign ( "name", $name );
@@ -480,6 +485,25 @@ class MemberController extends BaseController {
 	}
 
 
+    public function getAgeByID($id)
+
+    { //过了这年的生日才算多了1周岁
+
+        if (empty($id)) return '';
+
+        $date = strtotime(substr($id, 6, 8)); //获得出生年月日的时间戳
+
+        $today = strtotime('today'); //获得今日的时间戳
+
+        $diff = floor(($today - $date) / 86400 / 365); //得到两个日期相差的大体年数
+
+        //strtotime加上这个年数后得到那日的时间戳后与今日的时间戳相比
+
+        $age = strtotime(substr($id, 6, 8) . ' +' . $diff . 'years') > $today ? ($diff + 1) : $diff;
+
+        return $age;
+
+    }
 	/**
 	 * 获取用户基本信息
 	 *

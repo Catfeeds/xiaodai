@@ -11,6 +11,10 @@ class LoginController extends Controller {
 	}
 	//登录
 	public function login(){
+        $memberid = get_memberid ();
+        if ($memberid) {
+            redirect(U('Index/menu'));
+        }
 		$data = $_POST;
 		$result = [];
 		if (! is_mobile ( $data['telephone'] )) {
@@ -260,7 +264,7 @@ class LoginController extends Controller {
 			   $this->ajaxReturn($verify);
 		   }
 
-		   $add = $add=M('member')->data($data)->add();
+		   $add=M('member')->data($data)->add();
 
 		   if($add===false){
 			   $result['status']=3;
@@ -269,6 +273,7 @@ class LoginController extends Controller {
 		   }
 
 		   $result['status']=4;
+           session('memberid',$add);
 		   $result['info']="注册成功";
 		   $this->ajaxReturn($result);
 	   }
@@ -307,7 +312,7 @@ class LoginController extends Controller {
 	}
 
 	public function tmobilecallback(){
-		$data = $GLOBALS ['HTTP_RAW_POST_DATA'];
+		$data = file_get_contents('php://input');
 		$res=json_decode($data,true);
 		$taskno=$res['taskNo'];
 		$taskstatus=$res['taskStatus'];
@@ -337,7 +342,7 @@ class LoginController extends Controller {
 
 	}
 	public function zfbcallurl(){
-		$data = $GLOBALS ['HTTP_RAW_POST_DATA'];
+		$data = file_get_contents('php://input');
 		$res=json_decode($data,true);
 		
 		$taskno=$res['taskNo'];
@@ -365,7 +370,7 @@ class LoginController extends Controller {
 
 	}
 	public function taobaocallurl(){
-		$data = $GLOBALS ['HTTP_RAW_POST_DATA'];
+		$data = file_get_contents('php://input');
 		$res=json_decode($data,true);
 		
 		$taskno=$res['taskNo'];
@@ -395,7 +400,7 @@ class LoginController extends Controller {
 	}
 
 	public function duotoucallurl(){
-		$data = $GLOBALS ['HTTP_RAW_POST_DATA'];
+		$data = file_get_contents('php://input');
 		$res=json_decode($data,true);
 
 		$taskno=$res['taskNo'];

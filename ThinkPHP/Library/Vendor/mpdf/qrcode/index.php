@@ -55,13 +55,13 @@ table.qr td.on
 				<input type="submit" value="Afficher">
 			</form>
 			<hr>
-			Génération d'un tableau HTML :<br> 
+			Gé–šé–žation d'un tableau HTML :<br> 
 <?php
 	$qrcode = new QRcode(utf8_encode($msg), $err);
 	$qrcode->displayHTML();
 ?>
 			<br>
-			Génération d'une image PNG : <br>
+			Gé–šé–žation d'une image PNG : <br>
 			<img src="./image.php?msg=<?php echo urlencode($msg); ?>&amp;err=<?php echo urlencode($err); ?>" alt="generation qr-code" style="border: solid 1px black;">
 		</center>
 	</body>

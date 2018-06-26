@@ -103,7 +103,6 @@ $(function(){
       <div class="fancy-tab-container">
         <ul class="nav nav-tabs fancy">
           <li class="active"><a href="#autotab_1" data-toggle="tab">基本信息</a></li>
-          <li><a href="#autotab_4" data-toggle="tab">认证信息</a></li>
           <li><a href="#autotab_5" data-toggle="tab">信用报告</a></li>
           
 <?php
@@ -117,10 +116,11 @@ foreach ($blackAllArr as $taskType => $row) { echo '<li><a href="#autotab_'.$tas
             <div class="col-md-10">
               <div class="form-group">
                 <label class="control-label">用户名：</label>
-                <div class="controls"> <input type="text" class="form-control w150" name="username" id="username" placeholder="输入<?php echo ($name); ?>用户名" value="<?php echo ($db["username"]); ?>"
+                <div class="controls" style="overflow: auto;">
+                  <input type="text" style="float:left;" class="form-control w150" name="username" id="username" placeholder="输入<?php echo ($name); ?>用户名" value="<?php echo ($db["username"]); ?>"
                   <?php if(($db["id"]) > "0"): ?>readonly="readonly"<?php endif; ?>
                   />
-                  <a onclick="getmemberbaogao('carrier','运营商数据',0);" href="javascript:void(0);">获取运营商报告</a></div>
+                  <a style="float:left;line-height: 34px;margin-left: 15px;" onclick="getmemberbaogao('carrier_report','运营商数据',0);" href="javascript:void(0);">获取运营商报告</a></div>
               </div>
               <hr />
               <div class="form-group">
@@ -132,8 +132,13 @@ foreach ($blackAllArr as $taskType => $row) { echo '<li><a href="#autotab_'.$tas
               <div class="form-group">
                 <label class="control-label">身份证号：</label>
                 <div class="controls">
-                  <input type="text" class="form-control" name="idcard" id="idcard" placeholder="输入<?php echo ($name); ?>身份证号" value="<?php echo ($db["idcard"]); ?>" />
+                  <input type="text"  class="form-control" name="idcard" id="idcard" placeholder="输入<?php echo ($name); ?>身份证号" value="<?php echo ($db["idcard"]); ?>" />
                 </div>
+              </div>
+
+              <div class="form-group">
+                <label class="control-label">年龄：<span><?php echo ($db["age"]); ?></span></label>
+               
               </div>
 
               <div class="row">
@@ -202,17 +207,7 @@ foreach ($blackAllArr as $taskType => $row) { echo '<li><a href="#autotab_'.$tas
                 </div>
               </div>
             </div>
-            <div class="row">
-              <div class="col-md-12">
-                <div class="form-group" style="padding:20px 0px;">
-                  <div class="controls">
-                    <hr />
-                    <button type="submit" class="btn btn-success" id="btnSubmit"><i class="fa fa-save"></i> 提交</button>
-                    <button type="button" class="btn btn-default" onClick="history.back();"><i class="fa fa-undo"></i> 返回</button>
-                  </div>
-                </div>
-              </div>
-            </div>
+
             <div class="col-md-4">
               <div class="panel panel-default">
                 <div class="panel-heading">紧急联系人</div>
@@ -332,15 +327,17 @@ foreach ($blackAllArr as $taskType => $row) { echo '<li><a href="#autotab_'.$tas
                 <div class="panel-body">
                   <?php
  $workinfo=json_decode($db['work'],true); ?>
-                  从事行业：<input name="trade" value="<?php echo ($workinfo['trade']); ?>"/>
+                  从事行业：<input name="work[trade]" value="<?php echo ($workinfo['trade']); ?>"/>
                   &nbsp;&nbsp;
-                  工作职位：<input name="work" value="<?php echo ($workinfo['trade']); ?>"/>
+                  工作职位：<input name="work[work]" value="<?php echo ($workinfo['work']); ?>"/>
+
+                  单位电话：<input name="work[]" value="<?php echo ($workinfo['telephone']); ?>"/>
                   &nbsp;&nbsp;
-                  单位名称：<input name="name" value="<?php echo ($workinfo['name']); ?>"/>
+                  单位名称：<input name="work[name]" value="<?php echo ($workinfo['name']); ?>"/>
                   &nbsp;&nbsp;
-                  单位详细地址：<input name="address" value="<?php echo ($workinfo['address']); ?>"/>
+                  单位详细地址：<input name="work[address]" value="<?php echo ($workinfo['address']); ?>"/>
                   &nbsp;&nbsp;
-                  借款用途：<select name='use' style="color: #999;background: #fff;" id="use">
+                  借款用途：<select name='work[use]' style="color: #999;background: #fff;" id="use">
                   <option class="tab" value="" style="color: #999 !important;" disabled selected>请选择用途</option>
                   <option <?php if($workinfo['use'] == 1): ?>selected<?php endif; ?> value="1">租房</option>
                   <option <?php if($workinfo['use'] == 2): ?>selected<?php endif; ?> value="2">手机数码</option>
@@ -349,11 +346,16 @@ foreach ($blackAllArr as $taskType => $row) { echo '<li><a href="#autotab_'.$tas
                   <option <?php if($workinfo['use'] == 5): ?>selected<?php endif; ?> value="5">家具家居</option>
                   <option <?php if($workinfo['use'] == 6): ?>selected<?php endif; ?> value="6">其他</option>
                 </select>
+                  婚姻情况:
+                  <p class="input-p">
+                    <input type="radio" id='marriage1' style="width:35px;"  name="work[marriage]" value="1" <?php if($workinfo['marriage'] == 1): ?>checked<?php endif; ?> />已婚
+                    <input type="radio" id='marriage2' style="width:35px;" name="work[marriage]" value="0" <?php if($workinfo['marriage'] == 0): ?>checked<?php endif; ?> />未婚
+                  </p>
                   <div class="row">
                     <div class="col-md-4">
                       <div class="thumbnail">
                         <a class="image-popup-vertical-fit" href="<?php echo ($workinfo['workimg']); ?>"><img id="workimg" style="height:200px; " src="<?php echo ($workinfo['workimg']); ?>" alt="工作凭证"></a>
-                        <input type="hidden" name="workimg" value="<?php echo ($workinfo['workimg']); ?>"/>
+                        <input type="hidden" name="work[workimg]" value="<?php echo ($workinfo['workimg']); ?>"/>
 
                         <h3>工作凭证</h3>
                       </div>

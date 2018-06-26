@@ -142,7 +142,7 @@
 			<input type="file" onchange="getnewUrl(this.files,'idcardimg2');" style="display: none;" class="uploadpic" />
 			<p onclick="$(this).prev('.uploadpic').click();" class="idcardimg2" style="height: 2.1rem;position: relative;background: url(/Public/newcss/img/jia.png) no-repeat center / 0.5rem 0.5rem;">
 				<notempty name="db.idcardimg1">
-					<img class="idimg" style="" src="{$db.idcardimg2}">
+					<img class="idimg"  src="{$db.idcardimg2}">
 				</notempty>
 			</p>
 			<input type="hidden" name="idcardimg2" value="{$db.idcardimg2}" />
@@ -302,7 +302,7 @@
 						type:"POST",
 						success: function (data) {
 							if(data.status==1){
-								var html="<img class=\"idimg\" style=\"\" src=\""+data.info+"\"/>" ;
+								var html="<img class=\"idimg\" style=\"width:100%;height:100%\" src=\""+data.info+"\"/>" ;
 //              + "<span class=\"delespan\">" +
 //              "<img class=\"deleimg\" src=\"/Public/newcss/img/delete.png\"/> " +
 //              "</span>"

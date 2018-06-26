@@ -122,10 +122,19 @@
                 <input type="text" id='work'  name="work" value="<?php echo ($db['work']); ?>" placeholder="如：服务员/店长/高级美发师" />
             </p>
         </div>
+
+
         <div>
             <span>单位名称:</span>
             <p class="input-p">
                 <input type="text"  id='name' name="name" value="<?php echo ($db['name']); ?>" placeholder="如：北京xx餐饮管理有限公司" />
+            </p>
+        </div>
+
+        <div>
+            <span>单位电话:</span>
+            <p class="input-p">
+                <input type="text" id='telephone'  name="telephone" value="<?php echo ($db['telephone']); ?>" placeholder="如：单位电话" />
             </p>
         </div>
         <div>
@@ -146,6 +155,14 @@
                     <option <?php if($db['use'] == 5): ?>selected<?php endif; ?> value="5">家具家居</option>
                     <option <?php if($db['use'] == 6): ?>selected<?php endif; ?> value="6">其他</option>
                 </select>
+            </p>
+        </div>
+
+        <div>
+            <span>婚姻情况:</span>
+            <p class="input-p">
+                <input type="radio" id='marriage1' style="width:35px;" name="marriage" value="1" <?php if($db['marriage'] == 1): ?>checked<?php endif; ?> />已婚
+                <input type="radio" id='marriage2' style="width:35px;" name="marriage" value="0" <?php if($db['marriage'] == 0): ?>checked<?php endif; ?> />未婚
             </p>
         </div>
 
@@ -229,6 +246,7 @@
         var trade=$("#trade").val();
         var work=$("#work").val();
         var name=$("#name").val();
+        var telephone=$("#telephone").val();
         var address=$("#address").val();
         var use=$("#use").val();
         if($("input[name='workimg']").val()){
@@ -238,6 +256,8 @@
             var workimg='';
         }
 
+        var marriage=$("input[type='radio']:checked").val();
+
 
 
         if($.trim(trade)==""||$.trim(trade)==null){
@@ -246,15 +266,22 @@
         if($.trim(work)==""||$.trim(work)==null){
             yjfunc.mytoast("请输入工作单位");return;
         }
+
         if($.trim(name)==""||$.trim(name)==null){
             yjfunc.mytoast("请输入单位名称");return;
         }
 
+        if($.trim(telephone)==""||$.trim(telephone)==null){
+            yjfunc.mytoast("请输入单位电话");return;
+        }
         if($.trim(address)==""||$.trim(address)==null){
             yjfunc.mytoast("请输入单位详细地址");return;
         }
         if($.trim(use)==""||$.trim(use)==null){
             yjfunc.mytoast("请选择借款用途");return;
+        }
+        if($.trim(marriage)==""||$.trim(marriage)==null){
+            yjfunc.mytoast("请选择婚姻状况");return;
         }
 
 
@@ -262,7 +289,7 @@
 
         $.ajax({
             url:"/Member/subwork.html",
-            data:{trade:trade,work:work,name:name,address:address,use:use,workimg:workimg},
+            data:{trade:trade,work:work,name:name,telephone:telephone,marriage:marriage,address:address,use:use,workimg:workimg},
             type:"POST",
             success: function (data) {
                 if(data.status==1){

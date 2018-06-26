@@ -74,7 +74,7 @@ class PayController extends Controller {
 		
 		vendor ( "WxPayPubHelper/WxPayPubHelper" );
 		$notify = new \Notify_pub ();
-		$xml = $GLOBALS ['HTTP_RAW_POST_DATA'];
+		$xml = file_get_contents('php://input');
 		
 		$notify->saveData ( $xml );
 		// 使用通用通知接口
@@ -234,7 +234,7 @@ class PayController extends Controller {
 
 		vendor ( "WxPayPubHelper/WxPayPubHelper" );
 		$notify = new \Notify_pub ();
-		$xml = $GLOBALS ['HTTP_RAW_POST_DATA'];
+		$xml = file_get_contents('php://input');
 
 		$notify->saveData ( $xml );
 		// 使用通用通知接口
@@ -389,7 +389,7 @@ class PayController extends Controller {
 
 		vendor ( "WxPayPubHelper/WxPayPubHelper" );
 		$notify = new \Notify_pub ();
-		$xml = $GLOBALS ['HTTP_RAW_POST_DATA'];
+		$xml = file_get_contents('php://input');
 
 		$notify->saveData ( $xml );
 		// 使用通用通知接口
@@ -552,7 +552,7 @@ class PayController extends Controller {
 
 		vendor ( "WxPayPubHelper/WxPayPubHelper" );
 		$notify = new \Notify_pub ();
-		$xml = $GLOBALS ['HTTP_RAW_POST_DATA'];
+		$xml = file_get_contents('php://input');
 
 		$notify->saveData ( $xml );
 		// 使用通用通知接口

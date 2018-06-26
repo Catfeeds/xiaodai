@@ -1257,7 +1257,9 @@ function get_date_add($date1 = '', $num = 0, $elaps = 'd') {
  * @return string
  */
 function rand_str($len = 6, $type = '', $addChars = '') {
-	$ctrl = new \Org\Util\String ();
+
+	$ctrl = new \Org\Util\Stringnew ();
+	
 	$str = $ctrl->randString ( $len, $type, $addChars );
 	return $str;
 }

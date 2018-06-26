@@ -11,7 +11,6 @@ class IndexController extends BaseController {
 
 	public function menu() {
 		$memberid=get_memberid();
-		//var_dump($memberid);die;
 
 		$member=M('member')->where(array('id'=>$memberid))->find();
 

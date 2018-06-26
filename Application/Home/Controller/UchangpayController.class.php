@@ -96,7 +96,7 @@ class UchangpayController extends Controller
 	 */
 	public function notify() {
 		
-		$xml = $GLOBALS ['HTTP_RAW_POST_DATA'];
+		$xml = file_get_contents('php://input');
 		
 		$data=u_xml_to_array($xml);
 		logdebug("paydata");

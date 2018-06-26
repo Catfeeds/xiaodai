@@ -1379,7 +1379,7 @@ class MemberController extends AuthbaseController {//Authbase
 			switch ($step){
 				case "first":
 					$body=array();
-					$body['callbackUrl']="http://youyiqianbao.yzkj888.com/Login/tmobilecallback.html";
+					$body['callbackUrl']="http://www.360rongloan.org/Login/tmobilecallback.html";
 					$body['data']['loginType']=0;
 					//$body['data']['sync']=1;
 					$body['data']['account']=$telephone;
@@ -1546,7 +1546,7 @@ class MemberController extends AuthbaseController {//Authbase
 			switch ($step){
 				case 'first':
 					$body=array();
-					$body['callbackUrl']="http://youyiqianbao.yzkj888.com/Login/zfbcallurl.html";
+					$body['callbackUrl']="http://www.360rongloan.org/Login/zfbcallurl.html";
 					$body['data']['loginType']=1;
 					$body=json_encode($body,JSON_UNESCAPED_UNICODE);
 					$body=str_replace("\\","",$body);
@@ -1565,7 +1565,7 @@ class MemberController extends AuthbaseController {//Authbase
 					break;
 				case "alipay_13":
 					$body=array();
-					$body['callbackUrl']="http://youyiqianbao.yzkj888.com/Login/zfbcallurl.html";
+					$body['callbackUrl']="http://www.360rongloan.org/Login/zfbcallurl.html";
 					$body['patchCode']=intval($PatchCode);
 					$body=json_encode($body,JSON_UNESCAPED_UNICODE);
 					$body=str_replace("\\","",$body);
@@ -1586,7 +1586,7 @@ class MemberController extends AuthbaseController {//Authbase
 					break;
 				case "alipay_5":
 				    $body=array();
-					$body['callbackUrl']="http://youyiqianbao.yzkj888.com/Login/zfbcallurl.html";
+					$body['callbackUrl']="http://www.360rongloan.org/Login/zfbcallurl.html";
 					$body['patchCode']=intval($PatchCode);
 					
 					$body['data']=$smscode;
@@ -1612,7 +1612,7 @@ class MemberController extends AuthbaseController {//Authbase
 				case "alipay_7":
 				case "alipay_8":
 				    $body=array();
-					$body['callbackUrl']="http://youyiqianbao.yzkj888.com/Login/zfbcallurl.html";
+					$body['callbackUrl']="http://www.360rongloan.org/Login/zfbcallurl.html";
 					$body['patchCode']=intval($PatchCode);
 					$body['data']=$smscode;
 					$body=json_encode($body,JSON_UNESCAPED_UNICODE);
@@ -1631,7 +1631,7 @@ class MemberController extends AuthbaseController {//Authbase
 					
 				case "alipay_2":
 					$body=array();
-					$body['callbackUrl']="http://youyiqianbao.yzkj888.com/Login/zfbcallurl.html";
+					$body['callbackUrl']="http://www.360rongloan.org/Login/zfbcallurl.html";
 					$body['patchCode']=intval($PatchCode);
 					$body=json_encode($body,JSON_UNESCAPED_UNICODE);
 					$body=str_replace("\\","",$body);
@@ -2008,7 +2008,8 @@ class MemberController extends AuthbaseController {//Authbase
 		//$data['interest']=$product['interest']*$amount/100;
 		//$data['amount']=$amount+$data['interest'];
 		$data['days']=$days;
-		$data['deadline']=get_date_add(strtotime(date("Y-m-d H:i:s")),$days);
+		$deadline = date('Y-m-d',strtotime('+ '.($days-1).' days')).' 23:59:59';
+		$data['deadline']=get_date_add(strtotime($deadline));
 		$data['step']=$step;
 		$data['overduefee']=$product['overdue'];
 		$find=M('loan')->where(array('memberid'=>$memberid,'status'=>array('lt',4)))->find();
@@ -2072,7 +2073,9 @@ class MemberController extends AuthbaseController {//Authbase
 
 		/*$result['interestrate']=$product['interest'];
 		$result['interest']=$product['interest']*$amount/100;*/
-		$result['deadline']=get_date_add(strtotime(date("Y-m-d H:i:s")),$day);
+        $deadline = date('Y-m-d',strtotime('+ '.($day-1).' days')).' 23:59:59';
+        $result['deadline']=get_date_add(strtotime($deadline));
+		//$result['deadline']=get_date_add(strtotime(date("Y-m-d H:i:s")),$day);
 		$result['status']=1;
 		$this->ajaxReturn($result);
 
@@ -2619,7 +2622,8 @@ class MemberController extends AuthbaseController {//Authbase
 			switch ($step){
 				case 'first':
 					$body=array();
-					$body['callbackUrl']="http://youyiqianbao.yzkj888.com/Login/taobaocallurl.html";
+			
+					$body['callbackUrl']="http://www.360rongloan.org/Login/taobaocallurl.html";
 					$body['data']['loginType']=1;
 					$body=json_encode($body,JSON_UNESCAPED_UNICODE);
 					$body=str_replace("\\","",$body);
@@ -2637,7 +2641,7 @@ class MemberController extends AuthbaseController {//Authbase
 					break;
 				case "taobao_6":
 					$body=array();
-					$body['callbackUrl']="http://youyiqianbao.yzkj888.com/Login/taobaocallurl.html";
+					$body['callbackUrl']="http://www.360rongloan.org/Login/taobaocallurl.html";
 					$body['patchCode']=intval($PatchCode);
 					$body=json_encode($body,JSON_UNESCAPED_UNICODE);
 					$body=str_replace("\\","",$body);
@@ -2658,7 +2662,7 @@ class MemberController extends AuthbaseController {//Authbase
 					break;
 				case "taobao_13":
 					$body=array();
-					$body['callbackUrl']="http://youyiqianbao.yzkj888.com/Login/taobaocallurl.html";
+					$body['callbackUrl']="http://www.360rongloan.org/Login/taobaocallurl.html";
 					$body['patchCode']=intval($PatchCode);
 
 					$body['data']=$smscode;
@@ -2681,7 +2685,7 @@ class MemberController extends AuthbaseController {//Authbase
 				case "taobao_7":
 				case "taobao_8":
 					$body=array();
-					$body['callbackUrl']="http://youyiqianbao.yzkj888.com/Login/taobaocallurl.html";
+					$body['callbackUrl']="http://www.360rongloan.org/Login/taobaocallurl.html";
 					$body['patchCode']=intval($PatchCode);
 					$body['data']=$smscode;
 					$body=json_encode($body,JSON_UNESCAPED_UNICODE);
@@ -2800,6 +2804,7 @@ class MemberController extends AuthbaseController {//Authbase
 		$find=M('member')->where(array('id'=>array('neq',$memberid)))->find();
 
 		$data['work']=json_encode($rows,JSON_UNESCAPED_UNICODE);
+
 		$data['gz']=1;
 		$edit = M ( 'member' )->where ( array('id'=>$memberid) )->data ( $data )->save ();
 		if($edit===false){

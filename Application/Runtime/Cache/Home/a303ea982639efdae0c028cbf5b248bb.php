@@ -180,7 +180,7 @@
 					</p>
 				</div>
 			</a>
-			<a  href="<?php echo U('Member/zfb');?>">
+			<!--<a  href="<?php echo U('Member/zfb');?>">
 				<div>
 					<span><img src="/Public/newcss1/img/Alipay.png"/></span>
 					<p class="input-p">
@@ -197,14 +197,13 @@
 						<i class="putset"><?php echo ($member['taobao']==0?'未完成':'已完成'); ?></i>
 					</p>
 				</div>
-			</a>
+			</a>-->
 		</section>
-		<div class="vertical-top">
-			提交贷款订单
-		</div>
+		
 		<section class="input-box" style="margin: 0.12rem;background: #fff;border-radius:0.2rem ;font-size: 0.14rem;">
 			<?php if($canapply == 1): ?><a href="<?php echo U('Member/applyloan');?>">
 					<div>
+						<script>yjfunc.mytoast('您已经上传了所有资料，请提交贷款申请',5000);</script>
 						<span><img src="/Public/newcss/img/daikuan.png"/></span>
 						<p class="input-p">
 							<i class="putname">提交贷款申请</i>
