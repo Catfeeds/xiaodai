@@ -186,14 +186,14 @@
 			<div class="repayment-box">
 				<h4 style="color: #E6BC85;margin: 0.04rem 0;font-size: 0.12rem;">还款金额</h4>
 				
-				<h1 id="money" num="<?php echo ($result['refundamount']); ?>" roder_no="<?php echo ($roderno); ?>"><?php echo ($result['refundamount']); ?></h1>
+				<h1 id="money" num="<?php echo ($result['refundamount']); ?>" roder_no="<?php echo ($roderno); ?>"><?php echo ($result['refundamount']); ?>元</h1>
 				<p class="repay-others"><span><i class="nametit">审批金额</i><b class="c2"><?php echo ($result['damount']); ?></b></span>
 				<span><i class="nametit">服务费</i><b class="c2"><?php echo ($result['interest']); ?></b></span></span>
 				</p>
 				<p class="repay-others"><span><i class="nametit">到账金额</i><b class="c2"><?php echo ($result['daozhang']); ?></b>
 				</span>
 				</p>
-				<p class="repay-others"><span><i class="nametit">剩余天数</i><b class="c2"><?php echo ($result['days']); ?>天</b>
+				<p class="repay-others"><span><i class="nametit">剩余天数</i><b class="c2"><?php echo ($result['days']); ?></b>
 				</span><span>
 						<i class="nametit">状态</i>
 						
@@ -232,6 +232,24 @@
 									<?php if(is_array($coupons)): $i = 0; $__LIST__ = $coupons;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$vo): $mod = ($i % 2 );++$i;?><option  value="<?php echo ($vo['no']); ?>"><?php echo ($vo['title']); ?> 优惠<?php echo ($vo['amount']); ?></option><?php endforeach; endif; else: echo "" ;endif; ?>
 								</select>
 							</p >
+						</div>
+					</a>
+				</li>
+		</div>
+		
+		<div class="vertical-top">还款方式<span style="color:red;font-size:12px;line-height: 22px;
+    margin-left: 10px;">请您扫码联系我们工作人员处理，或者您也可以电话联系我们：17195735358</span></div>
+
+		<div class="input-box">
+
+				
+				<li>
+					<a>
+						<div class="input-box">
+							<span>微信</span>
+							<p>
+							<img style="width: 100px;" src="/Public/images/wechat.jpg">
+							</p>
 						</div>
 					</a>
 				</li>
@@ -307,7 +325,8 @@
 				</button>
 				<button class="b-btn2">
 					<a style="color: #fff;">确认还款</a>
-				</button>
+				</button>>
+				
 			</div><?php endswitch;?>
 
 		<style type="text/css">
@@ -396,9 +415,9 @@
 				<h2 style="text-align: center;color: #999;font-size: 0.12rem;margin-top: 0.06rem;font-weight: normal;">(如果不能在期限时间内还款可以申请延期)</h2>
 				<div style="text-align: center">
 					延期时间:
-					<span id="days">3天</span>
+					<span id="days">5天</span>
 					服务费:
-					<span id="service">300元</span>
+					<span id="service"><?php echo ($result['interest']); ?>元</span>
 
 				</div>
 				<button class="Delay-ok">
@@ -589,6 +608,7 @@
 		$('.Delay-ok').click(function(){
 
 			var orderno=$("#money").attr('roder_no');
+	
 			$.ajax({
 				url:"/Member/delay.html",
 				data:{orderno:orderno},

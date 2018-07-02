@@ -13,7 +13,7 @@ class LoginController extends Controller {
 	public function login(){
         $memberid = get_memberid ();
         if ($memberid) {
-            redirect(U('Index/menu'));
+            //redirect(U('Index/menu'));
         }
 		$data = $_POST;
 		$result = [];

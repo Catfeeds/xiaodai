@@ -15,6 +15,13 @@ return array (
     'DATA_BACKUP_COMPRESS_LEVEL' => '9',
     'WEB_SITE_SMS' => '1',
     'LOAN_DAOQI' => '6',
+	'DELAY_CONFIG'=>'{	
+"3990":"990",
+"2990":"890",
+"2000":"600",
+"1500":"450",
+"1000":"300"
+}',
     'SMS_API_URL' => 'https://sdk2.028lk.com/sdk2/BatchSend2.aspx',
     'SMS_USERNAME' => 'cdjs001820',
     'SMS_USERPWD' => '112233@',

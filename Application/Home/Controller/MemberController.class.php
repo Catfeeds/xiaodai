@@ -2242,7 +2242,6 @@ class MemberController extends AuthbaseController {//Authbase
 						$body['data']['frontPhoto']=imgTobase64($member['idcardimg1']);
 						$body['data']['backPhoto']=imgTobase64($member['idcardimg2']);
 						$body['data']['headOption']=1;
-//						dump($body);die;
 						$body=json_encode($body,JSON_UNESCAPED_UNICODE);
 						$token=$tokenobj->generateToken($urlpath,$method,$querystring,$body,$currenttime);
 
@@ -2497,6 +2496,7 @@ class MemberController extends AuthbaseController {//Authbase
 		$this->assign ( 'roderno', $roderno );
 		$loan=M('loan')->where(['orderno'=>$roderno])->find();
 		$step=json_decode($loan['step'],true);
+
 		$html="";
 		foreach($step as $k=>$v){
 			$html.="<li><div><div class=\"down-line\"></div><h1>".$v['addtime']."</h1><h2>".$v['act']."</h2></div></li>";
@@ -2517,11 +2517,28 @@ class MemberController extends AuthbaseController {//Authbase
 		if($loan['status']==4){
 			$refundamount=$loan['refundamount'];
 		}
+        $damount = $loan['damount'];
+        $delayconfig=json_decode(C('config.DELAY_CONFIG'),true);
+        $delay_fee = 0;
+        if($delayconfig)
+        {
+            foreach ($delayconfig as $key => $val) {
+                $delay_fee = $val;
+                if($damount>=$key)
+                {
+                    break;
+                }
+            }
+        }
+
+       // $result['delay_fee'] = $delay_fee;
+
 		$result=array();
 		$result['damount']=$loan['damount'];
-		$result['interest']=$loan['interest'];
+		$result['interest']=$delay_fee;
 		$result['refundamount']=$refundamount;
 		$result['days']=$days;
+		$result['delayconfig'] = $delayconfig;
 		$result['status']=$loan['status'];
 		$result['status1']=$loan['status1'];
 		$result['shenhestatus']=$loan['shenhestatus'];
@@ -2553,11 +2570,15 @@ class MemberController extends AuthbaseController {//Authbase
      //延期
 	public function delay(){
 
-		$data['roderno'] = $_POST['roderno'];
+		$data['orderno'] = $_POST['orderno'];
+		
+		$row = M('loan')->where(['orderno'=>$data['orderno']])->find();
+		
 		$data['addtime'] = date('Y-m-d H:i:s');
 		//未支付
 		$data['status'] = 0;
-		$data['money'] =  300;
+		$data['money'] =  $row['interest'];
+		
 		$data['days'] = 3;
 		$data['dealno'] ='H-'.get_order_no();
         $rs = M('delay')->add($data);

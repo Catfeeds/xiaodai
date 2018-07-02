@@ -1320,6 +1320,7 @@ class ApiController extends Controller
         $msg=$_POST['msg'];
         $money=$_POST['money'];
         $loan=M('loan')->where(array('id'=>$id))->find();
+		$days=$loan['days'];
         $result=array();
         if($status<$loan['status']){
             $result['status']=0;
@@ -1354,6 +1355,7 @@ class ApiController extends Controller
                     $a['interestrate'] =$pro['interest'];
                     $a['amount'] = $a['damount']+$a['interest'];
                     $a['daozhang']=$money*0.7;
+					$a['deadline']=get_date_add(strtotime(date("Y-m-d H:i:s")),$days);
                     $success = M('loan')->where(['id'=>$id])->save($a);
 
                     $rs['status']=1;
