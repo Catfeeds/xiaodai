@@ -2518,19 +2518,14 @@ class MemberController extends AuthbaseController {//Authbase
 			$refundamount=$loan['refundamount'];
 		}
         $damount = $loan['damount'];
-        $delayconfig=json_decode(C('config.DELAY_CONFIG'),true);
-        $delay_fee = 0;
-        if($delayconfig)
+        $delayrate=C('config.DELAY_CONFIG');
+
+        if(!$delayrate)
         {
-            foreach ($delayconfig as $key => $val) {
-                $delay_fee = $val;
-                if($damount>=$key)
-                {
-                    break;
-                }
-            }
+            $delayrate = 0.3;
         }
 
+        $delay_fee = $damount*$delayrate;
        // $result['delay_fee'] = $delay_fee;
 
 		$result=array();

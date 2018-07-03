@@ -1322,12 +1322,12 @@ class ApiController extends Controller
         $loan=M('loan')->where(array('id'=>$id))->find();
 		$days=$loan['days'];
         $result=array();
-        if($status<$loan['status']){
+        /*if($status<$loan['status']){
             $result['status']=0;
             $result['info']="贷款状态不能倒退";
             $this->ajaxReturn($result);
         }
-
+*/
         $statusname="";
         $dataloan=array();
         $dataloan['status']=$status;
@@ -1429,6 +1429,17 @@ class ApiController extends Controller
                 $info['act']="后台操作还款";
                 $dataloan['refundinfo']=json_encode($info,JSON_UNESCAPED_UNICODE);
                 break;
+            case 5:
+                $statusname="申请延期";
+                break;
+            case 6:
+                if($loan['status'] != 6)
+                {
+                    $dataloan['deadline'] =  date("Y-m-d H:i:s",strtotime("+4 day",strtotime($loan['deadline'])));
+                }
+                $statusname="确认延期";
+                break;
+
             default:
                 break;
         }
