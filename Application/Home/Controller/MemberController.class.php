@@ -1,8 +1,8 @@
 <?php
 namespace Home\Controller;
-Vendor('qiniu.autoload');
-use Qiniu\Auth;
-use Qiniu\Storage\UploadManager;
+
+
+
 class MemberController extends AuthbaseController {//Authbase
 	public function index() {
 		$memberid = get_memberid ();
@@ -131,9 +131,7 @@ class MemberController extends AuthbaseController {//Authbase
 		$where = array ();
 		$where ['id'] = $memberid;
 		$db = M ( $tblname )->where ( $where )->find ();
-        $db['idcardimg1'] = $db['idcardimg1'].'?imageMogr2/thumbnail/380x250';
-        $db['idcardimg2'] = $db['idcardimg2'].'?imageMogr2/thumbnail/380x250';
-        $db['idcardimg3'] = $db['idcardimg3'].'?imageMogr2/thumbnail/380x250';
+
 		$this->assign ( 'db', $db );
 		$title = '个人资料';
 		$this->assign ( 'title', $title );
@@ -1246,31 +1244,6 @@ class MemberController extends AuthbaseController {//Authbase
 		$this->display();
 	}
 
-    public function saveqiniuimg(){
-        $key=$_POST['key'];
-        if(!$key){
-
-            $result['status']=0;
-            $result['info']="上传失败";
-            $this->ajaxReturn($result);
-        }
-        $filename=$_POST['filename'];
-        $result=array();
-        $picurl='http://pbeapl0kv.bkt.clouddn.com/'.$key;
-        $memberid=get_memberid();
-
-        $set=M('member')->where(array('id'=>$memberid))->setField('headimgurl',$picurl);
-
-        if($set===false){
-            $result['status']=0;
-            $result['info']="上传失败";
-            $this->ajaxReturn($result);
-        }
-
-        $result['status']=1;
-        $result['info']=$picurl;
-        $this->ajaxReturn($result);
-    }
 
 
 	public function saveimg(){
@@ -2060,7 +2033,6 @@ class MemberController extends AuthbaseController {//Authbase
 
 
 	}
-
 
 
 	public function getapplyloan(){
@@ -2910,21 +2882,5 @@ class MemberController extends AuthbaseController {//Authbase
 		$this->assign('db',$db);
 		$this->display();
 	}
-
-    /*
-     * 生成七牛上传token
-     */
-    public function uptoken(){
-
-        $accessKey = 'XwR_q3yAUhRxGPQaQRqJGZPP_joMJ40sVf7EgUy1';
-        $secretKey = 'YLsDZ4W_YnHMfYiY9Y1L2SyGXZRp5OVc0yYEZOFY';
-        $auth = new Auth($accessKey, $secretKey);
-        $bucket = 'imgserver';
-// 生成上传Token
-        $token = $auth->uploadToken($bucket);
-        $res['uptoken'] = $token;
-        $res['domain'] =  get_memberid ().time();
-        echo json_encode($res);
-    }
 
 }
