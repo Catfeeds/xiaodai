@@ -131,9 +131,6 @@ class MemberController extends AuthbaseController {//Authbase
 		$where = array ();
 		$where ['id'] = $memberid;
 		$db = M ( $tblname )->where ( $where )->find ();
-        $db['idcardimg1'] = $db['idcardimg1'].'?imageMogr2/thumbnail/380x250';
-        $db['idcardimg2'] = $db['idcardimg2'].'?imageMogr2/thumbnail/380x250';
-        $db['idcardimg3'] = $db['idcardimg3'].'?imageMogr2/thumbnail/380x250';
 		$this->assign ( 'db', $db );
 		$title = '个人资料';
 		$this->assign ( 'title', $title );
@@ -1256,7 +1253,7 @@ class MemberController extends AuthbaseController {//Authbase
         }
         $filename=$_POST['filename'];
         $result=array();
-        $picurl='http://pbeapl0kv.bkt.clouddn.com/'.$key;
+        $picurl='https://s3.cn-north-1.amazonaws.com.cn/www.hicootoo.com/'.$key;
         $memberid=get_memberid();
 
         $set=M('member')->where(array('id'=>$memberid))->setField('headimgurl',$picurl);
@@ -2911,6 +2908,68 @@ class MemberController extends AuthbaseController {//Authbase
 		$this->display();
 	}
 
+
+	public function amazontoken(){
+        header('Access-Control-Allow-Origin: *');
+        $aws_key = "AKIAOPHFPM7XD4534J3A";
+        $aws_secret = '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';
+        $expired_reupload = 3600*24*150;
+        $bucket = 'www.hicootoo.com';
+        $algorithm = "AWS4-HMAC-SHA256";
+        $service = "s3";
+        $date = gmdate('Ymd\THis\Z');
+        $shortDate = gmdate('Ymd');
+        $requestType = "aws4_request";
+        $expires = '86400'; // 24 Hours
+
+        $scope = array(
+            $aws_key,
+            $shortDate,
+            "cn-north-1",
+            $service,
+            $requestType
+        );
+        $credentials = implode('/', $scope);
+
+        $policy = array(
+            'expiration' => gmdate('Y-m-d\TG:i:s\Z', strtotime('+6 hours')),
+            'conditions' => array(
+                array('bucket' => $bucket),
+                array('acl' => 'public-read'),
+                array('starts-with', '$key', $_POST['key']),
+                array('starts-with', '$Content-Type', ''),
+                array('content-length-range', 1, 104857600),
+                array('x-amz-credential' => $credentials),
+                array('x-amz-algorithm' => $algorithm),
+                array('x-amz-date' => $date),
+                array('x-amz-expires' => $expires),
+            )
+        );
+        $base64Policy = base64_encode(json_encode($policy));
+
+        // Signing Keys
+        $dateKey = hash_hmac('sha256', $shortDate, 'AWS4' . $aws_secret, true);
+        $dateRegionKey = hash_hmac('sha256', "cn-north-1", $dateKey, true);
+        $dateRegionServiceKey = hash_hmac('sha256', $service, $dateRegionKey, true);
+        $signingKey = hash_hmac('sha256', $requestType, $dateRegionServiceKey, true);
+
+        // Signature
+        $signature = hash_hmac('sha256', $base64Policy, $signingKey);
+
+        echo json_encode(array(
+            "key" => $_POST['key'],
+            "online" => false,
+            "policy" => $base64Policy,
+            "signature" => $signature,
+            "credentials" => $credentials,
+            "signature" => $signature,
+            "date" => $date,
+            "expires" => $expires,
+            "status" => $http_status
+        ));
+
+        exit();
+    }
     /*
      * 生成七牛上传token
      */
