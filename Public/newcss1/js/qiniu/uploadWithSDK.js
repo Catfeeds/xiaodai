@@ -28,7 +28,7 @@ function uploadWithSDK(token, putExtra, config, domain) {
 
         var chunks = response.chunks||[];
         var total = response.total;
-          console.log(total);
+
         // 这里对每个chunk更新进度，并记录已经更新好的避免重复更新，同时对未开始更新的跳过
         for (var i = 0; i < chunks.length; i++) {
           if (chunks[i].percent === 0 || finishedAttr[i]){
@@ -41,7 +41,7 @@ function uploadWithSDK(token, putExtra, config, domain) {
             finishedAttr[i] = true;
           }
         }
-        console.log("进度：" + total.percent + "% ");
+
         compareChunks = chunks;
       };
 

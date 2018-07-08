@@ -5,6 +5,8 @@
 		<meta charset="utf-8">
 		<title>{$title}</title>
 		<include file="Public:newscripts1" />
+		<js href="https://unpkg.com/qiniu-js@2.4.0/dist/qiniu.min.js" />
+		<js href="__PUBLIC__/newcss1/js/qiniu/qiniu.min.js,__PUBLIC__/newcss1/js/qiniu/uploadWithSDK.js,__PUBLIC__/newcss1/js/qiniu/main.js,__PUBLIC__/newcss1/js/jquery.md5.js" />
 		<style type="text/css">
 			input::-webkit-input-placeholder {
 				color: #999;
@@ -124,12 +126,12 @@
 			}
 		</style>
 		<section class="input-box zj" style="margin: 0.12rem;background: #fff;border-radius:0.2rem ;font-size: 0.14rem;">
-			<input type="file" onchange="getnewUrl(this.files,'idcardimg1');" style="display: none;" class="uploadpic"  />
-			<p onclick="$(this).prev('.uploadpic').click();"  class="idcardimg1" style="height: 2.1rem;position: relative;background: url(/Public/newcss/img/jia.png) no-repeat center / 0.5rem 0.5rem;">
+			<input type="file"  data="idcardimg1" style="display: none;" class="uploadpic"  />
+			<div onclick="$(this).prev('.uploadpic').click();"  class="idcardimg1" style="height: 2.1rem;position: relative;background: url(/Public/newcss/img/jia.png) no-repeat center / 0.5rem 0.5rem;">
 				<notempty name="db.idcardimg1">
 					<img class="idimg"  src="{$db.idcardimg1}">
 				</notempty>
-			</p>
+			</div>
 			<input type="hidden" name="idcardimg1" value="{$db.idcardimg1}" />
 		</section>
 
@@ -139,12 +141,12 @@
 			请上传身份证照片（反面）
 		</div>
 		<section class="input-box zj" style="margin: 0.12rem;background: #fff;border-radius:0.2rem ;font-size: 0.14rem;">
-			<input type="file" onchange="getnewUrl(this.files,'idcardimg2');" style="display: none;" class="uploadpic" />
-			<p onclick="$(this).prev('.uploadpic').click();" class="idcardimg2" style="height: 2.1rem;position: relative;background: url(/Public/newcss/img/jia.png) no-repeat center / 0.5rem 0.5rem;">
+			<input type="file"  data="idcardimg2" style="display: none;" class="uploadpic" />
+			<div onclick="$(this).prev('.uploadpic').click();" class="idcardimg2" style="height: 2.1rem;position: relative;background: url(/Public/newcss/img/jia.png) no-repeat center / 0.5rem 0.5rem;">
 				<notempty name="db.idcardimg1">
 					<img class="idimg"  src="{$db.idcardimg2}">
 				</notempty>
-			</p>
+			</div>
 			<input type="hidden" name="idcardimg2" value="{$db.idcardimg2}" />
 		</section>
 
@@ -157,12 +159,12 @@
 			}
 		</style>
 		<section class="input-box zj" style="margin: 0.12rem;background: #fff;border-radius:0.2rem ;font-size: 0.14rem;">
-			<input type="file" onchange="getnewUrl(this.files,'idcardimg3');" style="display: none;" class="uploadpic"  />
-			<p onclick="$(this).prev('.uploadpic').click();"  class="idcardimg3" style="height: 2.1rem;position: relative;background: url(/Public/newcss/img/jia.png) no-repeat center / 0.5rem 0.5rem;">
+			<input type="file" data="idcardimg3" style="display: none;" class="uploadpic"  />
+			<div onclick="$(this).prev('.uploadpic').click();"  class="idcardimg3" style="height: 2.1rem;position: relative;background: url(/Public/newcss/img/jia.png) no-repeat center / 0.5rem 0.5rem;">
 				<notempty name="db.idcardimg3">
 					<img class="idimg"  src="{$db.idcardimg3}">
 				</notempty>
-			</p>
+			</div>
 			<input type="hidden" name="idcardimg3" value="{$db.idcardimg3}" />
 		</section>
 
@@ -296,23 +298,7 @@
 					Cntx.drawImage(agoimg, 0, 0,1100*m,1100);
 					var Pic = document.getElementById("myCanvas").toDataURL("image/png");
 
-					$.ajax({
-						url:"/Member/saveimg.html",
-						data:{pic:Pic},
-						type:"POST",
-						success: function (data) {
-							if(data.status==1){
-								var html="<img class=\"idimg\" style=\"width:100%;height:100%\" src=\""+data.info+"\"/>" ;
-//              + "<span class=\"delespan\">" +
-//              "<img class=\"deleimg\" src=\"/Public/newcss/img/delete.png\"/> " +
-//              "</span>"
-								$("."+classes).html(html);
-								$('input[name="'+classes+'"]').val(data.info);
-							}else{
-								yjfunc.myconfirm(data.info);
-							}
-						}
-					});
+
 
 
 				};

@@ -1,6 +1,5 @@
 // 实现form直传无刷新并解决跨域问题
 function uploadWithForm(token, putExtra, config) {
-  controlTabDisplay("form");
   // 获得上传地址
   qiniu.getUploadUrl(config, token).then(function(res){
     var uploadUrl = res;
