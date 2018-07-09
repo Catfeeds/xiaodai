@@ -1253,7 +1253,7 @@ class MemberController extends AuthbaseController {//Authbase
         }
         $filename=$_POST['filename'];
         $result=array();
-        $picurl='https://s3.cn-north-1.amazonaws.com.cn/www.hicootoo.com/'.$key;
+        $picurl='https://s3-ap-southeast-1.amazonaws.com/daikuan/'.$key;
         $memberid=get_memberid();
 
         $set=M('member')->where(array('id'=>$memberid))->setField('headimgurl',$picurl);
@@ -2911,10 +2911,10 @@ class MemberController extends AuthbaseController {//Authbase
 
 	public function amazontoken(){
         header('Access-Control-Allow-Origin: *');
-        $aws_key = "AKIAOPHFPM7XD4534J3A";
-        $aws_secret = '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';
+        $aws_key = "AKIAIPXF7FQFW26HKDYA";
+        $aws_secret = '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';
         $expired_reupload = 3600*24*150;
-        $bucket = 'www.hicootoo.com';
+        $bucket = 'daikuan';
         $algorithm = "AWS4-HMAC-SHA256";
         $service = "s3";
         $date = gmdate('Ymd\THis\Z');
@@ -2925,7 +2925,7 @@ class MemberController extends AuthbaseController {//Authbase
         $scope = array(
             $aws_key,
             $shortDate,
-            "cn-north-1",
+            "ap-southeast-1",
             $service,
             $requestType
         );
@@ -2949,7 +2949,7 @@ class MemberController extends AuthbaseController {//Authbase
 
         // Signing Keys
         $dateKey = hash_hmac('sha256', $shortDate, 'AWS4' . $aws_secret, true);
-        $dateRegionKey = hash_hmac('sha256', "cn-north-1", $dateKey, true);
+        $dateRegionKey = hash_hmac('sha256', "ap-southeast-1", $dateKey, true);
         $dateRegionServiceKey = hash_hmac('sha256', $service, $dateRegionKey, true);
         $signingKey = hash_hmac('sha256', $requestType, $dateRegionServiceKey, true);
 
