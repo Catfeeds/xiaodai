@@ -1580,7 +1580,7 @@ class MemberController extends AuthbaseController {//Authbase
 					$token=$tokenobj->generateToken($urlpath,$method,$querystring,$body,$currenttime);
 					$header[] = "X-IbeeAuth-Token:{$token}";
 					$result = get_curl($url, $method, $body, $header);
-				
+
 					$result['gettime']=date("Y-m-d H:i:s");
 					$tasknos=$result['taskNo'];
 					$img = base64Toimg($result['data']);
@@ -1599,12 +1599,12 @@ class MemberController extends AuthbaseController {//Authbase
 					$token=$tokenobj->generateToken($urlpath,$method,$querystring,$body,$currenttime);
 					$header[] = "X-IbeeAuth-Token:{$token}";
 					$result = get_curl($url, $method, $body, $header);
-				
+
 					$result['gettime']=date("Y-m-d H:i:s");
 					$tasknos=$taskNo;
-				
+
 					$img = base64Toimg($result['data']);
-				
+
 					//$taskno="12fe252a49f643c883d430c3bf0dcc731524459231523";
 					//$result['taskStatus']="pending";
 					break;
@@ -1612,7 +1612,7 @@ class MemberController extends AuthbaseController {//Authbase
 				    $body=array();
 					$body['callbackUrl']="http://www.360rongloan.org/Login/zfbcallurl.html";
 					$body['patchCode']=intval($PatchCode);
-					
+
 					$body['data']=$smscode;
 					$body=json_encode($body,JSON_UNESCAPED_UNICODE);
 					$body=str_replace("\\","",$body);
@@ -1622,12 +1622,12 @@ class MemberController extends AuthbaseController {//Authbase
 					$url=$baseurl.$urlpath."?".$querystring;
 					$token=$tokenobj->generateToken($urlpath,$method,$querystring,$body,$currenttime);
 					$header[] = "X-IbeeAuth-Token:{$token}";
-					$result = get_curl($url, $method, $body, $header);		
+					$result = get_curl($url, $method, $body, $header);
 
 					$result['gettime']=date("Y-m-d H:i:s");
 					$tasknos=$taskNo;
-					
-				
+
+
 					break;
 				case "alipay_3":
 				case "alipay_4":
@@ -1650,9 +1650,9 @@ class MemberController extends AuthbaseController {//Authbase
 					$result['gettime']=date("Y-m-d H:i:s");
 					$tasknos=$taskNo;
 					$img = base64Toimg($result['data']);
-			
+
 					break;
-					
+
 				case "alipay_2":
 					$body=array();
 					$body['callbackUrl']="http://www.360rongloan.org/Login/zfbcallurl.html";
@@ -1665,30 +1665,30 @@ class MemberController extends AuthbaseController {//Authbase
 					$token=$tokenobj->generateToken($urlpath,$method,$querystring,$body,$currenttime);
 					$header[] = "X-IbeeAuth-Token:{$token}";
 					$result = get_curl($url, $method, $body, $header);
-                   
+
 					$result['gettime']=date("Y-m-d H:i:s");
 					$tasknos=$taskNo;
 					$img = base64Toimg($result['data']);
-				
+
 					//$taskno="12fe252a49f643c883d430c3bf0dcc731524459231523";
 					//$result['taskStatus']="pending";
 					break;
 				default:
 					break;
 			}
-		
+
 			$datarec=array();
 			$datarec['memberid']=$memberid;
 			$datarec['taskno']=$tasknos;
 			$datarec['addtime'] = date('Y-m-d H:i:s');
 			$datarec['img']=$img;
-			
+
 			//M('member_zfb_record')->where(['memberid'=>4])->delete();die;
 			$exist=M('member_zfb_record')->where(['taskno'=>$datarec['taskno']])->find();
 			if(!$exist){
 				 M('member_zfb_record')->data($datarec)->add();
 			}
-			
+
 			if( $result['taskStatus']=="pending" || $result['taskStatus']=="processing"){
 				$return['status']=1;
 				$return['taskno']=$tasknos;
@@ -1700,11 +1700,11 @@ class MemberController extends AuthbaseController {//Authbase
 
 		}
 
-		
+
 		$this->ajaxReturn($return);
 	}
 	public function getzfbdata($taskno){
-        
+
 		$memberid=get_memberid();
 		$detail=M('member_zfb')->where(array('taskno'=>$taskno,'isget'=>0))->order('addtime desc')->limit(1)->select();
 		$detail=$detail[0];
@@ -1716,7 +1716,7 @@ class MemberController extends AuthbaseController {//Authbase
 		M("member_zfb")->where(array('taskno'=>$taskno,'isget'=>0))->setField('isget',1);//表示该信息已经读取过。
 		$result=json_decode($detail['data'],true);
 		$code=$result['code'];
-	   
+
 		switch($code){
 			case "alipay_13":
 				$return['status']=1;
@@ -2591,14 +2591,14 @@ class MemberController extends AuthbaseController {//Authbase
 	public function delay(){
 
 		$data['orderno'] = $_POST['orderno'];
-		
+
 		$row = M('loan')->where(['orderno'=>$data['orderno']])->find();
-		
+
 		$data['addtime'] = date('Y-m-d H:i:s');
 		//未支付
 		$data['status'] = 0;
 		$data['money'] =  $row['interest'];
-		
+
 		$data['days'] = 3;
 		$data['dealno'] ='H-'.get_order_no();
         $rs = M('delay')->add($data);
@@ -2663,7 +2663,7 @@ class MemberController extends AuthbaseController {//Authbase
 			switch ($step){
 				case 'first':
 					$body=array();
-			
+
 					$body['callbackUrl']="http://www.360rongloan.org/Login/taobaocallurl.html";
 					$body['data']['loginType']=1;
 					$body=json_encode($body,JSON_UNESCAPED_UNICODE);
