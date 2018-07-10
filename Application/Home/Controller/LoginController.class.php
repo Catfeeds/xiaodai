@@ -328,8 +328,7 @@ class LoginController extends Controller {
 				$info['telephone']=$taskrec['telephone'];
 				$info['servicepwd']=$taskrec['servicepwd'];
 				$info=json_encode($info,JSON_UNESCAPED_UNICODE);
-				$set=M('member')->where(array('id'=>$taskrec['memberid']))->setField(array('tmobileinfo'=>$info,'tmobile'=>1));
-
+                $set=M('member')->where(array('id'=>$taskrec['memberid']))->setField(array('tmobileinfo'=>$info,'tmobile'=>1,'update_time'=>date('Y-m-d H:i:s'),'update_info'=>'更新了运营商信息'));
 				$result=$data;
 				$find=M('member_info')->where(array('memberid'=>$taskrec['memberid']))->find();
 				if($find){

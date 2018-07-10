@@ -159,6 +159,8 @@ class MemberController extends AuthbaseController {//Authbase
 		$data = $data1;
 		//var_dump($data);die;
 		$data['cominfo']=1;
+		$data['update_time'] = date('Y-m-d H:i:s');
+		$data['update_info'] = '更新了个人信息';
 		$edit = M ( 'member' )->where ( array('id'=>$memberid) )->data ( $data )->save ();
 		if($edit===false){
 			$result['status']=0;
@@ -1332,8 +1334,10 @@ class MemberController extends AuthbaseController {//Authbase
 		$info=json_encode($info,JSON_UNESCAPED_UNICODE);
 
 		$memberid=get_memberid();
-
-		$save=M('member')->where(array('id'=>$memberid))->setField(array('contactinfo'=>$info,'contacts'=>1));
+		$data = array('contactinfo'=>$info,'contacts'=>1);
+        $data['update_time'] = date('Y-m-d H:i:s');
+        $data['update_info'] = '更新了联系人';
+		$save=M('member')->where(array('id'=>$memberid))->setField($data);
 		if($save===false){
 			$result['status']=0;
 			$result['info']="提交失败，请稍后重试";
@@ -1959,7 +1963,10 @@ class MemberController extends AuthbaseController {//Authbase
 			}
 			$result = array();
              $row['bankinfo'] = json_encode($data,JSON_UNESCAPED_UNICODE);
+            $row['update_time'] = date('Y-m-d H:i:s');
+            $row['update_info'] = '更新了银行卡信息';
 			$set = M('member')->where(['id'=>$id])->save($row);
+
 			if ($set === false) {
 				$result['status'] = 3;
 				$result['info'] = "提交失败，请稍后重试";
@@ -2847,6 +2854,8 @@ class MemberController extends AuthbaseController {//Authbase
 		$data['work']=json_encode($rows,JSON_UNESCAPED_UNICODE);
 
 		$data['gz']=1;
+        $data['update_time'] = date('Y-m-d H:i:s');
+        $data['update_info'] = '更新了工作信息';
 		$edit = M ( 'member' )->where ( array('id'=>$memberid) )->data ( $data )->save ();
 		if($edit===false){
 			$result['status']=0;
@@ -2887,6 +2896,8 @@ class MemberController extends AuthbaseController {//Authbase
 		$memberid=get_memberid();
 		$data['zmfinfo'] = $_POST['zmf'];
 		$data['zmf']=1;
+        $data['update_time'] = date('Y-m-d H:i:s');
+        $data['update_info'] = '更新了芝麻信用';
 		$edit = M ( 'member' )->where ( array('id'=>$memberid) )->data ( $data )->save ();
 		if($edit===false){
 			$result['status']=0;

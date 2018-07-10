@@ -151,7 +151,7 @@ class MemberController extends BaseController {
 		$name = '客户';
 		// 分页
 		$row = C ( 'VAR_PAGESIZE' );
-		$rs = M ( $tblname )->where ( $where )->order ( 'id desc' )->page ( $p, $row );
+		$rs = M ( $tblname )->where ( $where )->order ( 'update_time desc,id desc' )->page ( $p, $row );
 		$list = $rs->select ();
 
 		foreach($list as $key=>$val){

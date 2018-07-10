@@ -1383,14 +1383,16 @@ class ApiController extends Controller
                 break;
             case 2:
                 $statusname="已放款";
-                $deadline=get_date_add(strtotime(date('Y-m-d H:i:s')),7);
+                $days = 7;
+                $deadline = date('Y-m-d',strtotime('+ '.($days-1).' days')).' 23:59:59';
                 $dataloan['paiedtime']=date('Y-m-d H:i:s');
                 $dataloan['deadline']=$deadline;
 
                 $id=$_POST['id'];
                 $loan=M('loan')->where(array('id'=>$id))->find();
-                $memberid=$loan['memberid'];
-                $member=M('member')->where(array('id'=>$memberid))->find();
+                //$memberid=$loan['memberid'];
+                //$member=M('member')->where(array('id'=>$memberid))->find();
+
                 /*$telephone=$loan['telephone'];
 
                 $msg="尊敬的".$member['username'].",您在我公司的贷款".$loan['damount'].'元已发放，特发此短信提醒，未避免不必要的麻烦，请及时还款。【U易钱包】';

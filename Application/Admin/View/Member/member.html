@@ -73,7 +73,7 @@
         <th>身份证号</th>
         <th>联系电话</th>
         <th>注册时间</th>
-
+        <th>最新活动</th>
         <th width="80">状态</th>
         <th width="140">操作</th>
           </thead>
@@ -128,7 +128,7 @@
             <td>{$vo.idcard}</td>
             <td>{$vo.telephone}</td>
             <td>{$vo.addtime}</td>
-
+            <td>{$vo.update_time}<br>{$vo.update_info}</td>
              <td><eq name="vo.status" value="1"> <a href="javascript:void(0);" onclick="setVal('{$tblname}','status',{$vo.id},0,this,'禁用')" class="btn btn-link"  rel="tooltip" data-original-title="点击禁用"><i class="fa fa-check-circle"></i> 启用</a>
                 <else />
                 <a href="javascript:void(0);" onclick="setVal('{$tblname}','status',{$vo.id},1,this,'启用')" class="btn btn-link fc_red"  rel="tooltip" data-original-title="点击启用"><i class="fa fa-times-circle"></i> 禁用</a> </eq></td>
