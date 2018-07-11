@@ -335,6 +335,12 @@ class MemberController extends BaseController {
 				$db = M ( $tblname )->find ( $id );
 				$idcard = $db['idcard'];
                 $db['age'] = $this->getAgeByID($idcard);
+                $db['idcardimg1v'] = $db['idcardimg1'].'?imageMogr2/thumbnail/380x250';
+                $db['idcardimg2v'] = $db['idcardimg2'].'?imageMogr2/thumbnail/380x250';
+                $db['idcardimg3v'] = $db['idcardimg3'].'?imageMogr2/thumbnail/380x250';
+                $db['idcardimg1vl'] = $db['idcardimg1'].'?imageMogr2/thumbnail/600x400';
+                $db['idcardimg2vl'] = $db['idcardimg2'].'?imageMogr2/thumbnail/600x400';
+                $db['idcardimg3vl'] = $db['idcardimg3'].'?imageMogr2/thumbnail/600x400';
 				$this->assign ( 'db', $db );
 				$this->assign ( 'title', '修改' . $name . '【' . $id . '】' );
 				// 修改的时候取父ID参数
@@ -366,6 +372,7 @@ class MemberController extends BaseController {
 			$contactsRanking = $allrows['taskResult']['contactsRanking'];
 			$callDistributionByTime = $allrows['taskResult']['callDistributionByTime'];
 			$taggedCallsAggregation = $allrows['taskResult']['taggedCallsAggregation'];
+
 
 
             $this->assign('userInfo',$userInfo);
