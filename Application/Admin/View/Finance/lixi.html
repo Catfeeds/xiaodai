@@ -59,6 +59,7 @@
                 <th width="180">姓名</th>
                 <th width="80">联系电话</th>
                 <th width="80">产生时间</th>
+                <th width="80">状态</th>
             </tr>
             </thead>
             <tbody>
@@ -77,16 +78,19 @@
                     <td>
                         {$vo.addtime}
                     </td>
+                    <td>
+                        {$vo.status_info}
+                    </td>
                 </tr>
             </volist>
             <tr>
                 <td colspan="4"></td>
                 <td colspan="2" class="text-right">总合计：{$total|to_price}</td>
-                <td colspan="2">当页合计：{$pagetotal|to_price}</td>
+                <td colspan="3">当页合计：{$pagetotal|to_price}</td>
                 <td></td>
             </tr>
             <tr>
-                <td colspan="9"><notempty name="page">
+                <td colspan="10"><notempty name="page">
                     <div class="pull-left custom-footer">
                         <ul class="pagination" style="margin: 0px;">
                             {$page}

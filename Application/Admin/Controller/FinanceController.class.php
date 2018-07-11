@@ -636,7 +636,7 @@ class FinanceController extends BaseController
         $rs = M ( $tblname )
             ->join("my_loan as ml on ml.orderno=lr.orderno")
             ->join('my_member as mm on mm.id=lr.memberid')
-            ->field("lr.*,ml.id as mlid,ml.deadline as deadline,ml.interest,ml.damount,mm.username,mm.telephone,mm.idcard")
+            ->field("lr.*,ml.id as mlid,ml.deadline as deadline,ml.interest,ml.damount,mm.username,mm.telephone,mm.idcard,ml.status")
             ->where ( $where )->order ( 'addtime desc, id asc' )->page ( $p, $row );
         $list = $rs->select ();
 
@@ -656,10 +656,13 @@ class FinanceController extends BaseController
                     break;
                 case 2:
                     $status_info =  "已放款";
+                    break;
                 case 3:
                     $status_info =  "已逾期";
+                    break;
                 case 4:
                     $status_info =  "已放款";
+                    break;
                 case 5:
                     $status_info =  "申请延期";
                     break;
@@ -731,7 +734,7 @@ class FinanceController extends BaseController
         $rs = M ( $tblname )
             ->join("my_loan as ml on ml.orderno=lr.orderno")
             ->join('my_member as mm on mm.id=lr.memberid')
-            ->field("lr.*,ml.id as mlid,ml.deadline as deadline,ml.interest,ml.damount,mm.username,mm.telephone,mm.idcard")
+            ->field("lr.*,ml.id as mlid,ml.deadline as deadline,ml.interest,ml.damount,mm.username,mm.telephone,mm.idcard,ml.status")
             ->where ( $where )->order ( 'addtime desc, id asc' )->page ( $p, $row );
         $list = $rs->select ();
 
@@ -739,7 +742,32 @@ class FinanceController extends BaseController
             ->where ( $where )->getField('sum(amount) as allamount');//->select();
         $pagetotal=0;
         $total=$all;
-        foreach($list as $key=>$val){
+        $status_info = '';
+        foreach($list as $key=>&$val){
+            switch ($val['status']) {
+                case 0:
+                    $status_info =  "待审核";
+                    break;
+                case 1:
+                    $status_info =  "已审核";
+                    break;
+                case 2:
+                    $status_info =  "已放款";
+                    break;
+                case 3:
+                    $status_info =  "已逾期";
+                    break;
+                case 4:
+                    $status_info =  "已放款";
+                    break;
+                case 5:
+                    $status_info =  "申请延期";
+                    break;
+                case 6:
+                    $status_info =  "确认延期";
+                    break;
+            }
+            $val['status_info'] = $status_info;
             $pagetotal+=$val['amount'];
         }
 //        foreach($all as $ka=>$va){
@@ -805,7 +833,7 @@ class FinanceController extends BaseController
         $rs = M ( $tblname )
             ->join("my_loan as ml on ml.orderno=lr.orderno")
             ->join('my_member as mm on mm.id=lr.memberid')
-            ->field("lr.*,ml.id as mlid,ml.damount,mm.username,mm.telephone,mm.idcard")
+            ->field("lr.*,ml.id as mlid,ml.damount,mm.username,mm.telephone,mm.idcard,ml.status")
             ->where ( $where )->order ( 'addtime desc, id asc' )->page ( $p, $row );
         $list = $rs->select ();
 
@@ -813,7 +841,32 @@ class FinanceController extends BaseController
             ->where ( $where )->getField('sum(amount) as allamount');//->select();
         $pagetotal=0;
         $total=$all;
-        foreach($list as $key=>$val){
+        $status_info = '';
+        foreach($list as $key=>&$val){
+            switch ($val['status']) {
+                case 0:
+                    $status_info =  "待审核";
+                    break;
+                case 1:
+                    $status_info =  "已审核";
+                    break;
+                case 2:
+                    $status_info =  "已放款";
+                    break;
+                case 3:
+                    $status_info =  "已逾期";
+                    break;
+                case 4:
+                    $status_info =  "已放款";
+                    break;
+                case 5:
+                    $status_info =  "申请延期";
+                    break;
+                case 6:
+                    $status_info =  "确认延期";
+                    break;
+            }
+            $val['status_info'] = $status_info;
             $pagetotal+=$val['amount'];
         }
 //        foreach($all as $ka=>$va){
@@ -879,7 +932,7 @@ class FinanceController extends BaseController
         $rs = M ( $tblname )
             ->join("my_loan as ml on ml.orderno=lr.orderno")
             ->join('my_member as mm on mm.id=lr.memberid')
-            ->field("lr.*,ml.id as mlid,ml.damount,mm.username,mm.telephone,mm.idcard")
+            ->field("lr.*,ml.id as mlid,ml.damount,mm.username,mm.telephone,mm.idcard,ml.status")
             ->where ( $where )->order ( 'addtime desc, id asc' )->page ( $p, $row );
         $list = $rs->select ();
 
@@ -887,7 +940,32 @@ class FinanceController extends BaseController
             ->where ( $where )->getField('sum(amount) as allamount');//->select();
         $pagetotal=0;
         $total=$all;
-        foreach($list as $key=>$val){
+        $status_info = '';
+        foreach($list as $key=>&$val){
+            switch ($val['status']) {
+                case 0:
+                    $status_info =  "待审核";
+                    break;
+                case 1:
+                    $status_info =  "已审核";
+                    break;
+                case 2:
+                    $status_info =  "已放款";
+                    break;
+                case 3:
+                    $status_info =  "已逾期";
+                    break;
+                case 4:
+                    $status_info =  "已放款";
+                    break;
+                case 5:
+                    $status_info =  "申请延期";
+                    break;
+                case 6:
+                    $status_info =  "确认延期";
+                    break;
+            }
+            $val['status_info'] = $status_info;
             $pagetotal+=$val['amount'];
         }
 //        foreach($all as $ka=>$va){

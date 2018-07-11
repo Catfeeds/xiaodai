@@ -1435,10 +1435,7 @@ class ApiController extends Controller
                 $statusname="申请延期";
                 break;
             case 6:
-                if($loan['status'] != 6)
-                {
-                    $dataloan['deadline'] =  date("Y-m-d H:i:s",strtotime("+4 day",strtotime($loan['deadline'])));
-                }
+                $dataloan['deadline'] =  date("Y-m-d H:i:s",strtotime("+4 day",strtotime($loan['deadline'])));
                 $statusname="确认延期";
                 break;
 
