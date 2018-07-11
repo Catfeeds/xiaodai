@@ -152,7 +152,7 @@
                 <tr>
                     <td><input type="checkbox" name="selectids" value="{$vo.memberid}"></td>
                     <td>{$vo.orderno}</td>
-                    <td><a href="{:U('Member/editMember','id='.$vo['memberid'])}">{:get_cache_value('member',$vo['memberid'],'username')}</a></td>
+                    <td><a href="{:U('Member/editMember','id='.$vo['memberid'])}">{$vo.username}</a></td>
                     <td>{$vo.idcard}</td>
                     <td>{$vo.telephone}</td>
                     <td>{$vo.damount}/{$vo.interest}</td>

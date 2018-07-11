@@ -2000,7 +2000,7 @@ class MemberController extends BaseController {
 		switch ($searchtype) {
 			case '0' :
 				if (! isN ( $keyword )) {
-					$where ['orderno'] = array (
+					$where ['a.orderno'] = array (
 							'like',
 							'%' . $keyword . '%'
 					);
@@ -2008,7 +2008,7 @@ class MemberController extends BaseController {
 				break;
 			case '1' :
 				if (! isN ( $keyword )) {
-					$where ['username'] = array (
+					$where ['b.username'] = array (
 							'like',
 							'%' . $keyword . '%'
 					);
@@ -2016,7 +2016,7 @@ class MemberController extends BaseController {
 				break;
 			case '2' :
 				if (! isN ( $keyword )) {
-					$where ['telephone'] = array (
+					$where ['a.telephone'] = array (
 							'like',
 							'%' . $keyword . '%'
 					);
@@ -2027,24 +2027,24 @@ class MemberController extends BaseController {
 
 		if (is_numeric ( $status )) {
 			if($status==3){
-				$where['status']=array('in','2,3');
-				$where['deadline']=array('lt',date("Y-m-d H:i:s"));
+				$where['a.status']=array('in','2,3');
+				$where['a.deadline']=array('lt',date("Y-m-d H:i:s"));
 			}else{
-				$where ['status'] = $status;
+				$where ['a.status'] = $status;
 			}
 
 		}
+		;
 
 		// 表名
 		$tblname = 'loan';
 		$name = '贷款订单';
 		// 分页
 		$row = C ( 'VAR_PAGESIZE' );
-		$rs = M ( $tblname )->where ( $where )->order ( 'id desc' )->page ( $p, $row );
-		$list = $rs->select ();
-
+		$rs = M ( $tblname )->alias('a')->join('left join my_member b ON b.id = a.memberid')->where ( $where )->order ( 'a.id desc' )->page ( $p, $row );
+		$list = $rs->field('a.*,b.username')->select ();
 		$this->assign ( "contentlist", $list );
-		$count = $rs->where ( $where )->count ();
+		$count = count($list);
 
 		if ($count > $row) {
 			$page = new \Think\Page ( $count, $row );
@@ -2056,7 +2056,6 @@ class MemberController extends BaseController {
 		$this->assign ( "searchtype", $searchtype );
 		$this->assign ( "status", $status );
 		$this->assign('type',$type);
-
 		// 当前表名
 		$control = 'Member';
 		$action = 'loan';
