@@ -5,7 +5,7 @@
 		<meta charset="utf-8">
 		<title>{$title}</title>
 		<include file="Public:newscripts1" />
-		<js href="__PUBLIC__/newcss1/js/qiniu/uploadWithSDK.js,__PUBLIC__/newcss1/js/jquery.md5.js" />
+		<js href="__PUBLIC__/newcss1/js/jquery.md5.js" />
 		<style type="text/css">
 			input::-webkit-input-placeholder {
 				color: #999;
@@ -92,8 +92,6 @@
 	</head>
 
 	<body style="background: #f5f5f5;">
-
-
 		<div class="vertical-top">
 			请填写个人信息
 		</div>
@@ -127,7 +125,7 @@
 			}
 		</style>
 		<section class="input-box zj" style="margin: 0.12rem;background: #fff;border-radius:0.2rem ;font-size: 0.14rem;">
-			<input type="file"  data="idcardimg1" style="display: none;" value="" class="uploadpic" />
+			<input type="file"  data="idcardimg1" style="display: none;" class="uploadpic"  />
 			<div onclick="$(this).prev('.uploadpic').click();"  class="idcardimg1" style="height: 2.1rem;position: relative;background: url(/Public/newcss/img/jia.png) no-repeat center / 0.5rem 0.5rem;">
 				<notempty name="db.idcardimg1">
 					<img class="idimg"  src="{$db.idcardimg1}">
@@ -209,72 +207,7 @@
 		<img id="agoimg" style="display:none;"/>
 	</body>
 	<script type="text/javascript ">
-        // 切换tab后进行一些css操作
-        $(".uploadpic").unbind("change").bind("change",function(){
-            var classes = $(this).attr('data');
-            var file = this.files[0];
 
-            if (file) {
-                var filename = file.name;
-                var ext =/\.[^\.]+/.exec(filename);
-                //var key = domain+$.md5(domain+file.name)+ext;
-                var key = $.md5(file.name)+ext;
-                var postdata = {"key":key};
-                $.ajax({url: "/member/amazontoken",data:postdata,dataType:"json", method:"POST",success: function(k)
-                {
-                    if (k) {
-                        var j = new FormData();
-                        j.append("content-type", "image/jpeg");
-                        j.append("acl", "public-read");
-                        j.append("Policy", k.policy);
-                        j.append("X-Amz-algorithm", "AWS4-HMAC-SHA256");
-                        j.append("X-Amz-credential", k.credentials);
-                        j.append("X-Amz-date", k.date);
-                        j.append("X-Amz-expires", k.expires);
-                        j.append("X-Amz-signature", k.signature);
-                        j.append("key", key);
-                        j.append("file", file);
-                        i = null;
-                        $.ajax({
-                            url: "//s3-ap-southeast-1.amazonaws.com/daikuan/",
-                            type: "POST",
-                            data: j,
-                            processData: false,
-                            contentType: false,
-                            timeout: 60000,
-                            success: function() {
-                                delete(j);
-                                saveimg(filename,key,classes);
-                            },
-                            error: function(m, l) {
-                                delete(j);
-                                alert('上传失败');
-                            }
-                        })
-                    }
-                }})
-            }
-        })
-
-        function saveimg(filename,key,classes){
-            $.ajax({
-                url:"/Member/saveqiniuimg.html",
-                data:{filename:filename,key:key},
-                type:"POST",
-                success: function (data) {
-                    if(data.status==1){
-                        var html="<img class=\"idimg\" style=\"width:100%;height:100%\" src=\""+data.info+"\"/>" ;
-//              + "<span class=\"delespan\">" +
-//              "<img class=\"deleimg\" src=\"/Public/newcss/img/delete.png\"/> " +
-//              "</span>"
-                        $("."+classes).html(html);
-                        $('input[name="'+classes+'"]').val(data.info);
-                    }else{
-                        yjfunc.myconfirm(data.info);
-                    }
-                }
-            });
-        }
 
 
 				function commitinfo(){
@@ -333,6 +266,89 @@
 
 	</script>
 	<script>
+
+        $.ajax({url: "/member/uptoken",dataType:"json", success: function(res) {
+            var token = res.uptoken;
+            $(".uploadpic").unbind("change").bind("change", function () {
+				/*
+				 *   本示例演示七牛云存储表单上传
+				 *
+				 *   按照以下的步骤运行示例：
+				 *
+				 *   1. 填写token。需要您不知道如何生成token，可以点击右侧的链接生成，然后将结果复制粘贴过来。
+				 *   2. 填写key。如果您在生成token的过程中指定了key，则将其输入至此。否则留空。
+				 *   3. 姓名是一个自定义的变量，如果生成token的过程中指定了returnUrl和returnBody，
+				 *      并且returnBody中指定了期望返回此字段，则七牛会将其返回给returnUrl对应的业务服务器。
+				 *      callbackBody亦然。
+				 *   4. 选择任意一张照片，然后点击提交即可
+				 *
+				 *   实际开发中，您可以通过后端开发语言动态生成这个表单，将token的hidden属性设置为true并对其进行赋值。
+				 *
+				 *  **********************************************************************************
+				 *  * 贡献代码：
+				 *  * 1. git clone git@github.com:icattlecoder/jsfiddle
+				 *  * 2. push代码到您的github库
+				 *  * 3. 测试效果，访问 http://jsfiddle.net/gh/get/jquery/1.9.1/<Your GitHub Name>/jsfiddle/tree/master/ajaxupload
+				 *  * 4. 提pr
+				 *   **********************************************************************************
+				 */
+                var classes = $(this).attr('data');
+                var file = this.files[0];
+                var domain = res.domain;
+                // eslint-disable-next-line
+                if (file) {
+                    var filename = file.name;
+                    var ext = /\.[^\.]+/.exec(filename);
+                    var key = domain + $.md5(domain + file.name) + ext;
+                    Qiniu_upload(file, token, key,filename,classes);
+                }
+            })
+        }});
+        // 切换tab后进行一些css操作
+        var Qiniu_UploadUrl = "http://up-z2.qiniup.com";
+        var Qiniu_upload = function(f, token, key,filename,classes) {
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', Qiniu_UploadUrl, true);
+            var formData, startDate;
+            formData = new FormData();
+            if (key !== null && key !== undefined) formData.append('key', key);
+            formData.append('token', token);
+            formData.append('file', f);
+            var taking;
+            xhr.upload.addEventListener("progress", function(evt) {
+
+            }, false);
+
+            xhr.onreadystatechange = function(response) {
+                if (xhr.readyState == 4 && xhr.status == 200 && xhr.responseText != "") {
+                  saveimg(filename,key,classes);
+                } else if (xhr.status != 200 && xhr.responseText) {
+
+                }
+            };
+            startDate = new Date().getTime();
+            xhr.send(formData);
+        };
+
+        function saveimg(filename,key,classes){
+            $.ajax({
+                url:"/Member/saveqiniuimg.html",
+                data:{filename:filename,key:key},
+                type:"POST",
+                success: function (data) {
+                    if(data.status==1){
+                        var html="<img class=\"idimg\" style=\"width:100%;height:100%\" src=\""+data.info+"\"/>" ;
+//              + "<span class=\"delespan\">" +
+//              "<img class=\"deleimg\" src=\"/Public/newcss/img/delete.png\"/> " +
+//              "</span>"
+                        $("."+classes).html(html);
+                        $('input[name="'+classes+'"]').val(data.info);
+                    }else{
+                        yjfunc.myconfirm(data.info);
+                    }
+                }
+            });
+        }
 
 		function getnewUrl(fil,classes) {
 			if(fil.length<=0){
