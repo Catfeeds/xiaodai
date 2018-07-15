@@ -1,6 +1,6 @@
 #!/bin/sh  
 
-# config information ¶¨ÒåÊı¾İ¿âÁ¬½Ó  
+# config information å®šä¹‰æ•°æ®åº“è¿æ¥  
 db_host=localhost
 db_port=3306
 db_username=root
@@ -15,14 +15,14 @@ fi
 
 today=`date "+%Y%m%d%H"`
 
-# ¶¨ÒåĞèÒª±¸·İµÄÊı¾İ¿â±íÊı×é  
+# å®šä¹‰éœ€è¦å¤‡ä»½çš„æ•°æ®åº“è¡¨æ•°ç»„  
 
 echo "================  begining backup basic data  ================="  
 
 cd $backup_dir
 
-# ×îºËĞÄµÄ¾ÍÊÇÕâ¾ä»°£¬Ê¹ÓÃmysqldumpÃüÁîÖ´ĞĞ±¸·İ  
-mysqldump -h${db_host} -u $db_username -p${db_password}  $db_name  > $backup_dir/$today".sql"
+# æœ€æ ¸å¿ƒçš„å°±æ˜¯è¿™å¥è¯ï¼Œä½¿ç”¨mysqldumpå‘½ä»¤æ‰§è¡Œå¤‡ä»½  
+/opt/lampp/bin/mysqldump -h${db_host} -u $db_username -p${db_password}  $db_name  > $backup_dir/$today".sql"
 
 finish_date=`date '+%Y-%m-%d %H:%M:%S'`
 
@@ -32,10 +32,10 @@ one_days_ago=`date -d "1 days ago" +%Y%m%d`
 two_days_ago=`date -d "2 days ago" +%Y%m%d`
 three_days_ago=`date -d "3 days ago" +%Y%m%d`
 
-# ·´ÏòÉ¾³ı  
+# åå‘åˆ é™¤  
 
 #find $backup_dir -name "*${three_days_ago}*.sql" |grep -v "${one_days_ago}00.sql" |grep -v "${one_days_ago}06.sql" |grep -v "${one_days_ago}12.sql" |grep -v "${one_days_ago}18.sql" | xargs -i rm -f {}  
 
 #find $backup_dir -name "*${two_days_ago}*.sql" |grep -v "${two_days_ago}00.sql" |grep -v "${two_days_ago}12.sql" | xargs -i rm -f {}  
-#É¾³ı3ÌìÖ®Ç°µÄ
+#åˆ é™¤3å¤©ä¹‹å‰çš„
 find $backup_dir -name "*${three_days_ago}*.sql"|grep -v "${three_days_ago}.sql" | xargs -i rm -f {}
