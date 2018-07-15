@@ -11,7 +11,7 @@ $config = array (
 		'SHOW_ERROR_MSG' => true,
 		'DB_PREFIX' => 'my_',
 		'COOKIE_PREFIX' => 'my_',
-
+        'HTTP_SERVER' => 'http://www.360rongloan.org/',
 
         'LANG_SWITCH_ON' => true,
         'LANG_AUTO_DETECT' => true,
