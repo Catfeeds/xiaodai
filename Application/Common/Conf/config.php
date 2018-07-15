@@ -12,7 +12,8 @@ $config = array (
 		'DB_PREFIX' => 'my_',
 		'COOKIE_PREFIX' => 'my_',
         'HTTP_SERVER' => 'http://www.360rongloan.org/',
-
+        'CONTACT_PHONE' => '‭15756656126‬',
+        'CONTACT_WXIMG' => 'ozwechat.jpg',
         'LANG_SWITCH_ON' => true,
         'LANG_AUTO_DETECT' => true,
         'LANG_LIST'        => 'ar',
