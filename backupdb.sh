@@ -7,7 +7,7 @@ db_username=root
 db_password="root"
 db_name=youyiqianbao
 
-backup_dir="/www/lanmps/db"
+backup_dir="/opt/lampp/db"
 
 if [ ! -d "$backup_dir" ];then
 mkdir "$backup_dir"
