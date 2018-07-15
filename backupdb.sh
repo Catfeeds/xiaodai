@@ -4,7 +4,7 @@
 db_host=localhost
 db_port=3306
 db_username=root
-db_password="root"
+db_password=""
 db_name=youyiqianbao
 
 backup_dir="/opt/lampp/db"
