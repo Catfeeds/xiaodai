@@ -4,12 +4,13 @@ namespace Admin\Controller;
 
 class IndexController extends BaseController {
 	public function index() {
+
 		$this->getNodes ();
 		$this->assign ( "title", C ( 'config.WEB_SITE_TITLE' ) . '-后台管理系统' );
 		$this->display ();
 	}
 	public function sysinfo() {
-		
+
 		//统计信息
 		$arrnum=array();
 		$arrnum['member']=M('member')->count();
