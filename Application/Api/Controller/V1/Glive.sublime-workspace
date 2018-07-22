@@ -1,0 +1,2015 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"geo",
+				"geo_zone_ids"
+			],
+			[
+				"shipping",
+				"shipping_items"
+			],
+			[
+				"customer",
+				"customer_id"
+			],
+			[
+				"cate",
+				"category_id"
+			],
+			[
+				"cat",
+				"category_list  (variable)"
+			],
+			[
+				"addr",
+				"address_id"
+			],
+			[
+				"E",
+				"ETISALAT_CERT  (variable)"
+			],
+			[
+				"ET",
+				"ETISALAT_RETURNPATH"
+			],
+			[
+				"ETIS",
+				"ETISALAT_PASSWORD"
+			],
+			[
+				"IMage",
+				"ImageCDN"
+			],
+			[
+				"addres",
+				"address"
+			],
+			[
+				"bill",
+				"billing"
+			],
+			[
+				"pic",
+				"pickup_address"
+			],
+			[
+				"fe",
+				"fields"
+			],
+			[
+				"pay",
+				"payment_code"
+			],
+			[
+				"produ",
+				"product"
+			],
+			[
+				"prod",
+				"product_id"
+			],
+			[
+				"produc",
+				"product_ids"
+			],
+			[
+				"floa",
+				"floatval"
+			],
+			[
+				"payme",
+				"payment"
+			],
+			[
+				"paymnt",
+				"payment_code"
+			],
+			[
+				"fi",
+				"fields"
+			],
+			[
+				"payment",
+				"payment_code"
+			],
+			[
+				"ban",
+				"bank_account_name"
+			],
+			[
+				"ba",
+				"bank_card_no"
+			],
+			[
+				"with",
+				"withdraw_log_list"
+			],
+			[
+				"ear",
+				"earn_log_list"
+			],
+			[
+				"getCs",
+				"getCustomerId  (function)"
+			],
+			[
+				"C",
+				"CategoryService"
+			],
+			[
+				"stat",
+				"status"
+			],
+			[
+				"ca",
+				"category_list"
+			],
+			[
+				"find",
+				"find()"
+			],
+			[
+				"la",
+				"language_id"
+			],
+			[
+				"sel",
+				"select  (function)"
+			],
+			[
+				"paym",
+				"payment_list"
+			],
+			[
+				"data",
+				"data_name"
+			],
+			[
+				"cour",
+				"courier_list"
+			],
+			[
+				"to",
+				"to_email"
+			],
+			[
+				"com",
+				"complete"
+			],
+			[
+				"totime",
+				"strtotime"
+			],
+			[
+				"vend",
+				"vendor_name  (variable)"
+			],
+			[
+				"ven",
+				"vendor_email"
+			],
+			[
+				"prodc",
+				"product"
+			],
+			[
+				"send",
+				"sendEmail"
+			],
+			[
+				"op",
+				"option_value_id"
+			],
+			[
+				"geo_zone",
+				"geo_zone_id"
+			],
+			[
+				"get_billing_of",
+				"get_billing_of_product_list"
+			],
+			[
+				"are",
+				"area_id"
+			],
+			[
+				"area",
+				"area_id"
+			],
+			[
+				"address",
+				"address_id"
+			],
+			[
+				"ret",
+				"ret_courier_list"
+			],
+			[
+				"cou",
+				"country_id"
+			],
+			[
+				"pro",
+				"product_id"
+			],
+			[
+				"token",
+				"token_valid"
+			],
+			[
+				"order",
+				"order_id"
+			],
+			[
+				"A",
+				"AsynUtils  (class)"
+			],
+			[
+				"v",
+				"vendor_email"
+			],
+			[
+				"gethost",
+				"gethostbyname  (function)"
+			],
+			[
+				"vendo",
+				"vendor_id"
+			],
+			[
+				"ass",
+				"assign  (function)"
+			],
+			[
+				"vendor",
+				"vendor"
+			],
+			[
+				"exp",
+				"explode  (function)"
+			],
+			[
+				"Cate",
+				"Category"
+			],
+			[
+				"b",
+				"buy"
+			],
+			[
+				"Mess",
+				"MessageUtils"
+			],
+			[
+				"sor",
+				"sort_order"
+			],
+			[
+				"category2",
+				"category2_list"
+			],
+			[
+				"vedn",
+				"vendor_list"
+			],
+			[
+				"chil",
+				"children_list"
+			],
+			[
+				"cus",
+				"customer_id"
+			],
+			[
+				"con",
+				"content"
+			],
+			[
+				"sp",
+				"sprintf"
+			],
+			[
+				"fied",
+				"field"
+			],
+			[
+				"ord",
+				"order	->order"
+			],
+			[
+				"s",
+				"shipping"
+			],
+			[
+				"ship",
+				"shipping_status"
+			],
+			[
+				"cons",
+				"consume_code"
+			],
+			[
+				"setInc",
+				"setInc()"
+			],
+			[
+				"Prod",
+				"Product"
+			],
+			[
+				"q",
+				"quantity"
+			],
+			[
+				"order_pro",
+				"order_product_option_list"
+			],
+			[
+				"Or",
+				"OrderStatus"
+			],
+			[
+				"order_stat",
+				"order_status_id"
+			],
+			[
+				"order_s",
+				"order_status_id"
+			],
+			[
+				"Order",
+				"Order_Status"
+			],
+			[
+				"order_sta",
+				"order_status_type"
+			],
+			[
+				"ved",
+				"vendor"
+			],
+			[
+				"orde",
+				"order_id  (variable)"
+			],
+			[
+				"option",
+				"option_list"
+			],
+			[
+				"ve",
+				"vendor_shipping"
+			],
+			[
+				"IM",
+				"ImageCDN"
+			],
+			[
+				"bind_order",
+				"bind_order_product_list"
+			],
+			[
+				"opt",
+				"option_list"
+			],
+			[
+				"orer",
+				"order_id"
+			],
+			[
+				"val",
+				"value"
+			],
+			[
+				"ordr",
+				"order_id"
+			],
+			[
+				"_get",
+				"_get_access_token"
+			],
+			[
+				"us",
+				"username"
+			],
+			[
+				"add",
+				"address_id"
+			],
+			[
+				"Pro",
+				"ProductService"
+			],
+			[
+				"veo",
+				"vendor_id"
+			],
+			[
+				"pr",
+				"product"
+			],
+			[
+				"product_list",
+				"product_list_price"
+			],
+			[
+				"prodcu",
+				"product_list"
+			],
+			[
+				"get_bin",
+				"get_billing_of_shipping"
+			],
+			[
+				"mic",
+				"microtime_float"
+			],
+			[
+				"payment_list",
+				"payment_list_tmp"
+			],
+			[
+				"req",
+				"require"
+			],
+			[
+				"pa",
+				"payment"
+			],
+			[
+				"payment_code",
+				"payment_code_arr"
+			],
+			[
+				"Im",
+				"Image_Server_Domain"
+			],
+			[
+				"product",
+				"product_list"
+			],
+			[
+				"rq",
+				"require"
+			],
+			[
+				"Prode",
+				"ProductModel"
+			],
+			[
+				"a",
+				"array	$… = array (…)"
+			],
+			[
+				"Cat",
+				"CategoryModel"
+			],
+			[
+				"Ca",
+				"CategoryModel"
+			],
+			[
+				"Categ",
+				"CategoryModel"
+			],
+			[
+				"array",
+				"array_push($ret,$it"
+			],
+			[
+				"sub",
+				"sub_category_ids"
+			],
+			[
+				"sub_cat",
+				"sub_category_id"
+			],
+			[
+				"fie",
+				"field"
+			],
+			[
+				"categor",
+				"category_id"
+			],
+			[
+				"key",
+				"keyword"
+			],
+			[
+				"pri",
+				"product  (variable)"
+			],
+			[
+				"Vendor",
+				"VendorService"
+			],
+			[
+				"lv3_c",
+				"lv3_category_list"
+			],
+			[
+				"zone",
+				"zone_area_id"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "AddressController.class.php",
+			"settings":
+			{
+				"buffer_size": 3220,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "BillingController.class.php",
+			"settings":
+			{
+				"buffer_size": 1609,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"contents": "<?php\nnamespace Rest\\Controller\\V1;\n\nuse Think\\Controller;\nuse Common\\Controller\\IController;\n\nclass BuyController extends IController{\n\n	\n    public function add_order(){\n        \n    }\n\n    \n\n}",
+			"file": "BuyController.class.php",
+			"file_size": -1,
+			"file_write_time": -1,
+			"settings":
+			{
+				"buffer_size": 195,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "EmailController.class.php",
+			"settings":
+			{
+				"buffer_size": 3920,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "EnvController.class.php",
+			"settings":
+			{
+				"buffer_size": 1848,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"contents": "<?php\nnamespace Rest\\Controller\\V1;\n\nuse Think\\Controller;\nuse Common\\Controller\\IController;\n\n/**\n * 特卖\n */\nclass SaleController extends IController{\n\n    \n    #导航\n    public function navigate(){\n\n        //TODO:\n    }\n\n\n    #获取banner列表\n    public function get_banner_list(){\n\n        $language_id=IV('language_id','require');\n        $banner_list = D('Banner')->getBanners('sale_new_banners',$language_id);\n\n        $ret = array(\n            'banner_list'=>$banner_list,\n            'activity_info'=>L('SALE_NEW_INFO'),\n        );\n\n        $this->iSuccess($ret);\n    }   \n\n\n    #获取最新的活动列表\n    public function get_new_activity_list(){\n\n        $language_id=IV('language_id','require');\n        $page=I('page',1);\n        $limit=I('limit',10);\n\n        $ActivityService = Service('Activity');\n        $list = $ActivityService->get_activity_list($f='new',$language_id,$page,$limit);\n\n        $this->iSuccess($list);\n    }\n\n    #获取最热门的活动列表\n    public function get_before_end_activity_list(){\n\n        $language_id=IV('language_id','require');\n        $page=I('page',1);\n        $limit=I('limit',10);\n\n        $ActivityService = Service('Activity');\n        $list = $ActivityService->get_activity_list($f='before_end',$language_id,$page,$limit);\n        $this->iSuccess($list);\n    }\n\n    #获取美妆精选活动列表\n    public function get_beauty_makeup_activity_list(){\n\n        $language_id=IV('language_id','require');\n        $page=I('page',1);\n        $limit=I('limit',10);\n\n        $ActivityService = Service('Activity');\n        $list = $ActivityService->get_beauty_makeup($language_id,$page,$limit);\n        $this->iSuccess($list);\n    }\n\n\n    #获取马上开始的活动列表\n    public function get_to_start_activity_list(){\n\n        $language_id=IV('language_id','require');\n        $page=I('page',1);\n        $limit=I('limit',10);\n\n        $ActivityService = Service('Activity');\n        $list = $ActivityService->get_activity_list($f='to_start',$language_id,$page,$limit);\n\n        $ret = array(\n            'list'=>$list,\n            'to_start_activity_info'=>L('SALE_TOSTART_INFO')\n        );\n        $this->iSuccess($ret);\n    }\n\n    #获取所有的目录,必须是有特卖的产品\n    public function get_category_list_onsale(){\n\n       $language_id = IV('language_id','require');\n\n       $SaleService = Service('Sale');\n       $list = $SaleService->getCategoryListOnsale($language_id);\n\n       $this->iSuccess($list);\n    }\n\n    #根据目录获取产品列表，并且排序\n    public function get_discount_product_list_by_category_id(){\n\n        $language_id = IV('language_id','require');\n        $category_id = IV('category_id','require');\n        $page = IV('page','require');\n        $limit = IV('limit','require');\n        $discount_price_order = IV('discount_price_order',array('desc','asc'));\n\n        $SaleService = Service('Sale');\n        $list = $SaleService->getDiscountProductListByCategoryId($category_id,$language_id,$page,$limit,$discount_price_order);\n\n        $this -> iSuccess($list);\n    }\n\n\n    #获取所有的正在进行的活动列表\n    public function get_started_activity_list(){\n\n        $language_id = IV('language_id','require');\n\n        $ActivityService = Service('Activity');\n        $list = $ActivityService->get_activity_list($f='started',$language_id,$page=1,$limit=1000);\n\n        foreach ($list as &$li) {\n            \n            unset($li['desc_image']);\n            unset($li['date_start']);\n            unset($li['date_end']);\n            unset($li['meta_title']);\n        }\n\n        $this->iSuccess($list);\n    }\n\n}",
+			"file": "SaleController.class.php",
+			"file_size": 3774,
+			"file_write_time": 130874478151425685,
+			"settings":
+			{
+				"buffer_size": 3456,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "SupermarketController.class.php",
+			"settings":
+			{
+				"buffer_size": 7797,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"contents": "{\n	\"folders\":\n	[\n		{\n			\"follow_symlinks\": true,\n			\"path\": \"D:\\\\Program Files\\\\wamp\\\\www\\\\Glive\"\n		}\n	]\n}\n",
+			"file": "Glive.sublime-project",
+			"file_size": -1,
+			"file_write_time": -1,
+			"settings":
+			{
+				"buffer_size": 107,
+				"line_ending": "Unix"
+			}
+		}
+	],
+	"build_system": "",
+	"command_palette":
+	{
+		"height": 392.0,
+		"selected_items":
+		[
+			[
+				"",
+				"File: Search Files"
+			],
+			[
+				"message",
+				"Set Syntax: SublimeGit Tag Message"
+			],
+			[
+				"ins",
+				"Package Control: Install Package"
+			],
+			[
+				"install",
+				"Package Control: Install Package"
+			],
+			[
+				":",
+				":$ - EOF"
+			],
+			[
+				":q",
+				"Git: Quick Add"
+			],
+			[
+				"Package Control: in",
+				"Package Control: Install Package"
+			],
+			[
+				"Package Control: ",
+				"Package Control: Install Package"
+			],
+			[
+				"Package Control: Install Package",
+				"Package Control: Install Package"
+			],
+			[
+				"format",
+				"Tag: Auto-Format Tags on Document"
+			],
+			[
+				"DocBlock",
+				"DocBlockr: Reparse comment block"
+			],
+			[
+				"Page ",
+				"Package Control: Enable Package"
+			]
+		],
+		"width": 536.0
+	},
+	"console":
+	{
+		"height": 0.0,
+		"history":
+		[
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/D/Program Files/wamp/www/Gtwice-api-dev/Application/Rest/Service/ProductService.class.php",
+		"/D/Program Files/wamp/www/Gtwice-api-dev/Application/Rest/Controller/V1/BillingController.class.php",
+		"/D/Program Files/wamp/www/Gtwice-api-dev/Application/Rest/Lib/HtmlUtils.class.php",
+		"/D/Program Files/wamp/www/Gtwice-api-dev/Application/Rest/Controller/V1/CategoryController.class.php",
+		"/D/Program Files/wamp/www/Gtwice-api-dev/Application/Common/Common/function.php",
+		"/D/Program Files/wamp/www/Gtwice-api-dev/Application/Rest/Controller/V1/BannerController.class.php",
+		"/D/Program Files/wamp/www/Gtwice-api-dev/Application/Rest/Model/BannerModel.class.php",
+		"/D/Program Files/wamp/www/Gtwice-api-dev/Application/Rest/Model/CategoryModel.class.php",
+		"/D/Program Files/wamp/www/Gtwice-api-dev/Application/Rest/Controller/V1/CustomerController.class.php",
+		"/D/Program Files/wamp/www/Gtwice-api-dev/Application/Rest/Controller/V1/OrderController.class.php",
+		"/D/Program Files/wamp/www/Gtwice-api-dev/Application/Rest/Controller/V1/AddressController.class.php",
+		"/D/Program Files/wamp/www/Gtwice-api-dev/Application/Rest/Service/OrderService.class.php",
+		"/D/Program Files/wamp/www/Gtwice-api-dev/Application/Rest/Model/OrderModel.class.php",
+		"/D/Program Files/wamp/www/Gtwice-api-dev/Application/Rest/Service/BillingService.class.php",
+		"/D/Program Files/wamp/www/Gtwice-api-dev/Application/Rest/Service/AddressService.class.php",
+		"/D/Program Files/wamp/www/Gtwice-api-dev/Application/Rest/Common/function.php",
+		"/D/Program Files/wamp/www/Gtwice-api-dev/Application/Rest/Controller/V1/PaymentController.class.php",
+		"/D/Program Files/wamp/www/Gtwice-api-dev/Application/Rest/Model/ProductModel.class.php",
+		"/D/Program Files/wamp/www/Gtwice-api-dev/Application/Rest/Model/PaymentModel.class.php",
+		"/D/Program Files/wamp/www/Gtwice-api-dev/Application/Rest/Controller/V1/ShippingController.class.php",
+		"/D/Program Files/wamp/www/Gtwice-api-dev/Application/Rest/Model/CourierModel.class.php",
+		"/D/Program Files/wamp/www/Gtwice-api-dev/Application/Rest/Controller/V1/StartupController.class.php",
+		"/D/Program Files/wamp/www/Gtwice-api-dev/Application/Rest/Controller/V1/TestController.class.php",
+		"/D/Program Files/wamp/www/Gtwice-api-dev/Application/Rest/Lib/EtisalatUtils.class.php",
+		"/D/Program Files/wamp/www/Gtwice-api-dev/Application/Rest/Controller/V1/EnvController.class.php",
+		"/D/Program Files/wamp/www/Gtwice-api-dev/Application/Rest/Lib/Logger.class.php",
+		"/D/Program Files/wamp/www/Gtwice-api-dev/Application/Rest/Lib/EmailUtils.class.php",
+		"/D/Program Files/wamp/www/Gtwice-api-dev/Public/soap.php",
+		"/D/Program Files/wamp/www/Gtwice-api-dev/Application/Rest/Controller/V1/PageController.class.php",
+		"/D/Program Files/wamp/www/Gtwice-api-dev/Application/Rest/Model/AppVersionModel.class.php",
+		"/D/Program Files/wamp/www/Gtwice-api-dev/Application/Common/Conf/config.php",
+		"/D/Program Files/wamp/www/Gtwice-api-beta/index.php",
+		"/D/Program Files/wamp/bin/apache/apache2.4.9/conf/httpd.conf",
+		"/D/Program Files/wamp/www/Gtwice-api-beta/Application/Common/Conf/config.php",
+		"/D/Program Files/wamp/www/Gtwice-api-beta/Application/Common/Conf/local-beta.php",
+		"/D/Program Files/wamp/www/Gtwice-api-dev/Application/Rest/Conf/config.php",
+		"/D/Program Files/wamp/www/Gtwice-api-dev/Application/Rest/Lang/ar.php",
+		"/D/Program Files/wamp/www/Gtwice-api-dev/Application/Rest/Conf/local-dev.php",
+		"/C/Users/ning.fm/Desktop/beta_gtwice.sql",
+		"/D/Program Files/wamp/www/Gtwice-api-dev/Application/Common/Conf/local-beta.php",
+		"/D/Program Files/wamp/www/Gtwice-api-dev/Application/Common/Conf/local-dev.php",
+		"/D/Program Files/wamp/www/Gtwice-api-dev/Application/Common/Conf/online-beta.php",
+		"/D/Program Files/wamp/www/Gtwice-api-dev/Application/Rest/Conf/local-beta.php",
+		"/D/Program Files/wamp/www/Gtwice-api-dev/Application/Rest/Conf/online-beta.php",
+		"/D/Program Files/wamp/www/Gtwice-api-dev/Application/Rest/Conf/online-official.php",
+		"/D/Program Files/wamp/www/Gtwice-api-dev/Application/Rest/Controller/V1/SearchController.class.php",
+		"/D/Program Files/wamp/www/Gtwice-api-dev/Application/Rest/Service/SearchService.class.php",
+		"/D/Program Files/wamp/www/Gtwice-api-dev/Application/Rest/Controller/V1/PickupController.class.php",
+		"/D/Program Files/wamp/www/Gtwice-api-dev/Application/Common/Controller/IController.class.php",
+		"/D/Program Files/wamp/www/Gtwice-api-dev/Application/Rest/Controller/V1/ProductController.class.php",
+		"/D/Program Files/wamp/www/Gtwice-api-dev/Application/Rest/Lang/en-us.php",
+		"/D/Program Files/wamp/www/Gtwice-api-dev/Application/Rest/Model/CustomerModel.class.php",
+		"/D/Program Files/wamp/www/Gtwice-api-dev/Application/Rest/Service/CustomerService.class.php",
+		"/D/Program Files/wamp/www/Gtwice-api-dev/Application/Rest/Service/CategoryService.class.php",
+		"/D/Program Files/wamp/www/Gtwice-api-dev/Application/Rest/Controller/V1/CurrencyController.class.php",
+		"/C/Users/ning.fm/Desktop/DemoMerchant-Certificates/SPIMTrust",
+		"/C/Users/ning.fm/Downloads/DemoMerchant-Certificates/Demo Merchant - New.pfx",
+		"/C/Users/ning.fm/Downloads/DemoMerchant-Certificates/Demo Merchant (for java).pfx",
+		"/C/Users/ning.fm/Desktop/DemoMerchant-Certificates/Demo Merchant.cer",
+		"/C/Users/ning.fm/Desktop/DemoMerchant-Certificates/Demo Merchant.java",
+		"/D/Program Files/wamp/www/Gtwice-api-dev/Application/Rest/Model/IModel.class.php",
+		"/C/Users/ning.fm/Desktop/greadeal (2).sql",
+		"/C/Users/ning.fm/Desktop/oc_category.sql",
+		"/D/Program Files/wamp/www/Gtwice-api-dev/Application/Rest/Controller/V1/SaleController.class.php",
+		"/D/Program Files/wamp/www/Gtwice-api-dev/Application/Runtime/Logs/Rest/15_08_12.log",
+		"/D/Program Files (x86)/SublimeText3/Data/Packages/Thinkphp/ThinkPHP.sublime-settings",
+		"/D/Program Files/wamp/www/Gtwice-api-dev/Application/Rest/Lib/VercodeUitls.class.php",
+		"/D/Program Files/wamp/www/Gtwice-api-dev/Application/Rest/Model/ProductOptionModel.class.php",
+		"/D/Program Files/wamp/www/Gtwice-api-dev/Application/Rest/Model/ShippingModel.class.php",
+		"/D/Program Files/wamp/www/Gtwice-api-dev/Application/Rest/Model/VendorModel.class.php",
+		"/D/Program Files/wamp/www/Gtwice-api-dev/Application/Rest/Service/ActivityService.class.php",
+		"/D/Program Files/wamp/www/Gtwice-api-dev/Application/Rest/Model/MerchantModel.class.php",
+		"/D/Program Files/wamp/www/Gtwice/admin/config.php",
+		"/D/Program Files/wamp/www/Gtwice-api-dev/Application/Rest/Service/CalculatorService.class.php",
+		"/D/Program Files/wamp/www/Gtwice-api-dev/Application/Runtime/Logs/Rest/15_08_17.log",
+		"/D/Program Files/wamp/www/Gtwice-api-dev/Application/Rest/Service/VendorService.class.php",
+		"/D/Program Files/wamp/www/Gtwice-api-dev/Application/Rest/Service/LiveService.class.php",
+		"/D/Program Files/wamp/www/Gtwice-api-dev/Application/Rest/Service/SupermarketService.class.php",
+		"/D/Program Files/wamp/www/Gtwice-api-dev/.gitignore",
+		"/D/Program Files/wamp/www/Gtwice-api-dev/Application/Rest/Controller/V1/EmailController.class.php",
+		"/D/Program Files/wamp/www/Gtwice-api-dev/Application/Rest/Controller/V1/LiveController.class.php",
+		"/D/Program Files/wamp/www/Gtwice-api-dev/Application/Rest/Controller/V1/SupermarketController.class.php.bak",
+		"/D/Program Files/wamp/www/Gtwice-api-dev/Application/Rest/Controller/V1/SupermarketController.class.php",
+		"/D/Program Files/wamp/www/Gtwice-api-dev/Application/Rest/Controller/V1/ShippinglogController.class.php",
+		"/D/Program Files/wamp/www/Gtwice-api-dev/Application/Rest/Controller/V1/ShopcartController.class.php",
+		"/D/Program Files/wamp/www/Gtwice-api-dev/Application/Rest/Controller/V1/VendorController.class.php",
+		"/D/Program Files/wamp/www/Gtwice-api-dev/Application/Rest/Controller/V1/QrcodeController.class.php",
+		"/D/Program Files/wamp/www/Gtwice-api-dev/Application/Rest/Controller/V1/RunController.class.php",
+		"/D/Program Files/wamp/www/Gtwice-api-dev/Application/Rest/Controller/V1/AboutusController.class.php",
+		"/C/Users/ning.fm/Desktop/Greadeal接口测试/Address.json.postman_collection",
+		"/C/Users/ning.fm/Desktop/Gtwice.json.postman_collection",
+		"/D/Program Files/wamp/www/Gtwice-api-dev/Application/Rest/Controller/V1/BuyController.class.php",
+		"/C/Users/ning.fm/Desktop/Greadeal接口文档/Order.json.postman_collection",
+		"/D/Program Files/wamp/www/Greadeal/Application/Common/Conf/online-official.php",
+		"/D/Program Files/wamp/www/Greadeal/Application/Home/Conf/config.php",
+		"/D/Program Files/wamp/www/Greadeal/Application/Common/Conf/index.html",
+		"/D/Program Files/wamp/www/Greadeal/Application/Rest/Service/MessageService.class.php",
+		"/D/Program Files/wamp/www/Greadeal/Application/Rest/Service/EmailService.class.php",
+		"/C/Users/ning.fm/Desktop/composer.phar",
+		"/C/Users/ning.fm/AppData/Local/Temp/tmp6E8E.tmp.php",
+		"/D/Program Files/wamp/www/Greadeal/Application/Runtime/Logs/Rest/15_08_10.log",
+		"/D/Program Files/wamp/www/Greadeal/Application/Runtime/Logs/Rest/15_08_11.log",
+		"/D/Program Files/wamp/www/Greadeal/Application/Rest/Lib/HttpUtils.class.php",
+		"/D/Program Files/wamp/www/Greadeal/Application/Runtime/Logs/Home/15_06_15.log",
+		"/D/Program Files/wamp/www/Greadeal/Application/Runtime/Logs/Home/15_08_08.log",
+		"/D/Program Files/wamp/www/Greadeal/Application/Runtime/Logs/Rest/15_08_08.log",
+		"/D/Program Files/wamp/www/Greadeal/Application/Runtime/Logs/Rest/1439027312-15_08_08.log",
+		"/D/Program Files/wamp/www/Greadeal/Application/Runtime/Logs/Rest/1439026989-15_08_08.log",
+		"/D/Program Files/wamp/www/Greadeal/Application/Runtime/Logs/Rest/1439027017-15_08_08.log",
+		"/D/Program Files/wamp/www/Greadeal/Application/Runtime/Logs/Rest/1439026981-15_08_08.log",
+		"/D/Program Files/wamp/www/Greadeal/Application/Runtime/Logs/Rest/1439024480-15_08_08.log",
+		"/D/Program Files/wamp/www/Greadeal/Application/Runtime/Logs/Rest/15_06_22.log",
+		"/D/Program Files/wamp/www/Greadeal/Application/Runtime/Logs/Rest/15_08_03.log",
+		"/D/Program Files/wamp/www/Greadeal/Application/Rest/View/Order/sub_order_for_email.html",
+		"/D/Program Files/wamp/www/Greadeal/Application/Rest/Controller/V1/VendorController.class.php",
+		"/D/Program Files/wamp/www/Greadeal/Application/Rest/View/Order/cancel_order_for_email.tpl",
+		"/C/Users/ning.fm/Documents/Tencent Files/1396834925/FileRecv/订单提醒邮件.html",
+		"/D/Program Files/wamp/www/Greadeal/vendor/autoload.php",
+		"/D/Program Files/wamp/www/Greadeal/composer.json",
+		"/D/composer.json",
+		"/D/Program Files/wamp/www/Greadeal/vendor/PHPMailer-master/class.smtp.php",
+		"/D/Program Files/wamp/www/Greadeal/vendor/PHPMailer-master/class.phpmailer.php",
+		"/D/Program Files/wamp/www/Greadeal/vendor/PHPMailer-master/examples/sendmail.phps",
+		"/C/Users/ning.fm/Desktop/get_shipping_logs",
+		"/D/Program Files/wamp/www/Greadeal/Application/Rest/Conf/online-beta.php",
+		"/D/Program Files/wamp/www/Greadeal/Application/Rest/Lib/ArrayList.class.php",
+		"/D/Program Files/wamp/www/Greadeal/Application/Rest/Lib/ArrayUtils.class.php",
+		"/D/Program Files/wamp/www/Greadeal/Application/Rest/Lib/MessageUtils.class.php"
+	],
+	"find":
+	{
+		"height": 26.0
+	},
+	"find_in_files":
+	{
+		"height": 102.0,
+		"where_history":
+		[
+			""
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": true,
+		"find_history":
+		[
+			"payment_fee",
+			"get_billing_of_order",
+			"add_order",
+			"get_shipping_price",
+			"get_billing_of_order",
+			"add_order",
+			"get_billing_of_shipping",
+			"get_billing_of_order",
+			"add_order",
+			"get_billing_of_product_list",
+			"ImageCDN",
+			"get_new_arrivals",
+			"get_all_category_list",
+			"_geo_zone_id",
+			"get_seller_account",
+			"CourierModel",
+			"get_all_category_list",
+			"get_billing_of_product_list",
+			"get_all_category_ids_in_category",
+			"getProductListByCategoryId",
+			"Directory",
+			"get_discount_product_list_by_category_id\n",
+			"get_all_category_list",
+			"getBanners",
+			"parseImgSrcLinks",
+			"ImageCDN",
+			"get_new_arrivals",
+			"add_or_update_address",
+			"del_address_of_customer",
+			"ImageCDN",
+			"getBanners",
+			"get_billing_of_order",
+			"add_order",
+			"IController",
+			"country_name_by_id",
+			"history",
+			"getCategoryInfo",
+			"get_billing_of_order",
+			"add_order",
+			"get_billing_of_shipping",
+			"add_order",
+			"get_billing_of_order",
+			"gen_order_price",
+			"add_order",
+			"bind_order_billing",
+			"query_order_list",
+			"Payment_Code_Cash_On_Delivery",
+			"get_payment_fee",
+			"Fee_Cash_On_Delivery",
+			"get_payment_fee",
+			"get_billing_of_order",
+			"add_order",
+			"gen_order_price",
+			"add_order",
+			"bindDetailAndName",
+			"getAllInfoById",
+			"get_new_arrivals",
+			"add_or_update_address",
+			"gen_order",
+			"getCheckedVersion",
+			"email_domain_name",
+			"device_language",
+			"email_exists",
+			"ERROR_CUSTOMER_REPEAT_EMAIL",
+			"20005",
+			"query_product_list_by_type",
+			"search_product",
+			"getProducts",
+			"10",
+			"bindDetailAndName",
+			"getAllInfoById",
+			"cancel_order",
+			"query_order",
+			"query_order_list",
+			"bind_order_product_list",
+			"get_billing_of_order",
+			"get_price_of_option",
+			"add_order",
+			"bind_order_billing",
+			"vendor",
+			"get_paymemt_info",
+			"get_address_by_id",
+			"add_order",
+			"isRegisteredFromOpenPlatform",
+			"register_from_open_platform",
+			"isRegisteredFromOpenPlatform",
+			"register_from_open_platform",
+			"get_all_category_list",
+			"getDiscountProductListByCategoryId",
+			"get_all_category_list",
+			"getBanners",
+			"add_or_update_address",
+			"get_address_list_of_customer",
+			"add_or_update_address",
+			"ArrayUtils",
+			"bindDetailImagelistAndName",
+			"getAllInfoById",
+			"getProducts",
+			"getProducts\ngetProducts",
+			"getBanners",
+			"vendor",
+			"vendor_id\n",
+			"}\n",
+			"get_price_of_option",
+			"get_billing_of_product_list",
+			"Zone_Area",
+			"ZoneArea",
+			"add_order",
+			"ImageCDN",
+			"get_courier_list_of_vendor",
+			"/upload",
+			"sendEmail",
+			"getProductSpecialInfo",
+			"->getProducts",
+			"getProducts",
+			"get_wish_product_list",
+			"get_my_wishlist",
+			"getProducts",
+			"get_wish_product_list",
+			"get_my_wishlist",
+			"point",
+			"loginByEmail",
+			"_getLoginInfo",
+			"get_zone_area_list_by_zone_id",
+			"get_all_address",
+			"get_zone_area_list_by_zone_id",
+			"get_zone_list_by_country_id",
+			"get_all_address"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": true,
+		"replace_history":
+		[
+			"",
+			"vendor"
+		],
+		"reverse": false,
+		"show_context": false,
+		"use_buffer2": false,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 6,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "AddressController.class.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 3220,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								659,
+								659
+							]
+						],
+						"settings":
+						{
+							"BracketHighlighterBusy": false,
+							"bh_regions":
+							[
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close"
+							],
+							"is_xml": false,
+							"origin_encoding": "UTF-8",
+							"syntax": "Packages/PHP/PHP.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 7,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "BillingController.class.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1609,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								396,
+								396
+							]
+						],
+						"settings":
+						{
+							"BracketHighlighterBusy": false,
+							"bh_regions":
+							[
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close"
+							],
+							"is_xml": false,
+							"origin_encoding": "UTF-8",
+							"syntax": "Packages/PHP/PHP.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 6,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "BuyController.class.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 195,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								57,
+								59
+							]
+						],
+						"settings":
+						{
+							"BracketHighlighterBusy": false,
+							"bh_regions":
+							[
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close"
+							],
+							"codeintel": true,
+							"codeintel_config":
+							{
+								"JavaScript":
+								{
+									"codeintel_max_recursive_dir_depth": 2,
+									"codeintel_scan_files_in_project": false,
+									"javascriptExtraPaths":
+									[
+									]
+								},
+								"PHP":
+								{
+									"codeintel_max_recursive_dir_depth": 5,
+									"codeintel_scan_files_in_project": false,
+									"phpExtraPaths":
+									[
+									]
+								},
+								"Python":
+								{
+									"env":
+									{
+									}
+								}
+							},
+							"codeintel_enabled_languages":
+							[
+								"JavaScript",
+								"Mason",
+								"XBL",
+								"XUL",
+								"RHTML",
+								"SCSS",
+								"Python",
+								"HTML",
+								"Ruby",
+								"Python3",
+								"XML",
+								"Sass",
+								"XSLT",
+								"Django",
+								"HTML5",
+								"Perl",
+								"CSS",
+								"Twig",
+								"Less",
+								"Smarty",
+								"Node.js",
+								"Tcl",
+								"TemplateToolkit",
+								"PHP"
+							],
+							"codeintel_live": true,
+							"codeintel_live_enabled_languages":
+							[
+								"JavaScript",
+								"Mason",
+								"XBL",
+								"XUL",
+								"RHTML",
+								"SCSS",
+								"Python",
+								"HTML",
+								"Ruby",
+								"Python3",
+								"XML",
+								"Sass",
+								"XSLT",
+								"Django",
+								"HTML5",
+								"Perl",
+								"CSS",
+								"Twig",
+								"Less",
+								"Smarty",
+								"Node.js",
+								"Tcl",
+								"TemplateToolkit",
+								"PHP"
+							],
+							"codeintel_max_recursive_dir_depth": 10,
+							"codeintel_scan_exclude_dir":
+							{
+								"JavaScript":
+								[
+									"/build/",
+									"/min/"
+								]
+							},
+							"codeintel_scan_files_in_project": true,
+							"codeintel_selected_catalogs":
+							[
+								"PyWin32",
+								"jQuery",
+								"Rails"
+							],
+							"codeintel_snippets": true,
+							"codeintel_syntax_map":
+							{
+								"Python Django": "Python"
+							},
+							"codeintel_tooltips": "popup",
+							"is_xml": false,
+							"origin_encoding": "ASCII",
+							"sublime_auto_complete": true,
+							"syntax": "Packages/PHP/PHP.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 5,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "EmailController.class.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 3920,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								285,
+								285
+							]
+						],
+						"settings":
+						{
+							"BracketHighlighterBusy": false,
+							"bh_regions":
+							[
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close"
+							],
+							"is_xml": false,
+							"origin_encoding": "UTF-8",
+							"syntax": "Packages/PHP/PHP.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "EnvController.class.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1848,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								293,
+								293
+							]
+						],
+						"settings":
+						{
+							"BracketHighlighterBusy": false,
+							"bh_regions":
+							[
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close"
+							],
+							"is_xml": false,
+							"origin_encoding": "UTF-8",
+							"syntax": "Packages/PHP/PHP.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "SaleController.class.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 3456,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								573,
+								573
+							]
+						],
+						"settings":
+						{
+							"BracketHighlighterBusy": false,
+							"bh_regions":
+							[
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close"
+							],
+							"codeintel": true,
+							"codeintel_config":
+							{
+								"JavaScript":
+								{
+									"codeintel_max_recursive_dir_depth": 2,
+									"codeintel_scan_files_in_project": false,
+									"javascriptExtraPaths":
+									[
+									]
+								},
+								"PHP":
+								{
+									"codeintel_max_recursive_dir_depth": 5,
+									"codeintel_scan_files_in_project": false,
+									"phpExtraPaths":
+									[
+									]
+								},
+								"Python":
+								{
+									"env":
+									{
+									}
+								}
+							},
+							"codeintel_enabled_languages":
+							[
+								"JavaScript",
+								"Mason",
+								"XBL",
+								"XUL",
+								"RHTML",
+								"SCSS",
+								"Python",
+								"HTML",
+								"Ruby",
+								"Python3",
+								"XML",
+								"Sass",
+								"XSLT",
+								"Django",
+								"HTML5",
+								"Perl",
+								"CSS",
+								"Twig",
+								"Less",
+								"Smarty",
+								"Node.js",
+								"Tcl",
+								"TemplateToolkit",
+								"PHP"
+							],
+							"codeintel_live": true,
+							"codeintel_live_enabled_languages":
+							[
+								"JavaScript",
+								"Mason",
+								"XBL",
+								"XUL",
+								"RHTML",
+								"SCSS",
+								"Python",
+								"HTML",
+								"Ruby",
+								"Python3",
+								"XML",
+								"Sass",
+								"XSLT",
+								"Django",
+								"HTML5",
+								"Perl",
+								"CSS",
+								"Twig",
+								"Less",
+								"Smarty",
+								"Node.js",
+								"Tcl",
+								"TemplateToolkit",
+								"PHP"
+							],
+							"codeintel_max_recursive_dir_depth": 10,
+							"codeintel_scan_exclude_dir":
+							{
+								"JavaScript":
+								[
+									"/build/",
+									"/min/"
+								]
+							},
+							"codeintel_scan_files_in_project": true,
+							"codeintel_selected_catalogs":
+							[
+								"PyWin32",
+								"jQuery",
+								"Rails"
+							],
+							"codeintel_snippets": true,
+							"codeintel_syntax_map":
+							{
+								"Python Django": "Python"
+							},
+							"codeintel_tooltips": "popup",
+							"is_xml": false,
+							"origin_encoding": "UTF-8",
+							"sublime_auto_complete": true,
+							"syntax": "Packages/PHP/PHP.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "SupermarketController.class.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 7797,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								411,
+								411
+							]
+						],
+						"settings":
+						{
+							"BracketHighlighterBusy": false,
+							"bh_regions":
+							[
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close"
+							],
+							"is_xml": false,
+							"origin_encoding": "UTF-8",
+							"syntax": "Packages/PHP/PHP.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 7,
+					"file": "Glive.sublime-project",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 107,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								106,
+								106
+							]
+						],
+						"settings":
+						{
+							"BracketHighlighterBusy": false,
+							"bh_regions":
+							[
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close"
+							],
+							"codeintel": true,
+							"codeintel_config":
+							{
+								"JavaScript":
+								{
+									"codeintel_max_recursive_dir_depth": 2,
+									"codeintel_scan_files_in_project": false,
+									"javascriptExtraPaths":
+									[
+									]
+								},
+								"PHP":
+								{
+									"codeintel_max_recursive_dir_depth": 5,
+									"codeintel_scan_files_in_project": false,
+									"phpExtraPaths":
+									[
+									]
+								},
+								"Python":
+								{
+									"env":
+									{
+									}
+								}
+							},
+							"codeintel_enabled_languages":
+							[
+								"JavaScript",
+								"Mason",
+								"XBL",
+								"XUL",
+								"RHTML",
+								"SCSS",
+								"Python",
+								"HTML",
+								"Ruby",
+								"Python3",
+								"XML",
+								"Sass",
+								"XSLT",
+								"Django",
+								"HTML5",
+								"Perl",
+								"CSS",
+								"Twig",
+								"Less",
+								"Smarty",
+								"Node.js",
+								"Tcl",
+								"TemplateToolkit",
+								"PHP"
+							],
+							"codeintel_live": true,
+							"codeintel_live_enabled_languages":
+							[
+								"JavaScript",
+								"Mason",
+								"XBL",
+								"XUL",
+								"RHTML",
+								"SCSS",
+								"Python",
+								"HTML",
+								"Ruby",
+								"Python3",
+								"XML",
+								"Sass",
+								"XSLT",
+								"Django",
+								"HTML5",
+								"Perl",
+								"CSS",
+								"Twig",
+								"Less",
+								"Smarty",
+								"Node.js",
+								"Tcl",
+								"TemplateToolkit",
+								"PHP"
+							],
+							"codeintel_max_recursive_dir_depth": 10,
+							"codeintel_scan_exclude_dir":
+							{
+								"JavaScript":
+								[
+									"/build/",
+									"/min/"
+								]
+							},
+							"codeintel_scan_files_in_project": true,
+							"codeintel_selected_catalogs":
+							[
+								"PyWin32",
+								"jQuery",
+								"Rails"
+							],
+							"codeintel_snippets": true,
+							"codeintel_syntax_map":
+							{
+								"Python Django": "Python"
+							},
+							"codeintel_tooltips": "popup",
+							"origin_encoding": "ASCII",
+							"sublime_auto_complete": true,
+							"syntax": "Packages/JavaScript/JSON.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 26.0
+	},
+	"input":
+	{
+		"height": 36.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.exec":
+	{
+		"height": 142.0
+	},
+	"output.find_results":
+	{
+		"height": 225.0
+	},
+	"project": "Glive.sublime-project",
+	"replace":
+	{
+		"height": 48.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+			[
+				"",
+				"Application\\Rest\\Service\\EmailService.class.php"
+			],
+			[
+				"emailservice",
+				"Application\\Rest\\Service\\EmailService.class.php"
+			],
+			[
+				"supermarketservice",
+				"Application\\Rest\\Service\\SupermarketService.class.php"
+			],
+			[
+				"mess",
+				"Application\\Rest\\Lib\\Message.class.php"
+			],
+			[
+				"mode",
+				"Application\\Rest\\Model\\AppDeviceModel.class.php"
+			],
+			[
+				"model",
+				"ThinkPHP\\3.2.3\\Library\\Think\\Model.class.php"
+			],
+			[
+				"item-post.php",
+				"oc-content\\themes\\aiclassy\\item-post.php"
+			],
+			[
+				"doview",
+				"oc-includes\\osclass\\core\\View.php"
+			],
+			[
+				"java",
+				"oc-includes\\osclass\\assets\\js\\tiny_mce\\plugins\\ajaxfilemanager\\ajax_save_as_form.php"
+			],
+			[
+				"minimap",
+				"oc-includes\\osclass\\assets\\js\\tiny_mce\\plugins\\ajaxfilemanager\\inc\\class.image.php"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 500.0,
+		"selected_items":
+		[
+			[
+				"",
+				"D:\\Program Files\\wamp\\www\\Greadeal\\greadeal.sublime-workspace"
+			]
+		],
+		"width": 380.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"settings":
+	{
+		"xdebug":
+		{
+			"hide_conflict": false
+		}
+	},
+	"show_minimap": false,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 381.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+		"max_columns": 1
+	}
+}
