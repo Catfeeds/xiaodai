@@ -215,6 +215,8 @@
 			</div>
 
 		</div>
+
+		<?php if($result['status'] == 2) {?>
 		<div class="vertical-top">选择优惠券</div>
 
 		<div class="input-box">
@@ -234,7 +236,7 @@
 					</a>
 				</li>
 		</div>
-		
+		<?php } ?>
 		<div class="vertical-top">还款方式<span style="color:red;font-size:12px;line-height: 22px;
     margin-left: 10px;">请您扫码联系我们工作人员处理，或者您也可以电话联系我们：{:C('CONTACT_PHONE')}</span></div>
 

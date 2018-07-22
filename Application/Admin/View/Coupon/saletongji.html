@@ -1,0 +1,373 @@
+<!doctype html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>{$title}</title>
+    <include file="Public/scripts" /><include file="Public/upload" /><include file="Public/editor" />
+</head>
+<body>
+<div class="row">
+    <div class="col-md-12 " >
+        <h2>{$title}</h2>
+    </div>
+    <div class="col-md-12 " >
+        <form action="" method="post" name="form1" id="form1" class="ajaxformx">
+
+            <div class="fancy-tab-container">
+                <ul class="nav nav-tabs fancy">
+                    <li class="active"><a href="{:U('Crm/saletongji')}">统计概览</a></li>
+                    <li><a href="{:U('Crm/itemtongji')}">项目统计</a></li>
+                    <li><a href="{:U('Crm/hetongtongji')}">合同统计</a></li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane active" id="autotab_1">
+                        <div id="all" class="col-md-12">
+                            <div class="col-md-3">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title">客户总量</h3>
+                                    </div>
+                                    <div class="panel-body">
+                                        {$cusnum}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title">合同总量</h3>
+                                    </div>
+                                    <div class="panel-body">
+                                        {$hetongnum}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title">项目总量</h3>
+                                    </div>
+                                    <div class="panel-body">
+                                        {$itemnum}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title">成交客户总量</h3>
+                                    </div>
+                                    <div class="panel-body">
+                                        {$compnum}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-3">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title">客户拥有数排行(前6名)
+                                            <a data-toggle="modal" data-target="#myModal" onclick="showrank('custom')" href="javascript:void(0);" class="pull-right ">
+                                                <small>更多排行 >></small></a>
+                                        </h3>
+
+                                    </div>
+                                    <div class="panel-body">
+                                        <ul class="list-group">
+                                            <style>
+                                                .list1{background-color: #fae7e7;}
+                                                /*.list2{background-color: white;color:white;}*/
+                                            </style>
+                                            <volist name="cusrank" id="vo" key="k">
+                                                <?php
+                                            if($k>3){
+                                                        $css="list2";
+                                                    }else{
+                                                        $css="list1";
+                                                    }
+                                                ?>
+                                                <li data-field="custom" data-id="{$vo.staffid}" class="list-group-item {$css}">
+                                                    <span class="badge">{$vo.sum}</span>
+                                                    {$vo.name}
+                                                    <div style="  position: absolute; top: 0px;left: -5px;">
+                                                        <in name="k" value="1,2,3">
+                                                            <img style="width: 30px;" src="/Public/Admin/stylesheets/images/{$k}.png" />
+                                                        </in>
+                                                    </div>
+                                                </li>
+                                            </volist>
+
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title">合同数排行(前6名)
+                                            <a data-toggle="modal" data-target="#myModal" onclick="showrank('contract')" href="javascript:void(0);" class="pull-right ">
+                                                <small>更多排行 >></small></a>
+                                        </h3>
+                                    </div>
+                                    <div class="panel-body">
+                                        <ul class="list-group">
+                                            <style>
+                                                .list1{background-color: #fae7e7;}
+                                                /*.list2{background-color: white;color:white;}*/
+                                            </style>
+                                            <volist name="contractrank" id="vo" key="k">
+                                                <?php
+                                            if($k>3){
+                                                $css="list2";
+                                                }else{
+                                                $css="list1";
+                                                }
+                                                ?>
+                                                <li data-field="contract" data-id="{$vo.masterid}" class="list-group-item {$css}">
+                                                    <span class="badge">{$vo.sum}</span>
+                                                    {$vo.name}
+                                                    <div style="  position: absolute; top: 0px;left: -5px;">
+                                                        <in name="k" value="1,2,3">
+                                                            <img style="width: 30px;" src="/Public/Admin/stylesheets/images/{$k}.png" />
+                                                        </in>
+                                                    </div>
+                                                </li>
+                                            </volist>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title">合同金额
+                                            <a data-toggle="modal" data-target="#myModal" onclick="showrank('contractamount')" href="javascript:void(0);" class="pull-right ">
+                                                <small>更多排行 >></small></a>
+                                        </h3>
+                                    </div>
+                                    <div class="panel-body">
+                                        <ul class="list-group">
+                                            <style>
+                                                .list1{background-color: #fae7e7;}
+                                                /*.list2{background-color: white;color:white;}*/
+                                            </style>
+                                            <volist name="conamountrank" id="vo" key="k">
+                                                <?php
+                                            if($k>3){
+                                                $css="list2";
+                                                }else{
+                                                $css="list1";
+                                                }
+                                                ?>
+                                                <li data-field="contractamount" data-id="{$vo.masterid}" class="list-group-item {$css}">
+                                                    <span class="badge">{$vo.sum}</span>
+                                                    {$vo.name}
+                                                    <div style="  position: absolute; top: 0px;left: -5px;">
+                                                        <in name="k" value="1,2,3">
+                                                            <img style="width: 30px;" src="/Public/Admin/stylesheets/images/{$k}.png" />
+                                                        </in>
+                                                    </div>
+                                                </li>
+                                            </volist>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title">项目排行
+                                            <a data-toggle="modal" data-target="#myModal" onclick="showrank('item')" href="javascript:void(0);" class="pull-right ">
+                                                <small>更多排行 >></small></a>
+                                        </h3>
+                                    </div>
+                                    <div class="panel-body">
+                                        <ul class="list-group">
+                                            <style>
+                                                .list1{background-color: #fae7e7;}
+                                                /*.list2{background-color: white;color:white;}*/
+                                            </style>
+                                            <volist name="itemrank" id="vo" key="k">
+                                                <?php
+                                            if($k>3){
+                                                $css="list2";
+                                                }else{
+                                                $css="list1";
+                                                }
+                                                ?>
+                                                <li data-field="item" data-id="{$vo.masterid}" class="list-group-item {$css}">
+                                                    <span class="badge">{$vo.sum}</span>
+                                                    {$vo.name}
+                                                    <div style="  position: absolute; top: 0px;left: -5px;">
+                                                        <in name="k" value="1,2,3">
+                                                            <img style="width: 30px;" src="/Public/Admin/stylesheets/images/{$k}.png" />
+                                                        </in>
+                                                    </div>
+                                                </li>
+                                            </volist>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title">跟进排行
+                                            <a data-toggle="modal" data-target="#myModal" onclick="showrank('follow')" href="javascript:void(0);" class="pull-right ">
+                                                <small>更多排行 >></small></a>
+                                        </h3>
+                                    </div>
+                                    <div class="panel-body">
+                                        <ul class="list-group">
+                                            <style>
+                                                .list1{background-color: #fae7e7;}
+                                                /*.list2{background-color: white;color:white;}*/
+                                            </style>
+                                            <volist name="followrank" id="vo" key="k">
+                                                <?php
+                                            if($k>3){
+                                                $css="list2";
+                                                }else{
+                                                $css="list1";
+                                                }
+                                                ?>
+                                                <li data-field="follow" data-id="{$vo.staffid}" class="list-group-item {$css}">
+                                                    <span class="badge">{$vo.sum}</span>
+                                                    {$vo.name}
+                                                    <div style="  position: absolute; top: 0px;left: -5px;">
+                                                        <in name="k" value="1,2,3">
+                                                            <img style="width: 30px;" src="/Public/Admin/stylesheets/images/{$k}.png" />
+                                                        </in>
+                                                    </div>
+                                                </li>
+                                            </volist>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div id="myModal" class="modal fade">
+    <input type="hidden" id="ranktype" value=""/>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div id="loadingpic" style="display: none; position: absolute;top: 0px;z-index: 999;width: 100%;height: 100%;background-color: rgb(23, 27, 31);">
+                <img style="position:relative;width:20%;margin: 10% 0 0 40%;" src="/Public/Admin/stylesheets/images/loading1.gif"/>
+            </div>
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">关闭</span></button>
+                <h4 class="modal-title">排行</h4>
+
+            </div>
+            <div class="modal-body" style="height: 300px !important;overflow: scroll;">
+                <div class="input-group" style="margin-bottom: 10px;width: 100%;">
+                    <input type="text" class="form-control" placeholder="输入姓名查询排行，支持模糊查询" name="keyword" id="keyword" value="">
+                </div>
+                <style>
+                    .list1{background-color: #fae7e7;}
+                    .list-group li{cursor: pointer;}
+                </style>
+                <ul class="list-group showrank">
+
+                </ul>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    .bootbox-confirm .modal-dialog{width: 300px;margin-top: 80px; max-height: 300px; overflow: scroll;}
+</style>
+<include file="Public/form" />
+<script src="__PUBLIC__/Admin/lib/echarts/echarts.js"></script>
+<script type="text/javascript">
+    $("body").on('click',".list-group li", function () {
+        var type=$(this).attr('data-field');
+        var masterid=$(this).attr('data-id');
+        var title="";
+        var pagesize=5;
+        switch(type){
+            case 'custom':
+                title="客户详细";
+                break;
+            case 'contract':
+                title="合同详细";
+                break;
+            case 'contractamount':
+                title="合同金额详细";
+                break;
+            case 'item':
+                title="项目详细";
+                break;
+            case 'follow':
+                title="跟进详细";
+                break;
+        }
+        var $url=ADMIN_PATH + "/Crm/showrankdetail?type="+type+"&masterid="+masterid;
+        jBox('<iframe src="'+$url+'" width="740" height="400" frameborder="0" />',title);
+
+    });
+//    $(".list-group li").click(function () {
+//
+//    });
+
+    $(function(){
+
+        $('#keyword').bind('input propertychange', function() {
+            var value = $(this).val();
+             $('.showrank li').each(function(){
+                 if($(this).html().indexOf(value) != -1)
+                     $(this).show();
+                 else
+                     $(this).hide();
+             });
+        });
+    });
+
+
+function showrank(type){
+    $("#loadingpic").show();
+    $("#ranktype").val(type);
+    var title="";
+    switch(type){
+        case 'custom':
+            title="客户拥有数排行";
+            break;
+        case 'contract':
+            title="合同数排行";
+            break;
+        case 'contractamount':
+            title="合同金额排行";
+            break;
+        case 'item':
+            title="项目数排行";
+            break;
+        case 'follow':
+            title="跟进排行";
+            break;
+    }
+    $(".modal-title").html(title);
+    $.ajax({
+        url:ADMIN_PATH+"/Api/getranklist.html",
+        data:{type:type},
+        type:"POST",
+        success: function (data) {
+            $("#loadingpic").hide();
+            $(".showrank").html(data);
+        }
+    })
+
+}
+
+</script>
+</body>
+</html>

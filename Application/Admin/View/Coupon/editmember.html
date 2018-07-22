@@ -1,0 +1,580 @@
+<!doctype html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <title>{$title}</title>
+  <include file="Public/scripts" /><include file="Public/upload" /><include file="Public/editor" />
+  <script language="javascript">
+    $(function(){
+      InitArea();
+    });
+  </script>
+
+</head>
+<body>
+<div class="row">
+  <div class="col-md-12 " >
+    <h2>{$title}</h2>
+  </div>
+  <div class="col-md-12 " >
+    <form action="" method="post" name="form1" id="form1" class="ajaxformx">
+      <input type="hidden" id="id" name="id" value="{$db.id}" />
+      <div class="fancy-tab-container">
+        <ul class="nav nav-tabs fancy">
+          <li class="active"><a href="#autotab_1" data-toggle="tab">基本信息</a></li>
+          <li><a href="#autotab_2" id="daohang" data-toggle="tab">客户地址</a></li>
+          <li style="display: none;"><a href="#autotab_4" data-toggle="tab">扩展信息</a></li>
+          <li style="display: none;"><a href="#autotab_3" data-toggle="tab">会员关系</a></li>
+          <li><a href="#autotab_5" data-toggle="tab">跟进记录</a></li>
+        </ul>
+        <div class="tab-content">
+          <div class="tab-pane active" id="autotab_1">
+            <div class="col-md-6">
+
+              <div class="form-group">
+                <style>
+                  .label{padding:5px !important;margin: 5px;
+                    cursor: pointer;}
+                </style>
+                <volist name="list" id="vo">
+                  <div class="controls" style="margin: 10px;">
+                    <input type="hidden" value="{$vo.colname}" name="colname[]">
+                    <input type="hidden" name="{$vo.colname}" value="{$db[$vo['colname']]}"/>
+                    {$vo.name}：
+                    <volist name="vo['down']" id="vod">
+                      <?php
+                          if($vod['id'] == $db[$vo['colname']]){
+                              $css="label-info";
+                          }else{
+                              $css="label-default";
+                          }
+                      ?>
+                          <span onclick="setvalue('{$vo.colname}','{$vod.id}')"   class="{$vo.colname}{$vod.id} label {$css} ">
+                              {$vod.name}
+                          </span>
+                    </volist><br/>
+                  </div>
+                </volist>
+
+              </div>
+
+
+              <hr />
+              <div class="form-group">
+                <label class="control-label">公司名称：</label>
+                <div class="controls"> <input type="text" class="form-control w150" name="company" id="company" placeholder="输入{$name}公司名称" value="{$db.company}"
+                  <gt name="db.id" value="0"> readonly="readonly"</gt>
+                  /> </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label">真实姓名：</label>
+                <div class="controls">
+                  <input type="text" class="form-control" name="userreal" id="userreal" placeholder="输入{$name}真实姓名" value="{$db.userreal}" />
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label">联系电话：</label>
+                <div class="controls">
+                  <input type="text" class="form-control" name="telephone" id="telephone" placeholder="输入{$name}联系电话" value="{$db.telephone}" />
+                </div>
+              </div>
+              <div style="display: none;" class="form-group">
+                <label class="control-label">年龄：</label>
+                <div class="controls">
+                  <input type="text" class="form-control" name="age" id="age" placeholder="输入{$name}年龄" value="{$db.age}" />
+                </div>
+              </div>
+              <div style="display:none;" class="form-group">
+                <label class="control-label">婚姻状况：</label>
+                <div class="controls">
+                  <select class="form-control" id="married" name="married">
+                    <option value="">--选择婚姻状况--</option>
+                    <option <if condition="$db['married'] eq 0">selected</if> value="0">未婚</option>
+                    <option <if condition="$db['married'] eq 1">selected</if> value="1">已婚</option>
+                  </select>
+
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label">性别：</label>
+                <div class="controls">
+                  <select class="form-control" id="sex" name="sex">
+                    <option value="">--选择性别--</option>
+                    <option <if condition="$db['sex'] eq 1">selected</if> value="1">男</option>
+                    <option <if condition="$db['sex'] eq 2">selected</if> value="2">女</option>
+                  </select>
+
+                </div>
+              </div>
+
+              <div style="display:none;" class="form-group">
+                <label class="control-label">是否有车：</label>
+                <div class="controls">
+                  <select class="form-control" id="hascar" name="hascar">
+                    <option <if condition="$db['hascar'] eq 0">selected</if> value="0">无</option>
+                    <option <if condition="$db['hascar'] eq 1">selected</if> value="1">有</option>
+                  </select>
+
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label">客户来源：</label>
+                <div class="controls">
+                  <select class="form-control" id="source" name="source">
+                    <option value="">--选择客户来源--</option>
+                    <volist name="membersource" id="vo">
+                      <option <if condition="$db['source'] eq $vo['id']">selected</if> value="{$vo.id}">{$vo.name}</option>
+                    </volist>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="control-label">客户分级：</label>
+                <div class="controls">
+                  <select class="form-control" id="level" name="level">
+                    <option value="">--选择客户分级--</option>
+                    <volist name="memberlevel" id="vo">
+                      <option <if condition="$db['level'] eq $vo['id']">selected</if> value="{$vo.id}">{$vo.name}</option>
+                    </volist>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="control-label">客户分类：</label>
+                <div class="controls">
+                  <select class="form-control" id="memberstatus" name="memberstatus">
+                    <option value="">--选择客户分类--</option>
+                    <volist name="memberstatus" id="vo">
+                      <option <if condition="$db['memberstatus'] eq $vo['id']">selected</if> value="{$vo.id}">{$vo.name}</option>
+                    </volist>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="control-label">产品类别：</label>
+                <div class="controls">
+                  <select class="form-control" id="producttype" name="producttype">
+                    <option value="">--选择产品类别--</option>
+                    <volist name="producttype" id="vo">
+                      <option <if condition="$db['producttype'] eq $vo['id']">selected</if> value="{$vo.id}">{$vo.name}</option>
+                    </volist>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="clearfix"></div>
+          <div class="tab-pane" id="autotab_2">
+            <div class="col-md-4 custom-form">
+              <div class="form-group">
+                <label class="control-label">所在地：</label>
+                <div class="controls custom-area">
+                  <select id="China_Province" class="form-control fl w150" name="provinceid">
+                    {:get_area('china_province',0,$db['provinceid'])}
+                  </select>
+                  <select id="China_City" class="form-control fl w150"  name="cityid"  >
+                    {:get_area('china_city',$db['provinceid'],$db['cityid'])}
+                  </select>
+                  <select id="China_District" class="form-control  w150"  name="districtid"  >
+                    {:get_area('china_district',$db['cityid'],$db['districtid'])}
+                  </select>
+
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label">地址(鼠标点击地图目标位置可拾取地址和坐标，也可通过地址搜索地图位置)：</label>
+                <div class="controls">
+                  <textarea class="form-control" rows="2" id="address" name="address" placeholder="请填写门店地址">{$db.address}</textarea>
+                  <input type="button" onclick="searchByStationName()" style="padding: 4px 8px; border: 1px solid #ddd; background: #eee; font-size: 12px;
+                 margin: 15px; border-radius: 3px" class="btn-search mui-btn mui-btn-primary mui-bum-xs" value="查找地址" />
+
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="control-label">经度：</label>
+                <div class="controls">
+                  <input type="text" value="{$db.longitude}" class="form-control w150" name="longitude" id="longitude" />
+                </div>
+                <label class="control-label">纬度：</label>
+                <div class="controls">
+                  <input type="text" value="{$db.latitude}" class="form-control w150" name="latitude" id="latitude" />
+                </div>
+              </div>
+
+
+            </div>
+            <div class="col-md-8 custom-form">
+
+              <div class="form-group">
+                <label class="control-label">地图：</label>
+                <div class="controls">
+                  <div id="container" style="width: 100%; height: 500px;">
+                  </div>
+                </div>
+              </div>
+
+            </div>
+            <div class="clearfix"></div>
+          </div>
+          <div class="clearfix"></div>
+          <div class="tab-pane" id="autotab_3">
+            <div class="col-md-12">
+
+              <div class="form-group">
+                <label class="control-label">下级列表：</label>
+                <div class="controls">
+                  <div id="memberbox">
+                    <ul id="nodeTree" class="ztree">
+                    </ul>
+                    <div id="memberinfo">
+                      <table border="0" cellspacing="1" cellpadding="5" class="MainTbl">
+                        <tr class="toolbar">
+                          <td colspan="2" class="tc" onclick="$('#memberinfo').hide();">基本信息</td>
+                        </tr>
+                        <tr class="row0">
+                          <td  colspan="2" align="center">
+                            <img id="info-headimgurl" src=""  style="width:100px; height:100px; border-radius:50%;"/>
+                          </td>
+                        </tr>
+                        <tr class="row0">
+                          <td class="col1" >会员昵称：</td>
+                          <td  ><span id="info-username"></span></td>
+                        </tr>
+                        <tr class="row0">
+                          <td class="col1" >会员姓名：</td>
+                          <td  ><span id="info-userreal"></span></td>
+                        </tr>
+                        <tr class="row0">
+                          <td class="col1" >身份证号：</td>
+                          <td  ><span id="info-idcard"></span></td>
+                        </tr>
+                        <tr class="row0">
+                          <td class="col1" >联系电话：</td>
+                          <td  ><span id="info-telephone"></span></td>
+                        </tr>
+                        <tr class="row0">
+                          <td class="col1" >消费积分：</td>
+                          <td  ><span id="info-credit"></span></td>
+                        </tr>
+                        <tr class="row0">
+                          <td class="col1" >佣金账户：</td>
+                          <td  ><span id="info-balance"></span></td>
+                        </tr>
+                        <tr class="row0">
+                          <td class="col1" >会员等级：</td>
+                          <td  ><span id="info-level"></span></td>
+                        </tr>
+                        <tr class="row0">
+                          <td class="col1" >关注时间：</td>
+                          <td  ><span id="info-addtime"></span></td>
+                        </tr>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="clearfix"></div>
+            </div>
+          </div>
+          <div class="clearfix"></div>
+          <div class="tab-pane" id="autotab_4">
+            <div class="form-group" >
+              <div class="controls">
+                <table class="col-md-6" >
+                  <tr class="row0 template">
+                    <td id="tempid"><?php
+                    $detail=json_decode($db['extendinfo'],true);
+
+                    $daynum=count($detail);
+                    if($daynum==0){
+                      $daynum=1;
+                    }
+                    ?>
+                      <input type="hidden" name="daynum" id="daynum" value="{$daynum}" />
+                      <for start="0" end="$daynum" name="k" >
+
+                        <table class="table vm">
+                          <tr class="row0">
+                            <td width="70"  class="tc" > 第<span class="day">{:$k+1}</span>项 <br />
+                              <a href="javascript:void(0);" onclick="if(confirm('您确定要删除吗？')){$(this).parent().parent().parent().parent().remove();}">删除</a></td>
+                            <td >
+                              <div class="input-group">
+                                <span class="input-group-addon">名称：</span>
+                                <input type="text" class="form-control" name="extendname[]"   value="{:$detail[$k]['name']}"  />
+                                <span class="input-group-addon">内容：</span>
+                                <input type="text" class="form-control" name="extendcontent[]"   value="{:$detail[$k]['content']}"  />
+                              </div>
+                            </td>
+                          </tr>
+                        </table>
+                      </for></td>
+                  </tr>
+                  <tr class="row0">
+                    <td colspan="3"><button class="btn" type="button" id="addDay"><i class="fa fa-plus"></i> 1项</button></td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+            <div class="clearfix"></div>
+          </div>
+          <div class="clearfix"></div>
+          <div class="tab-pane" id="autotab_5">
+            <div class="form-group" >
+              <div class="controls">
+                <table class="table table-first-column-number display full table-striped custom-table vm">
+                  <thead>
+                  <tr>
+                    <th></th>
+                    <th width="100">#</th>
+                    <th width="180">时间</th>
+                    <th width="280">详细</th>
+                    <th width="180">地址</th>
+                    <th width="80">跟进人</th>
+                  </tr>
+                  </thead>
+                  <style>
+                    .color1{background-color: #00B83F;}
+                    .color2{background-color: #aa7700;}
+                    .color3{background-color: #699a33;}
+                  </style>
+                  <tbody>
+                  <empty name="followlist">
+                    <tr class="row0">
+                      <td colspan="8">暂无跟进记录</td>
+                    </tr>
+                    <else/>
+                    <volist name="followlist" id="vo">
+                      <tr>
+                        <td></td>
+                        <td>{$vo.id} <span class="color{$vo['type']}" style="font-size: 12px;color: white;padding:3px;border-radius: 3px;">{:getfollowtype($vo['type'])}</span></td>
+                        <td>{$vo.addtime}</td>
+                        <td>{$vo.remark}
+                          <?php
+                            $imglist=explode(',',$vo['images']);
+                            $imglist=array_filter($imglist);
+                            ?>
+                          <volist name="imglist" id="voc">
+                            &nbsp;&nbsp;
+                            <a href="{$voc}" target="_blank"><img src="{$voc}" style="width: 50px; height: 50px;"/></a>
+                          </volist>
+                        </td>
+                        <td>{$vo.address}</td>
+                        <?php
+                            $departmentid=M('staff')->where(array('id'=>$vo['staffid']))->getField('departmentid');
+                        $department=M('department')->where(array('id'=>$departmentid))->getField('name');
+                        ?>
+                        <td ><span rel="tooltip" data-original-title="联系电话：{:get_cache_value('staff',$vo['staffid'],'telephone')}  部门：{$department}">
+                              {:get_cache_value('staff',$vo['staffid'],'username')}
+                            </span> </td>
+                    </volist>
+                  </empty>
+                  </tbody>
+
+                </table>
+
+
+              </div>
+            </div>
+            <div class="clearfix"></div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-group" style="padding:20px 0px;">
+            <div class="controls">
+              <hr />
+              <button type="submit" class="btn btn-success" id="btnSubmit"><i class="fa fa-save"></i> 提交</button>
+              <button type="button" class="btn btn-default" onClick="history.back();"><i class="fa fa-undo"></i> 返回</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+<script language="JavaScript" type="text/javascript" >
+
+
+  function setvalue(colname,id){
+
+    $("."+colname+id).removeClass("label-default");
+    $("."+colname+id).siblings("span").removeClass("label-info");
+    $("."+colname+id).siblings("span").addClass("label-default");
+    $("."+colname+id).addClass("label-info");
+    $("input[name='"+colname+"']").val(id);
+
+  }
+
+  $(function(){
+
+    $("#addDay").click(function(){
+      var num=parseInt($("#daynum").val());
+      var html=$.addDay(num+1);
+      $("#tempid").append(html);
+      if($("#pid").val()==3){
+        $(".datatype").val(3).attr("disabled",true).change();
+      }
+      //$(".editor").xheditor(default_setting);
+      $("#daynum").val(num+1);
+      $.rendUploader("#btnUpload"+(num+1));
+    });
+
+
+  });
+  (function(){
+    $.addDay=function(n){
+      var html="";
+      html+=("<table class=\"table vm\">");
+      html+=("  <tr class=\"row0\">");
+      html+=("    <td width=\"70\"  class=\"tc\" >第<span class=\"day\">"+n+"</span>项 <br /><a href=\"javascript:void(0);\" onclick=\"if(confirm('您确定要删除吗？')){$(this).parent().parent().parent().parent().remove();}\">删除</a></td>");
+
+      html+=("    <td ><div class=\"input-group\"> <span class=\"input-group-addon\">名称：</span><input type=\"text\" class=\"form-control\" name=\"extendname[]\"   value=\"\"   />" +
+      "<span class=\"input-group-addon\">内容：</span><input type=\"text\" class=\"form-control\" name=\"extendcontent[]\"   value=\"\"   />" +
+      "</div>  </td>");
+      html+=("  </tr>");
+      html+=("</table>");
+      return html;
+    }
+
+
+
+  })(jQuery);
+</script>
+<script language="javascript">
+  var $fields={
+    username: {
+      validators: {
+        notEmpty: {
+          message: '用户名不能为空'
+        }
+      }
+    } ,
+    sex: {
+      validators: {
+        notEmpty: {
+          message: '请选择性别'
+        }
+      }
+    } ,
+    age: {
+      validators: {
+        notEmpty: {
+          message: '年龄不能为空'
+        }
+      }
+    } ,
+    source: {
+      validators: {
+        notEmpty: {
+          message: '请选择客户来源渠道'
+        }
+      }
+    }
+  };
+</script>
+<include file="Public/form" />
+
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=UfB3fUxvHlk6KhpLMd0iL3PuxnzyfuWm"></script>
+<script type="text/javascript">
+  var address=$("#address").val();
+  var map = new BMap.Map("container");
+  var point = new BMap.Point('{$db.longitude}', '{$db.latitude}');
+  if($.trim(address)!=""){
+    map.centerAndZoom(point, 15);
+  }else{
+    map.centerAndZoom("成都市", 12);
+  }
+
+  var marker = new BMap.Marker(point);
+  map.addOverlay(marker);
+
+
+  map.enableScrollWheelZoom();    //启用滚轮放大缩小，默认禁用
+  map.enableContinuousZoom();    //启用地图惯性拖拽，默认禁用
+  map.enableDoubleClickZoom();  //启用双击放大缩小
+  map.enablePinchToZoom();//启用双指操作缩放，默认启用。
+  map.addControl(new BMap.NavigationControl());  //添加默认缩放平移控件
+  map.addControl(new BMap.OverviewMapControl()); //添加默认缩略地图控件
+  map.addControl(new BMap.OverviewMapControl({ isOpen: false, anchor: BMAP_ANCHOR_BOTTOM_RIGHT }));   //右下角，打开
+
+  map.addEventListener("click", function (e) {
+    map.centerAndZoom(e.point, 18);
+    document.getElementById("longitude").value = e.point.lng;
+    document.getElementById("latitude").value =  e.point.lat;
+    var marker = new BMap.Marker(new BMap.Point(e.point.lng, e.point.lat));  // 创建标注，为要查询的地方对应的经纬度
+    map.clearOverlays();//清空原来的标注
+    map.addOverlay(marker);
+    var point = new BMap.Point(e.point.lng,e.point.lat);
+    if(!point){
+      mui.toast('未找到该地址');return;
+    }
+    var gc = new BMap.Geocoder();
+    gc.getLocation(point, function(rs){
+      var addComp = rs.addressComponents;
+      $("#address").val(addComp.province  + addComp.city  + addComp.district  + addComp.street  + addComp.streetNumber);
+      //alert(addComp.province + ", " + addComp.city + ", " + addComp.district + ", " + addComp.street + ", " + addComp.streetNumber);
+    });
+
+  });
+
+  var localSearch = new BMap.LocalSearch(map);
+  localSearch.enableAutoViewport(); //允许自动调节窗体大小
+
+  map.addEventListener("click", function (e) {
+    map.centerAndZoom(e.point, 15);
+    document.getElementById("longitude").value = e.point.lng;
+    document.getElementById("latitude").value =  e.point.lat;
+    var marker = new BMap.Marker(new BMap.Point(e.point.lng, e.point.lat));  // 创建标注，为要查询的地方对应的经纬度
+    map.clearOverlays();//清空原来的标注
+    map.addOverlay(marker);
+    var point = new BMap.Point(e.point.lng,e.point.lat);
+    if(!point){
+      mui.toast('未找到该地址');return;
+    }
+    var gc = new BMap.Geocoder();
+    gc.getLocation(point, function(rs){
+      var addComp = rs.addressComponents;
+      $("#address").val(addComp.province  + addComp.city  + addComp.district  + addComp.street  + addComp.streetNumber);
+      //alert(addComp.province + ", " + addComp.city + ", " + addComp.district + ", " + addComp.street + ", " + addComp.streetNumber);
+    });
+
+  });
+
+  function searchByStationName() {
+    var localSearch = new BMap.LocalSearch(map);
+    localSearch.enableAutoViewport(); //允许自动调节窗体大小
+//        var map = new BMap.Map("container");
+    map.clearOverlays();//清空原来的标注
+    var keyword = document.getElementById("address").value;
+    localSearch.setSearchCompleteCallback(function (searchResult) {
+      var poi = searchResult.getPoi(0);
+      if(!poi){
+        mui.toast('未找到该地址');return;
+      }
+      document.getElementById("longitude").value = poi.point.lng;
+      document.getElementById("latitude").value =  poi.point.lat;
+
+      map.centerAndZoom(poi.point, 18);
+      var marker = new BMap.Marker(new BMap.Point(poi.point.lng, poi.point.lat));  // 创建标注，为要查询的地方对应的经纬度
+      map.addOverlay(marker);
+    });
+    localSearch.search(keyword);
+  }
+
+
+  $("#daohang").click(function(){
+    if($.trim(address)!=""){
+      $(".btn-search").click();
+    }else{
+      map.centerAndZoom("成都市", 12);
+    }
+  });
+
+</script>
+</body>
+</html>

@@ -1,0 +1,241 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="content-Type" content="text/html; charset=utf-8" />
+    <title>{$title}</title>
+    <include file="Public/scripts" />
+</head>
+<body>
+<form action="" method="get" class="ajaxformx_" name="form1" id="form1">
+    <input type="hidden" name="p" id="p" value="1" />
+    <input type="hidden" name="type" id="type" value="{$type}" />
+    <input type="hidden" name="masterid" id="masterid" value="{$masterid}" />
+    <div class="row">
+        <div class="col-md-12">
+            <div class="input-group">
+                <input type="text" class="form-control" placeholder="输入关键词" name="keyword" id="keyword" value="{$keyword}">
+              <span class="input-group-btn">
+              <button type="submit" class="btn fl"><i class="fa fa-search"></i> 查询</button>
+              </span> </div>
+        </div>
+    </div>
+    <br />
+</form>
+<switch name="type">
+    <case value="custom">
+        <table class="table  table-first-column-number display full table-striped custom-table vm">
+            <thead>
+            <th>#</th>
+            <th width="200">公司名称</th>
+            <th width="100">姓名</th>
+            <th width="100">联系电话</th>
+            <th width="100">地址</th>
+            <th width="100">预估金额</th>
+            </thead>
+            <tbody>
+            <volist id="vo" name="list">
+                <?php
+                  $css=($val==$vo['id']?" style='color:#f00;' ":"");
+                  ?>
+                <tr class="row{$i % 2+1}" >
+                    <td>{$vo.id}</td>
+                    <td {$css}><a href="{:U('Crm/editmember','id='.$vo['id'])}">{$vo.company}</a> </td>
+                    <td {$css}>{$vo.userreal} </td>
+                    <td {$css}>{$vo.telephone} </td>
+                    <td {$css}>{$vo.address}</td>
+                    <td {$css}>{$vo.targetamount}</td>
+                </tr>
+            </volist>
+            <notempty name="page">
+                <tr>
+                    <td colspan="6"><div class="pull-left custom-footer">
+                        <ul class="pagination" style="margin: 0px;">
+                            {$page}
+                        </ul>
+                    </div></td>
+                </tr>
+            </notempty>
+            </tbody>
+        </table>
+    </case>
+    <case value="contract">
+        <table class="table  table-first-column-number display full table-striped custom-table vm">
+            <thead>
+            <th width="50">#</th>
+            <th width="100">合同编号</th>
+            <th width="100">合同名</th>
+            <th width="70">签单人</th>
+            <th width="100">合同金额</th>
+            <th width="100">已收金额</th>
+            <th width="120">合同时间</th>
+            <th width="100">剩余时间</th>
+            </thead>
+            <tbody>
+            <volist id="vo" name="list">
+                <?php
+                  $css=($val==$vo['id']?" style='color:#f00;' ":"");
+                  ?>
+                <tr class="row{$i % 2+1}" >
+                    <td {$css}>{$vo.id}</td>
+                    <td {$css}>{$vo.no}</td>
+                    <td {$css}>{$vo.name} </td>
+                    <td {$css}>{$vo.mastername} </td>
+                    <td {$css}>{$vo.amount} </td>
+                    <td {$css}>{$vo.getamount} </td>
+                    <td {$css}>{$vo.start}至{$vo.end} </td>
+                    <td {$css}><span style=" background-color:{$vo.color};color:white;padding: 3px;">{$vo.left}</span> </td>
+                </tr>
+            </volist>
+            <notempty name="page">
+                <tr>
+                    <td colspan="8"><div class="pull-left custom-footer">
+                        <ul class="pagination" style="margin: 0px;">
+                            {$page}
+                        </ul>
+                    </div></td>
+                </tr>
+            </notempty>
+            </tbody>
+        </table>
+    </case>
+    <case value="contractamount">
+        <table class="table  table-first-column-number display full table-striped custom-table vm">
+            <thead>
+            <th>#</th>
+            <th>合同编号</th>
+            <th>合同名</th>
+            <th>签单人</th>
+            <th>合同金额</th>
+            <th>已收金额</th>
+            <th>合同时间</th>
+            <th>剩余时间</th>
+            </thead>
+            <tbody>
+            <volist id="vo" name="list">
+                <?php
+                  $css=($val==$vo['id']?" style='color:#f00;' ":"");
+                  ?>
+                <tr class="row{$i % 2+1}" >
+                    <td {$css}>{$vo.id}</td>
+                    <td {$css}>{$vo.no}</td>
+                    <td {$css}>{$vo.name} </td>
+                    <td {$css}>{$vo.mastername} </td>
+                    <td {$css}>{$vo.amount} </td>
+                    <td {$css}>{$vo.getamount} </td>
+                    <td {$css}>{$vo.start}至{$vo.end} </td>
+                    <td {$css}><span style="background-color:{$vo.color};color:white;padding: 3px;">{$vo.left}</span> </td>
+                </tr>
+            </volist>
+            <notempty name="page">
+                <tr>
+                    <td colspan="9"><div class="pull-left custom-footer">
+                        <ul class="pagination" style="margin: 0px;">
+                            {$page}
+                        </ul>
+                    </div></td>
+                </tr>
+            </notempty>
+            </tbody>
+        </table>
+    </case>
+    <case value="item">
+        <table class="table  table-first-column-number display full table-striped custom-table vm">
+            <thead>
+            <th>#</th>
+            <th width="100">项目名</th>
+            <th width="100">客户</th>
+            <th width="100">创建人</th>
+            <th width="100">成员</th>
+            <th width="100">创建时间</th>
+            <th width="100">状态</th>
+            </thead>
+            <tbody>
+            <volist id="vo" name="list">
+                <?php
+                  $css=($val==$vo['id']?" style='color:#f00;' ":"");
+                  ?>
+                <tr class="row{$i % 2+1}" >
+                    <td>{$vo.id}</td>
+                    <td {$css}>{$vo.name} </td>
+                    <td {$css}><a href="{:U('Crm/editmember','id='.$vo['customid'])}">{:get_cache_value('member',$vo['customid'],'company')}</a></td>
+                    <td {$css}>{$vo.mastername} </td>
+                    <?php
+                    $arr=explode(',',$vo['member']);
+                    $arr=array_filter($arr);
+                ?>
+                    <td {$css}>
+                        <foreach name="arr" item="voc">
+                            {:get_cache_value('staff',$voc,name)}，
+                        </foreach>
+                    </td>
+                    <td {$css}>{$vo.addtime} </td>
+                    <td {$css}>
+                        <switch name="vo['status']">
+                            <case value="0">跟进中</case>
+                            <case value="1">已签约</case>
+                            <case value="2">已放弃</case>
+                            <case value="3">服务中</case>
+                            <case value="4">服务结束</case>
+                        </switch>
+                    </td>
+                </tr>
+            </volist>
+            <notempty name="page">
+                <tr>
+                    <td colspan="7"><div class="pull-left custom-footer">
+                        <ul class="pagination" style="margin: 0px;">
+                            {$page}
+                        </ul>
+                    </div></td>
+                </tr>
+            </notempty>
+            </tbody>
+        </table>
+    </case>
+    <case value="follow">
+        <table class="table  table-first-column-number display full table-striped custom-table vm">
+            <thead>
+            <th>#</th>
+            <th width="100">跟进人</th>
+            <th width="100">客户公司</th>
+            <th width="100">客户姓名</th>
+            <th width="100">跟进时间</th>
+            <th width="100">内容</th>
+            <th width="100">地址</th>
+            </thead>
+            <tbody>
+            <volist id="vo" name="list">
+                <td>{$vo.id}</td>
+                <td>{$vo.name}</td>
+                <td>{$vo.company}</td>
+                <td>{$vo.userreal}</td>
+                <td>{$vo.addtime}</td>
+                <td>
+                    {$vo.remark}
+                    <?php
+                            $imglist=explode(',',$vo['images']);
+                            $imglist=array_filter($imglist);
+                            ?>
+                    <volist name="imglist" id="voc">
+                        <a href="{$voc}" target="_blank"><img src="{$voc}" style="width: 50px; height: 50px;" /></a>
+                    </volist>
+                </td>
+                <td>{$vo.address}</td>
+                </tr>
+            </volist>
+            <notempty name="page">
+                <tr>
+                    <td colspan="7"><div class="pull-left custom-footer">
+                        <ul class="pagination" style="margin: 0px;">
+                            {$page}
+                        </ul>
+                    </div></td>
+                </tr>
+            </notempty>
+            </tbody>
+        </table>
+    </case>
+</switch>
+
+</body>
+</html>

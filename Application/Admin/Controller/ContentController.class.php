@@ -1486,6 +1486,7 @@ class ContentController extends BaseController {
 			if (!is_numeric ( $data ['amount'] )) {
 				$this->error ( '对不起，请正确输入抵扣金额！' );
 			}
+
 			if ($id) {
 				$this->error('对不起，不允许修改！');
 // 				$db = M ( $tblname )->where ( array (
@@ -1493,7 +1494,7 @@ class ContentController extends BaseController {
 // 				) )->data ( $data )->save ();
 // 				$this->success ( '恭喜，' . $name . '修改成功！' );
 			} else {
-				$id = create_coupon($data['pid'],$data['title'],$data['num'],$data['cost'],$data['amount']);
+				$id = create_coupon($data['pid'],$data['title'],$data['num'],$data['cost'],$data['amount'],$data['memberid']);
 				if($id){
 				$this->success ( '恭喜，' . $name . '生成成功！' );
 				}else{

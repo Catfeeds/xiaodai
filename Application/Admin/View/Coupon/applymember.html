@@ -1,0 +1,96 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="content-Type" content="text/html; charset=utf-8" />
+    <title>{$title}</title>
+    <include file="Public/scripts" />
+</head>
+<body>
+
+<table class="table  table-first-column-number display full table-striped custom-table vm">
+    <thead>
+        <th colspan="5">客户信息</th>
+
+    </thead>
+    <tbody>
+    <tr>
+        <td style="width:100px;">公司名称</td>
+		 <td style="width:100px;">姓名</td>
+        <td style="width:100px;">联系电话</td>
+    </tr>
+
+    <tr class="row{$i % 2+1}" >
+        <td>{$member.company}</td>
+		 <td>{$member.userreal}</td>
+        <td>{$member.telephone} </td>
+    </tr>
+
+
+    </tbody>
+</table>
+<table class="table  table-first-column-number display full table-striped custom-table vm">
+    <thead>
+    <th colspan="5">员工信息</th>
+
+    </thead>
+    <tbody>
+    <tr>
+        <td style="width:100px;">登录账号</td>
+        <td style="width:100px;">姓名</td>
+        <td style="width:100px;">联系电话</td>
+        <td style="width:100px;">职位</td>
+    </tr>
+
+    <tr class="row{$i % 2+1}" >
+        <td>{$staff.username}</td>
+        <td>{$staff.name} </td>
+        <td>{$staff.telephone}</td>
+        <td>{$staff.position} </td>
+    </tr>
+    </tbody>
+</table>
+
+<table class="table  table-first-column-number display full table-striped custom-table vm">
+
+    <tbody>
+    <tr>
+        <td colspan="4">
+            <button type="button" class="btn btn-primary btnChoose" data-status="1" ><i class="fa fa-check"></i> 确认申请</button>
+            <button type="button" class="btn btn-danger btnChoose"  data-status="2"><i class="fa fa-remove"></i> 拒绝申请</button>
+        </td>
+    </tr>
+
+
+    </tbody>
+</table>
+
+<script language="javascript" type="text/javascript">
+    $(function(){
+        $(".btnChoose").click(function(){
+            var memberid='{$memberid}';
+            var status=$(this).attr('data-status');
+
+            $.ajax({
+                url:ADMIN_PATH+"/Api/applymember.html",
+                data:{memberid:memberid,status:status},
+                type:"POST",
+                success:function(data){
+                    if(data.status==0){
+                        alerterr(data.info);
+                    }else{
+                        alertok(data.info);
+                        setTimeout(function(){
+                            parent.bootbox.hideAll();
+                            parent.location.reload();
+                        },1000);
+                    }
+
+                }
+            });
+
+        });
+    });
+
+</script>
+</body>
+</html>

@@ -436,7 +436,7 @@ function rand_code($i='',$len=8){
  * @param number $cost
  * @param number $amount
  */
-function create_coupon($pid='',$title='',$num=0,$cost=0,$amount=0){
+function create_coupon($pid='',$title='',$num=0,$cost=0,$amount=0,$memberid = 0){
 	if(!is_number($pid)){
 		return er('必须选择分类');
 	}
@@ -458,6 +458,7 @@ function create_coupon($pid='',$title='',$num=0,$cost=0,$amount=0){
 	for ($i = 0; $i < $num; $i++) {
 		$no=rand_code($i);
 		$data[]=array(
+		        'memberid'=>$memberid,
 				'pid'=>$pid,
 				'no'=>$no,
 				'title'=>$title,

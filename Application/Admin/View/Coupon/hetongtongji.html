@@ -1,0 +1,138 @@
+<!doctype html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>{$title}</title>
+    <include file="Public/scripts" /><include file="Public/upload" /><include file="Public/editor" />
+</head>
+<body>
+<div class="row">
+    <div class="col-md-12 " >
+        <h2>{$title}</h2>
+    </div>
+    <div class="col-md-12 " >
+
+        <div class="fancy-tab-container">
+            <ul class="nav nav-tabs fancy">
+                <li><a href="{:U('Crm/saletongji')}">统计概览</a></li>
+                <li><a href="{:U('Crm/itemtongji')}">项目统计</a></li>
+                <li class="active"><a href="{:U('Crm/hetongtongji')}">合同统计</a></li>
+            </ul>
+            <div class="tab-content">
+                <form  action="" method="get" class="ajaxformx_" name="form1" id="form1">
+                    <input type="hidden" name="p" id="p" value="1" />
+                    <input type="hidden" name="status" id="status" value="{$status}" />
+                    <table class="table vm">
+                        <tbody>
+
+
+                        <tr>
+                            <td  class="text-right">关键词：</td>
+                            <td><div class="col-md-8">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" placeholder="项目名，创建人" name="keyword" id="keyword" value="{$keyword}">
+                                    <span class="input-group-btn">
+
+                                      <select class="btn" name="staffid" id="staffid">
+                                          <option value="">--选择员工--</option>
+                                          <volist name="stafflist" id="vo">
+                                              <option <if condition="$vo['id'] eq $staffid">selected</if> value="{$vo.id}">{$vo.name}</option>
+                                          </volist>
+                                      </select>
+                                      </span> <span class="input-group-btn">
+                                      <button type="submit" class="btn fl"><i class="fa fa-search"></i> 查询</button>
+                                      </span>
+                                </div>
+                            </div></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </form>
+
+                <table class="table  table-first-column-number display full table-striped custom-table vm">
+                    <thead>
+                    <th>#</th>
+                    <th>合同编号</th>
+                    <th>合同名</th>
+                    <th>签单人</th>
+                    <th>合同金额</th>
+                    <th>已收金额</th>
+                    <th>合同时间</th>
+                    <th>剩余时间</th>
+                    </thead>
+                    <tbody>
+                    <volist id="vo" name="contentlist">
+                        <?php
+                  $css=($val==$vo['id']?" style='color:#f00;' ":"");
+                  ?>
+                        <tr class="row{$i % 2+1}" >
+                            <td {$css}>{$vo.id}</td>
+                            <td {$css}>{$vo.no}</td>
+                            <td {$css}>{$vo.name} </td>
+                            <td {$css}>{$vo.mastername} </td>
+                            <td {$css}>{$vo.amount} </td>
+                            <td {$css}>{$vo.getamount} </td>
+                            <td {$css}>{$vo.start}至{$vo.end} </td>
+                            <td {$css}>
+
+                                <span style="background-color:{$vo.color};color:white;padding: 3px;">{$vo['left']==0?'已到期':$vo['left']}</span>
+
+                                <if condition="($vo['left'] gt 0) and (intval($vo['left']) elt $contract_timeout) and ($vo['notice'] neq 1)">
+                                    <span id="tip_{$vo.id}" onclick="sendcontracttip('{$vo.id}')" class="btn" rel="tooltip" data-original-title="提醒到期"><i class="fa fa-send"></i></span>
+                                </if>
+                            </td>
+                        </tr>
+                    </volist>
+                    <tr>
+                        <td colspan="4" style="text-align: right;">合计：</td>
+                        <td>{$allamount}</td>
+                        <td>{$getallamount}</td>
+                        <td colspan="2"></td>
+                    </tr>
+                    <notempty name="page">
+                        <tr>
+                            <td colspan="9"><div class="pull-left custom-footer">
+                                <ul class="pagination" style="margin: 0px;">
+                                    {$page}
+                                </ul>
+                            </div></td>
+                        </tr>
+                    </notempty>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="loading" style="position: fixed;top:50%;left: 40%;display: none;"><img src="/Public/Admin/stylesheets/images/loading1.gif"/></div>
+
+<include file="Public/form" />
+<script src="__PUBLIC__/Admin/lib/echarts/echarts.js"></script>
+<script type="text/javascript">
+    function sendcontracttip(id){
+
+        bootbox.confirm("您确定要发送合同到期短信提醒吗?", function(result) {
+            if (result) {
+                $("#loading").show();
+                $.ajax({
+                    url:ADMIN_PATH+"/Api/sendcontracttip.html",
+                    data:{id:id},
+                    type:"POST",
+                    success: function (data) {
+                        $("#loading").hide();
+                        $("#tip_"+id).hide();
+                        bootbox.confirm(data, function (result) {
+
+                        });
+                    }
+                })
+            };
+        });
+    }
+
+
+
+</script>
+</body>
+</html>

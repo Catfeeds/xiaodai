@@ -492,6 +492,36 @@ class MemberController extends BaseController {
 	}
 
 
+    public function autocomplete() {
+        $json = array();
+
+        if (isset($_GET['filter_name'])) {
+            if (isset($_GET['filter_name'])) {
+                $filter_name = $_GET['filter_name'];
+            } else {
+                $filter_name = '';
+            }
+
+            $co['username'] = array('like','%'.$filter_name.'%');
+            $json = M('member')->where($co)->field('id,username')->select();
+        }
+
+        $sort_order = array();
+
+        foreach ($json as $key => $value) {
+            $sort_order[$key] = $value['name'];
+        }
+
+        array_multisort($sort_order, SORT_ASC, $json);
+
+        header('Content-Type: application/json');
+        $this->ajaxReturn($json);
+    }
+
+
+
+
+    
     public function getAgeByID($id)
 
     { //过了这年的生日才算多了1周岁
@@ -1996,7 +2026,89 @@ class MemberController extends BaseController {
 	}
 
 
+    /**
+     *
+     */
+	public function todayExpire($searchtype = '',$type='', $keyword = '', $pid = '', $status = '', $p = 1)
+    {
+// we(edit_order('201601251149111019',1,array('username'=>'张四'),array(1=>1,6=>1,3=>1,4=>1)));
+        $where = array ();
+        switch ($searchtype) {
+            case '0' :
+                if (! isN ( $keyword )) {
+                    $where ['a.orderno'] = array (
+                        'like',
+                        '%' . $keyword . '%'
+                    );
+                }
+                break;
+            case '1' :
+                if (! isN ( $keyword )) {
+                    $where ['b.username'] = array (
+                        'like',
+                        '%' . $keyword . '%'
+                    );
+                }
+                break;
+            case '2' :
+                if (! isN ( $keyword )) {
+                    $where ['a.telephone'] = array (
+                        'like',
+                        '%' . $keyword . '%'
+                    );
+                }
+                break;
+        }
 
+
+        if (is_numeric ( $status )) {
+            if($status==3){
+                $where['a.status']=array('in','2,3');
+                $where['a.deadline']=array('lt',date("Y-m-d H:i:s"));
+            }else{
+                $where ['a.status'] = $status;
+            }
+
+        }
+        ;
+
+        // 表名
+        $tblname = 'loan';
+        $name = '今日到期贷款订单';
+        // 分页
+        $row = C ( 'VAR_PAGESIZE' );
+        $where['date(a.deadline)'] = date('Y-m-d');
+        $rs = M ( $tblname )->alias('a')->join('left join my_member b ON b.id = a.memberid')->where ( $where )->order ( 'a.id desc' )->page ( $p, $row );
+        $list = $rs->field('a.*,b.username')->select ();
+        $this->assign ( "contentlist", $list );
+        $count = count($list);
+
+        if ($count > $row) {
+            $page = new \Think\Page ( $count, $row );
+            $page->setConfig ( 'theme', '%FIRST% %UP_PAGE% %LINK_PAGE% %DOWN_PAGE% %END% %HEADER%' );
+            $this->assign ( 'page', $page->show () );
+        }
+
+        $this->assign ( "keyword", $keyword );
+        $this->assign ( "searchtype", $searchtype );
+        $this->assign ( "status", $status );
+        $this->assign('type',$type);
+        // 当前表名
+        $control = 'Member';
+        $action = 'loan';
+        $this->assign ( "control", $control );
+        $this->assign ( "action", $action );
+        $this->assign ( "tblname", $tblname );
+        $this->assign ( "name", $name );
+        $this->assign ( "pid", $pid );
+
+
+        // 状态标识
+        $this->assign ( "statuslist", C ( 'ORDERSTATUS' ) );
+
+        $this->assign ( "title", '今日到期贷款订单列表' );
+        $this->display ();
+    }
 	/**
 	 * 订单列表
 	 */
@@ -2393,7 +2505,7 @@ class MemberController extends BaseController {
 			$this->error ( '对不起，操作失败！' );
 		}
 	}
-	
+
 	/**
 	 * 处理订单退款
 	 * 

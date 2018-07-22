@@ -1,0 +1,127 @@
+<!doctype html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>{$title}</title>
+    <include file="Public/scripts" /><include file="Public/upload" /><include file="Public/editor" />
+
+
+</head>
+<body>
+<div class="row">
+    <div class="col-md-12 " >
+        <h2>{$title}</h2>
+    </div>
+    <div class="col-md-12 " >
+        <form action="" method="post" name="form1" id="form1" class="ajaxformx">
+            <input type="hidden" id="id" name="id" value="{$db.id}" />
+            <div class="fancy-tab-container">
+                <ul class="nav nav-tabs fancy">
+                    <li class="active"><a href="#autotab_1" data-toggle="tab">基本信息</a></li>
+
+
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane active" id="autotab_1">
+                        <div class="col-md-6">
+
+                            <div class="form-group">
+                                <label class="control-label">客户状态名称：</label>
+                                <div class="controls">
+                                    <input type="text" class="form-control w150" name="name" id="name" placeholder="输入{$name}名称" value="{$db.name}"/>
+                                </div>
+                            </div>
+
+                            <hr />
+
+                            <div class="form-group">
+                                <label class="control-label">备注：</label>
+                                <div class="controls">
+                                    <input type="text" class="form-control" name="remark" id="remark" placeholder="输入{$name}备注" value="{$db.remark}" />
+                                </div>
+                            </div>
+
+
+                            <div class="form-group">
+                                <label class="control-label">状态：</label>
+                                <div class="controls">
+                                    <select class="form-control w80 " name="status" id="status">
+                                        <volist name="statuslist" id="vo">
+                                            <notempty name="db.id">
+                                                <eq name="db.status" value="$key">
+                                                    <option value="{$key}" selected="selected">{$vo}</option>
+                                                    <else/>
+                                                    <option value="{$key}" >{$vo}</option>
+                                                </eq>
+                                                <else/>
+                                                <eq name="key" value="1">
+                                                    <option value="{$key}" selected="selected">{$vo}</option>
+                                                    <else/>
+                                                    <option value="{$key}" >{$vo}</option>
+                                                </eq>
+                                            </notempty>
+                                        </volist>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label">是否是成交状态[设置此状态为成交，将会取消其他的条目为非成交状态]：</label>
+                                <div class="controls">
+                                    <input <if condition="$db['complate'] eq 0">checked</if> type="radio" name="complate" value="0">否&nbsp;&nbsp;&nbsp;
+                                    <input <if condition="$db['complate'] eq 1">checked</if> type="radio" name="complate" value="1">是
+                                </div>
+                            </div>
+
+
+
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+
+                    <div class="clearfix"></div>
+
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group" style="padding:20px 0px;">
+                        <div class="controls">
+                            <hr />
+                            <button type="submit" class="btn btn-success" id="btnSubmit"><i class="fa fa-save"></i> 提交</button>
+                            <button type="button" class="btn btn-default" onClick="history.back();"><i class="fa fa-undo"></i> 返回</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="col-md-12 " >
+        <form action="" method="post" name="form1" id="form1" class="ajaxformx">
+            <input type="hidden" id="id" name="id" value="{$db.id}" />
+            <div class="col-md-6 custom-form"> </div>
+        </form>
+    </div>
+</div>
+<script language="javascript">
+    var $fields={
+        pid: {
+            validators: {
+                notEmpty: {
+                    message: '必须选择所属分类'
+                }
+            }
+        } ,
+        username: {
+            validators: {
+                notEmpty: {
+                    message: '用户名不能为空'
+                }
+            }
+        }
+    };
+</script>
+<include file="Public/form" />
+</body>
+</html>
