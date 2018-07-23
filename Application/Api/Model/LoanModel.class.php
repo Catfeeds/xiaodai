@@ -58,6 +58,20 @@ class LoanModel extends Model{
 	    if($lastest_loan)   // 如果有最新还未还款的数据,就取实际还款进度
         {
 
+            switch ($status)
+            {
+                case 1:
+                    echo "Number 1";
+                    break;
+                case 2:
+                    echo "Number 2";
+                    break;
+                case 3:
+                    echo "Number 3";
+                    break;
+                default:
+                    echo "No number between 1 and 3";
+            }
         }
         else            // 不然，取首页配置数据返回
         {

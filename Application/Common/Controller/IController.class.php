@@ -1,42 +1,33 @@
 <?php
 namespace Common\Controller;
 
+use Common\Lib\ExceptionHandler;
 use Think\Controller;
-use Common\Lib\Verification;
-use Common\Lib\FormatUtils;
 
-class IController extends Controller {
+class IController extends BaseController {
 
-	public function iSuccess($data,$data_key) {
+    public $member_id;
 
-		if($data_key){
-			$data=array("$data_key"=>$data);
-		}
+    /**
+     * 初始化的时候，重新定义Api模块的错误处理函数
+     * IController constructor.
+     */
+    public function __construct()
+    {
+        $this->member_id = IV('token','require|token');
+    }
 
-		$ret=array(
-				'data' => $data,
-				'status' => 1
-		);
+    // 校验 token
+    public function checkToken($token){
 
-		if(!$data){
-			unset($ret['data']);
-		}
-		
-		return $this->ajaxReturn($ret);
-	}
-
-
-	// 校验 token 
-	public function checkToken($token){
-
-		$co=array(
-			'token'=>$token,
-		);
-		$it = M('user_token')->field('user_id')->where($co)->find();
-		if($it){
-			return $it['user_id'];
-		}else{
-		 	IE(ERROR_USER_UNVALID_TOKEN);
-		}
-	}
+        $co=array(
+            'token'=>$token,
+        );
+        $it = M('user_token')->field('user_id')->where($co)->find();
+        if($it){
+            return $it['user_id'];
+        }else{
+            IE(ERROR_USER_UNVALID_TOKEN);
+        }
+    }
 }

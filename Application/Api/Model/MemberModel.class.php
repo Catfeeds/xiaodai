@@ -130,4 +130,24 @@ class MemberModel extends IModel {
         return M('member')->where($filter)->find();
     }
 
+
+    /**
+     * 保存用户信息
+     */
+    public function saveMember()
+    {
+        $member_id = $data['member_id'];
+
+        $co = array();
+        if($member_id)
+        {
+            $co['id'] = $member_id;
+            M('member')->where($co)->save($data);
+        }
+        else
+        {
+            M('member')->add($data);
+        }
+    }
+
 }

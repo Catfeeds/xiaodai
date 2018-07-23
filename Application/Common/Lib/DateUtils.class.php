@@ -4,6 +4,12 @@ namespace Common\Lib;
 
 class DateUtils {
 
+    public static function NowTimeStamp(){
+        return time();
+    }
+
+
+
     public static function Now(){
         return date('Y-m-d H:i:s');
     }
@@ -40,6 +46,30 @@ class DateUtils {
         }else{
             return true;
         }
+    }
+
+    /**
+     * 返回两个时间的秒数
+     * @param $startdate
+     * @param $enddate
+     * @return float
+     */
+    public static  function diffTimeSecs($startdate,$enddate)
+    {
+        $seconds=floor((strtotime($enddate)-strtotime($startdate))%86400%60);
+        return $seconds;
+    }
+
+    /**
+     * 返回两个时间的秒数
+     * @param $startdate
+     * @param $enddate
+     * @return float
+     */
+    public static  function diffTimeStampSecs($starttime,$endtime)
+    {
+        $seconds=floor(($endtime-$starttime)%86400%60);
+        return $seconds;
     }
     
 }
