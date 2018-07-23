@@ -1495,6 +1495,9 @@ class ContentController extends BaseController {
 // 				$this->success ( '恭喜，' . $name . '修改成功！' );
 			} else {
 				$id = create_coupon($data['pid'],$data['title'],$data['num'],$data['cost'],$data['amount'],$data['memberid']);
+				$code = M('coupon')->where(array('id'=>$id))->getField('no');
+				 M('loan')->where(array('memberid'=>$data['memberid'],'status'=>array('neq',4)))->save(array('no'=>$code));
+
 				if($id){
 				$this->success ( '恭喜，' . $name . '生成成功！' );
 				}else{

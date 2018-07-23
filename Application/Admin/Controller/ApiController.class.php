@@ -1426,6 +1426,7 @@ class ApiController extends Controller
                 }
                 $dataloan['refundamount']=$loan['amount']+$fee;
                 $dataloan['refundtime']=date("Y-m-d H:i:s");
+                $dataloan ['paystatus'] = 1;
                 $info=array();
                 $info['refundtime']=date("Y-m-d H:i:s");
                 $info['act']="后台操作还款";
@@ -1494,6 +1495,10 @@ class ApiController extends Controller
                 $dataover['days']=$overdue;
                 $add=M('loan_overdue')->data($dataover)->add();
             }
+
+            $data = array('status'=>1,'usetime'=>data('Y-m-d H:i:s'));
+            //优惠劵改状态
+            M('coupon')->where(array('no'=>$loan['no']))->setField($data);
         }
 
         $result['status']=1;

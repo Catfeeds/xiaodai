@@ -228,7 +228,7 @@
 								<select  onchange="coupon()" id='a' name="" required="" style="color: #999;">
 									<option class="tab" value="" style="color: #999 !important;"selected>不使用优惠券</option>
 									<volist name="coupons" id="vo">
-									<option  value="{$vo['no']}">{$vo['title']} 优惠{$vo['amount']}</option>
+									<option  value="{$vo['no']}" <?php if($result['no'] == $vo['no']) echo "selected"; ?> >{$vo['title']} 优惠{$vo['amount']}</option>
 									</volist>
 								</select>
 							</p >

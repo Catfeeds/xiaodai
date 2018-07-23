@@ -2526,6 +2526,8 @@ class MemberController extends AuthbaseController {//Authbase
 		$this->assign ( 'member', $member );
 		$this->assign ( 'roderno', $roderno );
 		$loan=M('loan')->where(['orderno'=>$roderno])->find();
+
+
 		$step=json_decode($loan['step'],true);
 
 		$html="";
@@ -2559,10 +2561,21 @@ class MemberController extends AuthbaseController {//Authbase
         $delay_fee = $damount*$delayrate;
        // $result['delay_fee'] = $delay_fee;
 
+
 		$result=array();
 		$result['damount']=$loan['damount'];
 		$result['interest']=$delay_fee;
-		$result['refundamount']=$refundamount;
+        $result['refundamount']=$refundamount;
+        if($loan['no'])
+        {
+            $coupon = M('coupon')->where(array('no'=>$loan['no']))->find();
+            if($coupon)
+            {
+                $result['refundamount'] = $refundamount - $coupon['amount'];
+                $result['refundamount'] = $result['refundamount']<0?0:$result['refundamount'];
+            }
+        }
+		$result['no'] = $loan['no'];
 		$result['days']=$days;
 		$result['delayconfig'] = $delayconfig;
 		$result['status']=$loan['status'];
