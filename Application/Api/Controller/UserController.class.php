@@ -17,7 +17,7 @@ class UserController extends IController {
 
         $user = D('Member')->getUserByUsernameAndPass($telephone,$password);
         if(!$user) {
-            IE("手机号或密码错误");
+            IE("手机号或密码错误",'');
         }
         $this->iSuccess($user,'member');
     }
