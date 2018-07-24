@@ -20,16 +20,14 @@ class PublicController extends BaseController {
      */
     public function login()
     {
-        $user_name=IV('user_name','require');
+        $telephone = IV('telephone','require');
         $password=IV('password','require');
 
-        /** 获取商户登录信息  */
-        $user = D('Shop')->getUserByNameAndPass($user_name,$password);
-        if(!$user)
-        {
-           IE('账号或密码错误!','');
+        $user = D('Member')->getUserByUsernameAndPass($telephone,$password);
+        if(!$user) {
+            IE("手机号或密码错误",'');
         }
-        $this->iSuccess($user,'shop_info');
+        $this->iSuccess($user,'member');
     }
 
 }

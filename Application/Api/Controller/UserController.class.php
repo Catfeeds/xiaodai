@@ -5,22 +5,7 @@ use Think\Controller;
 
 class UserController extends IController {
 
-    /**
-     * 用户登录验证并返回
-     * @param null $email 邮箱
-     * @param null $password 密码
-     * Created by Dr.Chan<cynmsg@gmail.com>
-     */
-    public function login() {
-        $telephone = IV('telephone','require');
-        $password=IV('password','require');
 
-        $user = D('Member')->getUserByUsernameAndPass($telephone,$password);
-        if(!$user) {
-            IE("手机号或密码错误",'');
-        }
-        $this->iSuccess($user,'member');
-    }
 
     /**
      * 用户注册
