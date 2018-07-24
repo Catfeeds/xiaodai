@@ -3,6 +3,6 @@
 
 return array(
 
-    'CONTROLLER_LEVEL' => 1,
+    'CONTROLLER_LEVEL' => 1
 
 );
