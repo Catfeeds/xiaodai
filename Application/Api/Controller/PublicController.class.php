@@ -56,8 +56,7 @@ class PublicController extends BaseController {
         $data['password'] = $password;
         $data['token'] = D('Member')->genToken();
         D('Member')->save($data);
-
-        $this->iSuccess($user_info,'member');
+        $this->iSuccess($data,'data');
     }
 
 

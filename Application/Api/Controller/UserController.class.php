@@ -67,9 +67,9 @@ class UserController extends IController {
 
 
 
-    public function savezmf(){
+    public function saveZmf(){
         $data['id'] = $this->member_id;         // 店铺ID
-        $data['zmfinfo'] = $_POST['zmf'];
+        $data['zmfinfo'] = IV('zmf','require');
         $data['zmf']=1;
         $data['update_time'] = date('Y-m-d H:i:s');
         $data['update_info'] = '更新了芝麻信用';
@@ -80,12 +80,10 @@ class UserController extends IController {
     /**
      *
      */
-    public function zmf()
+    public function zmfInfo()
     {
-
         $filter['id'] = $this->member_id;         // 店铺ID
-        $member = M ('member')->where ($filter['id'])->find ();
-        $zmfinfo= json_decode($member['zmfinfo'],true);
+        $zmfinfo = M ('member')->where ($filter['id'])->field('zmfinfo')->find ();
         $this->iSuccess($zmfinfo,'zmfinfo');
     }
 
@@ -101,33 +99,21 @@ class UserController extends IController {
     }
 
     public function savebankinfo(){
-        $data['username'] = $_POST['username'];
-        $data['telephone'] = $_POST['telephone'];
-        $data['idcard'] = $_POST['idcard'];
-        $data['bankno'] = $_POST['bankno'];
-        $data['name'] = $_POST['name'];
-
-        if (!is_card($data['idcard'])) {
-            $result['status'] = 0;
-            $result['info'] = "身份证格式不正确";
-            $this->ajaxReturn($result);
+        if (!is_card($_POST['idcard'])) {
+            IE("身份证格式不正确");
         }
-        if (!is_number($data['bankno'])) {
-            $result['status'] = 5;
-            $result['info'] = "银行卡号格式不正确";
-            $this->ajaxReturn($result);
+        if (!is_number($_POST['bankno'])) {
+            IE("银行卡号格式不正确");
         }
-        if (!is_mobile($data['telephone'])) {
-            $result['status'] = 1;
-            $result['info'] = "电话号码格式不正确";
-            $this->ajaxReturn($result);
+        if (!is_mobile($_POST['telephone'])) {
+            IE("电话号码格式不正确");
         }
-        $row['bankinfo'] = json_encode($data,JSON_UNESCAPED_UNICODE);
-        $row['id'] = $this->member_id;
-        $row['bank'] = 1;
-        $row['update_time'] = date('Y-m-d H:i:s');
-        $row['update_info'] = '更新了银行卡信息';
-        D('member')->saveMember($row);
+        $data['bankinfo'] = json_encode($_POST,JSON_UNESCAPED_UNICODE);
+        $data['id'] = $this->member_id;
+        $data['bank'] = 1;
+        $data['update_time'] = date('Y-m-d H:i:s');
+        $data['update_info'] = '更新了银行卡信息';
+        D('member')->saveMember($data);
         $this->iSuccess('','data');
     }
 
@@ -319,32 +305,25 @@ class UserController extends IController {
 
 
     public function savecontact(){
-        $seq=explode(',',$_POST['seq']);
-        $seq=array_filter($seq);
-        $relationship=explode(',',$_POST['relationship']);
-        $relationship=array_filter($relationship);
-        $username=explode(',',$_POST['username']);
-        $username=array_filter($username);
-        $telephone=explode(',',$_POST['telephone']);
-        $telephone=array_filter($telephone);
-        $info=array();
-        foreach($seq as $k=>$v){
-
-            $info[$k]['seq']=$v;
-            $info[$k]['relationship']=$relationship[$k];
-            $info[$k]['username']=$username[$k];
-            $info[$k]['telephone']=$telephone[$k];
-        }
-
-        $info=json_encode($info,JSON_UNESCAPED_UNICODE);
-
         $data['id']=$this->member_id;
-        $data = array('contactinfo'=>$info,'contacts'=>1);
+        $info[] = array(
+            'seq'   => 1,
+            'username' => IV('username1','require'),
+            'telephone' => IV('telephone1','require'),
+            'relationship' => IV('relationship1','require'),
+        );
+        $info[] = array(
+            'seq'   => 2,
+            'username' => IV('username2','require'),
+            'telephone' => IV('telephone2','require'),
+            'relationship' => IV('relationship2','require'),
+        );
+        $data['contactinfo']=json_encode($info,JSON_UNESCAPED_UNICODE);
         $data['update_time'] = date('Y-m-d H:i:s');
+        $data['contacts'] = 1;
         $data['update_info'] = '更新了联系人';
         D('member')->saveMember($data);
         $this->iSuccess('','contactinfo');
-
     }
 
 
@@ -385,6 +364,63 @@ class UserController extends IController {
         $data['update_info'] = '更新了个人信息';
         D('member')->saveMember($data);
         $this->iSuccess('','info');
+
+    }
+
+
+    /**
+     * 获取认证情况
+     */
+    public function authInfo()
+    {
+        $filter['id']=$this->member_id;
+        $authInfo = M('member')
+            ->field('
+            cominfo,            -- 个人信息
+            gz,                 -- 工作信息
+            bank,               -- 银行卡信息
+            tmobile,            -- 运营商信息
+            contacts,           -- 紧急联系人        -- 芝麻信息
+            zmf
+            ')
+            ->where($filter)
+            ->find();
+        $this->iSuccess($authInfo,'data');
+    }
+
+
+    //个人中心
+    public function home(){
+        $filter['id']=$this->member_id;
+        $data = M('member')->where($filter['id'])->find();
+        $this->iSuccess($data,'data');
+    }
+
+
+    //延期
+    public function delay()
+    {
+        $data['memberid']=$this->member_id;
+        $data['orderno'] = IV('orderno','require');
+        $row = M('loan')->where(['orderno'=>$data['orderno']])->find();
+
+        $data['addtime'] = date('Y-m-d H:i:s');
+        //未支付
+        $data['status'] = 0;
+        $data['money'] =  $row['interest'];
+
+        $data['days'] = 3;
+        $data['dealno'] ='H-'.get_order_no();
+        $rs = M('delay')->add($data);
+        $result=[];
+        if($rs){
+            $result['status']=1;
+            $result['info'] = $data['dealno'];
+        }else{
+            $result['status']=0;
+            $result['info'] = '获取订单失败，请稍后在试';
+        }
+        $this->ajaxReturn($result);
 
     }
 

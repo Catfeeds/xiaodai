@@ -15,6 +15,10 @@ class IController extends BaseController {
     public function __construct()
     {
         $this->member_id = IV('token','require|token');
+        if(!$this->member_id)
+        {
+            IE('Token 错误');
+        }
     }
 
     // 校验 token

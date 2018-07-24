@@ -2061,7 +2061,6 @@ class MemberController extends AuthbaseController {//Authbase
 		$result['info']="申请成功,请等待审核";
 		$this->ajaxReturn($result);
 
-
 	}
 
 
