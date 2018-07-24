@@ -859,7 +859,7 @@ function censorWords( $string )
  * @param $error
  * @param  $s
  */
-function IE($error,$s){
+function IE($error,$s=''){
     header('Content-Type:application/json; charset=utf-8');
     die(json_encode(array('status'=>0,'msg'=>sprintf(L($error),$s)),JSON_UNESCAPED_UNICODE));
 }
