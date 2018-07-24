@@ -935,9 +935,9 @@ function IV($name,$vs=array()){
             }
 
             $co=array(
-                'store_token'=>$param,
+                'token'=>$param,
             );
-            $it = M('shop')->field('id')->where($co)->find();
+            $it = M('member')->field('id')->where($co)->find();
             if($it){
                 return $it['id'];
             }else{
@@ -951,7 +951,7 @@ function IV($name,$vs=array()){
             }
 
             $co=array(
-                'store_token'=>$param,
+                'token'=>$param,
             );
             $it = M('shop')->field('id')->where($co)->find();
             if($it){

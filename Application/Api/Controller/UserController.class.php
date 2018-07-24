@@ -145,13 +145,14 @@ class UserController extends IController {
     /**
      * 保存工作信息
      */
-    public function subwork()
+    public function savework()
     {
         $data['id'] = $this->member_id;         // 店铺ID
         $data['work']=json_encode($_POST,JSON_UNESCAPED_UNICODE);
         $data['gz']=1;
         $data['update_time'] = date('Y-m-d H:i:s');
         $data['update_info'] = '更新了工作信息';
+
         D('member')->saveMember($data);
 
         $this->iSuccess('','data');
@@ -159,7 +160,7 @@ class UserController extends IController {
 
 
 
-    public function subzmf(){
+    public function savezmf(){
         $data['id'] = $this->member_id;         // 店铺ID
         $data['zmfinfo'] = $_POST['zmf'];
         $data['zmf']=1;
@@ -192,7 +193,7 @@ class UserController extends IController {
         $this->iSuccess($bankinfo,'bankinfo');
     }
 
-    public function subbankinfo(){
+    public function savebankinfo(){
         $data['username'] = $_POST['username'];
         $data['telephone'] = $_POST['telephone'];
         $data['idcard'] = $_POST['idcard'];
@@ -233,7 +234,7 @@ class UserController extends IController {
         $this->iSuccess(array('tmobile'=>$tmobile),'tmobile');
     }
 
-    public function subtmobile(){
+    public function savetmobile(){
         $memberid=get_memberid();
         $telephone=$_POST['telephone'];
         $servicepwd=$_POST['servicepwd'];
@@ -410,7 +411,7 @@ class UserController extends IController {
     }
 
 
-    public function subcontact(){
+    public function savecontact(){
         $seq=explode(',',$_POST['seq']);
         $seq=array_filter($seq);
         $relationship=explode(',',$_POST['relationship']);
@@ -445,17 +446,28 @@ class UserController extends IController {
      */
     public function info()
     {
-        $filter['id'] = $this->member_id;         // 店铺ID
-        $member = M ('member')->where ($filter['id'])->find ();
+        $filter['id'] = $this->member_id;
+        // 店铺ID
+        $member = M ('member')
+            ->field('
+            username,           -- 用户名
+            idcard,             -- 身份证号码  
+            telephone,          -- 电话号码
+            idcardimg1,         -- 身份证 正面
+            idcardimg2,         -- 身份证 反面  -- 身份证 手持 拍照
+            idcardimg3          
+            ')
+            ->where ($filter['id'])
+            ->find ();
         $this->iSuccess($member,'member');
 
     }
 
 
-    public function subinfo()
+    public function saveinfo()
     {
-        $filter['member_id']=$this->member_id;
         $data=$_POST;
+        $data['id']=$this->member_id;
         if(!is_card($data['idcard'])){
             IE('身份证号码格式不正确');
         }
@@ -464,7 +476,7 @@ class UserController extends IController {
         $data['cominfo']=1;
         $data['update_time'] = date('Y-m-d H:i:s');
         $data['update_info'] = '更新了个人信息';
-        M( 'member' )->where ( $filter)->save ($data);
+        D('member')->saveMember($data);
         $this->iSuccess('','info');
 
     }

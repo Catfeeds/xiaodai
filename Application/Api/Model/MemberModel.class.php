@@ -134,9 +134,10 @@ class MemberModel extends IModel {
     /**
      * 保存用户信息
      */
-    public function saveMember()
+    public function saveMember($data = array())
     {
-        $member_id = $data['member_id'];
+        if(!$data)   return;
+        $member_id = $data['id'];
 
         $co = array();
         if($member_id)
