@@ -861,7 +861,7 @@ function censorWords( $string )
  */
 function IE($error,$s){
     header('Content-type: application/json');
-    die(json_encode(array('status'=>0,'msg'=>sprintf(L($error),$s))));
+    die(json_encode(array('status'=>0,'msg'=>sprintf(L($error),$s)),JSON_UNESCAPED_UNICODE));
 }
 
 /**
