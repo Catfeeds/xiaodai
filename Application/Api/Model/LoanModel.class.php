@@ -52,22 +52,46 @@ class LoanModel extends Model{
             '1'=>'已审核',
             '2'=>'已放款',
             '3'=>'已延期',
-            '3'=>'已逾期',
-            '4'=>'已还款'
+            '4'=>'已逾期',
+            '5'=>'已还款'
         );
+
+        $timeline = array();
 	    if($lastest_loan)   // 如果有最新还未还款的数据,就取实际还款进度
         {
 
+            $ck_status = $lastest_loan;
             switch ($status)
             {
+                case 0: //
+                    $timeline[] = '提交审核';
+                    break;
                 case 1:
-                    echo "Number 1";
+                    $timeline[] = '提交审核';
+                    if($ck_status)
+                    {
+                        $timeline[] = '审核通过，等待放款';
+                    }
+                    else
+                    {
+                        $timeline[] = '审核失败，'.$lastest_loan['refusereason'];
+                    }
                     break;
                 case 2:
-                    echo "Number 2";
-                    break;
+                    $timeline[] = '提交审核';
+                    $timeline[] = '审核通过，等待放款';
+                    $timeline[] = '已放款，请按时还款';
                 case 3:
-                    echo "Number 3";
+                    $timeline[] = '提交审核';
+                    $timeline[] = '审核通过，等待放款';
+                    $timeline[] = '已放款，请按时还款';
+                    $timeline[] = '已延期，请按时还款';
+                    break;
+                case 4:
+                    $timeline[] = '提交审核';
+                    $timeline[] = '审核通过，等待放款';
+                    $timeline[] = '已放款，请按时还款';
+                    $timeline[] = '已预期，请按时还款';
                     break;
                 default:
                     echo "No number between 1 and 3";
