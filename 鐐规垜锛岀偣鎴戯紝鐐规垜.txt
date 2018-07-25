@@ -1,0 +1,6 @@
+
+1：程序包内的  youyiqianbao.sql 为数据库文件。
+
+2：环境要求：php5.6及以上，mysql5.6及以上。
+
+3：配置文件位置：Application/Common/conf/config.php

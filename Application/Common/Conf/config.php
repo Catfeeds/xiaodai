@@ -132,8 +132,8 @@ $config = array (
         'APP_SUB_DOMAIN_DEPLOY'   =>   1, // 开启子域名配置
         'APP_SUB_DOMAIN_RULES'    =>    array(
             'admin.360qdd.org'  => 'Admin',  //Admin模块
-            'www.360qdd.org'  => 'Home',  // 主页模块
-            'api.360qdd.org'  => 'Api',  // Api接口模块
+            'xiaodai.app'  => 'Home',  // 主页模块
+            'api.xiaodai.app'  => 'Api',  // Api接口模块
         )
 );
 // 加载自定义参数设置
